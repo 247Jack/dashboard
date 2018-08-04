@@ -1,0 +1,492 @@
+<div class="app" id="app">
+  <app-navbar></app-navbar>
+  <div id="content" class="app-content box-shadow-0" role="main">
+    <div class="content-header white  box-shadow-1" id="content-header">
+      <div class="navbar navbar-expand-lg">
+        <!-- btn to toggle sidenav on small screen -->
+        <a class="d-lg-none mx-2" data-toggle="modal" data-target="#aside">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512">
+            <path d="M80 304h352v16H80zM80 248h352v16H80zM80 192h352v16H80z" />
+          </svg>
+        </a>
+        <!-- Page title -->
+        <div class="navbar-text nav-title flex" id="pageTitle">Contacs</div>
+
+      </div>
+    </div>
+    <div class="content-main d-flex flex" id="content-main">
+      <div class="d-flex flex" data-plugin="user">
+        <div class="fade aside aside-sm b-r height-contacs" id="content-aside">
+          <div class="modal-dialog d-flex flex-column w-md light lt" id="user-nav">
+            <div class="navbar white no-radius box-shadow pos-rlt">
+              <span class="text-md text-contacs">Contacs</span>
+              <!-- <button class="white btn-border" id="arrow-new-contact" data-target="#upload-contacts" data-toggle="modal" data-toggle-class="fade-right"
+                data-toggle-class-target="#animate">
+                <span>
+                  <div class="box-color text-color pos-rlt arrow-contact">
+                    <span class="arrow top b-white pull-left"></span>
+                    <div class="box-body ">Add new users for the platform</div>
+                  </div>
+                  <i class="fa fa-upload"></i>
+                </span>
+              </button>
+              <button class="white btn-border" id="arrow-new-user" data-target="#new-contact" data-toggle="modal" data-toggle-class="fade-right"
+                data-toggle-class-target="#animate">
+                <span>
+                  <div class="box-color text-color pos-rlt arrow-user">
+                    <span class="arrow top pull-left b-white"></span>
+                    <div class="box-body">Add new contacts to the platform</div>
+                  </div>
+                  <i class="fa fa-plus-square"></i>
+                </span>
+              </button> -->
+            </div>
+            <div class="scrollable hover">
+              <div class="sidenav mt-2">
+                <nav class="nav-border b-primary" data-nav>
+                  <ul class="nav">
+                    <li>
+                      <a class="item-class" [routerLink]="['/contacts']" [queryParams]="{ typecontact: 'all' }">
+                        <span class="nav-badge">
+                          <b class="badge badge-sm badge-pill warn">{{contactsPropertyManagers.length + contactsUsers.length + contactsProviders.length}}</b>
+                        </span>
+                        <span class="nav-text">All</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a class="item-class" [routerLink]="['/contacts']" [queryParams]="{ typecontact: 'managers' }">
+                        <span class="nav-badge">
+                          <b class="badge badge-sm badge-pill primary">{{contactsPropertyManagers.length}}</b>
+                        </span>
+                        <span class="nav-text">Property managers</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a class="item-class" [routerLink]="['/contacts']" [queryParams]="{ typecontact: 'users' }">
+                        <span class="nav-badge">
+                          <b class="badge badge-sm badge-pill primary">{{contactsUsers.length}}</b>
+                        </span>
+                        <span class="nav-text">Users</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a class="item-class" [routerLink]="['/contacts']" [queryParams]="{ typecontact: 'providers' }">
+                        <span class="nav-badge">
+                          <b class="badge badge-sm badge-pill primary">{{contactsProviders.length}}</b>
+                        </span>
+                        <span class="nav-text">Providers</span>
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
+            <div class="p-2 mt-auto p-3">
+              <div class="input-group">
+                <input type="text" class="form-control form-control-sm" id="newField" placeholder="New group" required>
+                <span class="input-group-btn">
+                  <button class="btn btn-default btn-sm no-shadow" type="button" id="newBtn">
+                    <i class="fa fa-plus"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+            <!-- / -->
+          </div>
+        </div>
+        <div class="d-flex flex" id="content-body">
+          <div class="d-flex flex-column flex" id="user-list">
+            <!-- <div class="navbar white no-radius box-shadow pos-rlt">
+              <form class="flex">
+                <div class="input-group">
+                  <input type="text" class="form-control form-control-sm search" placeholder="Search" required id="input-contact">
+                  <span class="input-group-btn">
+                    <button class="btn btn-default btn-sm no-shadow" type="button">
+                      <i class="fa fa-search"></i>
+                    </button>
+                  </span>
+                </div>
+              </form>
+              <button class="btn btn-sm white ml-1 sort" data-sort="item-title" data-toggle="tooltip" title="Sort">
+                <i class="fa fa-sort"></i>
+              </button>
+              <a data-toggle="modal" data-target="#content-aside" data-modal class="ml-1 d-md-none">
+                <span class="btn btn-sm btn-icon primary">
+                  <i class="fa fa-th"></i>
+                </span>
+              </a>
+            </div> -->
+            <div class="d-flex flex scroll-y">
+              <div class="d-flex flex-column flex white lt">
+                <div class="scroll-y scroll-h">
+                  <div class="list animate fadeIn">
+                    <div class="list-item " *ngFor="let item of currentContacts">
+                      <span class="w-40 avatar circle {{item.color}}">
+                        <i class="away b-white avatar-right"></i>
+                        {{item.initials}}
+                      </span>
+                      <div class="list-body">
+                        <a href="#" class="item-title _500" data-target="#user" data-toggle="modal" data-toggle-class="fade-right" data-toggle-class-target="#animate">
+                          {{item.name}}
+                        </a>
+                        <div class="item-except text-sm text-muted h-1x">
+                        </div>
+                        <div class="item-tag tag hide" id="tag-id">
+                          Providers
+                        </div>
+                      </div>
+                      <div>
+                        <div class="item-action dropdown">
+                          <a href="#" data-toggle="dropdown" class="text-muted">
+                            <i class="fa fa-fw fa-ellipsis-v"></i>
+                          </a>
+                          <div class="dropdown-menu dropdown-menu-right text-color" role="menu">
+                            <a class="dropdown-item">
+                              <i class="fa fa-tag"></i> Send message
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item">
+                              <i class="fa fa-reply"></i> Archive
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="no-result hide">
+                    <div class="p-4 text-center">
+                      No Results
+                    </div>
+                  </div>
+                </div>
+                <div class="p-3 b-t mt-auto">
+                  <div class="d-flex align-items-center">
+                    <div class="flex">
+                      <div class="pagination pagination-xs">
+                      </div>
+                    </div>
+                    <div>
+                      <span class="text-muted">Total:</span>
+                      <span id="count"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="d-flex flex-column b-l" style="width: 50px">
+                <div class="scrollable hover">
+                  <div class="text-center text-sm py-3 d-flex flex-column" id="filter">
+                    <a href="contacts#">A</a>
+                    <a href="contacts#">B</a>
+                    <a href="contacts#">C</a>
+                    <a href="contacts#">D</a>
+                    <a href="contacts#">E</a>
+                    <a href="contacts#">F</a>
+                    <a href="contacts#">G</a>
+                    <a href="contacts#">H</a>
+                    <a href="contacts#">I</a>
+                    <a href="contacts#">J</a>
+                    <a href="contacts#">K</a>
+                    <a href="contacts#">L</a>
+                    <a href="contacts#">M</a>
+                    <a href="contacts#">N</a>
+                    <a href="contacts#">O</a>
+                    <a href="contacts#">P</a>
+                    <a href="contacts#">Q</a>
+                    <a href="contacts#">R</a>
+                    <a href="contacts#">S</a>
+                    <a href="contacts#">T</a>
+                    <a href="contacts#">U</a>
+                    <a href="contacts#">V</a>
+                    <a href="contacts#">W</a>
+                    <a href="contacts#">X</a>
+                    <a href="contacts#">Y</a>
+                    <a href="contacts#">Z</a>
+                  </div>
+                </div>
+              </div> -->
+            </div>
+          </div>
+        </div>
+        <div class="modal fade show" id="user" data-backdrop="true" data-class="modal-open-aside">
+          <div class=" modal-right w-xl w-ssd white b-l">
+            <div class="d-flex flex-column h-100">
+              <div class="d-flex flex" id="profile">
+                <div class="modal-dialog modal-right w-auto-sm white dk b-l">
+                  <div class="d-flex flex-column h-100 w-100 white b-r">
+                    <div class="scroll-y" id="border">
+                      <div class=" pb-0 p-4  mt-3 d-flex flex-column align-items-center">
+                        <span class="w-40 avatar circle blue">
+                          <i class="on b-white avatar-right"></i>
+                          <!-- {{currentUser.unit_abbr_name}} -->
+                        </span>
+                      </div>
+                      <div class="px-4 ml-4">
+                        <div class="form-group row">
+                          <label for="name" class="col-sm-2 col-form-label"></label>
+                          <div class="col-sm-8 ml-4">
+                            <input type="text" class="form-control form-control-small collapse editor" id="name" placeholder="Name">
+                            <span class="collapse show editor">
+                              <!--   {{currentUser.first_name || currentUser.name}} {{currentUser.last_name}} -->
+                            </span>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label for="Address" class="col-sm-2 col-form-label">Address:</label>
+                          <div class="col-sm-8 ml-4">
+                            <input type="text" class="form-control form-control-small collapse editor" id="Address" placeholder="Address">
+                            <span class="collapse show editor">
+                              <!-- {{currentUser.address}}
+                                            {{currentUser.zip}} -->
+                            </span>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label for="Mobile" class="col-sm-2 col-form-label">Mobile:</label>
+                          <div class="col-sm-8 ml-4">
+                            <input type="tel" class="form-control form-control-small collapse editor" id="Mobile" placeholder="Mobile">
+                            <span class="collapse show editor">
+                              <!--    {{currentUser.mobile}} -->
+                            </span>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label for="Email" class="col-sm-2 col-form-label">Email:</label>
+                          <div class="col-sm-8 ml-4">
+                            <input type="email" class="form-control form-control-small collapse editor" id="Email" placeholder="Email">
+                            <span class="collapse show editor">
+                              <!--    {{currentUser.email}} -->
+                            </span>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label for="Property" class="col-sm-2 col-form-label">Property:</label>
+                          <div class="col-sm-8 ml-4">
+                            <input type="text" class="form-control form-control-small collapse editor" id="Property" placeholder="Property">
+                            <span class="collapse show editor">
+                              <!--   {{currentUser.portfolio}} -->
+                            </span>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label for="Owner" class="col-sm-2 col-form-label">Owner:</label>
+                          <div class="col-sm-8 ml-4">
+                            <input type="text" class="form-control form-control-small collapse editor" id="Owner" placeholder="Owner">
+                            <span class="collapse show editor">
+                              <!--  {{currentUser.portfolio}} -->
+                            </span>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label for="Service-Plan" class="col-sm-2 col-form-label">Service Plan:</label>
+                          <div class="col-sm-8 ml-4">
+                            <input type="text" class="form-control form-control-small collapse editor" id="Service Plan" placeholder="Service Plan">
+                            <span class="collapse show editor">
+                              <!--   {{currentUser.portfolio}} -->
+                            </span>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label for="Preferred-Vendor" class="col-sm-2 col-form-label">Preferred Vendor:</label>
+                          <div class="col-sm-8 ml-4">
+                            <input type="text" class="form-control form-control-small collapse editor" id="Preferred-Vendor" placeholder="Preferred Vendor">
+                            <span class="collapse show editor">
+                              <!--   {{currentUser.portfolio}} -->
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div id="buttons" class="mt-4">
+                        <button class="btn btn-outline btn-rounded text-success btn-cancel" data-toggle="collapse" data-target=".editor" aria-expanded="true">Edit</button>
+                        <button class="btn btn-outline btn-rounded text-success btn-cancel">Save</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade show" id="new-contact" data-backdrop="true" data-class="modal-open-aside">
+          <div class="modal-dialog modal-right w-xl white b-l new-contact-slider">
+            <div class="d-flex flex-column h-100">
+              <div class="d-flex flex" id="profile">
+                <div class="modal-dialog modal-right white dk b-l">
+                  <div class="d-flex flex-column h-100 w-100 white b-r">
+                    <div class="new-contact-title">
+                      <span>New Contact</span>
+                    </div>
+                    <div id="new-contact-select">
+                      <div class="col-sm-10 input-sm single-select">
+                        <select class="custom-select" [(ngModel)]="newContactType">
+                          <option value="" disabled selected>Add to group</option>
+                          <option value="user">Resident</option>
+                          <option value="vendor">Service provider</option>
+                          <option value="property_manager">Teammate</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 input-sm">
+                      <div [ngSwitch]="newContactType" class="new-contact-scroll">
+                        <div *ngSwitchCase="'user'" class="row">
+                          <div class="col-sm-6">
+                            <label for="">First Name</label>
+                            <input type="text" class="form-control">
+                          </div>
+                          <div class="col-sm-6">
+                            <label for="">Last Name</label>
+                            <input type="text" class="form-control">
+                          </div>
+                          <div class="col-sm-12">
+                            <label for="">Portfolio</label>
+                            <input type="text" class="form-control">
+                          </div>
+                          <div class="col-sm-6">
+                            <label for="">Unit abbr name</label>
+                            <input type="text" class="form-control">
+                          </div>
+                          <div class="col-sm-6">
+                            <label for="">Service threshold</label>
+                            <input type="number" class="form-control">
+                          </div>
+                          <div class="col-sm-12">
+                            <label for="">Address</label>
+                            <input type="text" class="form-control">
+                          </div>
+                          <div class="col-sm-12">
+                            <label for="">Address 2</label>
+                            <input type="text" class="form-control">
+                          </div>
+                          <div class="col-sm-6">
+                            <label for="">City</label>
+                            <input type="text" class="form-control">
+                          </div>
+                          <div class="col-sm-6">
+                            <label for="">ZIP</label>
+                            <input type="text" class="form-control">
+                          </div>
+                          <div class="col-sm-6">
+                            <label for="">Phone</label>
+                            <input type="text" class="form-control">
+                          </div>
+                          <div class="col-sm-6">
+                            <label for="">Alt phone</label>
+                            <input type="text" class="form-control">
+                          </div>
+                          <div class="col-sm-12">
+                            <label for="">Email</label>
+                            <input type="email" class="form-control">
+                          </div>
+                          <div class="col-sm-4">
+                            <label for="">Alexa ID</label>
+                            <input type="text" class="form-control">
+                          </div>
+                          <div class="col-sm-4">
+                            <label for="">FB ID</label>
+                            <input type="text" class="form-control">
+                          </div>
+                          <div class="col-sm-4">
+                            <label for="">SMS number</label>
+                            <input type="text" class="form-control">
+                          </div>
+                        </div>
+                        <div *ngSwitchCase="'vendor'" class="row scroll-y">
+                          <div class="col-sm-12">
+                            <label for="">Name</label>
+                            <input type="text" class="form-control">
+                          </div>
+                          <div class="col-sm-12">
+                            <label for="">Job type</label>
+                            <input type="text" class="form-control">
+                          </div>
+                          <div class="col-sm-12">
+                            <label for="">Phone</label>
+                            <input type="text" class="form-control">
+                          </div>
+                          <div class="col-sm-12">
+                            <label for="">Address</label>
+                            <input type="text" class="form-control">
+                          </div>
+                          <div class="col-sm-12">
+                            <label for="">Email</label>
+                            <input type="email" class="form-control">
+                          </div>
+                          <div class="col-sm-12">
+                            <label for="">Conmments</label>
+                            <input type="text" class="form-control">
+                          </div>
+                        </div>
+                        <div *ngSwitchCase="'property_manager'" class="row scroll-y">
+                          <div class="col-sm-6">
+                            <label for="">First Name</label>
+                            <input type="text" class="form-control">
+                          </div>
+                          <div class="col-sm-6">
+                            <label for="">Last Name</label>
+                            <input type="text" class="form-control">
+                          </div>
+                          <div class="col-sm-12">
+                            <label for="">Email</label>
+                            <input type="email" class="form-control">
+                          </div>
+                          <div class="col-sm-6">
+                            <label for="">Phone</label>
+                            <input type="text" class="form-control">
+                          </div>
+                          <div class="col-sm-12">
+                            <label for="">Address</label>
+                            <input type="text" class="form-control">
+                          </div>
+                        </div>
+                        <div *ngSwitchDefault>
+                          Please select a contact type
+                        </div>
+                      </div>
+                      <div id="buttons">
+                        <button class="btn btn-outline btn-rounded text-success btn-cancel" data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-rounded b-success success btn-save" data-dismiss="modal">Save</button>
+                      </div>
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade show" id="upload-contacts" data-backdrop="true" data-class="modal-open-aside">
+          <div class="modal-dialog modal-right w-xl white b-l new-upload-contacts">
+            <div class="d-flex flex-column h-100">
+              <div class="d-flex flex" id="profile">
+                <div class="modal-dialog modal-right w-auto-sm white dk b-l">
+                  <div class="d-flex flex-column h-100 w-100 white b-r">
+                    <div class="new-contact-title">
+                      <h2>Add new contacts for the platform</h2>
+                    </div>
+                    <div class="row mt-5">
+                      <div class="col-sm-12 mx-auto">
+                        <div class="form-group">
+                          <label class="h5" for="exampleFormControlSelect1">Select the type of contact</label>
+                          <select class="form-control" id="exampleFormControlSelect1">
+                            <option>User</option>
+                            <option>Property Manager</option>
+                            <option>Provider</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-sm-12  mx-auto input-sm">
+                        <div class="mx-auto">
+                          <dropzone (error)="onUploadError($event)" (success)="onUploadSuccess($event)"></dropzone>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,168 @@
+<simple-notifications></simple-notifications>
+<div id="aside" class="app-aside fade nav-expand dark" aria-hidden="true">
+  <div class="sidenav modal-dialog dk">
+    <div class="navbar navbar-nav-1">
+      <a [routerLink]="['/home']" class="navbar-brand">
+        <img src="../assets/images/logo-jack.png" alt=".">
+      </a>
+    </div>
+    <div class="flex hide-scroll bg-c">
+      <div class="scroll">
+        <div class="nav-active-theme" data-nav>
+          <ul class="nav">
+            <li class="pb-2 hidden-folded"></li>
+            <li class="new-p mx-auto new-order">
+              <button class="btn btn-sm mx-auto success theme-accent new-order" data-toggle="modal" data-target="#selec-vendors">
+                <i class="fa fa-fw fa-plus"></i>
+                <span class="hidden-folded d-inline new-order">New Work Order</span>
+              </button>
+            </li>
+            <li class="pb-2 hidden-folded"></li>
+            <li>
+              <a [routerLink]="['/home']" class="btn-active">
+                <span class="nav-icon">
+                  <i class="fa fa-dashboard"></i>
+                </span>
+                <span class="nav-text">Dashboard</span>
+              </a>
+            </li>
+            <li>
+              <a [routerLink]="['/messages']" class="btn-active">
+                <span class="nav-icon">
+                  <i class="fa fa-comment"></i>
+                </span>
+                <span class="nav-badge">
+                  <b *ngIf="unread_messages > 0" class="badge badge-sm badge-pill success">{{unread_messages}}</b>
+                </span>
+                <span class="nav-text">Messages</span>
+              </a>
+            </li>
+            <!-- <li>
+              <a [routerLink]="['/automations']" class="btn-active">
+                <span class="nav-icon">
+                  <i class="fa fa-magic"></i>
+                </span>
+                <span class="nav-text">Automations</span>
+              </a>
+            </li> -->
+            <li>
+              <a [routerLink]="['/contacts']" class="btn-active">
+                <span class="nav-icon">
+                  <i class="fa fa-user"></i>
+                </span>
+                <span class="nav-text">Contacts</span>
+              </a>
+            </li>
+            <!--<li><a href="#" class="btn-active"><span class="nav-icon"><i class="fa fa-align-left"></i> </span><span class="nav-text">Analytics</span></a></li>-->
+            <li class="pb-2 hidden-folded"></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="no-shrink lt">
+      <div class="nav-fold">
+        <a class="d-flex p-2-3 nav-fold-icon" data-toggle="dropdown">
+          <span class="w-30 avatar circle pink" *ngIf="currentPropertyManager.email">{{currentPropertyManager.email[0]}}</span>
+        </a>
+        <div class="dropdown-menu w pt-0 mt-2 animate fadeIn">
+          <a class="dropdown-item" *ngIf="currentPropertyManager.email">You're logged as
+            <br/>{{currentPropertyManager.email}}</a>
+        </div>
+        <div class="hidden-folded flex p-2-3 bg folded-1 overflow-n box-nav">
+          <div class="d-flex p-1">
+            <a id="notifications-b" class="flex overflow-n text-nowrap ">
+              <i class="fa fa-bell text-muted mr-1"></i>
+              <span class="badge badge-pill theme"></span>
+            </a>
+            <a class="px-2" id="logout-button" data-toggle="tooltip" title="" data-original-title="Logout">
+              <i class="fa fa-power-off text-muted" (click)="logout()"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade show" id="selec-vendors" data-backdrop="true" data-class="modal-open-aside">
+  <div class="modal-dialog modal-right w-xl white b-l">
+    <div class="d-flex flex-column h-100">
+      <div class="d-flex flex" id="profile">
+        <div class="modal-dialog modal-right w-auto-sm white dk b-l">
+          <div class="d-flex flex-column h-100 w-100 white b-r">
+            <div class="row">
+              <div class="col-2 mt-5 ml-4">
+                <span>
+                  <Strong>To:</Strong>
+                </span>
+              </div>
+              <div class="col-8 mt-5">
+                <angular2-multiselect [data]="vendorlist" [(ngModel)]="vendorselectedItems" [settings]="vendorsettings">
+                </angular2-multiselect>
+              </div>
+              <div class="col-2 mt-4 ml-4">
+                <span>
+                  <Strong>Date:</Strong>
+                </span>
+              </div>
+              <div class="col-8 mt-4">
+                <angular2-date-picker [(ngModel)]="date" [settings]="calendarsettings">
+                </angular2-date-picker>
+              </div>
+              <div class="col-2 mt-4 ml-4">
+                <span>
+                  <Strong>Resident:</Strong>
+                </span>
+              </div>
+              <div class="col-8 mt-4">
+                <angular2-multiselect [data]="residentlist" [(ngModel)]="residentselectedItems" [settings]="residentsettings">
+                </angular2-multiselect>
+              </div>
+              <div class="col-2 mt-4 ml-4">
+                <span>
+                  <Strong>Issue:</Strong>
+                </span>
+              </div>
+              <div class="col-8 mt-4">
+                <angular2-multiselect [data]="issuelist" [(ngModel)]="issueselectedItems" [settings]="issuesettings">
+                </angular2-multiselect>
+              </div>
+              <div class="w-100"></div>
+              <div class="col-2 mt-4 ml-4">
+                <span>
+                  <Strong>Content:</Strong>
+                </span>
+              </div>
+              <div class="col-8 mt-4">
+                <textarea rows="10" style="width:100%;" [(ngModel)]="taskDescription"></textarea>
+                <!--div class="border px-2 border-light">
+                  <div class="w-100 mt-3"></div>
+                  <span>New maintenance request from Management Miami</span>
+                  <div class="w-100 mt-3"></div>
+                  <span class="mt-3">Tiger N.</span>
+                  <div class="w-100 mt-3"></div>
+                  <span class="mt-3">Zip 75254</span>
+                  <div class="w-100 mt-3"></div>
+                  <Span class="mt-3">Issue: Clogged sink</Span>
+                  <div class="w-100 mt-3"></div>
+                  <span class="mt-3">For details and to accept this job:</span>
+                  <div class="w-100 mt-3"></div>
+                  <span class="mt-3">http://jobinfolink</span>
+                  <div class="w-100 mb-3"></div>
+                </div-->
+              </div>
+              <div class="col-2 mt-5 ml-4">
+              </div>
+              <div class="col-6 mt-3">
+                <button class="btn btn-primary float-left" (click)="broadcastNewTask()">Send</button>
+              </div>
+              <div class="col-2 mt-3">
+                <button class="btn btn-danger float-left" (click)="cancelNewTask()">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

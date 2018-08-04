@@ -1,0 +1,303 @@
+<div class="app" id="app">
+  <app-navbar></app-navbar>
+  <div id="content" class="app-content box-shadow-0" role="main">
+    <div class="content-header white  box-shadow-1" id="content-header">
+      <div class="navbar navbar-expand-lg">
+        <a class="d-lg-none mx-2" data-toggle="modal" href="#aside">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512">
+            <path d="M80 304h352v16H80zM80 248h352v16H80zM80 192h352v16H80z" />
+          </svg>
+        </a>
+        <div class="navbar-text nav-title flex" id="pageTitle">Dashboard</div>
+      </div>
+    </div>
+    <div class="content-main d-flex flex" id="content-main">
+      <div class="padding">
+        <div class="row">
+      <!--
+          <div class="col mb-2">
+            <div class="col">
+              <div class="row">
+                <select class="form-control input-c col-sm-2">
+                  <option value="" disabled selected>Today</option>
+                  <option>Yesterday</option>
+                  <option>Last 7 Days</option>
+                  <option>Last 30 Days</option>
+                  <option>This Month</option>
+                  <option>Last Month</option>
+                </select>
+                <select class="form-control input-c col-sm-2">
+                  <option value="" disabled selected>All Request</option>
+                  <option>Complete</option>
+                  <option>In Progress</option>
+                  <option>Dispatched</option>
+                  <option>Needs Approval</option>
+                  <option>Awaiting Reply</option>
+                </select>
+                <select class="form-control input-c col-sm-2">
+                  <option value="" disabled selected>My Team</option>
+                  <option>Jennifer</option>
+                  <option>Emma</option>
+                  <option>Oliva</option>
+                  <option></option>
+                </select>
+                <div class="col no-padding">
+                  <button class="btn btn-fw white ml-auto-1 btn-export">
+                    <span>Export</span>
+                    <i class="fa fa-download"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        -->
+          <div class="col-sm-12 height-table">
+            <div class="box">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Date/Time</th>
+                    <th>Service</th>
+                    <th>Issue</th>
+                    <th>Date/Time Requested</th>
+                    <th>Vendor</th>
+                    <th>Cost</th>
+                    <th>Status</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of tickets">
+                    <td>
+                      <span class="w-40 avatar circle light-blue">
+
+                      </span>
+                      <span></span>
+                    </td>
+                    <td>{{item.scheduledFor | date}}</td>
+                    <td><span *ngFor="let issue of item.relatedIssue">{{issue.issueDescription}}</span></td>
+                    <td>{{ item.issueData.repairDescription}}</td>
+                    <td>{{date}}
+                      <br>{{time}}</td>
+                    <td><span *ngFor="let vendor of item.assignedVendors">{{vendor.vendorData.name}}</span></td>
+                    <td>${{ item.issueData.repairCost }}</td>
+                    <td>
+                      <div [ngSwitch]="item.status">
+                        <div *ngSwitchCase="'created'">
+                          <button class="badge btn-clean blue" type="button" >Created</button>
+                        </div>
+                        <div *ngSwitchCase="'checked'">
+                          <button class="badge btn-clean yellow" type="button" >Accepted</button>
+                        </div>
+                        <div *ngSwitchCase="'pendient_complete'">
+                          <button class="badge btn-clean orange" type="button" >To be completed</button>
+                        </div>
+                        <div *ngSwitchCase="'pendient_approve'">
+                          <button class="badge btn-clean red" (click)="checkPendientTask($event, item)" type="button" data-toggle="modal" data-target="#modal-status">Requires atention</button>
+                        </div>
+                        <div *ngSwitchCase="'canceled'">
+                          <button class="badge btn-clean grey" type="button" >Canceled</button>
+                        </div>
+                        <div *ngSwitchCase="'done'">
+                          <button class="badge btn-clean green" type="button" >Completed</button>
+                        </div>
+                        <div *ngSwitchDefault>
+                          <button class="badge btn-clean white" type="button" >This status shouldn't exist</button>
+                        </div>
+                      </div>
+
+                    </td>
+                    <td>
+                      <button class="white btn-border" id="arrow-messages" data-toggle="modal" data-target="#messages-slider" data-toggle-class="fade-right"
+                        data-toggle-class-target="#animate">
+                        <div class="box-color text-color pos-rlt messages-slider-button">
+                          <span class="arrow top pull-right b-white "></span>
+                          <div class="box-body">Click to display chat slider</div>
+                        </div>
+                        <i class="fa fa-comment"></i>
+                      </button>
+                      <button class="white btn-border " id="arrow-user" data-toggle="modal" data-target="#user" data-toggle-class="fade-right"
+                        data-toggle-class-target="#animate">
+                        <div class="box-color text-color pos-rlt user-slider-button">
+                          <span class="arrow top pull-right b-white "></span>
+                          <div class="box-body">Click to display user slider</div>
+                        </div>
+                        <i class="fa fa-user"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade show" id="user" data-backdrop="true" data-class="modal-open-aside">
+      <div class="modal-dialog modal-right w-xl white b-l">
+        <div class="d-flex flex-column h-100">
+          <div class="d-flex flex" id="profile">
+            <div class="modal-dialog modal-right w-auto-sm white dk b-l">
+              <div class="d-flex flex-column h-100 w-100 white b-r">
+                <div class="scroll-y" id="border">
+                  <div class="p-4 mt-3 d-flex flex-column align-items-center">
+                    <a href="#" class="avatar w-40">
+                      <span class="w-40 avatar circle blue">
+                        <i class="on b-white avatar-right"></i>
+                        TN
+                      </span>
+                    </a>
+                    <span class="text-md mt-3 block">Tiger Nixon</span>
+                  </div>
+                  <div class="p-2">
+                    <ul class="nav flex-column">
+                      <li class="nav-item">
+                        <span class="nav-link d-flex flex-row text-muted">
+                          <span>Addres:</span> 123 Easy St Miami, FL 33101</span>
+                      </li>
+                      <li class="nav-item">
+                        <span class="nav-link d-flex flex-row text-muted">
+                          <span>Mobile:</span>123-456-789</span>
+                      </li>
+                      <li class="nav-item">
+                        <span class="nav-link d-flex flex-row text-muted">
+                          <span>Email:</span>Tiger@gmail.com</span>
+                      </li>
+                      <li class="nav-item">
+                        <span class="nav-link d-flex flex-row text-muted">
+                          <span>Property:</span> The Quantum</span>
+                      </li>
+                      <li class="nav-item">
+                        <span class="nav-link d-flex flex-row text-muted">
+                          <span>Owner:</span> Cornelius Vanderbilt</span>
+                      </li>
+                      <li class="nav-item">
+                        <span class="nav-link d-flex flex-row text-muted">
+                          <span>Service plan:</span> Home Maintenance</span>
+                      </li>
+                      <li class="nav-item">
+                        <span class="nav-link d-flex flex-row text-muted">
+                          <span>Preferred vendor:</span> ABC Plumbing</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade show" id="messages-slider" data-backdrop="true" data-class="modal-open-aside">
+      <div class="modal-dialog modal-right w-xl white b-l">
+        <div class="d-flex flex-column h-100">
+          <div class="scrollable hover scrollable-slider">
+            <div class="p-3">
+              <div class="chat-list">
+                <div class="chat-item" data-class>
+                  <a href="#" class="avatar w-40">
+                    <span class="w-40 avatar circle blue">
+                      <i class="on b-white avatar-right"></i>
+                      TN
+                    </span>
+                  </a>
+                  <div class="chat-body">
+                    <div class="chat-content rounded msg">
+                      Hi Jack..
+                    </div>
+                    <div class="chat-content rounded msg">
+                      I have a problem!
+                    </div>
+                    <div class="chat-date date">
+                      2 mins ago
+                    </div>
+                  </div>
+                </div>
+                <div class="chat-item" data-class="alt">
+                  <a href="#" class="avatar w-40">
+                    <span class="w-40 avatar circle purple">
+                      <i class="on b-white avatar-right"></i>
+                      Jack
+                    </span>
+                  </a>
+                  <div class="chat-body">
+                    <div class="chat-content rounded msg">
+                      Hi Tiger, what's the issue?
+                    </div>
+                    <div class="chat-date date">
+                      1 min ago
+                    </div>
+                  </div>
+                </div>
+                <div class="chat-item" data-class>
+                  <a href="#" class="avatar w-40">
+                    <span class="w-40 avatar circle blue">
+                      <i class="on b-white avatar-right"></i>
+                      TN
+                    </span>
+                  </a>
+                  <div class="chat-body">
+                    <div class="chat-content rounded msg">
+                      My kitchen sink is clogged again
+                    </div>
+                    <div class="chat-date date">
+                      Rigth now
+                    </div>
+                  </div>
+                </div>
+                <div class="chat-item" data-class="alt">
+                  <a href="#" class="avatar w-40">
+                    <span class="w-40 avatar circle purple">
+                      <i class="on b-white avatar-right"></i>
+                      Jack
+                    </span>
+                  </a>
+                  <div class="chat-body">
+                    <div class="chat-content rounded msg">
+                      Looks like a new request for
+                      <span style="display: inline;">
+                        <i>plumbing</i>
+                      </span>. Do you want to
+                      <span style="display: inline;">
+                        <b>auto-dispatch</b>
+                      </span> to vendors?
+                    </div>
+                    <div class="chat-content rounded msg">
+                      <button class="btn-sm btn-rounded primary b-2x" data-dismiss="modal">Select vendors</button>&nbsp;
+                      <button class="btn-sm btn-rounded primary b-2x" data-toggle="modal" data-target="#m-a-f">Vendors pool</button>
+                    </div>
+                    <div class="chat-date date">
+                      Rigth now (only visible for you)
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="modal-status" tabindex="-1" role="dialog" aria-labelledby="modal-status" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" *ngIf="currentTicket">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Task fare over threshold </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true"></span>
+            </button>
+          </div>
+          <div class="modal-body">
+            The following task fare, set by the vendor, is greater than the task threshold. Details:
+            <p>Repair cost: {{currentTicket.issueData.repairCost}}</p>
+            <p>Repair description: {{currentTicket.issueData.repairDescription}}</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="evaluateTask('approve')">Approve task cost</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="evaluateTask('deny')">Deny and cancel task</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
