@@ -43,7 +43,7 @@ import { IssuesService } from "./services/issues.service";
 const oktaConfig = {
   issuer: "https://dev-825764.oktapreview.com/oauth2/default",
   redirectUri: `${environment.self_host}/implicit/callback`,
-  clientId: "0oaeu3zgonjGZw0qE0h7"
+  clientId: environment.okta_clientId
 };
 
 const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
@@ -53,10 +53,10 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
 };
 
 const stompConfig: StompConfig = {
-  url: "ws://broker.247jack.com:15674/ws",
+  url: environment.broker_host,
   headers: {
-    login: "user",
-    passcode: "7ojs2IaGvXM6"
+    login: environment.broker_user,
+    passcode: environment.broker_pass
   },
   heartbeat_in: 0,
   heartbeat_out: 30000,

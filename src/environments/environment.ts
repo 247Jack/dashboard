@@ -5,7 +5,11 @@
 
 export const environment = {
   production: false,
+  okta_clientId: "0oaeu3zgonjGZw0qE0h7",
   api_domain: "https://15kcv4z18f.execute-api.us-east-1.amazonaws.com/dev",
+  broker_host: "ws://dev.broker.247jack.com:15674/ws",
+  broker_user: "user",
+  broker_pass: "oHFEocc9Isp1",
   self_host: "http://localhost:4200"
   //self_host: "http://dev.dashboard.247jack.com"
 };
