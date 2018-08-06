@@ -30,10 +30,13 @@ app-home #content-main {
   border-left: solid 3px #4982ff !important;
 }
 .navbar-nav-1 {
-  background-color: #46348f;
+  background-color: #232e3d;
+}
+.nav-icon, .nav-text{
+  color: inherit !important
 }
 .bg-c {
-  background-color: #281d51;
+  background-color: #1e2835;
 }
 .new-p {
   padding: 0rem 1.2rem;
@@ -48,9 +51,7 @@ app-home #content-main {
 .nav-fold-icon {
   background: #46348f;
 }
-.box-nav {
-  background-color: #281d51 !important;
-}
+
 .w-30 {
   height: 28px;
   width: 28px;
@@ -534,6 +535,9 @@ img.preview-image-chat {
 #button-add-a span,
 #archive-conversation span {
   overflow: unset;
+}
+.img-icon{
+  width: 50px;
 }
 .select2 {
   min-width: 100%;

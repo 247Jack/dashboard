@@ -2,8 +2,8 @@
 <div id="aside" class="app-aside fade nav-expand dark" aria-hidden="true">
   <div class="sidenav modal-dialog dk">
     <div class="navbar navbar-nav-1">
-      <a [routerLink]="['/home']" class="navbar-brand">
-        <img src="../assets/images/logo-jack.png" alt=".">
+      <a [routerLink]="['/home']" class=""> 
+        <img src="../../../../assets/images/jack_icon.svg" class="img-icon" alt=".">
       </a>
     </div>
     <div class="flex hide-scroll bg-c">
@@ -11,13 +11,13 @@
         <div class="nav-active-theme" data-nav>
           <ul class="nav">
             <li class="pb-2 hidden-folded"></li>
-            <li class="new-p mx-auto new-order">
-              <button class="btn btn-sm mx-auto success theme-accent new-order" data-toggle="modal" data-target="#selec-vendors">
+            <li class="new-p mx-auto new-order mt-2">
+              <button class="btn btn-sm mx-auto d-block success new-order" data-toggle="modal" data-target="#selec-vendors">
                 <i class="fa fa-fw fa-plus"></i>
                 <span class="hidden-folded d-inline new-order">New Work Order</span>
               </button>
             </li>
-            <li class="pb-2 hidden-folded"></li>
+            <li class="pb-2 hidden-folded mt-3"></li>
             <li>
               <a [routerLink]="['/home']" class="btn-active">
                 <span class="nav-icon">
@@ -61,14 +61,14 @@
     </div>
     <div class="no-shrink lt">
       <div class="nav-fold">
-        <a class="d-flex p-2-3 nav-fold-icon" data-toggle="dropdown">
+        <a class="d-flex p-2-3 " data-toggle="dropdown">
           <span class="w-30 avatar circle pink" *ngIf="currentPropertyManager.email">{{currentPropertyManager.email[0]}}</span>
         </a>
         <div class="dropdown-menu w pt-0 mt-2 animate fadeIn">
           <a class="dropdown-item" *ngIf="currentPropertyManager.email">You're logged as
             <br/>{{currentPropertyManager.email}}</a>
         </div>
-        <div class="hidden-folded flex p-2-3 bg folded-1 overflow-n box-nav">
+        <div class="hidden-folded flex p-2-3 folded-1 overflow-n">
           <div class="d-flex p-1">
             <a id="notifications-b" class="flex overflow-n text-nowrap ">
               <i class="fa fa-bell text-muted mr-1"></i>
