@@ -53,10 +53,10 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
 };
 
 const stompConfig: StompConfig = {
-  url: "ws://dev.broker.247jack.com:15674/ws",
+  url: "ws://broker.247jack.com:15674/ws",
   headers: {
     login: "user",
-    passcode: "oHFEocc9Isp1"
+    passcode: "7ojs2IaGvXM6"
   },
   heartbeat_in: 0,
   heartbeat_out: 30000,
