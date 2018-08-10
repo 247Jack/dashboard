@@ -15,6 +15,14 @@
   j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
   })(window,document,'script','dataLayer','GTM-KQJPG63');</script>
+  <script>
+    window.intercomSettings = {
+      app_id: "n6774gvu",
+      name: <%= current_user.name %>, // Full name
+      email: <%= current_user.email %>, // Email address
+      created_at: <%= current_user.created_at.to_i %> // Signup Date
+    };
+  </script>
 </head>
 <body>
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KQJPG63"
