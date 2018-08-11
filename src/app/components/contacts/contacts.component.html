@@ -10,7 +10,7 @@
           </svg>
         </a>
         <!-- Page title -->
-        <div class="navbar-text nav-title flex" id="pageTitle">Contacs</div>
+        <div class="navbar-text nav-title flex" id="pageTitle">Contacts</div>
 
       </div>
     </div>
@@ -18,9 +18,8 @@
       <div class="d-flex flex" data-plugin="user">
         <div class="fade aside aside-sm b-r height-contacs" id="content-aside">
           <div class="modal-dialog d-flex flex-column w-md light lt" id="user-nav">
-            <div class="navbar white no-radius box-shadow pos-rlt">
-              <span class="text-md text-contacs">Contacs</span>
-              <!-- <button class="white btn-border" id="arrow-new-contact" data-target="#upload-contacts" data-toggle="modal" data-toggle-class="fade-right"
+            <!--div class="navbar white no-radius box-shadow pos-rlt">
+              <button class="white btn-border" id="arrow-new-contact" data-target="#upload-contacts" data-toggle="modal" data-toggle-class="fade-right"
                 data-toggle-class-target="#animate">
                 <span>
                   <div class="box-color text-color pos-rlt arrow-contact">
@@ -39,20 +38,12 @@
                   </div>
                   <i class="fa fa-plus-square"></i>
                 </span>
-              </button> -->
-            </div>
+              </button>
+            </div-->
             <div class="scrollable hover">
               <div class="sidenav mt-2">
                 <nav class="nav-border b-primary" data-nav>
                   <ul class="nav">
-                    <li>
-                      <a class="item-class" [routerLink]="['/contacts']" [queryParams]="{ typecontact: 'all' }">
-                        <span class="nav-badge">
-                          <b class="badge badge-sm badge-pill warn">{{contactsPropertyManagers.length + contactsUsers.length + contactsProviders.length}}</b>
-                        </span>
-                        <span class="nav-text">All</span>
-                      </a>
-                    </li>
                     <li>
                       <a class="item-class" [routerLink]="['/contacts']" [queryParams]="{ typecontact: 'managers' }">
                         <span class="nav-badge">
@@ -66,7 +57,7 @@
                         <span class="nav-badge">
                           <b class="badge badge-sm badge-pill primary">{{contactsUsers.length}}</b>
                         </span>
-                        <span class="nav-text">Users</span>
+                        <span class="nav-text">Tenants</span>
                       </a>
                     </li>
                     <li>
@@ -122,7 +113,6 @@
                   <div class="list animate fadeIn">
                     <div class="list-item " *ngFor="let item of currentContacts">
                       <span class="w-40 avatar circle {{item.color}}">
-                        <i class="away b-white avatar-right"></i>
                         {{item.initials}}
                       </span>
                       <div class="list-body">
@@ -446,7 +436,7 @@
                         <button class="btn btn-rounded b-success success btn-save" data-dismiss="modal">Save</button>
                       </div>
                     </div>
-                    
+
                   </div>
                 </div>
               </div>

@@ -25,6 +25,7 @@ export class ContactsComponent implements OnInit {
     this.currentPropertyManager = JSON.parse(localStorage.getItem('propertyManagerData'));
 
     this.userlist.getContacts(this.currentPropertyManager['_id']).subscribe(data => {
+      console.log(data)
       for (let i in data.usersResult) {
         let userData = {
           id: data.usersResult[i]._id,
