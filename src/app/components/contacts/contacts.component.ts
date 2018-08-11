@@ -15,7 +15,8 @@ export class ContactsComponent implements OnInit {
   public currentUser: any;
   private currentPropertyManager: any;
   public newContactType = "";
-
+  public editContactType = "edit_user";
+  public editContact = [];
   constructor(
     private activatedRoute: ActivatedRoute,
     private userlist: ContactsService
@@ -113,6 +114,11 @@ export class ContactsComponent implements OnInit {
       }
     });
   }
+  UpdateContact() {
+    console.log(this.editContact)
+    this.editContact = []
+    console.log(this.editContact)
+  };
 
   onUploadError(e) {}
 

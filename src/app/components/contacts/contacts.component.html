@@ -116,7 +116,7 @@
                         {{item.initials}}
                       </span>
                       <div class="list-body">
-                        <a href="#" class="item-title _500" data-target="#user" data-toggle="modal" data-toggle-class="fade-right" data-toggle-class-target="#animate">
+                        <a href="#" class="item-title _500" data-target="#user"  data-toggle="modal" data-toggle-class="fade-right" data-toggle-class-target="#animate">
                           {{item.name}}
                         </a>
                         <div class="item-except text-sm text-muted h-1x">
@@ -210,84 +210,236 @@
                           <!-- {{currentUser.unit_abbr_name}} -->
                         </span>
                       </div>
-                      <div class="px-4 ml-4">
-                        <div class="form-group row">
-                          <label for="name" class="col-sm-2 col-form-label"></label>
-                          <div class="col-sm-8 ml-4">
-                            <input type="text" class="form-control form-control-small collapse editor" id="name" placeholder="Name">
-                            <span class="collapse show editor">
-                              <!--   {{currentUser.first_name || currentUser.name}} {{currentUser.last_name}} -->
-                            </span>
-                          </div>
+                      <div  class="px-4 ml-4" [ngSwitch]="editContactType" >
+                        <div *ngSwitchCase="'edit_user'">
+                            <div class="form-group row">
+                                <label for="name" class="col-sm-2 col-form-label"></label>
+                                <div class="col-sm-8 ml-4">
+                                  <input  type="text" class="form-control form-control-small collapse editor" [(ngModel)]="editContact.name" id="name" placeholder="Name">
+                                  <span class="collapse show editor">
+                                    <!--   {{currentUser.first_name || currentUser.name}} {{currentUser.last_name}} -->
+                                  </span>
+                                </div>
+                              </div>
+                              <div class="form-group row">
+                                <label for="Address" class="col-sm-2 col-form-label">Address:</label>
+                                <div class="col-sm-8 ml-4">
+                                  <input type="text" class="form-control form-control-small collapse editor" [(ngModel)]="editContact.address" id="Address" placeholder="Address">
+                                  <span class="collapse show editor">
+                                    <!-- {{currentUser.address}}
+                                                  {{currentUser.zip}} -->
+                                  </span>
+                                </div>
+                              </div>
+                              <div class="form-group row">
+                                <label for="Mobile" class="col-sm-2 col-form-label">Mobile:</label>
+                                <div class="col-sm-8 ml-4">
+                                  <input type="tel" class="form-control form-control-small collapse editor" [(ngModel)]="editContact.phone" id="Mobile" placeholder="Mobile">
+                                  <span class="collapse show editor">
+                                    <!--    {{currentUser.mobile}} -->
+                                  </span>
+                                </div>
+                              </div>
+                              <div class="form-group row">
+                                <label for="Email" class="col-sm-2 col-form-label">Email:</label>
+                                <div class="col-sm-8 ml-4">
+                                  <input type="email" class="form-control form-control-small collapse editor" [(ngModel)]="editContact.email" id="Email" placeholder="Email">
+                                  <span class="collapse show editor">
+                                    <!--    {{currentUser.email}} -->
+                                  </span>
+                                </div>
+                              </div>
+                              <div class="form-group row">
+                                <label for="Property" class="col-sm-2 col-form-label">Property:</label>
+                                <div class="col-sm-8 ml-4">
+                                  <input type="text" class="form-control form-control-small collapse editor" [(ngModel)]="editContact.property" id="Property" placeholder="Property">
+                                  <span class="collapse show editor">
+                                    <!--   {{currentUser.portfolio}} -->
+                                  </span>
+                                </div>
+                              </div>
+                              <div class="form-group row">
+                                <label for="Owner" class="col-sm-2 col-form-label">Owner:</label>
+                                <div class="col-sm-8 ml-4">
+                                  <input type="text" class="form-control form-control-small collapse editor" [(ngModel)]="editContact.owner" id="Owner" placeholder="Owner">
+                                  <span class="collapse show editor">
+                                    <!--  {{currentUser.portfolio}} -->
+                                  </span>
+                                </div>
+                              </div>
+                              <div class="form-group row">
+                                <label for="Service-Plan" class="col-sm-2 col-form-label">Service Plan:</label>
+                                <div class="col-sm-8 ml-4">
+                                  <input type="text" class="form-control form-control-small collapse editor" [(ngModel)]="editContact.service_plan" id="Service Plan" placeholder="Service Plan">
+                                  <span class="collapse show editor">
+                                    <!--   {{currentUser.portfolio}} -->
+                                  </span>
+                                </div>
+                              </div>
+                              <div class="form-group row">
+                                <label for="Preferred-Vendor" class="col-sm-2 col-form-label">Preferred Vendor:</label>
+                                <div class="col-sm-8 ml-4">
+                                  <input type="text" class="form-control form-control-small collapse editor" [(ngModel)]="editContact.preferred_vendor" id="Preferred-Vendor" placeholder="Preferred Vendor">
+                                  <span class="collapse show editor">
+                                    <!--   {{currentUser.portfolio}} -->
+                                  </span>
+                                </div>
+                              </div>
                         </div>
-                        <div class="form-group row">
-                          <label for="Address" class="col-sm-2 col-form-label">Address:</label>
-                          <div class="col-sm-8 ml-4">
-                            <input type="text" class="form-control form-control-small collapse editor" id="Address" placeholder="Address">
-                            <span class="collapse show editor">
-                              <!-- {{currentUser.address}}
-                                            {{currentUser.zip}} -->
-                            </span>
-                          </div>
+                        <div *ngSwitchCase="'edit_vendor'">
+                            <div class="form-group row">
+                                <label for="name" class="col-sm-2 col-form-label"></label>
+                                <div class="col-sm-8 ml-4">
+                                  <input  type="text" class="form-control form-control-small collapse editor"  [(ngModel)]="editContact.name"  id="name" placeholder="Name">
+                                  <span class="collapse show editor">
+                                    <!--   {{currentUser.first_name || currentUser.name}} {{currentUser.last_name}} -->
+                                  </span>
+                                </div>
+                              </div>
+                              <div class="form-group row">
+                                <label for="Address" class="col-sm-2 col-form-label">Address:</label>
+                                <div class="col-sm-8 ml-4">
+                                  <input type="text" class="form-control form-control-small collapse editor" [(ngModel)]="editContact.address" id="Address" placeholder="Address">
+                                  <span class="collapse show editor">
+                                    <!-- {{currentUser.address}}
+                                                  {{currentUser.zip}} -->
+                                  </span>
+                                </div>
+                              </div>
+                              <div class="form-group row">
+                                <label for="Mobile" class="col-sm-2 col-form-label">Mobile:</label>
+                                <div class="col-sm-8 ml-4">
+                                  <input type="tel" class="form-control form-control-small collapse editor" [(ngModel)]="editContact.phone" id="Mobile" placeholder="Mobile">
+                                  <span class="collapse show editor">
+                                    <!--    {{currentUser.mobile}} -->
+                                  </span>
+                                </div>
+                              </div>
+                              <div class="form-group row">
+                                <label for="Email" class="col-sm-2 col-form-label">Email:</label>
+                                <div class="col-sm-8 ml-4">
+                                  <input type="email" class="form-control form-control-small collapse editor" [(ngModel)]="editContact.email" id="Email" placeholder="Email">
+                                  <span class="collapse show editor">
+                                    <!--    {{currentUser.email}} -->
+                                  </span>
+                                </div>
+                              </div>
+                              <div class="form-group row">
+                                <label for="Property" class="col-sm-2 col-form-label">Property:</label>
+                                <div class="col-sm-8 ml-4">
+                                  <input type="text" class="form-control form-control-small collapse editor" [(ngModel)]="editContact.property" id="Property" placeholder="Property">
+                                  <span class="collapse show editor">
+                                    <!--   {{currentUser.portfolio}} -->
+                                  </span>
+                                </div>
+                              </div>
+                              <div class="form-group row">
+                                <label for="Owner" class="col-sm-2 col-form-label">Owner:</label>
+                                <div class="col-sm-8 ml-4">
+                                  <input type="text" class="form-control form-control-small collapse editor" [(ngModel)]="editContact.owner" id="Owner" placeholder="Owner">
+                                  <span class="collapse show editor">
+                                    <!--  {{currentUser.portfolio}} -->
+                                  </span>
+                                </div>
+                              </div>
+                              <div class="form-group row">
+                                <label for="Service-Plan" class="col-sm-2 col-form-label">Service Plan:</label>
+                                <div class="col-sm-8 ml-4">
+                                  <input type="text" class="form-control form-control-small collapse editor" [(ngModel)]="editContact.service_plan" id="Service Plan" placeholder="Service Plan">
+                                  <span class="collapse show editor">
+                                    <!--   {{currentUser.portfolio}} -->
+                                  </span>
+                                </div>
+                              </div>
+                              <div class="form-group row">
+                                <label for="Preferred-Vendor" class="col-sm-2 col-form-label">Preferred Vendor:</label>
+                                <div class="col-sm-8 ml-4">
+                                  <input type="text" class="form-control form-control-small collapse editor" [(ngModel)]="editContact.preferred_vendor" id="Preferred-Vendor" placeholder="Preferred Vendor">
+                                  <span class="collapse show editor">
+                                    <!--   {{currentUser.portfolio}} -->
+                                  </span>
+                                </div>
+                              </div>
                         </div>
-                        <div class="form-group row">
-                          <label for="Mobile" class="col-sm-2 col-form-label">Mobile:</label>
-                          <div class="col-sm-8 ml-4">
-                            <input type="tel" class="form-control form-control-small collapse editor" id="Mobile" placeholder="Mobile">
-                            <span class="collapse show editor">
-                              <!--    {{currentUser.mobile}} -->
-                            </span>
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <label for="Email" class="col-sm-2 col-form-label">Email:</label>
-                          <div class="col-sm-8 ml-4">
-                            <input type="email" class="form-control form-control-small collapse editor" id="Email" placeholder="Email">
-                            <span class="collapse show editor">
-                              <!--    {{currentUser.email}} -->
-                            </span>
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <label for="Property" class="col-sm-2 col-form-label">Property:</label>
-                          <div class="col-sm-8 ml-4">
-                            <input type="text" class="form-control form-control-small collapse editor" id="Property" placeholder="Property">
-                            <span class="collapse show editor">
-                              <!--   {{currentUser.portfolio}} -->
-                            </span>
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <label for="Owner" class="col-sm-2 col-form-label">Owner:</label>
-                          <div class="col-sm-8 ml-4">
-                            <input type="text" class="form-control form-control-small collapse editor" id="Owner" placeholder="Owner">
-                            <span class="collapse show editor">
-                              <!--  {{currentUser.portfolio}} -->
-                            </span>
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <label for="Service-Plan" class="col-sm-2 col-form-label">Service Plan:</label>
-                          <div class="col-sm-8 ml-4">
-                            <input type="text" class="form-control form-control-small collapse editor" id="Service Plan" placeholder="Service Plan">
-                            <span class="collapse show editor">
-                              <!--   {{currentUser.portfolio}} -->
-                            </span>
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <label for="Preferred-Vendor" class="col-sm-2 col-form-label">Preferred Vendor:</label>
-                          <div class="col-sm-8 ml-4">
-                            <input type="text" class="form-control form-control-small collapse editor" id="Preferred-Vendor" placeholder="Preferred Vendor">
-                            <span class="collapse show editor">
-                              <!--   {{currentUser.portfolio}} -->
-                            </span>
-                          </div>
+                        <div *ngSwitchCase="'edit_property_manager'">
+                            <div class="form-group row">
+                                <label for="name" class="col-sm-2 col-form-label"></label>
+                                <div class="col-sm-8 ml-4">
+                                  <input  type="text" class="form-control form-control-small collapse editor"  [(ngModel)]="editContact.name"  id="name" placeholder="Name">
+                                  <span class="collapse show editor">
+                                    <!--   {{currentUser.first_name || currentUser.name}} {{currentUser.last_name}} -->
+                                  </span>
+                                </div>
+                              </div>
+                              <div class="form-group row">
+                                <label for="Address" class="col-sm-2 col-form-label">Address:</label>
+                                <div class="col-sm-8 ml-4">
+                                  <input type="text" class="form-control form-control-small collapse editor" [(ngModel)]="editContact.address" id="Address" placeholder="Address">
+                                  <span class="collapse show editor">
+                                    <!-- {{currentUser.address}}
+                                                  {{currentUser.zip}} -->
+                                  </span>
+                                </div>
+                              </div>
+                              <div class="form-group row">
+                                <label for="Mobile" class="col-sm-2 col-form-label">Mobile:</label>
+                                <div class="col-sm-8 ml-4">
+                                  <input type="tel" class="form-control form-control-small collapse editor" [(ngModel)]="editContact.phone" id="Mobile" placeholder="Mobile">
+                                  <span class="collapse show editor">
+                                    <!--    {{currentUser.mobile}} -->
+                                  </span>
+                                </div>
+                              </div>
+                              <div class="form-group row">
+                                <label for="Email" class="col-sm-2 col-form-label">Email:</label>
+                                <div class="col-sm-8 ml-4">
+                                  <input type="email" class="form-control form-control-small collapse editor" [(ngModel)]="editContact.email" id="Email" placeholder="Email">
+                                  <span class="collapse show editor">
+                                    <!--    {{currentUser.email}} -->
+                                  </span>
+                                </div>
+                              </div>
+                              <div class="form-group row">
+                                <label for="Property" class="col-sm-2 col-form-label">Property:</label>
+                                <div class="col-sm-8 ml-4">
+                                  <input type="text" class="form-control form-control-small collapse editor" [(ngModel)]="editContact.property" id="Property" placeholder="Property">
+                                  <span class="collapse show editor">
+                                    <!--   {{currentUser.portfolio}} -->
+                                  </span>
+                                </div>
+                              </div>
+                              <div class="form-group row">
+                                <label for="Owner" class="col-sm-2 col-form-label">Owner:</label>
+                                <div class="col-sm-8 ml-4">
+                                  <input type="text" class="form-control form-control-small collapse editor" [(ngModel)]="editContact.owner" id="Owner" placeholder="Owner">
+                                  <span class="collapse show editor">
+                                    <!--  {{currentUser.portfolio}} -->
+                                  </span>
+                                </div>
+                              </div>
+                              <div class="form-group row">
+                                <label for="Service-Plan" class="col-sm-2 col-form-label">Service Plan:</label>
+                                <div class="col-sm-8 ml-4">
+                                  <input type="text" class="form-control form-control-small collapse editor" [(ngModel)]="editContact.service_plan" id="Service Plan" placeholder="Service Plan">
+                                  <span class="collapse show editor">
+                                    <!--   {{currentUser.portfolio}} -->
+                                  </span>
+                                </div>
+                              </div>
+                              <div class="form-group row">
+                                <label for="Preferred-Vendor" class="col-sm-2 col-form-label">Preferred Vendor:</label>
+                                <div class="col-sm-8 ml-4">
+                                  <input type="text" class="form-control form-control-small collapse editor" [(ngModel)]="editContact.preferred_vendor" id="Preferred-Vendor" placeholder="Preferred Vendor">
+                                  <span class="collapse show editor">
+                                    <!--   {{currentUser.portfolio}} -->
+                                  </span>
+                                </div>
+                              </div>
                         </div>
                       </div>
                       <div id="buttons" class="">
-                        <button class="btn btn-outline btn-rounded text-success btn-cancel" data-toggle="collapse" data-target=".editor" aria-expanded="true">Edit</button>
-                        <button class="btn btn-outline btn-rounded text-success btn-cancel"  data-target="#success-modal-contact" data-toggle="modal"  data-dismiss="modal">Save</button>
+                        <button class="btn btn-outline btn-rounded text-success btn-cancel" data-toggle="collapse" data-target=".editor" aria-expanded="false">Edit</button>
+                        <button class="btn btn-outline btn-rounded text-success btn-cancel"  id="collapse-inputs" data-target="#success-modal-contact" data-toggle="modal" (click)="UpdateContact()"  data-dismiss="modal">Save</button>
                       </div>
                     </div>
                   </div>
