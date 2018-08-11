@@ -2,7 +2,7 @@
 <div id="aside" class="app-aside fade nav-expand dark" aria-hidden="true">
   <div class="sidenav modal-dialog dk">
     <div class="navbar navbar-nav-1">
-      <a [routerLink]="['/home']" class=""> 
+      <a [routerLink]="['/home']" class="">
         <img src="../../../../assets/images/jack_icon.svg" class="img-icon" alt=".">
       </a>
     </div>
@@ -12,7 +12,7 @@
           <ul class="nav">
             <li class="pb-2 hidden-folded"></li>
             <li class="new-p mx-auto new-order mt-2">
-              <button class="btn btn-sm mx-auto d-block success new-order" data-toggle="modal" data-target="#selec-vendors">
+              <button class="btn btn-sm mx-auto d-block success new-order" data-dismiss="modal" data-toggle="modal" data-target="#selec-vendors">
                 <i class="fa fa-fw fa-plus"></i>
                 <span class="hidden-folded d-inline new-order">New Work Order</span>
               </button>
@@ -88,7 +88,7 @@
   <div class="modal-dialog modal-right w-xl white b-l">
     <div class="d-flex flex-column h-100">
       <div class="d-flex flex" id="profile">
-        <div class="modal-dialog modal-right w-auto-sm white dk b-l">
+        <div class="modal-dialog modal-right w-100 w-auto-sm white dk b-l">
           <div class="d-flex flex-column h-100 w-100 white b-r">
             <div class="row">
               <div class="col-2 mt-5 ml-4">
@@ -154,7 +154,7 @@
               <div class="col-2 mt-5 ml-4">
               </div>
               <div class="col-6 mt-3">
-                <button class="btn btn-primary float-left" (click)="broadcastNewTask()">Send</button>
+                <button class="btn btn-primary float-left" data-toggle="modal" data-dismiss="modal" data-target="#success-modal" (click)="broadcastNewTask()">Send</button>
               </div>
               <div class="col-2 mt-3">
                 <button class="btn btn-danger float-left" data-dismiss="modal" (click)="cancelNewTask()">Cancel</button>
@@ -162,6 +162,25 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="success-modal" tabindex="-1" role="dialog"  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>

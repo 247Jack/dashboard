@@ -90,13 +90,14 @@ app-home #content-main {
   overflow: hidden;
 }
 .height-table{
-  min-height: 86vh;
-  height: 86vh;
-  max-height: 86vh;
+  height: 87vh;
   overflow:auto;
   width: 100%;
   max-width: 100vw;
   display: block;
+}
+.scroll-y {
+  position: static;
 }
 .btn-export {
   width: auto;
@@ -147,7 +148,7 @@ app-home #content-main {
   cursor: pointer;
 }
 #content {
-  height: 100%;
+  height: 100vh;
 }
 li a .btn-rounded {
   border: none;
@@ -597,6 +598,9 @@ img.preview-image-chat {
   #user .modal-dialog {
     width: 100%;
   }
+  #selec-vendors .modal-dialog{
+    width: 60%;
+  }
 }
 @media screen and (max-width: 600px) {
   #new-auto-dispatch .modal-dialog-dispatch,
@@ -651,10 +655,16 @@ img.preview-image-chat {
   #user .modal-dialog {
     width: 80%;
   }
+  #selec-vendors .modal-dialog{
+    width: 80%;
+  }
 }
 @media screen and (max-width: 280px) {
   .btn-3 {
     top: 18% !important;
+  }
+  #selec-vendors .modal-dialog{
+    width: 90%;
   }
 }
 @media screen and (max-width: 255px) {
