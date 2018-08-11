@@ -31,10 +31,10 @@
               <div class="list inset">
                 <div class="p-2 px-3 text-muted text-sm">Messages</div>
                 <div class="list-item " data-id="item-14" *ngFor="let user of users">
-                  <span class="w-40 avatar circle dark blue">
+                  <!--span class="w-40 avatar circle dark blue">
                     <i class="on b-white avatar-right"></i>
                     {{user.initials}}
-                  </span>
+                  </span-->
                   <div class="list-body">
                     <a [routerLink]="['/messages', user._id]" [queryParams]="{ service: user.lastMessage.platform, key:user.lastMessage.uid }"
                       class="item-title _500">
@@ -70,7 +70,7 @@
                 </span>
               </a>
               <span class="text-md text-ellipsis flex" *ngIf="userId && user">
-                Messages from {{user.first_name}}
+                Messages from {{user.firstName}}
               </span>
               <span class="text-md text-ellipsis flex" *ngIf="!userId">
                 No user selected
@@ -172,7 +172,7 @@
             </div>
             <div class="p-3 white lt b-t mt-auto" id="chat-form">
               <div class="input-group">
-                <input type="text" class="form-control" placeholder="Say something" #chatInput (keyup.enter)="sendMessage(chatInput);" [disabled]="!humanTakeover">
+                <input type="text" class="form-control" placeholder="Send message to tenant" #chatInput (keyup.enter)="sendMessage(chatInput);" [disabled]="!humanTakeover">
                 <span class="input-group-btn">
                   <button class="btn white b-a no-shadow" type="button" id="newBtn" (click)="sendMessage(chatInput);">
                     <i class="fa fa-send text-success"></i>
