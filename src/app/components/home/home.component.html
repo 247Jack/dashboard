@@ -13,8 +13,7 @@
     </div>
     <div class="content-main d-flex flex" id="content-main">
       <div class="padding">
-        <div class="row">
-      <!--
+        <!-- <div class="row">
           <div class="col mb-2">
             <div class="col">
               <div class="row">
@@ -50,87 +49,96 @@
               </div>
             </div>
           </div>
-        -->
-          <div class="col-sm-12 height-table">
-            <div class="box">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Date/Time</th>
-                    <th>Service</th>
-                    <th>Issue</th>
-                    <th>Date/Time Requested</th>
-                    <th>Vendor</th>
-                    <th>Cost</th>
-                    <th>Status</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let item of tickets">
-                    <td>
-                      <span class="w-40 avatar circle light-blue">
+        </div> -->
+        <div class="box mb-0 height-table">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Received</th>
+                <th>Address</th>
+                <th>Portfolio</th>
+                <th>Service</th>
+                <th>Issue</th>
+                <th>Preference</th>
+                <th>Teammate</th>
+                <th>Date/Time</th>
+                <th>Vendor</th>
+                <th>Cost</th>
+                <th>Status</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of tickets">
+                <td>
+                  <span class="w-40 avatar circle light-blue">
 
-                      </span>
-                      <span></span>
-                    </td>
-                    <td>{{item.scheduledFor | date}}</td>
-                    <td><span *ngFor="let issue of item.relatedIssue">{{issue.issueDescription}}</span></td>
-                    <td>{{ item.issueData.repairDescription}}</td>
-                    <td>{{date}}
-                      <br>{{time}}</td>
-                    <td><span *ngFor="let vendor of item.assignedVendors">{{vendor.vendorData.name}}</span></td>
-                    <td>${{ item.issueData.repairCost }}</td>
-                    <td>
-                      <div [ngSwitch]="item.status">
-                        <div *ngSwitchCase="'created'">
-                          <button class="badge btn-clean blue" type="button" >Created</button>
-                        </div>
-                        <div *ngSwitchCase="'checked'">
-                          <button class="badge btn-clean yellow" type="button" >Accepted</button>
-                        </div>
-                        <div *ngSwitchCase="'pendient_complete'">
-                          <button class="badge btn-clean orange" type="button" >To be completed</button>
-                        </div>
-                        <div *ngSwitchCase="'pendient_approve'">
-                          <button class="badge btn-clean red" (click)="checkPendientTask($event, item)" type="button" data-toggle="modal" data-target="#modal-status">Requires atention</button>
-                        </div>
-                        <div *ngSwitchCase="'canceled'">
-                          <button class="badge btn-clean grey" type="button" >Canceled</button>
-                        </div>
-                        <div *ngSwitchCase="'done'">
-                          <button class="badge btn-clean green" type="button" >Completed</button>
-                        </div>
-                        <div *ngSwitchDefault>
-                          <button class="badge btn-clean white" type="button" >This status shouldn't exist</button>
-                        </div>
-                      </div>
+                  </span>
+                  <span></span>
+                </td>
+                <td>{{date}}
+                  <br>{{time}}</td>
+                <td></td>
+                <td></td>
+                <td>
+                  <span *ngFor="let issue of item.relatedIssue">{{issue.issueDescription}}</span>
+                </td>
+                <td>{{ item.issueData.repairDescription}}</td>
+                <td></td>
+                <td></td>
+                <td>{{item.scheduledFor | date}}</td>
+                <td>
+                  <span *ngFor="let vendor of item.assignedVendors">{{vendor.vendorData.name}}</span>
+                </td>
+                <td>${{ item.issueData.repairCost }}</td>
+                <td>
+                  <div [ngSwitch]="item.status">
+                    <div *ngSwitchCase="'created'">
+                      <button class="badge btn-clean blue" type="button">Created</button>
+                    </div>
+                    <div *ngSwitchCase="'checked'">
+                      <button class="badge btn-clean yellow" type="button">Accepted</button>
+                    </div>
+                    <div *ngSwitchCase="'pendient_complete'">
+                      <button class="badge btn-clean orange" type="button">To be completed</button>
+                    </div>
+                    <div *ngSwitchCase="'pendient_approve'">
+                      <button class="badge btn-clean red" (click)="checkPendientTask($event, item)" type="button" data-toggle="modal" data-target="#modal-status">Requires atention</button>
+                    </div>
+                    <div *ngSwitchCase="'canceled'">
+                      <button class="badge btn-clean grey" type="button">Canceled</button>
+                    </div>
+                    <div *ngSwitchCase="'done'">
+                      <button class="badge btn-clean green" type="button">Completed</button>
+                    </div>
+                    <div *ngSwitchDefault>
+                      <button class="badge btn-clean white" type="button">This status shouldn't exist</button>
+                    </div>
+                  </div>
 
-                    </td>
-                    <td>
-                      <button class="white btn-border" id="arrow-messages" data-toggle="modal" data-target="#messages-slider" data-toggle-class="fade-right"
-                        data-toggle-class-target="#animate">
-                        <div class="box-color text-color pos-rlt messages-slider-button">
-                          <span class="arrow top pull-right b-white "></span>
-                          <div class="box-body">Click to display chat slider</div>
-                        </div>
-                        <i class="fa fa-comment"></i>
-                      </button>
-                      <button class="white btn-border " id="arrow-user" data-toggle="modal" data-target="#user" data-toggle-class="fade-right"
-                        data-toggle-class-target="#animate">
-                        <div class="box-color text-color pos-rlt user-slider-button">
-                          <span class="arrow top pull-right b-white "></span>
-                          <div class="box-body">Click to display user slider</div>
-                        </div>
-                        <i class="fa fa-user"></i>
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+                </td>
+                <td>
+                  <button class="white btn-border" id="arrow-messages" data-toggle="modal" data-target="#messages-slider" data-toggle-class="fade-right"
+                    data-toggle-class-target="#animate">
+                    <div class="box-color text-color pos-rlt messages-slider-button">
+                      <span class="arrow top pull-right b-white "></span>
+                      <div class="box-body">Click to display chat slider</div>
+                    </div>
+                    <i class="fa fa-comment"></i>
+                  </button>
+                  <button class="white btn-border " id="arrow-user" data-toggle="modal" data-target="#user" data-toggle-class="fade-right"
+                    data-toggle-class-target="#animate">
+                    <div class="box-color text-color pos-rlt user-slider-button">
+                      <span class="arrow top pull-right b-white "></span>
+                      <div class="box-body">Click to display user slider</div>
+                    </div>
+                    <i class="fa fa-user"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

@@ -85,11 +85,18 @@ app-home #content-main {
 .height-contacs{
   height: 91vh;
 }
+.max-w-table{
+  max-width: 100% !important;
+  overflow: hidden;
+}
 .height-table{
-  min-height: 570px;
-  height: 570px;
-  max-height: 570px;
-  overflow-y: auto;
+  min-height: 86vh;
+  height: 86vh;
+  max-height: 86vh;
+  overflow:auto;
+  width: 100%;
+  max-width: 100vw;
+  display: block;
 }
 .btn-export {
   width: auto;
@@ -296,7 +303,6 @@ app-contacts .d-flex {
 #buttons {
   text-align: center;
   margin: auto;
-  margin-bottom: 10px;
 }
 .btn-save {
   width: 78.61px;
@@ -613,6 +619,9 @@ img.preview-image-chat {
     width: 50%;
   }
 }
+@media screen and (max-width: 744px) {
+
+}
 @media screen and (max-width: 676px) {
   #edit-auto-dispatch .modal-dialog-dispatch {
     width: 80% !important;
@@ -696,3 +705,4 @@ img.preview-image-chat {
     }
   }
 }
+
