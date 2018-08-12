@@ -1,4 +1,6 @@
+<!-- Simple notification module. Needed to refresh page content, for some reason -->
 <simple-notifications></simple-notifications>
+<!-- Navbar main code -->
 <div id="aside" class="app-aside fade nav-expand dark" aria-hidden="true">
   <div class="sidenav modal-dialog dk">
     <div class="navbar navbar-nav-1">
@@ -12,6 +14,7 @@
           <ul class="nav">
             <li class="pb-2 hidden-folded"></li>
             <li class="new-p mx-auto new-order mt-2">
+              <!-- New order button. It opens the modal "#selec-vendors" -->
               <button class="btn btn-sm mx-auto d-block success new-order" data-dismiss="modal" data-toggle="modal" data-target="#selec-vendors">
                 <i class="fa fa-fw fa-plus"></i>
                 <span class="hidden-folded d-inline new-order">New Work Order</span>
@@ -37,7 +40,8 @@
                 <span class="nav-text">Messages</span>
               </a>
             </li>
-            <!-- <li>
+            <!-- While NLU is in training, we hide this submenu -->
+            <!--li>
               <a [routerLink]="['/automations']" class="btn-active">
                 <span class="nav-icon">
                   <i class="fa fa-magic"></i>
@@ -53,7 +57,6 @@
                 <span class="nav-text">Contacts</span>
               </a>
             </li>
-            <!--<li><a href="#" class="btn-active"><span class="nav-icon"><i class="fa fa-align-left"></i> </span><span class="nav-text">Analytics</span></a></li>-->
             <li class="pb-2 hidden-folded"></li>
           </ul>
         </div>
@@ -62,6 +65,7 @@
     <div class="no-shrink lt">
       <div class="nav-fold">
         <a class="d-flex p-2-3 " data-toggle="dropdown">
+          <!-- display user email first letter -->
           <span class="w-30 avatar circle pink" *ngIf="currentPropertyManager.email">{{currentPropertyManager.email[0]}}</span>
         </a>
         <div class="dropdown-menu w pt-0 mt-2 animate fadeIn">
@@ -83,7 +87,8 @@
     </div>
   </div>
 </div>
-
+<!-- // Navbar component -->
+<!-- Modal add task -->
 <div class="modal fade show" id="selec-vendors" data-backdrop="true" data-class="modal-open-aside">
   <div class="modal-dialog modal-right w-xl white b-l">
     <div class="d-flex flex-column h-100">
@@ -166,7 +171,8 @@
     </div>
   </div>
 </div>
-
+<!-- // Modal add task -->
+<!-- Modal message -->
 <div class="modal fade" id="success-modal" tabindex="-1" role="dialog"  aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
@@ -185,3 +191,4 @@
     </div>
   </div>
 </div>
+<!-- // Modal message -->

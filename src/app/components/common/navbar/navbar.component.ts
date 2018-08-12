@@ -55,6 +55,9 @@ export class NavbarComponent implements OnInit {
     private contacts: ContactsService,
     private tasks: TicketsService
   ) {
+    /*
+      After invoking the constructor, method getUser() fron okta retrieves the property manager email, which is used as key to get the property manager data.
+    */
     this.oktaAuth
       .getUser()
       .then(user => {
@@ -62,14 +65,19 @@ export class NavbarComponent implements OnInit {
         this.account.getAccountData(user.email).subscribe(accountData => {
           //console.log(user)
           //console.log(accountData)
+          /* If user is in okta but not in the dabatase, shows a message. */
           if(!accountData)
           {
             alert(`You've access this platform with the email ${user.email}, however, you need active account to interact with the platform. Please contact Jack support.`)
           }
           else
           {
+            /* Storage of the current property manager data to be used in following functions. */
             this.currentPropertyManager = accountData;
             localStorage.setItem('propertyManagerData', JSON.stringify(accountData));
+            /*
+              Storage of vendors and tenants to desplay in the "New task" modal.
+            */
             this.contacts.getContacts(this.currentPropertyManager['_id'],'vendors').subscribe(listVendors => {
               var vendorsList = [];
               for(var v in listVendors['vendorsResult']) vendorsList.push({
@@ -90,13 +98,18 @@ export class NavbarComponent implements OnInit {
 
         })
       })
+      /*
+        If no user returned from okta (or session is no longer alive) force return to login page.
+      */
       .catch(error => {
         this.router.navigate(["login"]);
       });
   }
 
   ngOnInit() {
-
+    /*
+      Controls in the modal "New task"
+    */
     this.vendorsettings = {
       singleSelection: false,
       text: "Select Vendors",
@@ -121,6 +134,10 @@ export class NavbarComponent implements OnInit {
       enableSearchFilter: true,
       badgeShowLimit: 2
     };
+    /*
+      Set of notification services
+      // TODO: Change current service to listen from socket.io instead of rabbitMQ
+    */
     this.chatConn = this.chat
       .getMessages()
       .map((message: any) => {
@@ -133,12 +150,18 @@ export class NavbarComponent implements OnInit {
           incoming_message = nlu_obj;
         } finally {
           console.log(incoming_message);
-
+          /* Message processing to trigger notification */
           if(incoming_message)
           {
             this.chat.checkIncomingMessage(incoming_message.threadId, this.currentPropertyManager._id)
             .subscribe(messageStatus => {
               console.log(messageStatus['status'])
+              /*
+                Cases of message notifications:
+                  unattended: Attended by no property manager, needs to be responded by a human, so it triggers a notification.
+                  attended_by_me: Attended by current property manager, so it triggers a notification.
+                  attended_by_other: Attended by another propery manager, so it doesn't trigger a notification.
+              */
               switch(messageStatus['status'])
               {
                 case "unattended":
@@ -154,7 +177,6 @@ export class NavbarComponent implements OnInit {
                       res => console.log(res),
                       err => this._push.requestPermission()
                     );
-
                     this.unread_messages = this.chat.getNewMessagesCount();
                     this._notificationsService.html(
                       "A resident request help",
@@ -175,6 +197,9 @@ export class NavbarComponent implements OnInit {
           }
         }
       });
+      /*
+        Get issues cataloge for "new Task" modal
+      */
       this.issues.getIssues().subscribe(listIssues => {
         var issueListNav = [];
         for(var i in listIssues) issueListNav.push({
@@ -185,15 +210,29 @@ export class NavbarComponent implements OnInit {
       });
   }
 
+  /*
+    Kills current session
+  */
   async logout() {
     localStorage.setItem('propertyManagerData',null);
     await this.oktaAuth.logout("/login");
   }
 
+  /*
+    If user closes the window, unsubscribes from chat notifications.
+  */
   ngOnDestroy() {
     if(this.chatConn) this.chatConn.unsubscribe();
   }
 
+  /*
+    Makes a request to add a new task, given:}
+      List of vendors
+      ID of property relatedManager
+      ID of tenant
+      ID of issue
+      Description
+  */
   public broadcastNewTask()
   {
     /*
@@ -230,6 +269,9 @@ export class NavbarComponent implements OnInit {
 
   }
 
+  /*
+    Cancels current task and cleans modal fields
+  */
   public cancelNewTask()
   {
     this.date = new Date();
