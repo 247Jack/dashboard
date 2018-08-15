@@ -197,4 +197,11 @@ export class MessagesComponent implements OnInit, AfterViewInit, AfterViewChecke
       console.log(resultAssing);
     })
   }
+
+  isSelected(userID)
+  {
+    if(userID === this.userId) return ".8rem";
+    return ".7rem";
+  }
+
 }
