@@ -71,31 +71,24 @@ export class MessagesComponent implements OnInit, AfterViewInit, AfterViewChecke
 
       this.chat.clearNewMessagesCount();
       this.chat
-        .getMessages()
-        .map(message => {
-          return message.body;
+        .listenMessages(this.currentPropertyManager)
+        .map((message: any) => {
+          return message;
         })
-        .subscribe((msg_body: string) => {
-          //console.log(msg_body);
-          var incoming_message = {};
-          try {
-            var nlu_obj = JSON.parse(msg_body);
-            incoming_message = nlu_obj;
-          } finally {
-            if(incoming_message['nlu'] && incoming_message['nlu']['intent'] && incoming_message['nlu']['intent']['name'] === "book.service" && incoming_message['nlu']['intent']['confidence'] >= 0.6)
-            {
-              incoming_message['isBookService'] = true;
-            }
-            if (incoming_message["userId"] && incoming_message["platform"]) {
-                //setTimeout(() => {
+        .subscribe((incoming_message) => {
+          if(incoming_message['nlu'] && incoming_message['nlu']['intent'] && incoming_message['nlu']['intent']['name'] === "book.service" && incoming_message['nlu']['intent']['confidence'] >= 0.6)
+          {
+            incoming_message['isBookService'] = true;
+          }
+          if (incoming_message["userId"] && incoming_message["platform"]) {
+              //setTimeout(() => {
 
-                  console.log(incoming_message);
+                console.log(incoming_message);
 
-                  this.messages.push(incoming_message);
-                  this.scrollToBottom();
-                //}, 10);
+                this.messages.push(incoming_message);
+                this.scrollToBottom();
+              //}, 10);
 
-            }
           }
         });
       this.chat.getMessagesList(this.currentPropertyManager._id).subscribe(data => {

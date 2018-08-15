@@ -94,6 +94,71 @@ export class NavbarComponent implements OnInit {
               })
               this.residentlist = residentsList;
             })
+            /*
+              Get issues cataloge for "new Task" modal
+            */
+            this.issues.getIssues().subscribe(listIssues => {
+              var issueListNav = [];
+              for(var i in listIssues) issueListNav.push({
+                "id": listIssues[i]._id,
+                "itemName": listIssues[i].issueToken
+              })
+              this.issuelist = issueListNav;
+            });
+            /*
+              Subscribes to socket.io server
+            */
+            this.chatConn = this.chat
+              .listenMessages(this.currentPropertyManager)
+              .map((message: any) => {
+                return message;
+              })
+              .subscribe((incoming_message) => {
+                if(incoming_message)
+                {
+                  this.chat.checkIncomingMessage(incoming_message.threadId, this.currentPropertyManager._id)
+                  .subscribe(messageStatus => {
+                    console.log(messageStatus['status'])
+                    /*
+                      Cases of message notifications:
+                        unattended: Attended by no property manager, needs to be responded by a human, so it triggers a notification.
+                        attended_by_me: Attended by current property manager, so it triggers a notification.
+                        attended_by_other: Attended by another propery manager, so it doesn't trigger a notification.
+                    */
+                    switch(messageStatus['status'])
+                    {
+                      case "unattended":
+                      case "attended_by_me":
+                        this.unread_messages = "New!"
+                        this._push
+                          .create("New message from resident", {
+                            icon:
+                              "https://scontent.fmex3-1.fna.fbcdn.net/v/t1.0-1/p50x50/31326812_163089087703705_3588846289191503395_n.png?_nc_cat=0&_nc_eui2=AeFGlGoRkE6nBxIJS6YAw3n2AzVxrF5cJV9GRoVdSKF_9IvOENAwTOSitBbj1NBPuyqYcWf-K-2n3OX_jua9shAYWj-BuZughEEUVksbDKYsQQ&oh=278db548787764531dc14478690c2be7&oe=5BB86A03",
+                            body: "A resident send a message to Jack. Please help them."
+                          })
+                          .subscribe(
+                            res => console.log(res),
+                            err => this._push.requestPermission()
+                          );
+                          this.unread_messages = this.chat.getNewMessagesCount();
+                          this._notificationsService.html(
+                            "A resident request help",
+                            "would you like to attend them?",
+                            {
+                              timeOut: 5000,
+                              showProgressBar: true,
+                              pauseOnHover: false,
+                              clickToClose: true,
+                              maxLength: 15
+                            }
+                          );
+
+                        break;
+                      default:
+                    }
+                  });
+                }
+              });
           }
 
         })
@@ -138,76 +203,7 @@ export class NavbarComponent implements OnInit {
       Set of notification services
       // TODO: Change current service to listen from socket.io instead of rabbitMQ
     */
-    this.chatConn = this.chat
-      .getMessages()
-      .map((message: any) => {
-        return message.body;
-      })
-      .subscribe((msg_body: string) => {
-        var incoming_message;
-        try {
-          var nlu_obj = JSON.parse(msg_body);
-          incoming_message = nlu_obj;
-        } finally {
-          console.log(incoming_message);
-          /* Message processing to trigger notification */
-          if(incoming_message)
-          {
-            this.chat.checkIncomingMessage(incoming_message.threadId, this.currentPropertyManager._id)
-            .subscribe(messageStatus => {
-              console.log(messageStatus['status'])
-              /*
-                Cases of message notifications:
-                  unattended: Attended by no property manager, needs to be responded by a human, so it triggers a notification.
-                  attended_by_me: Attended by current property manager, so it triggers a notification.
-                  attended_by_other: Attended by another propery manager, so it doesn't trigger a notification.
-              */
-              switch(messageStatus['status'])
-              {
-                case "unattended":
-                case "attended_by_me":
-                  this.unread_messages = "New!"
-                  this._push
-                    .create("New message from resident", {
-                      icon:
-                        "https://scontent.fmex3-1.fna.fbcdn.net/v/t1.0-1/p50x50/31326812_163089087703705_3588846289191503395_n.png?_nc_cat=0&_nc_eui2=AeFGlGoRkE6nBxIJS6YAw3n2AzVxrF5cJV9GRoVdSKF_9IvOENAwTOSitBbj1NBPuyqYcWf-K-2n3OX_jua9shAYWj-BuZughEEUVksbDKYsQQ&oh=278db548787764531dc14478690c2be7&oe=5BB86A03",
-                      body: "A resident send a message to Jack. Please help them."
-                    })
-                    .subscribe(
-                      res => console.log(res),
-                      err => this._push.requestPermission()
-                    );
-                    this.unread_messages = this.chat.getNewMessagesCount();
-                    this._notificationsService.html(
-                      "A resident request help",
-                      "would you like to attend them?",
-                      {
-                        timeOut: 5000,
-                        showProgressBar: true,
-                        pauseOnHover: false,
-                        clickToClose: true,
-                        maxLength: 15
-                      }
-                    );
 
-                  break;
-                default:
-              }
-            });
-          }
-        }
-      });
-      /*
-        Get issues cataloge for "new Task" modal
-      */
-      this.issues.getIssues().subscribe(listIssues => {
-        var issueListNav = [];
-        for(var i in listIssues) issueListNav.push({
-          "id": listIssues[i]._id,
-          "itemName": listIssues[i].issueToken
-        })
-        this.issuelist = issueListNav;
-      });
   }
 
   /*

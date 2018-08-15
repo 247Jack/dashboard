@@ -20,7 +20,7 @@ import {
 } from "@angular/common";
 import { SimpleNotificationsModule } from "angular2-notifications";
 import { PushNotificationsModule } from "ng-push";
-import { StompService, StompConfig } from "@stomp/ng2-stompjs";
+//import { StompService, StompConfig } from "@stomp/ng2-stompjs";
 
 import { AppComponent } from "./app.component";
 import { NavbarComponent } from "./components/common/navbar/navbar.component";
@@ -52,6 +52,9 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
   acceptedFiles: ".csv"
 };
 
+const SocketConfig: SocketIoConfig = { url: environment.socket_host, options: {secure:environment.secureSocket} };
+
+/*
 const stompConfig: StompConfig = {
   url: environment.broker_host,
   headers: {
@@ -63,6 +66,7 @@ const stompConfig: StompConfig = {
   reconnect_delay: 10000,
   debug: false
 };
+*/
 
 @NgModule({
   declarations: [
@@ -87,7 +91,8 @@ const stompConfig: StompConfig = {
     PushNotificationsModule,
     AngularDateTimePickerModule,
     AngularMultiSelectModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SocketIoModule.forRoot(SocketConfig)
   ],
   providers: [
     ContactsService,
@@ -95,11 +100,13 @@ const stompConfig: StompConfig = {
     AccountService,
     TicketsService,
     IssuesService,
+    /*
     StompService,
     {
       provide: StompConfig,
       useValue: stompConfig
     },
+    */
     { provide: LocationStrategy, useClass: PathLocationStrategy },
     { provide: DROPZONE_CONFIG, useValue: DEFAULT_DROPZONE_CONFIG }
   ],
