@@ -21,6 +21,12 @@ import * as _ from "lodash";
 })
 
 export class MessagesComponent implements OnInit, AfterViewInit, AfterViewChecked {
+
+  private chatConn;
+  private contactConn;
+  private chatListConn;
+  private chatPastConn;
+
   public userId: String;
   public service: String = "";
   public key: String = "";
@@ -56,42 +62,32 @@ export class MessagesComponent implements OnInit, AfterViewInit, AfterViewChecke
         badgeShowLimit: 2
       };
 
-      this.contacts.getContacts(this.currentPropertyManager['_id'],'pms').subscribe(listPMs => {
-        //console.log(listPMs)
-
+      this.contactConn = this.contacts.getContacts(this.currentPropertyManager['_id'],'pms').subscribe(listPMs => {
         var PMlist = [];
         for(var pm in listPMs['pManagersResult']) PMlist.push({
           "id": listPMs['pManagersResult'][pm]._id,
           "itemName": `${listPMs['pManagersResult'][pm]['name']} ${listPMs['pManagersResult'][pm]['surname']}`
         })
         this.teammatelist = PMlist;
-
       })
-
-
       this.chat.clearNewMessagesCount();
-      this.chat
+      this.chatConn = this.chat
         .listenMessages(this.currentPropertyManager)
         .map((message: any) => {
           return message;
         })
         .subscribe((incoming_message) => {
-          if(incoming_message['nlu'] && incoming_message['nlu']['intent'] && incoming_message['nlu']['intent']['name'] === "book.service" && incoming_message['nlu']['intent']['confidence'] >= 0.6)
-          {
-            incoming_message['isBookService'] = true;
-          }
+          console.log(this.userId)
+          console.log(this.service)
+          console.log(incoming_message)
           if (incoming_message["userId"] && incoming_message["platform"]) {
               //setTimeout(() => {
-
-                console.log(incoming_message);
-
                 this.messages.push(incoming_message);
                 this.scrollToBottom();
               //}, 10);
-
           }
         });
-      this.chat.getMessagesList(this.currentPropertyManager._id).subscribe(data => {
+      this.chatListConn = this.chat.getMessagesList(this.currentPropertyManager._id).subscribe(data => {
         console.log(data)
         this.users = [];
         for (var i in data) {
@@ -108,7 +104,7 @@ export class MessagesComponent implements OnInit, AfterViewInit, AfterViewChecke
           this.service = queryparams["service"];
           this.key = queryparams["key"];
           if (this.userId) {
-            this.chat.getPastMessages(this.userId, this.service, this.currentPropertyManager._id).subscribe(
+            this.chatPastConn = this.chat.getPastMessages(this.userId, this.service, this.currentPropertyManager._id).subscribe(
               data => {
                 console.log(data)
                 this.messages = data.messages;
@@ -137,7 +133,10 @@ export class MessagesComponent implements OnInit, AfterViewInit, AfterViewChecke
   }
 
   ngOnDestroy() {
-    //this.connection.unsubscribe();
+    if(this.chatConn) this.chatConn.unsubscribe();
+    if(this.contactConn) this.contactConn.unsubscribe();
+    if(this.chatListConn) this.chatListConn.unsubscribe();
+    if(this.chatPastConn) this.chatPastConn.unsubscribe();
   }
 
   sendMessage(e) {

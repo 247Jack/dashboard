@@ -7,6 +7,7 @@ import { ContactsService } from "../../services/contacts.service";
   templateUrl: "./home.component.html",
   styleUrls: ["./home.component.css"]
 })
+
 export class HomeComponent implements OnInit {
   public tickets;
   public time;
@@ -29,7 +30,6 @@ export class HomeComponent implements OnInit {
         });
       }
     },100)
-
   }
 
   public checkPendientTask(event, task)

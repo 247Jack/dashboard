@@ -8,6 +8,9 @@ import { ActivatedRoute, Router } from "@angular/router";
   styleUrls: ["./contacts.component.css"]
 })
 export class ContactsComponent implements OnInit {
+
+  private getContactsConn;
+
   public contactsUsers = [];
   public contactsProviders = [];
   public contactsPropertyManagers = [];
@@ -25,8 +28,7 @@ export class ContactsComponent implements OnInit {
   ngOnInit() {
     this.currentPropertyManager = JSON.parse(localStorage.getItem('propertyManagerData'));
 
-    this.userlist.getContacts(this.currentPropertyManager['_id']).subscribe(data => {
-      console.log(data)
+    this.getContactsConn = this.userlist.getContacts(this.currentPropertyManager['_id']).subscribe(data => {
       for (let i in data.usersResult) {
         let userData = {
           id: data.usersResult[i]._id,
@@ -114,6 +116,11 @@ export class ContactsComponent implements OnInit {
       }
     });
   }
+
+  ngOnDestroy(){
+    if(this.getContactsConn) this.getContactsConn.unsubscribe();
+  }
+
   UpdateContact() {
     console.log(this.editContact)
     this.editContact = []

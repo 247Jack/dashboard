@@ -16,7 +16,12 @@ import { OktaAuthService } from "@okta/okta-angular";
 })
 export class NavbarComponent implements OnInit {
 
-  public chatConn;
+  private chatConn;
+  private getPMDataConn;
+  private getVendorsConn;
+  private getTenatsConn;
+  private getIssuesConn
+
   public currentPropertyManager:any = {};
   public messageCounter =
   {
@@ -62,7 +67,7 @@ export class NavbarComponent implements OnInit {
       .getUser()
       .then(user => {
         user.email;
-        this.account.getAccountData(user.email).subscribe(accountData => {
+        this.getPMDataConn = this.account.getAccountData(user.email).subscribe(accountData => {
           //console.log(user)
           //console.log(accountData)
           /* If user is in okta but not in the dabatase, shows a message. */
@@ -78,7 +83,7 @@ export class NavbarComponent implements OnInit {
             /*
               Storage of vendors and tenants to desplay in the "New task" modal.
             */
-            this.contacts.getContacts(this.currentPropertyManager['_id'],'vendors').subscribe(listVendors => {
+            this.getVendorsConn = this.contacts.getContacts(this.currentPropertyManager['_id'],'vendors').subscribe(listVendors => {
               var vendorsList = [];
               for(var v in listVendors['vendorsResult']) vendorsList.push({
                 "id": listVendors['vendorsResult'][v]._id,
@@ -86,7 +91,7 @@ export class NavbarComponent implements OnInit {
               })
               this.vendorlist = vendorsList;
             })
-            this.contacts.getContacts(this.currentPropertyManager['_id'],'users').subscribe(listResidents => {
+            this.getTenatsConn = this.contacts.getContacts(this.currentPropertyManager['_id'],'users').subscribe(listResidents => {
               var residentsList = [];
               for(var r in listResidents['usersResult']) residentsList.push({
                 "id": listResidents['usersResult'][r]._id,
@@ -97,7 +102,7 @@ export class NavbarComponent implements OnInit {
             /*
               Get issues cataloge for "new Task" modal
             */
-            this.issues.getIssues().subscribe(listIssues => {
+            this.getIssuesConn = this.issues.getIssues().subscribe(listIssues => {
               var issueListNav = [];
               for(var i in listIssues) issueListNav.push({
                 "id": listIssues[i]._id,
@@ -114,7 +119,7 @@ export class NavbarComponent implements OnInit {
                 return message;
               })
               .subscribe((incoming_message) => {
-                if(incoming_message)
+                if(incoming_message && incoming_message['typeMessage']!=="greeting")
                 {
                   this.chat.checkIncomingMessage(incoming_message.threadId, this.currentPropertyManager._id)
                   .subscribe(messageStatus => {
@@ -145,7 +150,7 @@ export class NavbarComponent implements OnInit {
                             "A resident request help",
                             "would you like to attend them?",
                             {
-                              timeOut: 5000,
+                              timeOut: 100,
                               showProgressBar: true,
                               pauseOnHover: false,
                               clickToClose: true,
@@ -219,6 +224,10 @@ export class NavbarComponent implements OnInit {
   */
   ngOnDestroy() {
     if(this.chatConn) this.chatConn.unsubscribe();
+    if(this.getPMDataConn) this.getPMDataConn.unsubscribe();
+    if(this.getVendorsConn) this.getVendorsConn.unsubscribe();
+    if(this.getTenatsConn) this.getTenatsConn.unsubscribe();
+    if(this.getIssuesConn) this.getIssuesConn.unsubscribe();
   }
 
   /*

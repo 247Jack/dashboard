@@ -43,9 +43,6 @@ export class ChatService {
   */
 
   public listenMessages(pm) {
-    console.log(pm._id)
-    console.log(pm.company)
-    console.log(this.socket.ioSocket.id)
     this.socket.emit('login', {
       propertyManagerId: pm._id,
       company: pm.company,
