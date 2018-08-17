@@ -28,6 +28,7 @@ export class MessagesComponent implements OnInit, AfterViewInit, AfterViewChecke
   private chatPastConn;
 
   public userId: String;
+  public userInitials: String;
   public service: String = "";
   public key: String = "";
   public users = [];
@@ -106,9 +107,9 @@ export class MessagesComponent implements OnInit, AfterViewInit, AfterViewChecke
           if (this.userId) {
             this.chatPastConn = this.chat.getPastMessages(this.userId, this.service, this.currentPropertyManager._id).subscribe(
               data => {
-                console.log(data)
                 this.messages = data.messages;
                 this.user = data;
+                this.userInitials = data.firstName[0] + data.lastName[0];
                 this.humanTakeover = data.threads[0]['humanTakeover'];
                 this.threadId = data.threads[0]['_id'];
                 this.scrollToBottom();
