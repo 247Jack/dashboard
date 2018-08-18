@@ -18,8 +18,8 @@
       <div class="d-flex flex" data-plugin="user">
         <div class="fade aside aside-sm b-r height-contacs" id="content-aside">
           <div class="modal-dialog d-flex flex-column w-md light lt" id="user-nav">
-            <!--div class="navbar white no-radius box-shadow pos-rlt">
-              <button class="white btn-border" id="arrow-new-contact" data-target="#upload-contacts" data-toggle="modal" data-toggle-class="fade-right"
+            <div class="navbar white no-radius box-shadow pos-rlt">
+              <!--button class="white btn-border" id="arrow-new-contact" data-target="#upload-contacts" data-toggle="modal" data-toggle-class="fade-right"
                 data-toggle-class-target="#animate">
                 <span>
                   <div class="box-color text-color pos-rlt arrow-contact">
@@ -28,7 +28,7 @@
                   </div>
                   <i class="fa fa-upload"></i>
                 </span>
-              </button>
+              </button-->
               <button class="white btn-border" id="arrow-new-user" data-target="#new-contact" data-toggle="modal" data-toggle-class="fade-right"
                 data-toggle-class-target="#animate">
                 <span>
@@ -39,7 +39,7 @@
                   <i class="fa fa-plus-square"></i>
                 </span>
               </button>
-            </div-->
+            </div>
             <div class="scrollable hover">
               <div class="sidenav mt-2">
                 <nav class="nav-border b-primary" data-nav>
@@ -106,8 +106,10 @@
                         {{item.initials}}
                       </span>
                       <div class="list-body">
-                        <a href="#" class="item-title _500" data-target="#user"  data-toggle="modal" data-toggle-class="fade-right" data-toggle-class-target="#animate">
-                          {{item.name}}
+                        <a [routerLink]="['/contacts', item.id]">
+                          <span class="item-title _500" data-target="#user"  data-toggle="modal" data-toggle-class="fade-right" data-toggle-class-target="#animate">
+                            {{item.name}}
+                          </span>
                         </a>
                         <div class="item-except text-sm text-muted h-1x">
                         </div>
@@ -196,7 +198,7 @@
                           <!-- {{currentUser.unit_abbr_name}} -->
                         </span>
                       </div>
-                      <div  class="px-4 ml-4" [ngSwitch]="editContactType" >
+                      <div  class="px-4 ml-4" [ngSwitch]="editContactType">
                         <div *ngSwitchCase="'edit_user'">
                             <div class="form-group row">
                                 <label for="name" class="col-sm-2 col-form-label"></label>
@@ -458,111 +460,111 @@
                         <div *ngSwitchCase="'user'" class="row">
                           <div class="col-sm-6">
                             <label for="">First Name</label>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" [(ngModel)]="newResidentData.firstName">
                           </div>
                           <div class="col-sm-6">
                             <label for="">Last Name</label>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" [(ngModel)]="newResidentData.lastName">
                           </div>
                           <div class="col-sm-12">
                             <label for="">Portfolio</label>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" [(ngModel)]="newResidentData.portfolio">
                           </div>
                           <div class="col-sm-6">
                             <label for="">Unit abbr name</label>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" [(ngModel)]="newResidentData.unit_abbr_name">
                           </div>
                           <div class="col-sm-6">
                             <label for="">Service threshold</label>
-                            <input type="number" class="form-control">
+                            <input type="number" class="form-control" [(ngModel)]="newResidentData.service_threshold">
                           </div>
                           <div class="col-sm-12">
                             <label for="">Address</label>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" [(ngModel)]="newResidentData.address">
                           </div>
                           <div class="col-sm-12">
                             <label for="">Address 2</label>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" [(ngModel)]="newResidentData.address2">
                           </div>
                           <div class="col-sm-6">
                             <label for="">City</label>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" [(ngModel)]="newResidentData.city">
                           </div>
                           <div class="col-sm-6">
                             <label for="">ZIP</label>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" [(ngModel)]="newResidentData.zip">
                           </div>
                           <div class="col-sm-6">
                             <label for="">Phone</label>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" [(ngModel)]="newResidentData.phone">
                           </div>
                           <div class="col-sm-6">
-                            <label for="">Alt phone</label>
-                            <input type="text" class="form-control">
+                            <label for="">Work phone</label>
+                            <input type="text" class="form-control" [(ngModel)]="newResidentData.workPhone">
                           </div>
                           <div class="col-sm-12">
                             <label for="">Email</label>
-                            <input type="email" class="form-control">
+                            <input type="email" class="form-control" [(ngModel)]="newResidentData.email">
                           </div>
                           <div class="col-sm-4">
                             <label for="">Alexa ID</label>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" [(ngModel)]="newResidentData.alexa">
                           </div>
                           <div class="col-sm-4">
                             <label for="">FB ID</label>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" [(ngModel)]="newResidentData.fb">
                           </div>
                           <div class="col-sm-4">
                             <label for="">SMS number</label>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" [(ngModel)]="newResidentData.sms">
                           </div>
                         </div>
                         <div *ngSwitchCase="'vendor'" class="row scroll-y">
                           <div class="col-sm-12">
                             <label for="">Name</label>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" [(ngModel)]="newVendorData.name">
                           </div>
                           <div class="col-sm-12">
                             <label for="">Job type</label>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" [(ngModel)]="newVendorData.jobType">
                           </div>
                           <div class="col-sm-12">
                             <label for="">Phone</label>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" [(ngModel)]="newVendorData.phone">
                           </div>
                           <div class="col-sm-12">
                             <label for="">Address</label>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" [(ngModel)]="newVendorData.address">
                           </div>
                           <div class="col-sm-12">
                             <label for="">Email</label>
-                            <input type="email" class="form-control">
+                            <input type="email" class="form-control" [(ngModel)]="newVendorData.email">
                           </div>
                           <div class="col-sm-12">
                             <label for="">Conmments</label>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" [(ngModel)]="newVendorData.coments">
                           </div>
                         </div>
                         <div *ngSwitchCase="'property_manager'" class="row scroll-y">
                           <div class="col-sm-6">
                             <label for="">First Name</label>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" [(ngModel)]="newPMData.name">
                           </div>
                           <div class="col-sm-6">
                             <label for="">Last Name</label>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" [(ngModel)]="newPMData.surname">
                           </div>
                           <div class="col-sm-12">
                             <label for="">Email</label>
-                            <input type="email" class="form-control">
+                            <input type="email" class="form-control" [(ngModel)]="newPMData.email">>
                           </div>
                           <div class="col-sm-6">
                             <label for="">Phone</label>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" [(ngModel)]="newPMData.phone">>
                           </div>
                           <div class="col-sm-12">
                             <label for="">Address</label>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" [(ngModel)]="newPMData.address">>
                           </div>
                         </div>
                         <div *ngSwitchDefault>
@@ -571,7 +573,7 @@
                       </div>
                       <div id="buttons">
                         <button class="btn btn-outline btn-rounded text-success btn-cancel" data-dismiss="modal">Cancel</button>
-                        <button class="btn btn-rounded b-success success btn-save"  data-dismiss="modal">Save</button>
+                        <button class="btn btn-rounded b-success success btn-save"  data-dismiss="modal" (click)="saveNewContact()">Save contact</button>
                       </div>
                     </div>
 

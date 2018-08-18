@@ -30,6 +30,11 @@ const app_routes: Routes = [
     component: ContactsComponent,
     canActivate: [OktaAuthGuard]
   },
+  {
+    path: "contacts/:contactId",
+    component: ContactsComponent,
+    canActivate: [OktaAuthGuard]
+  },
   { path: "**", pathMatch: "full", redirectTo: "home" }
 ];
 

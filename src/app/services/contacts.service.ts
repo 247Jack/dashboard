@@ -28,4 +28,29 @@ export class ContactsService {
         return Observable.throw(error.message || error);
       });
   }
+
+  public addContact(pm_id, contactData, type)
+  {
+    const headers = new Headers();
+    headers.append('property_manager_id', pm_id);
+    const options = new RequestOptions({ 'headers': headers });
+    return this.http
+      .post(
+        `${environment.api_domain}/dashboard/contacts${type}`,
+        options,
+        contactData
+      )
+      .map(res => {
+        return res.json();
+      })
+      .catch(error => {
+        return Observable.throw(error.message || error);
+      });
+  }
+
+  public editContact(pm_id, contactData, type)
+  {
+
+  }
+
 }
