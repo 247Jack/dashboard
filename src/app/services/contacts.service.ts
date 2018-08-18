@@ -32,13 +32,15 @@ export class ContactsService {
   public addContact(pm_id, contactData, type)
   {
     const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
     headers.append('property_manager_id', pm_id);
     const options = new RequestOptions({ 'headers': headers });
+    console.log(contactData)
     return this.http
       .post(
-        `${environment.api_domain}/dashboard/contacts${type}`,
-        options,
-        contactData
+        `${environment.api_domain}/dashboard/contacts?contact_type=${type}`,
+        contactData,
+        options
       )
       .map(res => {
         return res.json();

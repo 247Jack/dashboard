@@ -19,14 +19,14 @@ export class ContactsComponent implements OnInit {
   public currentContact: any;
   private currentPropertyManager: any;
   public newContactType = "";
-  public editContactType = "edit_user";
+  public editContactType = "";
   public editContact = [];
   public newResidentData = {
     firstName: "",
     lastName: "",
     portfolio: "",
     unit_abbr_name: "",
-    service_threshold: 0,
+    service_threshold: "",
     address: "",
     address2: "",
     city: "",
@@ -61,12 +61,12 @@ export class ContactsComponent implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private userlist: ContactsService
+    private contacts: ContactsService
   ) {}
 
   ngOnInit() {
     this.currentPropertyManager = JSON.parse(localStorage.getItem('propertyManagerData'));
-    this.getContactsConn = this.userlist.getContacts(this.currentPropertyManager['_id']).subscribe(data => {
+    this.getContactsConn = this.contacts.getContacts(this.currentPropertyManager['_id']).subscribe(data => {
       for (let i in data.usersResult) {
         let userData = {
           id: data.usersResult[i]._id,
@@ -136,7 +136,9 @@ export class ContactsComponent implements OnInit {
         if(this.currentContact)
         {
           console.log(this.currentContact)
-          switch(this.currentContact.contact_type)
+          this.editContactType = this.currentContact.contact_type;
+          console.log(this.editContactType)
+          switch(this.editContactType)
           {
             case 'user':
 
@@ -188,16 +190,50 @@ export class ContactsComponent implements OnInit {
   }
 
   saveNewContact(){
+    if(this.newContactType)
+    {
+      var contactData;
+      switch(this.newContactType)
+      {
+        case "user":
+          contactData = this.newResidentData;
+          break;
+        case "vendor":
+          contactData = this.newVendorData;
+          break;
+        case "property_manager":
+          contactData = this.newPMData;
+          break;
+        default:
+          contactData = {};
+          break;
+      }
+      this.contacts.addContact(this.currentPropertyManager._id,contactData,this.newContactType).subscribe( data => {
+        console.log(data)
+      })
+    }
+  }
+
+  cancelNewContact(){
     switch(this.newContactType)
     {
       case "user":
-        console.log(this.newResidentData)
+        for(var key in this.newResidentData)
+        {
+          this.newResidentData[key] = "";
+        }
         break;
       case "vendor":
-        console.log(this.newVendorData)
+        for(var key in this.newVendorData)
+        {
+          this.newVendorData[key] = "";
+        }
         break;
       case "property_manager":
-        console.log(this.newPMData)
+        for(var key in this.newPMData)
+        {
+          this.newPMData[key] = "";
+        }
         break;
     }
   }

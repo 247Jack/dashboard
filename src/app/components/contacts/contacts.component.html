@@ -199,9 +199,9 @@
                         </span>
                       </div>
                       <div  class="px-4 ml-4" [ngSwitch]="editContactType">
-                        <div *ngSwitchCase="'edit_user'">
+                        <div *ngSwitchCase="'user'">
                             <div class="form-group row">
-                                <label for="name" class="col-sm-2 col-form-label"></label>
+                                <label for="name" class="col-sm-2 col-form-label">Name: </label>
                                 <div class="col-sm-8 ml-4">
                                   <input  type="text" class="form-control form-control-small collapse editor" [(ngModel)]="editContact.name" id="name" placeholder="Name">
                                   <span class="collapse show editor">
@@ -274,7 +274,7 @@
                                 </div>
                               </div>
                         </div>
-                        <div *ngSwitchCase="'edit_vendor'">
+                        <div *ngSwitchCase="'provider'">
                             <div class="form-group row">
                                 <label for="name" class="col-sm-2 col-form-label"></label>
                                 <div class="col-sm-8 ml-4">
@@ -349,7 +349,7 @@
                                 </div>
                               </div>
                         </div>
-                        <div *ngSwitchCase="'edit_property_manager'">
+                        <div *ngSwitchCase="'property manager'">
                             <div class="form-group row">
                                 <label for="name" class="col-sm-2 col-form-label"></label>
                                 <div class="col-sm-8 ml-4">
@@ -556,15 +556,15 @@
                           </div>
                           <div class="col-sm-12">
                             <label for="">Email</label>
-                            <input type="email" class="form-control" [(ngModel)]="newPMData.email">>
+                            <input type="email" class="form-control" [(ngModel)]="newPMData.email">
                           </div>
                           <div class="col-sm-6">
                             <label for="">Phone</label>
-                            <input type="text" class="form-control" [(ngModel)]="newPMData.phone">>
+                            <input type="text" class="form-control" [(ngModel)]="newPMData.phone">
                           </div>
                           <div class="col-sm-12">
                             <label for="">Address</label>
-                            <input type="text" class="form-control" [(ngModel)]="newPMData.address">>
+                            <input type="text" class="form-control" [(ngModel)]="newPMData.address">
                           </div>
                         </div>
                         <div *ngSwitchDefault>
@@ -572,8 +572,8 @@
                         </div>
                       </div>
                       <div id="buttons">
-                        <button class="btn btn-outline btn-rounded text-success btn-cancel" data-dismiss="modal">Cancel</button>
-                        <button class="btn btn-rounded b-success success btn-save"  data-dismiss="modal" (click)="saveNewContact()">Save contact</button>
+                        <button class="btn btn-outline btn-rounded text-success btn-cancel" data-dismiss="modal" (click)="cancelNewContact()">Cancel</button>
+                        <button class="btn btn-rounded b-success success btn-save" (click)="saveNewContact()">Save</button>
                       </div>
                     </div>
 
