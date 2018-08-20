@@ -7,7 +7,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AngularDateTimePickerModule } from 'angular2-datetimepicker';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown'
 import { OktaAuthModule, OktaCallbackComponent } from "@okta/okta-angular";
-
+import {ModalModule} from 'dsg-ng2-bs4-modal';
 import {
   DropzoneModule,
   DROPZONE_CONFIG,
@@ -92,7 +92,8 @@ const stompConfig: StompConfig = {
     AngularDateTimePickerModule,
     AngularMultiSelectModule,
     ReactiveFormsModule,
-    SocketIoModule.forRoot(SocketConfig)
+    SocketIoModule.forRoot(SocketConfig),
+    ModalModule
   ],
   providers: [
     ContactsService,
