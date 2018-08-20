@@ -19,6 +19,9 @@ app-messages {
   margin-bottom: 10px;
   margin-top: auto
 }
+.mt-10{
+  margin-top: 11rem;
+}
 app-home {
   width: 100%;
 }
