@@ -107,7 +107,7 @@
                       </span>
                       <div class="list-body">
                         <a [routerLink]="['/contacts', item.id]">
-                          <span class="item-title _500" data-target="#user"  data-toggle="modal" data-toggle-class="fade-right" data-toggle-class-target="#animate">
+                          <span class="item-title _500" data-target="#user" data-toggle="modal" data-toggle-class="fade-right" data-toggle-class-target="#animate">
                             {{item.name}}
                           </span>
                         </a>
@@ -192,136 +192,143 @@
                 <div class="modal-dialog modal-right w-auto-sm white dk b-l">
                   <div class="d-flex flex-column h-100 w-100 white b-r">
                     <div class="scroll-y" id="border">
-                      <div  class="px-4 ml-4" [ngSwitch]="currentContactType">
+                      <div class="px-4 ml-4" [ngSwitch]="currentContactType" id="user-edit">
                         <div *ngSwitchCase="'tenant'" class="row">
-                          <div class=" pb-0 p-4  mt-3 d-flex flex-column align-items-center">
-                            <span class="w-40 avatar circle red">
-                              {{editResidentData.initials}}
-                            </span>
+                          <div class="col-sm-12">
+                            <div class=" pb-0 p-4  mt-3 d-flex flex-column align-items-center">
+                              <span class="w-40 avatar circle red">
+                                {{editResidentData.initials}}
+                              </span>
+                            </div>
                           </div>
                           <div class="col-sm-6">
-                              <label for="">First Name</label>
-                              <input type="text" class="form-control" [(ngModel)]="editResidentData.firstName">
-                            </div>
-                            <div class="col-sm-6">
-                              <label for="">Last Name</label>
-                              <input type="text" class="form-control" [(ngModel)]="editResidentData.lastName">
-                            </div>
-                            <div class="col-sm-12">
-                              <label for="">Portfolio</label>
-                              <input type="text" class="form-control" [(ngModel)]="editResidentData.portfolio">
-                            </div>
-                            <div class="col-sm-6">
-                              <label for="">Unit abbr name</label>
-                              <input type="text" class="form-control" [(ngModel)]="editResidentData.unit_abbr_name">
-                            </div>
-                            <div class="col-sm-6">
-                              <label for="">Service threshold</label>
-                              <input type="number" class="form-control" [(ngModel)]="editResidentData.service_threshold">
-                            </div>
-                            <div class="col-sm-12">
-                              <label for="">Address</label>
-                              <input type="text" class="form-control" [(ngModel)]="editResidentData.address">
-                            </div>
-                            <div class="col-sm-12">
-                              <label for="">Address 2</label>
-                              <input type="text" class="form-control" [(ngModel)]="editResidentData.address2">
-                            </div>
-                            <div class="col-sm-6">
-                              <label for="">City</label>
-                              <input type="text" class="form-control" [(ngModel)]="editResidentData.city">
-                            </div>
-                            <div class="col-sm-6">
-                              <label for="">ZIP</label>
-                              <input type="text" class="form-control" [(ngModel)]="editResidentData.zip">
-                            </div>
-                            <div class="col-sm-6">
-                              <label for="">Phone</label>
-                              <input type="text" class="form-control" [(ngModel)]="editResidentData.phone">
-                            </div>
-                            <div class="col-sm-6">
-                              <label for="">Work phone</label>
-                              <input type="text" class="form-control" [(ngModel)]="editResidentData.workPhone">
-                            </div>
-                            <div class="col-sm-12">
-                              <label for="">Email</label>
-                              <input type="email" class="form-control" [(ngModel)]="editResidentData.email">
-                            </div>
-                            <div class="col-sm-4">
-                              <label for="">Alexa ID</label>
-                              <input type="text" class="form-control" [(ngModel)]="editResidentData.alexa">
-                            </div>
-                            <div class="col-sm-4">
-                              <label for="">FB ID</label>
-                              <input type="text" class="form-control" [(ngModel)]="editResidentData.fb">
-                            </div>
-                            <div class="col-sm-4">
-                              <label for="">SMS number</label>
-                              <input type="text" class="form-control" [(ngModel)]="editResidentData.sms">
-                            </div>
+                            <label for="">First Name</label>
+                            <input type="text" class="form-control" [(ngModel)]="editResidentData.firstName">
+                          </div>
+                          <div class="col-sm-6">
+                            <label for="">Last Name</label>
+                            <input type="text" class="form-control" [(ngModel)]="editResidentData.lastName">
+                          </div>
+                          <div class="col-sm-12">
+                            <label for="">Portfolio</label>
+                            <input type="text" class="form-control" [(ngModel)]="editResidentData.portfolio">
+                          </div>
+                          <div class="col-sm-6">
+                            <label for="">Unit abbr name</label>
+                            <input type="text" class="form-control" [(ngModel)]="editResidentData.unit_abbr_name">
+                          </div>
+                          <div class="col-sm-6">
+                            <label for="">Service threshold</label>
+                            <input type="number" class="form-control" [(ngModel)]="editResidentData.service_threshold">
+                          </div>
+                          <div class="col-sm-12">
+                            <label for="">Address</label>
+                            <input type="text" class="form-control" [(ngModel)]="editResidentData.address">
+                          </div>
+                          <div class="col-sm-12">
+                            <label for="">Address 2</label>
+                            <input type="text" class="form-control" [(ngModel)]="editResidentData.address2">
+                          </div>
+                          <div class="col-sm-6">
+                            <label for="">City</label>
+                            <input type="text" class="form-control" [(ngModel)]="editResidentData.city">
+                          </div>
+                          <div class="col-sm-6">
+                            <label for="">ZIP</label>
+                            <input type="text" class="form-control" [(ngModel)]="editResidentData.zip">
+                          </div>
+                          <div class="col-sm-6">
+                            <label for="">Phone</label>
+                            <input type="text" class="form-control" [(ngModel)]="editResidentData.phone">
+                          </div>
+                          <div class="col-sm-6">
+                            <label for="">Work phone</label>
+                            <input type="text" class="form-control" [(ngModel)]="editResidentData.workPhone">
+                          </div>
+                          <div class="col-sm-12">
+                            <label for="">Email</label>
+                            <input type="email" class="form-control" [(ngModel)]="editResidentData.email">
+                          </div>
+                          <div class="col-sm-4">
+                            <label for="">Alexa ID</label>
+                            <input type="text" class="form-control" [(ngModel)]="editResidentData.alexa">
+                          </div>
+                          <div class="col-sm-4">
+                            <label for="">FB ID</label>
+                            <input type="text" class="form-control" [(ngModel)]="editResidentData.fb">
+                          </div>
+                          <div class="col-sm-4">
+                            <label for="">SMS number</label>
+                            <input type="text" class="form-control" [(ngModel)]="editResidentData.sms">
+                          </div>
                         </div>
-                        <div *ngSwitchCase="'vendor'" class="row"> 
+                        <div *ngSwitchCase="'vendor'" class="row">
+                          <div class="col-sm-12">
                             <div class=" pb-0 p-4  mt-3 d-flex flex-column align-items-center">
-                                <span class="w-40 avatar circle green">
-                                  {{editVendorData.initials}}
-                                </span>
-                              </div>
-                              <div class="col-sm-12">
-                                  <label for="">Name</label>
-                                  <input type="text" class="form-control" [(ngModel)]="editVendorData.name">
-                                </div>
-                                <div class="col-sm-12">
-                                  <label for="">Job type</label>
-                                  <input type="text" class="form-control" [(ngModel)]="editVendorData.jobType">
-                                </div>
-                                <div class="col-sm-12">
-                                  <label for="">Phone</label>
-                                  <input type="text" class="form-control" [(ngModel)]="editVendorData.phone">
-                                </div>
-                                <div class="col-sm-12">
-                                  <label for="">Address</label>
-                                  <input type="text" class="form-control" [(ngModel)]="editVendorData.address">
-                                </div>
-                                <div class="col-sm-12">
-                                  <label for="">Email</label>
-                                  <input type="email" class="form-control" [(ngModel)]="editVendorData.email">
-                                </div>
-                                <div class="col-sm-12">
-                                  <label for="">Conmments</label>
-                                  <input type="text" class="form-control" [(ngModel)]="editVendorData.coments">
-                                </div>
+                              <span class="w-40 avatar circle green">
+                                {{editVendorData.initials}}
+                              </span>
+                            </div>
+                          </div>
+                          <div class="col-sm-12">
+                            <label for="">Name</label>
+                            <input type="text" class="form-control" [(ngModel)]="editVendorData.name">
+                          </div>
+                          <div class="col-sm-12">
+                            <label for="">Job type</label>
+                            <input type="text" class="form-control" [(ngModel)]="editVendorData.jobType">
+                          </div>
+                          <div class="col-sm-12">
+                            <label for="">Phone</label>
+                            <input type="text" class="form-control" [(ngModel)]="editVendorData.phone">
+                          </div>
+                          <div class="col-sm-12">
+                            <label for="">Address</label>
+                            <input type="text" class="form-control" [(ngModel)]="editVendorData.address">
+                          </div>
+                          <div class="col-sm-12">
+                            <label for="">Email</label>
+                            <input type="email" class="form-control" [(ngModel)]="editVendorData.email">
+                          </div>
+                          <div class="col-sm-12">
+                            <label for="">Conmments</label>
+                            <input type="text" class="form-control" [(ngModel)]="editVendorData.coments">
+                          </div>
                         </div>
                         <div *ngSwitchCase="'property manager'" class="row">
+                          <div class="col-sm-12">
                             <div class=" pb-0 p-4  mt-3 d-flex flex-column align-items-center">
-                                <span class="w-40 avatar circle blue">
-                                  {{editPMData.initials}}
-                                </span>
-                              </div>
-                              <div class="col-sm-6">
-                                  <label for="">First Name</label>
-                                  <input type="text" class="form-control" [(ngModel)]="editPMData.name">
-                                </div>
-                                <div class="col-sm-6">
-                                  <label for="">Last Name</label>
-                                  <input type="text" class="form-control" [(ngModel)]="editPMData.surname">
-                                </div>
-                                <div class="col-sm-12">
-                                  <label for="">Email</label>
-                                  <input type="email" class="form-control" [(ngModel)]="editPMData.email">
-                                </div>
-                                <div class="col-sm-6">
-                                  <label for="">Phone</label>
-                                  <input type="text" class="form-control" [(ngModel)]="editPMData.phone">
-                                </div>
-                                <div class="col-sm-12">
-                                  <label for="">Address</label>
-                                  <input type="text" class="form-control" [(ngModel)]="editPMData.address">
-                                </div>
+                              <span class="w-40 avatar circle blue">
+                                {{editPMData.initials}}
+                              </span>
+                            </div>
+                          </div>
+                          <div class="col-sm-6">
+                            <label for="">First Name</label>
+                            <input type="text" class="form-control" [(ngModel)]="editPMData.name">
+                          </div>
+                          <div class="col-sm-6">
+                            <label for="">Last Name</label>
+                            <input type="text" class="form-control" [(ngModel)]="editPMData.surname">
+                          </div>
+                          <div class="col-sm-12">
+                            <label for="">Email</label>
+                            <input type="email" class="form-control" [(ngModel)]="editPMData.email">
+                          </div>
+                          <div class="col-sm-6">
+                            <label for="">Phone</label>
+                            <input type="text" class="form-control" [(ngModel)]="editPMData.phone">
+                          </div>
+                          <div class="col-sm-12">
+                            <label for="">Address</label>
+                            <input type="text" class="form-control" [(ngModel)]="editPMData.address">
+                          </div>
                         </div>
                       </div>
-                      <div id="buttons" class="">
-                        <button class="btn btn-outline btn-rounded text-success btn-cancel" data-toggle="collapse" data-target=".editor" (click)="updateContact()" aria-expanded="false">Update</button>
-                        <button class="btn btn-outline btn-rounded text-success btn-cancel"  id="collapse-inputs" (click)="cancelEditContact()"  data-dismiss="modal">Cancel</button>
+                      <div id="buttons" class="my-3">
+                        <button class="btn btn-outline btn-rounded text-success btn-cancel" (click)="updateContact()"
+                          aria-expanded="false">Update</button>
+                        <button class="btn btn-outline btn-rounded text-success btn-cancel" id="collapse-inputs" (click)="cancelEditContact()" data-dismiss="modal">Cancel</button>
                       </div>
                     </div>
                   </div>
@@ -510,24 +517,17 @@
             </div>
           </div>
         </div>
-        <div class="modal fade" id="success-modal-contact" tabindex="-1" role="dialog"  aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title">Modal title</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  ...
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-                </div>
-              </div>
-            </div>
-          </div>
+        <modal #modalmessage class="mt-10">
+          <modal-header [show-close]="true">
+            <h4 class="modal-title">{{modalTitle}}</h4>
+          </modal-header>
+          <modal-body>
+            {{modalBody}}
+          </modal-body>
+          <modal-footer>
+            <button type="button" class="btn btn-primary"  (click)="modal.close()">Close</button>
+          </modal-footer>
+        </modal>
       </div>
     </div>
   </div>

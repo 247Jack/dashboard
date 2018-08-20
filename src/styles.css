@@ -515,6 +515,12 @@ img.preview-image-chat {
 #arrow-auto-ds {
   position: relative;
 }
+#user-edit label{
+  font-size: 1rem !important;
+}
+.text-bold{
+  font-weight: bold;
+}
 #arrow-user:hover .user-slider-button,
 #button-auto-d:hover .arrow-dispatch,
 #arrow-messages:hover .messages-slider-button,
