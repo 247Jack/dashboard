@@ -72,20 +72,20 @@
             <tbody>
               <tr *ngFor="let item of tickets">
                 <td>
-                  <span class="w-40 avatar circle light-blue">
-
-                  </span>
-                  <span></span>
+                  <span *ngFor="let resident of item.residents">{{resident.firstName}} {{resident.lastName}}</span>
                 </td>
-                <td>{{date}}
-                  <br>{{time}}</td>
-                <td></td>
-                <td></td>
+                <td>{{item.creationDate | date}}</td>
+                <td>
+                    <span *ngFor="let resident of item.residents">{{resident.building.address}}</span>
+                </td>
+                <td>
+                    <span *ngFor="let resident of item.residents">{{resident.portfolio}}</span>
+                </td>
                 <td>
                   <span *ngFor="let issue of item.relatedIssue">{{issue.issueDescription}}</span>
                 </td>
                 <td>{{ item.issueData.repairDescription}}</td>
-                <td></td>
+                <td>{{ item.scheduledFor | date }}</td>
                 <td></td>
                 <td>{{item.scheduledFor | date}}</td>
                 <td>
@@ -116,22 +116,19 @@
                       <button class="badge btn-clean white" type="button">This status shouldn't exist</button>
                     </div>
                   </div>
-
                 </td>
                 <td>
-                  <button class="white btn-border" id="arrow-messages" data-toggle="modal" data-target="#messages-slider" data-toggle-class="fade-right"
-                    data-toggle-class-target="#animate">
+                  <button class="white btn-border" id="arrow-messages">
                     <div class="box-color text-color pos-rlt messages-slider-button">
                       <span class="arrow top pull-right b-white "></span>
-                      <div class="box-body">Click to display chat slider</div>
+                      <div class="box-body">Click to go to chat user</div>
                     </div>
                     <i class="fa fa-comment"></i>
                   </button>
-                  <button class="white btn-border " id="arrow-user" data-toggle="modal" data-target="#user" data-toggle-class="fade-right"
-                    data-toggle-class-target="#animate">
+                  <button class="white btn-border " id="arrow-user" >
                     <div class="box-color text-color pos-rlt user-slider-button">
                       <span class="arrow top pull-right b-white "></span>
-                      <div class="box-body">Click to display user slider</div>
+                      <div class="box-body">Click to go to user info</div>
                     </div>
                     <i class="fa fa-user"></i>
                   </button>

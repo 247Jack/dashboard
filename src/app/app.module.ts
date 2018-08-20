@@ -7,7 +7,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AngularDateTimePickerModule } from 'angular2-datetimepicker';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown'
 import { OktaAuthModule, OktaCallbackComponent } from "@okta/okta-angular";
-import {ModalModule} from 'dsg-ng2-bs4-modal';
 import {
   DropzoneModule,
   DROPZONE_CONFIG,
@@ -20,6 +19,8 @@ import {
 } from "@angular/common";
 import { SimpleNotificationsModule } from "angular2-notifications";
 import { PushNotificationsModule } from "ng-push";
+import { ModalModule } from "dsg-ng2-bs4-modal/ng2-bs4-modal";
+
 //import { StompService, StompConfig } from "@stomp/ng2-stompjs";
 
 import { AppComponent } from "./app.component";

@@ -22,6 +22,7 @@ export class HomeComponent implements OnInit {
       if(this.currentPropertyManager){
         clearInterval(waitForPMData)
         this.ticket.getTickets(this.currentPropertyManager['_id']).subscribe(data => {
+          console.log(data)
           this.tickets = data;
           for (let i in data) {
             this.date = data[i].creationDate.split("T")[0];
