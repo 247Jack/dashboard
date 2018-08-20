@@ -17,10 +17,50 @@ export class ContactsComponent implements OnInit {
   public contactsPropertyManagers = [];
   public currentContacts = [];
   public currentContact: any;
+  public currentContactType = "";
   private currentPropertyManager: any;
   public newContactType = "";
-  public editContactType = "";
-  public editContact = [];
+  
+
+  public editResidentData = {
+    initials: "",
+    firstName: "",
+    lastName: "",
+    portfolio: "",
+    unit_abbr_name: "",
+    service_threshold: "",
+    address: "",
+    address2: "",
+    city: "",
+    zip: "",
+    endDate: "",
+    phone: "",
+    homePhone: "",
+    workPhone: "",
+    email: "",
+    alexa: "",
+    fb: "",
+    sms: ""
+  }
+  public editVendorData = {
+    initials: "",
+    jobType: "",
+    name: "",
+    phone: "",
+    ext: "",
+    address: "",
+    email: "",
+    comments: ""
+  }
+  public editPMData = {
+    initials: "",
+    email: "",
+    name: "",
+    surname: "",
+    phone: "",
+    address: ""
+  }
+
   public newResidentData = {
     firstName: "",
     lastName: "",
@@ -53,9 +93,8 @@ export class ContactsComponent implements OnInit {
     email: "",
     name: "",
     surname: "",
-    homePhome: "",
-    mobile: "",
-    rank: ""
+    phone: "",
+    address: ""
   }
 
 
@@ -129,30 +168,59 @@ export class ContactsComponent implements OnInit {
       );
     });
     this.activatedRoute.params.subscribe(params => {
-      
+      this.currentContactType = "";
       if(params.contactId)
       {
-        this.currentContact = _.find(this.currentContacts, {id: params.contactId});
-        if(this.currentContact)
-        {
-          console.log(this.currentContact)
-          this.editContactType = this.currentContact.contact_type;
-          console.log(this.editContactType)
-          switch(this.editContactType)
+        this.contacts.getSingleContact(this.currentPropertyManager._id, params.contactId)
+        .subscribe(contactData => {
+          console.log(contactData.contactResult)
+          switch(contactData.contactType)
           {
-            case 'user':
-
+            case 'tenant':
+              this.editResidentData.initials = contactData.contactResult.firstName[0] + contactData.contactResult.lastName[0];
+              this.editResidentData.firstName = contactData.contactResult.firstName;
+              this.editResidentData.lastName = contactData.contactResult.lastName;
+              this.editResidentData.portfolio = contactData.contactResult.portfolio;
+              this.editResidentData.unit_abbr_name = contactData.contactResult.unit_abbr_name;
+              this.editResidentData.service_threshold = contactData.contactResult.service_threshold;
+              this.editResidentData.address = contactData.contactResult.building.address;
+              this.editResidentData.address2 = contactData.contactResult.building.address2;
+              this.editResidentData.city = contactData.contactResult.building.city;
+              this.editResidentData.zip = contactData.contactResult.building.zip;
+              this.editResidentData.phone = contactData.contactResult.contact.phone;
+              this.editResidentData.workPhone = contactData.contactResult.contact.workPhone;
+              this.editResidentData.email = contactData.contactResult.contact.email;
+              this.editResidentData.alexa = contactData.contactResult.app.alexa;
+              this.editResidentData.fb = contactData.contactResult.app.fb;
+              this.editResidentData.sms = contactData.contactResult.app.sms;
               break;
-            case 'provider':
-
+            case 'vendor':
+              this.editVendorData.initials = (contactData.contactResult.vendorData.name && contactData.contactResult.vendorData.name.split(" ").length > 1)
+              ? `${contactData.contactResult.vendorData.name.split(" ")[0][0]}${
+                contactData.contactResult.vendorData.name.split(" ")[1][0]
+                }`
+              : "",
+              this.editVendorData.name = contactData.contactResult.vendorData.name;
+              this.editVendorData.address = contactData.contactResult.vendorData.address;
+              this.editVendorData.jobType = contactData.contactResult.vendorData.jobType;
+              this.editVendorData.phone = contactData.contactResult.vendorData.phone;
+              this.editVendorData.email = contactData.contactResult.vendorData.email;
+              this.editVendorData.comments = contactData.contactResult.vendorData.comments;
               break;
             case 'property manager':
+              this.editPMData.initials = contactData.contactResult.name[0] + contactData.contactResult.surname[0];
+              this.editPMData.name = contactData.contactResult.name;
+              this.editPMData.surname = contactData.contactResult.surname;
+              this.editPMData.email = contactData.contactResult.email;
+              this.editPMData.phone = contactData.contactResult.phone;
+              this.editPMData.address = contactData.contactResult.address;
 
               break;
             default:
-
           }
-        }
+          this.currentContactType = contactData.contactType;
+          this.currentContact = contactData.contactResult;
+        })
       }
     })
     this.activatedRoute.queryParams.subscribe(queryparams => {
@@ -238,11 +306,33 @@ export class ContactsComponent implements OnInit {
     }
   }
 
-  UpdateContact() {
-    console.log(this.editContact)
-    this.editContact = []
-    console.log(this.editContact)
+  updateContact() {
+
   };
+
+  cancelEditContact(){
+    switch(this.currentContactType)
+    {
+      case "tenant":
+        for(var key in this.editResidentData)
+        {
+          this.editResidentData[key] = "";
+        }
+        break;
+      case "vendor":
+        for(var key in this.editVendorData)
+        {
+          this.editVendorData[key] = "";
+        }
+        break;
+      case "property manager":
+        for(var key in this.editPMData)
+        {
+          this.editPMData[key] = "";
+        }
+        break;
+    }
+  }
 
   onUploadError(e) {}
 

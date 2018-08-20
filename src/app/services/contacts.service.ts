@@ -29,6 +29,26 @@ export class ContactsService {
       });
   }
 
+  public getSingleContact(pm_id, contactId)
+  {
+    const headers = new Headers();
+    headers.append('property_manager_id', pm_id);
+    const options = new RequestOptions({ 'headers': headers });
+    console.log(pm_id)
+    console.log(contactId)
+    return this.http
+      .get(
+        `${environment.api_domain}/dashboard/contacts/${contactId}`,
+        options
+      )
+      .map(res => {
+        return res.json();
+      })
+      .catch(error => {
+        return Observable.throw(error.message || error);
+      });
+  }
+
   public addContact(pm_id, contactData, type)
   {
     const headers = new Headers();

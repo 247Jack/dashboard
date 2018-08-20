@@ -119,6 +119,7 @@ export class NavbarComponent implements OnInit {
                 return message;
               })
               .subscribe((incoming_message) => {
+                console.log(incoming_message)
                 if(incoming_message && incoming_message['typeMessage']!=="greeting")
                 {
                   this.chat.checkIncomingMessage(incoming_message.threadId, this.currentPropertyManager._id)
