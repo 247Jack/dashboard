@@ -1,8 +1,8 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { ContactsService } from "../../services/contacts.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import * as _ from "lodash";
-
+import { ModalComponent } from "dsg-ng2-bs4-modal/ng2-bs4-modal";
 @Component({
   selector: "app-contacts",
   templateUrl: "./contacts.component.html",
@@ -20,7 +20,10 @@ export class ContactsComponent implements OnInit {
   public currentContactType = "";
   private currentPropertyManager: any;
   public newContactType = "";
-  
+  @ViewChild('modalmessage')
+  modal: ModalComponent;
+  public modalTitle = "";
+  public modalBody = "";
 
   public editResidentData = {
     initials: "",
@@ -307,7 +310,17 @@ export class ContactsComponent implements OnInit {
   }
 
   updateContact() {
-
+    this.modalTitle = "Contact Updated"
+    this.modalBody = "The contact information has been successfully stored."
+    this.modal.open()
+    // Empty fields
+    // this.modalTitle = "Empty field"
+    // this.modalBody = "Oops! It looks like we missing some important information in the contact card"
+    // this.modal.open()
+    // System error
+    // this.modalTitle = "System Error"
+    // this.modalBody = "Oops! It looks like something went wrong on our side. Please try again. If the issue remains, send us a note at support@247jack.com"
+    // this.modal.open()
   };
 
   cancelEditContact(){

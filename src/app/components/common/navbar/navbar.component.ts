@@ -315,6 +315,11 @@ export class NavbarComponent implements OnInit {
             this.modalBody =
               "Your service order has been submitted successfully";
               this.modal.open()
+          }else{
+            this.modalTitle = "System Error";
+            this.modalBody =
+              " Oops! It looks like something went wrong on our side. Please try again. If the issue remains, send us a note at support@247jack.com";
+              this.modal.open()
           }
           
         });
