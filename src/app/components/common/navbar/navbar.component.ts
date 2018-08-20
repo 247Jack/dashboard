@@ -135,7 +135,6 @@ export class NavbarComponent implements OnInit {
               /*
               Subscribes to socket.io server
             */
-<<<<<<< HEAD
             this.chatConn = this.chat
               .listenMessages(this.currentPropertyManager)
               .map((message: any) => {
@@ -149,7 +148,6 @@ export class NavbarComponent implements OnInit {
                   .subscribe(messageStatus => {
                     console.log(messageStatus['status'])
                     /*
-=======
               this.chatConn = this.chat
                 .listenMessages(this.currentPropertyManager)
                 .map((message: any) => {
@@ -168,7 +166,6 @@ export class NavbarComponent implements OnInit {
                       .subscribe(messageStatus => {
                         console.log(messageStatus["status"]);
                         /*
->>>>>>> a2dfb7c935ad8c4368ac5b3b43f3c7e2e8aa831f
                       Cases of message notifications:
                         unattended: Attended by no property manager, needs to be responded by a human, so it triggers a notification.
                         attended_by_me: Attended by current property manager, so it triggers a notification.
