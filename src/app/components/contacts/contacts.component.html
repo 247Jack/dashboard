@@ -29,7 +29,7 @@
                   <i class="fa fa-upload"></i>
                 </span>
               </button-->
-              <button class="white btn-border" id="arrow-new-user" data-target="#new-contact" data-toggle="modal" data-toggle-class="fade-right"
+              <!--button class="white btn-border" id="arrow-new-user" data-target="#new-contact" data-toggle="modal" data-toggle-class="fade-right"
                 data-toggle-class-target="#animate">
                 <span>
                   <div class="box-color text-color pos-rlt arrow-user">
@@ -38,7 +38,7 @@
                   </div>
                   <i class="fa fa-plus-square"></i>
                 </span>
-              </button>
+              </button-->
             </div>
             <div class="scrollable hover">
               <div class="sidenav mt-2">
@@ -203,63 +203,63 @@
                           </div>
                           <div class="col-sm-6">
                             <label for="">First Name</label>
-                            <input type="text" class="form-control" [(ngModel)]="editResidentData.firstName">
+                            <input type="text" class="form-control" [(ngModel)]="editResidentData.firstName" disabled="disabled">
                           </div>
                           <div class="col-sm-6">
                             <label for="">Last Name</label>
-                            <input type="text" class="form-control" [(ngModel)]="editResidentData.lastName">
+                            <input type="text" class="form-control" [(ngModel)]="editResidentData.lastName" disabled="disabled">
                           </div>
                           <div class="col-sm-12">
                             <label for="">Portfolio</label>
-                            <input type="text" class="form-control" [(ngModel)]="editResidentData.portfolio">
+                            <input type="text" class="form-control" [(ngModel)]="editResidentData.portfolio" disabled="disabled">
                           </div>
                           <div class="col-sm-6">
                             <label for="">Unit abbr name</label>
-                            <input type="text" class="form-control" [(ngModel)]="editResidentData.unit_abbr_name">
+                            <input type="text" class="form-control" [(ngModel)]="editResidentData.unit_abbr_name" disabled="disabled">
                           </div>
                           <div class="col-sm-6">
                             <label for="">Service threshold</label>
-                            <input type="number" class="form-control" [(ngModel)]="editResidentData.service_threshold">
+                            <input type="number" class="form-control" [(ngModel)]="editResidentData.service_threshold" disabled="disabled">
                           </div>
                           <div class="col-sm-12">
                             <label for="">Address</label>
-                            <input type="text" class="form-control" [(ngModel)]="editResidentData.address">
+                            <input type="text" class="form-control" [(ngModel)]="editResidentData.address" disabled="disabled">
                           </div>
                           <div class="col-sm-12">
                             <label for="">Address 2</label>
-                            <input type="text" class="form-control" [(ngModel)]="editResidentData.address2">
+                            <input type="text" class="form-control" [(ngModel)]="editResidentData.address2" disabled="disabled">
                           </div>
                           <div class="col-sm-6">
                             <label for="">City</label>
-                            <input type="text" class="form-control" [(ngModel)]="editResidentData.city">
+                            <input type="text" class="form-control" [(ngModel)]="editResidentData.city" disabled="disabled">
                           </div>
                           <div class="col-sm-6">
                             <label for="">ZIP</label>
-                            <input type="text" class="form-control" [(ngModel)]="editResidentData.zip">
+                            <input type="text" class="form-control" [(ngModel)]="editResidentData.zip" disabled="disabled">
                           </div>
                           <div class="col-sm-6">
                             <label for="">Phone</label>
-                            <input type="text" class="form-control" [(ngModel)]="editResidentData.phone">
+                            <input type="text" class="form-control" [(ngModel)]="editResidentData.phone" disabled="disabled">
                           </div>
                           <div class="col-sm-6">
                             <label for="">Work phone</label>
-                            <input type="text" class="form-control" [(ngModel)]="editResidentData.workPhone">
+                            <input type="text" class="form-control" [(ngModel)]="editResidentData.workPhone" disabled="disabled">
                           </div>
                           <div class="col-sm-12">
                             <label for="">Email</label>
-                            <input type="email" class="form-control" [(ngModel)]="editResidentData.email">
+                            <input type="email" class="form-control" [(ngModel)]="editResidentData.email" disabled="disabled">
                           </div>
                           <div class="col-sm-4">
                             <label for="">Alexa ID</label>
-                            <input type="text" class="form-control" [(ngModel)]="editResidentData.alexa">
+                            <input type="text" class="form-control" [(ngModel)]="editResidentData.alexa" disabled="disabled">
                           </div>
                           <div class="col-sm-4">
                             <label for="">FB ID</label>
-                            <input type="text" class="form-control" [(ngModel)]="editResidentData.fb">
+                            <input type="text" class="form-control" [(ngModel)]="editResidentData.fb" disabled="disabled">
                           </div>
                           <div class="col-sm-4">
                             <label for="">SMS number</label>
-                            <input type="text" class="form-control" [(ngModel)]="editResidentData.sms">
+                            <input type="text" class="form-control" [(ngModel)]="editResidentData.sms" disabled="disabled">
                           </div>
                         </div>
                         <div *ngSwitchCase="'vendor'" class="row">
@@ -272,27 +272,27 @@
                           </div>
                           <div class="col-sm-12">
                             <label for="">Name</label>
-                            <input type="text" class="form-control" [(ngModel)]="editVendorData.name">
+                            <input type="text" class="form-control" [(ngModel)]="editVendorData.name" disabled="disabled">
                           </div>
                           <div class="col-sm-12">
                             <label for="">Job type</label>
-                            <input type="text" class="form-control" [(ngModel)]="editVendorData.jobType">
+                            <input type="text" class="form-control" [(ngModel)]="editVendorData.jobType" disabled="disabled">
                           </div>
                           <div class="col-sm-12">
                             <label for="">Phone</label>
-                            <input type="text" class="form-control" [(ngModel)]="editVendorData.phone">
+                            <input type="text" class="form-control" [(ngModel)]="editVendorData.phone" disabled="disabled">
                           </div>
                           <div class="col-sm-12">
                             <label for="">Address</label>
-                            <input type="text" class="form-control" [(ngModel)]="editVendorData.address">
+                            <input type="text" class="form-control" [(ngModel)]="editVendorData.address" disabled="disabled">
                           </div>
                           <div class="col-sm-12">
                             <label for="">Email</label>
-                            <input type="email" class="form-control" [(ngModel)]="editVendorData.email">
+                            <input type="email" class="form-control" [(ngModel)]="editVendorData.email" disabled="disabled">
                           </div>
                           <div class="col-sm-12">
                             <label for="">Conmments</label>
-                            <input type="text" class="form-control" [(ngModel)]="editVendorData.coments">
+                            <input type="text" class="form-control" [(ngModel)]="editVendorData.coments" disabled="disabled">
                           </div>
                         </div>
                         <div *ngSwitchCase="'property manager'" class="row">
@@ -305,30 +305,30 @@
                           </div>
                           <div class="col-sm-6">
                             <label for="">First Name</label>
-                            <input type="text" class="form-control" [(ngModel)]="editPMData.name">
+                            <input type="text" class="form-control" [(ngModel)]="editPMData.name" disabled="disabled">
                           </div>
                           <div class="col-sm-6">
                             <label for="">Last Name</label>
-                            <input type="text" class="form-control" [(ngModel)]="editPMData.surname">
+                            <input type="text" class="form-control" [(ngModel)]="editPMData.surname" disabled="disabled">
                           </div>
                           <div class="col-sm-12">
                             <label for="">Email</label>
-                            <input type="email" class="form-control" [(ngModel)]="editPMData.email">
+                            <input type="email" class="form-control" [(ngModel)]="editPMData.email" disabled="disabled">
                           </div>
                           <div class="col-sm-6">
                             <label for="">Phone</label>
-                            <input type="text" class="form-control" [(ngModel)]="editPMData.phone">
+                            <input type="text" class="form-control" [(ngModel)]="editPMData.phone" disabled="disabled">
                           </div>
                           <div class="col-sm-12">
                             <label for="">Address</label>
-                            <input type="text" class="form-control" [(ngModel)]="editPMData.address">
+                            <input type="text" class="form-control" [(ngModel)]="editPMData.address" disabled="disabled">
                           </div>
                         </div>
                       </div>
                       <div id="buttons" class="my-3">
-                        <button class="btn btn-outline btn-rounded text-success btn-cancel" (click)="updateContact()"
+                        <!--button class="btn btn-outline btn-rounded text-success btn-cancel" (click)="updateContact()"
                           aria-expanded="false">Update</button>
-                        <button class="btn btn-outline btn-rounded text-success btn-cancel" id="collapse-inputs" (click)="cancelEditContact()" data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-outline btn-rounded text-success btn-cancel" id="collapse-inputs" (click)="cancelEditContact()" data-dismiss="modal">Cancel</button-->
                       </div>
                     </div>
                   </div>
