@@ -107,7 +107,8 @@
                       </span>
                       <div class="list-body">
                         <a [routerLink]="['/contacts', item.id]">
-                          <span class="item-title _500" data-target="#user" data-toggle="modal" data-toggle-class="fade-right" data-toggle-class-target="#animate">
+                          <!--span class="item-title _500" data-target="#user" data-toggle="modal" data-toggle-class="fade-right" data-toggle-class-target="#animate"-->
+                          <span class="item-title _500">
                             {{item.name}}
                           </span>
                         </a>
@@ -117,7 +118,7 @@
                           Providers
                         </div>
                       </div>
-                      <div>
+                      <!--div>
                         <div class="item-action dropdown">
                           <a href="#" data-toggle="dropdown" class="text-muted">
                             <i class="fa fa-fw fa-ellipsis-v"></i>
@@ -132,7 +133,7 @@
                             </a>
                           </div>
                         </div>
-                      </div>
+                      </div-->
                     </div>
                   </div>
                   <div class="no-result hide">
@@ -185,6 +186,7 @@
             </div>
           </div>
         </div>
+        <button id="openModalButton" [hidden]="true" data-target="#user" data-toggle="modal" data-toggle-class="fade-right" data-toggle-class-target="#animate">Open Modal</button>
         <div class="modal fade show" id="user" data-backdrop="true" data-class="modal-open-aside">
           <div class=" modal-right w-xl w-ssd white b-l">
             <div class="d-flex flex-column h-100">

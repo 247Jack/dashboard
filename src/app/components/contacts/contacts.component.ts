@@ -20,6 +20,7 @@ export class ContactsComponent implements OnInit {
   public currentContactType = "";
   private currentPropertyManager: any;
   public newContactType = "";
+  public dataLoaded = false;
   @ViewChild('modalmessage')
   modal: ModalComponent;
   public modalTitle = "";
@@ -169,11 +170,13 @@ export class ContactsComponent implements OnInit {
       this.currentContacts = this.currentContacts.concat(
         this.contactsPropertyManagers
       );
+      this.dataLoaded = true;
     });
     this.activatedRoute.params.subscribe(params => {
       this.currentContactType = "";
       if(params.contactId)
       {
+        document.getElementById("openModalButton").click();
         this.contacts.getSingleContact(this.currentPropertyManager._id, params.contactId)
         .subscribe(contactData => {
           console.log(contactData.contactResult)
@@ -227,32 +230,37 @@ export class ContactsComponent implements OnInit {
       }
     })
     this.activatedRoute.queryParams.subscribe(queryparams => {
-      switch (queryparams["typecontact"]) {
-        case "users":
-          this.currentContacts = [];
-          this.currentContacts = this.contactsUsers;
-          break;
-        case "providers":
-          this.currentContacts = [];
-          this.currentContacts = this.contactsProviders;
-          break;
-        case "managers":
-          this.currentContacts = [];
-          this.currentContacts = this.contactsPropertyManagers;
-          break;
-        default:
-          this.currentContacts = [];
-          this.currentContacts = this.currentContacts.concat(
-            this.contactsUsers
-          );
-          this.currentContacts = this.currentContacts.concat(
-            this.contactsProviders
-          );
-          this.currentContacts = this.currentContacts.concat(
-            this.contactsPropertyManagers
-          );
-          break;
-      }
+      var waitForContacts = setInterval(() => {
+        if(this.dataLoaded) {
+          switch (queryparams["typecontact"]) {
+            case "users":
+              this.currentContacts = [];
+              this.currentContacts = this.contactsUsers;
+              break;
+            case "providers":
+              this.currentContacts = [];
+              this.currentContacts = this.contactsProviders;
+              break;
+            case "managers":
+              this.currentContacts = [];
+              this.currentContacts = this.contactsPropertyManagers;
+              break;
+            default:
+              this.currentContacts = [];
+              this.currentContacts = this.currentContacts.concat(
+                this.contactsUsers
+              );
+              this.currentContacts = this.currentContacts.concat(
+                this.contactsProviders
+              );
+              this.currentContacts = this.currentContacts.concat(
+                this.contactsPropertyManagers
+              );
+              break;
+          }
+          clearInterval(waitForContacts)
+        }
+      },100)
     })
   }
 
@@ -347,7 +355,14 @@ export class ContactsComponent implements OnInit {
     }
   }
 
+  afterHidden(e)
+  {
+    console.log(e)
+  }
+
   onUploadError(e) {}
 
   onUploadSuccess(e) {}
+
+
 }
