@@ -54,6 +54,8 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
 };
 
 const SocketConfig: SocketIoConfig = { url: environment.socket_host, options: {secure:environment.secureSocket} };
+console.log(environment.socket_host)
+console.log(environment.secureSocket)
 
 /*
 const stompConfig: StompConfig = {

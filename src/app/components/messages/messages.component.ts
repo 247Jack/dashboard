@@ -53,7 +53,7 @@ export class MessagesComponent implements OnInit, AfterViewInit, AfterViewChecke
   ngOnInit() {
 
       this.currentPropertyManager = JSON.parse(localStorage.getItem('propertyManagerData'));
-
+      
       this.teammatesettings = {
         singleSelection: false,
         text: "Select Teammate",
@@ -89,7 +89,7 @@ export class MessagesComponent implements OnInit, AfterViewInit, AfterViewChecke
           }
         });
       this.chatListConn = this.chat.getMessagesList(this.currentPropertyManager._id).subscribe(data => {
-        console.log(data)
+        //console.log(data)
         this.users = [];
         for (var i in data) {
           data[i].initials = data[i].firstName[0] + data[i].lastName[0];
@@ -103,19 +103,21 @@ export class MessagesComponent implements OnInit, AfterViewInit, AfterViewChecke
         this.activatedRoute.queryParams.subscribe(queryparams => {
           this.userId = params["userId"];
           this.service = queryparams["service"];
-          this.key = queryparams["key"];
+          //this.key = queryparams["key"];
           if (this.userId) {
             this.chatPastConn = this.chat.getPastMessages(this.userId, this.service, this.currentPropertyManager._id).subscribe(
               data => {
+                console.log(data)
                 this.messages = data.messages;
                 this.user = data;
                 this.userInitials = data.firstName[0] + data.lastName[0];
+                this.key = data.threads[0]['service'];
                 this.humanTakeover = data.threads[0]['humanTakeover'];
                 this.threadId = data.threads[0]['_id'];
                 this.scrollToBottom();
               },
               error => {
-                console.log(error);
+                //console.log(error);
               }
             );
           }
@@ -159,7 +161,7 @@ export class MessagesComponent implements OnInit, AfterViewInit, AfterViewChecke
       this.messages.push(messageData);
       this.chat.sendMessage(messageData).subscribe(
         data => {
-          console.log(data);
+          //console.log(data);
           this.chat.getMessagesList(this.currentPropertyManager._id).subscribe(data => {
             this.users = [];
             for (var i in data) {
@@ -189,19 +191,19 @@ export class MessagesComponent implements OnInit, AfterViewInit, AfterViewChecke
   }
 
   setHumanTakeover(){
-    console.log(this.humanTakeover)
-    console.log(this.threadId)
+    //console.log(this.humanTakeover)
+    //console.log(this.threadId)
     let arrayPMs = (this.humanTakeover) ? [this.currentPropertyManager._id] : []
     this.chat.assignTeammate(arrayPMs,this.threadId)
     .subscribe(resultAssing => {
-      console.log(resultAssing);
+      //console.log(resultAssing);
     })
   }
 
-  isSelected(userID)
+  isSelected(userID, service)
   {
-    if(userID === this.userId) return ".8rem";
-    return ".7rem";
+    if(userID === this.userId && service === this.service) return "#EEEEEE";
+    return "#FFFFFF";
   }
 
 }
