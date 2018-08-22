@@ -5,15 +5,18 @@ import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/catch";
 //import { StompService } from "@stomp/ng2-stompjs";
-import { Socket } from 'ng-socket-io';
+//import { Socket } from 'ng-socket-io';
+import * as io from 'socket.io-client';
+
 import { environment } from "../../environments/environment";
 
 @Injectable()
 export class ChatService {
   public new_messages = 0;
+  private socket;
 
   constructor(
-    private socket: Socket,
+    //private socket: Socket,
     //private _stompService: StompService,
     private http: Http
   ) {}
@@ -43,13 +46,32 @@ export class ChatService {
   */
 
   public listenMessages(pm) {
+    let observable = new Observable(observer => {
+      this.socket = io(environment.socket_host);
+      this.socket.on('user-login',(data) => {
+        this.socket.emit('login', {
+          propertyManagerId: pm._id,
+          company: pm.company
+        })
+      })
+      this.socket.on(`jack-broker-to-dahsboard|${pm.company}`, (data) => {
+        observer.next(data);    
+      });
+      return () => {
+        this.socket.disconnect();
+      };  
+    })     
+    return observable;
+    /*
+    console.log(this.socket)
     this.socket.emit('login', {
       propertyManagerId: pm._id,
-      company: pm.company,
-      socketId: this.socket.ioSocket.id
+      company: pm.company
     })
     return this.socket
-            .fromEvent(`jack-broker-to-dahsboard|${pm.company}`)
+      .fromEvent(`jack-broker-to-dahsboard|${pm.company}`)
+      .map(data => data);
+    */
   }
 
   public getMessages() {
@@ -84,6 +106,10 @@ export class ChatService {
       .catch(error => {
         return Observable.throw(error.message || error);
       });
+  }
+
+  public closeSocket(){
+    this.socket.disconnect();
   }
 
   public getPastMessages(userId, service, pm_id) {

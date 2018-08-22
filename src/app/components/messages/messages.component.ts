@@ -74,12 +74,7 @@ export class MessagesComponent implements OnInit, AfterViewInit, AfterViewChecke
       this.chat.clearNewMessagesCount();
       this.chatConn = this.chat
         .listenMessages(this.currentPropertyManager)
-        .map((message: any) => {
-          return message;
-        })
         .subscribe((incoming_message) => {
-          console.log(this.userId)
-          console.log(this.service)
           console.log(incoming_message)
           if (incoming_message["userId"] && incoming_message["platform"]) {
               //setTimeout(() => {
@@ -87,6 +82,9 @@ export class MessagesComponent implements OnInit, AfterViewInit, AfterViewChecke
                 this.scrollToBottom();
               //}, 10);
           }
+        },
+        error => {
+          console.log(error)
         });
       this.chatListConn = this.chat.getMessagesList(this.currentPropertyManager._id).subscribe(data => {
         //console.log(data)
@@ -107,7 +105,7 @@ export class MessagesComponent implements OnInit, AfterViewInit, AfterViewChecke
           if (this.userId) {
             this.chatPastConn = this.chat.getPastMessages(this.userId, this.service, this.currentPropertyManager._id).subscribe(
               data => {
-                console.log(data)
+                //console.log(data)
                 this.messages = data.messages;
                 this.user = data;
                 this.userInitials = data.firstName[0] + data.lastName[0];
@@ -136,6 +134,7 @@ export class MessagesComponent implements OnInit, AfterViewInit, AfterViewChecke
   }
 
   ngOnDestroy() {
+    this.chat.closeSocket();
     if(this.chatConn) this.chatConn.unsubscribe();
     if(this.contactConn) this.contactConn.unsubscribe();
     if(this.chatListConn) this.chatListConn.unsubscribe();
@@ -204,6 +203,11 @@ export class MessagesComponent implements OnInit, AfterViewInit, AfterViewChecke
   {
     if(userID === this.userId && service === this.service) return "#EEEEEE";
     return "#FFFFFF";
+  }
+
+  dispatch()
+  {
+    document.getElementById("setNewOrder").click();
   }
 
 }

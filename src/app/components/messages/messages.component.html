@@ -170,12 +170,12 @@
                       </a>
                       <div class="chat-body">
                         <div class="chat-content d-block rounded msg">
-                          <p>Looks like a new request for plumbing. Do you want to 
-                            auto-dispatch to vendors?
+                          <p>Looks like a new request for a service. Do you want to 
+                            dispatch to vendors?
                           </p>
                           <div>
-                            <button class="btn btn-outline btn-rounded b-success text-success"  type="button" data-toggle="modal" data-target="#selec-vendors">SELECT VENDORS</button>
-                            <button class="btn btn-outline btn-rounded b-success text-success"  type="button" data-toggle="modal" data-target="#selec-vendors">VENDOR POOL</button>
+                            <button class="btn btn-outline btn-rounded b-success text-success"  type="button" data-toggle="modal" data-target="#selec-vendors" (onclick)="dispatch()">SELECT VENDORS</button>
+                            <!--button class="btn btn-outline btn-rounded b-success text-success"  type="button" data-toggle="modal" data-target="#selec-vendors">VENDOR POOL</button-->
                           </div>
                         </div>
                         <div class="chat-date date">

@@ -1,7 +1,7 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 import { AppRouting } from "./app.routes";
-import { SocketIoModule, SocketIoConfig } from "ng-socket-io";
+//import { SocketIoModule, SocketIoConfig } from "ng-socket-io";
 import { HttpModule } from "@angular/http";
 import { ReactiveFormsModule } from '@angular/forms';
 import { AngularDateTimePickerModule } from 'angular2-datetimepicker';
@@ -53,9 +53,7 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
   acceptedFiles: ".csv"
 };
 
-const SocketConfig: SocketIoConfig = { url: environment.socket_host, options: {secure:environment.secureSocket} };
-console.log(environment.socket_host)
-console.log(environment.secureSocket)
+//const SocketConfig: SocketIoConfig = { url: environment.socket_host, options: {secure:environment.secureSocket} };
 
 /*
 const stompConfig: StompConfig = {
@@ -95,7 +93,7 @@ const stompConfig: StompConfig = {
     AngularDateTimePickerModule,
     AngularMultiSelectModule,
     ReactiveFormsModule,
-    SocketIoModule.forRoot(SocketConfig),
+    //SocketIoModule.forRoot(SocketConfig),
     ModalModule
   ],
   providers: [

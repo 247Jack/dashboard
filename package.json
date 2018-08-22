@@ -37,6 +37,7 @@
     "ng2-simple-mq": "^1.2.9",
     "ngx-dropzone-wrapper": "^5.3.5",
     "rxjs": "^5.5.6",
+    "socket.io-client": "^2.1.1",
     "zone.js": "^0.8.19"
   },
   "devDependencies": {

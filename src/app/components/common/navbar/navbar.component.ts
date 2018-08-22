@@ -137,40 +137,37 @@ export class NavbarComponent implements OnInit {
             */
             this.chatConn = this.chat
               .listenMessages(this.currentPropertyManager)
-              .map((message: any) => {
-                return message;
-              })
               .subscribe((incoming_message) => {
                 console.log(incoming_message)
                 if(incoming_message && (incoming_message['typeMessage']==="book.service" || incoming_message['typeMessage']==="unknown"))
                 {
-                  this.chat.checkIncomingMessage(incoming_message.threadId, this.currentPropertyManager._id)
+                  this.chat.checkIncomingMessage(incoming_message['threadId'], this.currentPropertyManager._id)
                   .subscribe(messageStatus => {
                     console.log(messageStatus['status'])
                     /*
-              this.chatConn = this.chat
-                .listenMessages(this.currentPropertyManager)
-                .map((message: any) => {
-                  return message;
-                })
-                .subscribe(incoming_message => {
-                  if (
-                    incoming_message &&
-                    incoming_message["typeMessage"] !== "greeting"
-                  ) {
-                    this.chat
-                      .checkIncomingMessage(
-                        incoming_message.threadId,
-                        this.currentPropertyManager._id
-                      )
-                      .subscribe(messageStatus => {
-                        console.log(messageStatus["status"]);
-                        /*
-                      Cases of message notifications:
-                        unattended: Attended by no property manager, needs to be responded by a human, so it triggers a notification.
-                        attended_by_me: Attended by current property manager, so it triggers a notification.
-                        attended_by_other: Attended by another propery manager, so it doesn't trigger a notification.
-                    */
+                    this.chatConn = this.chat
+                      .listenMessages(this.currentPropertyManager)
+                      .map((message: any) => {
+                        return message;
+                      })
+                      .subscribe(incoming_message => {
+                        if (
+                          incoming_message &&
+                          incoming_message["typeMessage"] !== "greeting"
+                        ) {
+                          this.chat
+                            .checkIncomingMessage(
+                              incoming_message.threadId,
+                              this.currentPropertyManager._id
+                            )
+                            .subscribe(messageStatus => {
+                              console.log(messageStatus["status"]);
+                              /*
+                            Cases of message notifications:
+                              unattended: Attended by no property manager, needs to be responded by a human, so it triggers a notification.
+                              attended_by_me: Attended by current property manager, so it triggers a notification.
+                              attended_by_other: Attended by another propery manager, so it doesn't trigger a notification.
+                      */
                         switch (messageStatus["status"]) {
                           case "unattended":
                           case "attended_by_me":
@@ -202,6 +199,9 @@ export class NavbarComponent implements OnInit {
                             break;
                           default:
                         }
+                      },
+                      error => {
+                        console.log(error)
                       });
                   }
                 });
@@ -254,6 +254,7 @@ export class NavbarComponent implements OnInit {
     Kills current session
   */
   async logout() {
+    this.chat.closeSocket();
     localStorage.setItem("propertyManagerData", null);
     await this.oktaAuth.logout("/login");
   }
@@ -262,7 +263,10 @@ export class NavbarComponent implements OnInit {
     If user closes the window, unsubscribes from chat notifications.
   */
   ngOnDestroy() {
-    if (this.chatConn) this.chatConn.unsubscribe();
+    if (this.chatConn) {
+      this.chat.closeSocket();
+      this.chatConn.unsubscribe();
+    }
     if (this.getPMDataConn) this.getPMDataConn.unsubscribe();
     if (this.getVendorsConn) this.getVendorsConn.unsubscribe();
     if (this.getTenatsConn) this.getTenatsConn.unsubscribe();
