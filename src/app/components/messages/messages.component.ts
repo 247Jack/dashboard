@@ -19,9 +19,8 @@ import * as _ from "lodash";
   templateUrl: "./messages.component.html",
   styleUrls: ["./messages.component.css"]
 })
-
-export class MessagesComponent implements OnInit, AfterViewInit, AfterViewChecked {
-
+export class MessagesComponent
+  implements OnInit, AfterViewInit, AfterViewChecked {
   private chatConn;
   private contactConn;
   private chatListConn;
@@ -33,15 +32,16 @@ export class MessagesComponent implements OnInit, AfterViewInit, AfterViewChecke
   public key: String = "";
   public users = [];
   public messages = [];
-  public user:any;
+  public user: any;
   public threadId = "";
   public teammatelist = [];
   public teammateselectedItems = [];
   public teammatesettings = {};
   private currentPropertyManager: any;
-  public humanTakeover:Boolean = false;
+  public humanTakeover: Boolean = false;
 
-  @ViewChild("chatScroll") private myScrollContainer: ElementRef;
+  @ViewChild("chatScroll")
+  private myScrollContainer: ElementRef;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -51,42 +51,52 @@ export class MessagesComponent implements OnInit, AfterViewInit, AfterViewChecke
   ) {}
 
   ngOnInit() {
+    this.currentPropertyManager = JSON.parse(
+      localStorage.getItem("propertyManagerData")
+    );
 
-      this.currentPropertyManager = JSON.parse(localStorage.getItem('propertyManagerData'));
-      
-      this.teammatesettings = {
-        singleSelection: false,
-        text: "Select Teammate",
-        selectAllText: "Select All",
-        unSelectAllText: "UnSelect All",
-        enableSearchFilter: true,
-        badgeShowLimit: 2
-      };
+    this.teammatesettings = {
+      singleSelection: false,
+      text: "Select Teammate",
+      selectAllText: "Select All",
+      unSelectAllText: "UnSelect All",
+      enableSearchFilter: true,
+      badgeShowLimit: 2
+    };
 
-      this.contactConn = this.contacts.getContacts(this.currentPropertyManager['_id'],'pms').subscribe(listPMs => {
+    this.contactConn = this.contacts
+      .getContacts(this.currentPropertyManager["_id"], "pms")
+      .subscribe(listPMs => {
         var PMlist = [];
-        for(var pm in listPMs['pManagersResult']) PMlist.push({
-          "id": listPMs['pManagersResult'][pm]._id,
-          "itemName": `${listPMs['pManagersResult'][pm]['name']} ${listPMs['pManagersResult'][pm]['surname']}`
-        })
+        for (var pm in listPMs["pManagersResult"])
+          PMlist.push({
+            id: listPMs["pManagersResult"][pm]._id,
+            itemName: `${listPMs["pManagersResult"][pm]["name"]} ${
+              listPMs["pManagersResult"][pm]["surname"]
+            }`
+          });
         this.teammatelist = PMlist;
-      })
-      this.chat.clearNewMessagesCount();
-      this.chatConn = this.chat
-        .listenMessages(this.currentPropertyManager)
-        .subscribe((incoming_message) => {
-          console.log(incoming_message)
+      });
+    this.chat.clearNewMessagesCount();
+    this.chatConn = this.chat
+      .listenMessages(this.currentPropertyManager)
+      .subscribe(
+        incoming_message => {
+          console.log(incoming_message);
           if (incoming_message["userId"] && incoming_message["platform"]) {
-              //setTimeout(() => {
-                this.messages.push(incoming_message);
-                this.scrollToBottom();
-              //}, 10);
+            //setTimeout(() => {
+            this.messages.push(incoming_message);
+            this.scrollToBottom();
+            //}, 10);
           }
         },
         error => {
-          console.log(error)
-        });
-      this.chatListConn = this.chat.getMessagesList(this.currentPropertyManager._id).subscribe(data => {
+          console.log(error);
+        }
+      );
+    this.chatListConn = this.chat
+      .getMessagesList(this.currentPropertyManager._id)
+      .subscribe(data => {
         //console.log(data)
         this.users = [];
         for (var i in data) {
@@ -97,37 +107,39 @@ export class MessagesComponent implements OnInit, AfterViewInit, AfterViewChecke
           this.users.push(data[i]);
         }
       });
-      this.activatedRoute.params.subscribe(params => {
-        this.activatedRoute.queryParams.subscribe(queryparams => {
-          this.userId = params["userId"];
-          this.service = queryparams["service"];
-          //this.key = queryparams["key"];
-          if (this.userId) {
-            this.chatPastConn = this.chat.getPastMessages(this.userId, this.service, this.currentPropertyManager._id).subscribe(
+    this.activatedRoute.params.subscribe(params => {
+      this.activatedRoute.queryParams.subscribe(queryparams => {
+        this.userId = params["userId"];
+        this.service = queryparams["service"];
+        //this.key = queryparams["key"];
+        if (this.userId) {
+          this.chatPastConn = this.chat
+            .getPastMessages(
+              this.userId,
+              this.service,
+              this.currentPropertyManager._id
+            )
+            .subscribe(
               data => {
                 //console.log(data)
                 this.messages = data.messages;
                 this.user = data;
                 this.userInitials = data.firstName[0] + data.lastName[0];
-                this.key = data.threads[0]['service'];
-                this.humanTakeover = data.threads[0]['humanTakeover'];
-                this.threadId = data.threads[0]['_id'];
+                this.key = data.threads[0]["service"];
+                this.humanTakeover = data.threads[0]["humanTakeover"];
+                this.threadId = data.threads[0]["_id"];
                 this.scrollToBottom();
               },
               error => {
                 //console.log(error);
               }
             );
-          }
-        });
+        }
       });
-
-
+    });
   }
 
-  ngAfterViewInit(){
-
-  }
+  ngAfterViewInit() {}
 
   ngAfterViewChecked() {
     this.scrollToBottom();
@@ -135,10 +147,10 @@ export class MessagesComponent implements OnInit, AfterViewInit, AfterViewChecke
 
   ngOnDestroy() {
     this.chat.closeSocket();
-    if(this.chatConn) this.chatConn.unsubscribe();
-    if(this.contactConn) this.contactConn.unsubscribe();
-    if(this.chatListConn) this.chatListConn.unsubscribe();
-    if(this.chatPastConn) this.chatPastConn.unsubscribe();
+    if (this.chatConn) this.chatConn.unsubscribe();
+    if (this.contactConn) this.contactConn.unsubscribe();
+    if (this.chatListConn) this.chatListConn.unsubscribe();
+    if (this.chatPastConn) this.chatPastConn.unsubscribe();
   }
 
   sendMessage(e) {
@@ -155,22 +167,24 @@ export class MessagesComponent implements OnInit, AfterViewInit, AfterViewChecke
         originalRequest: {},
         meta: {}
       };
-      console.log(messageData)
+      console.log(messageData);
       e.value = "";
       this.messages.push(messageData);
       this.chat.sendMessage(messageData).subscribe(
         data => {
           //console.log(data);
-          this.chat.getMessagesList(this.currentPropertyManager._id).subscribe(data => {
-            this.users = [];
-            for (var i in data) {
-              data[i].initials = data[i].firstName[0] + data[i].lastName[0];
-              data[i]._id = data[i].composedKey.split(":")[0];
-              data[i].firstName = data[i].firstName.split(" ")[0];
-              data[i].lastName = data[i].lastName.split(" ")[0];
-              this.users.push(data[i]);
-            }
-          });
+          this.chat
+            .getMessagesList(this.currentPropertyManager._id)
+            .subscribe(data => {
+              this.users = [];
+              for (var i in data) {
+                data[i].initials = data[i].firstName[0] + data[i].lastName[0];
+                data[i]._id = data[i].composedKey.split(":")[0];
+                data[i].firstName = data[i].firstName.split(" ")[0];
+                data[i].lastName = data[i].lastName.split(" ")[0];
+                this.users.push(data[i]);
+              }
+            });
           this.scrollToBottom();
         },
         error => {
@@ -189,25 +203,23 @@ export class MessagesComponent implements OnInit, AfterViewInit, AfterViewChecke
     } catch (err) {}
   }
 
-  setHumanTakeover(){
+  setHumanTakeover() {
     //console.log(this.humanTakeover)
     //console.log(this.threadId)
-    let arrayPMs = (this.humanTakeover) ? [this.currentPropertyManager._id] : []
-    this.chat.assignTeammate(arrayPMs,this.threadId)
-    .subscribe(resultAssing => {
-      //console.log(resultAssing);
-    })
+    let arrayPMs = this.humanTakeover ? [this.currentPropertyManager._id] : [];
+    this.chat
+      .assignTeammate(arrayPMs, this.threadId)
+      .subscribe(resultAssing => {
+        //console.log(resultAssing);
+      });
   }
 
-  isSelected(userID, service)
-  {
-    if(userID === this.userId && service === this.service) return "#EEEEEE";
+  isSelected(userID, service) {
+    if (userID === this.userId && service === this.service) return "#EEEEEE";
     return "#FFFFFF";
   }
 
-  dispatch()
-  {
+  dispatch() {
     document.getElementById("setNewOrder").click();
   }
-
 }
