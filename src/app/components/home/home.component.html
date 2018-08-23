@@ -60,8 +60,9 @@
                 <th>Portfolio</th>
                 <th>Service</th>
                 <th>Issue</th>
-                <th>Preferred Date/Time</th>
-                <!-- <th>Teammate</th> -->
+                <th>Preference</th>
+                <th>Teammate</th>
+                <th>Date/Time</th>
                 <th>Vendor</th>
                 <th>Cost</th>
                 <th>Status</th>
@@ -75,27 +76,18 @@
                 </td>
                 <td>{{item.creationDate | date}}</td>
                 <td>
-                  <span *ngFor="let resident of item.residents">{{resident.building.address}}</span>
+                    <span *ngFor="let resident of item.residents">{{resident.building.address}}</span>
                 </td>
                 <td>
-                  <span *ngFor="let resident of item.residents">{{resident.portfolio}}</span>
+                    <span *ngFor="let resident of item.residents">{{resident.portfolio}}</span>
                 </td>
                 <td>
-                  <span *ngFor="let issue of item.relatedIssue">{{issue.issueToken}}</span>
+                  <span *ngFor="let issue of item.relatedIssue">{{issue.issueDescription}}</span>
                 </td>
-                <td>
-                  <span id="issue-popup" data-placement="bottom">
-                    <span class="overflow-text">{{ item.issueData.repairDescription}}</span>
-                    <span class="position-relative">
-                      <div class="box-color text-color pos-rlt arrow-issue">
-                        <span class="arrow b-white top"></span>
-                        <div class="box-body">{{ item.issueData.repairDescription}}</div>
-                      </div>
-                    </span>
-                  </span>
-                </td>
+                <td>{{ item.issueData.repairDescription}}</td>
                 <td>{{ item.scheduledFor | date }}</td>
-                <!-- <td></td> -->
+                <td></td>
+                <td>{{item.scheduledFor | date}}</td>
                 <td>
                   <span *ngFor="let vendor of item.assignedVendors">{{vendor.vendorData.name}}</span>
                 </td>
@@ -125,21 +117,21 @@
                     </div>
                   </div>
                 </td>
-                <td *ngFor="let resident of item.residents">
-                  <a [routerLink]="['/messages', resident._id]" class="white btn-border" id="arrow-messages">
+                <td>
+                  <button class="white btn-border" id="arrow-messages">
                     <div class="box-color text-color pos-rlt messages-slider-button">
                       <span class="arrow top pull-right b-white "></span>
                       <div class="box-body">Click to go to chat user</div>
                     </div>
                     <i class="fa fa-comment"></i>
-                  </a>
-                  <a [routerLink]="['/contacts', resident._id]" class="white btn-border " id="arrow-user">
+                  </button>
+                  <button class="white btn-border " id="arrow-user" >
                     <div class="box-color text-color pos-rlt user-slider-button">
                       <span class="arrow top pull-right b-white "></span>
                       <div class="box-body">Click to go to user info</div>
                     </div>
                     <i class="fa fa-user"></i>
-                  </a>
+                  </button>
                 </td>
               </tr>
             </tbody>

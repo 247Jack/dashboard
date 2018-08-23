@@ -8,14 +8,14 @@ import { ContactsService } from "../../../services/contacts.service";
 import { TicketsService } from "../../../services/tickets.service";
 import { PushNotificationsService } from "ng-push";
 import { OktaAuthService } from "@okta/okta-angular";
-import { ModalComponent } from "dsg-ng2-bs4-modal";
+import { ModalComponent } from 'dsg-ng2-bs4-modal';
 @Component({
   selector: "app-navbar",
   templateUrl: "./navbar.component.html",
   styleUrls: ["./navbar.component.css"]
 })
 export class NavbarComponent implements OnInit {
-  @ViewChild("modalmessage")
+  @ViewChild('modalmessage')
   modal: ModalComponent;
   private chatConn;
   private getPMDataConn;
@@ -59,7 +59,7 @@ export class NavbarComponent implements OnInit {
     private account: AccountService,
     private issues: IssuesService,
     private contacts: ContactsService,
-    private tasks: TicketsService
+    private tasks: TicketsService,
   ) {
     /*
       After invoking the constructor, method getUser() fron okta retrieves the property manager email, which is used as key to get the property manager data.
@@ -135,24 +135,16 @@ export class NavbarComponent implements OnInit {
               /*
               Subscribes to socket.io server
             */
-              this.chatConn = this.chat
-                .listenMessages(this.currentPropertyManager)
-                .subscribe(incoming_message => {
-                  console.log(incoming_message);
-                  if (
-                    incoming_message &&
-                    (incoming_message["typeMessage"] === "book.service" ||
-                      incoming_message["typeMessage"] === "unknown")
-                  ) {
-                    this.chat
-                      .checkIncomingMessage(
-                        incoming_message["threadId"],
-                        this.currentPropertyManager._id
-                      )
-                      .subscribe(
-                        messageStatus => {
-                          console.log(messageStatus["status"]);
-                          /*
+            this.chatConn = this.chat
+              .listenMessages(this.currentPropertyManager)
+              .subscribe((incoming_message) => {
+                console.log(incoming_message)
+                if(incoming_message && (incoming_message['typeMessage']==="book.service" || incoming_message['typeMessage']==="unknown"))
+                {
+                  this.chat.checkIncomingMessage(incoming_message['threadId'], this.currentPropertyManager._id)
+                  .subscribe(messageStatus => {
+                    console.log(messageStatus['status'])
+                    /*
                     this.chatConn = this.chat
                       .listenMessages(this.currentPropertyManager)
                       .map((message: any) => {
@@ -176,42 +168,41 @@ export class NavbarComponent implements OnInit {
                               attended_by_me: Attended by current property manager, so it triggers a notification.
                               attended_by_other: Attended by another propery manager, so it doesn't trigger a notification.
                       */
-                          switch (messageStatus["status"]) {
-                            case "unattended":
-                            case "attended_by_me":
-                              this.unread_messages = "New!";
-                              this._push
-                                .create("New message from resident", {
-                                  icon:
-                                    "https://scontent.fmex3-1.fna.fbcdn.net/v/t1.0-1/p50x50/31326812_163089087703705_3588846289191503395_n.png?_nc_cat=0&_nc_eui2=AeFGlGoRkE6nBxIJS6YAw3n2AzVxrF5cJV9GRoVdSKF_9IvOENAwTOSitBbj1NBPuyqYcWf-K-2n3OX_jua9shAYWj-BuZughEEUVksbDKYsQQ&oh=278db548787764531dc14478690c2be7&oe=5BB86A03",
-                                  body:
-                                    "A resident send a message to Jack. Please help them."
-                                })
-                                .subscribe(
-                                  res => console.log(res),
-                                  err => this._push.requestPermission()
-                                );
-                              this.unread_messages = this.chat.getNewMessagesCount();
-                              this._notificationsService.html(
-                                "A resident request help",
-                                "would you like to attend them?",
-                                {
-                                  timeOut: 100,
-                                  showProgressBar: true,
-                                  pauseOnHover: false,
-                                  clickToClose: true,
-                                  maxLength: 15
-                                }
+                        switch (messageStatus["status"]) {
+                          case "unattended":
+                          case "attended_by_me":
+                            this.unread_messages = "New!";
+                            this._push
+                              .create("New message from resident", {
+                                icon:
+                                  "https://scontent.fmex3-1.fna.fbcdn.net/v/t1.0-1/p50x50/31326812_163089087703705_3588846289191503395_n.png?_nc_cat=0&_nc_eui2=AeFGlGoRkE6nBxIJS6YAw3n2AzVxrF5cJV9GRoVdSKF_9IvOENAwTOSitBbj1NBPuyqYcWf-K-2n3OX_jua9shAYWj-BuZughEEUVksbDKYsQQ&oh=278db548787764531dc14478690c2be7&oe=5BB86A03",
+                                body:
+                                  "A resident send a message to Jack. Please help them."
+                              })
+                              .subscribe(
+                                res => console.log(res),
+                                err => this._push.requestPermission()
                               );
+                            this.unread_messages = this.chat.getNewMessagesCount();
+                            this._notificationsService.html(
+                              "A resident request help",
+                              "would you like to attend them?",
+                              {
+                                timeOut: 100,
+                                showProgressBar: true,
+                                pauseOnHover: false,
+                                clickToClose: true,
+                                maxLength: 15
+                              }
+                            );
 
-                              break;
-                            default:
-                          }
-                        },
-                        error => {
-                          console.log(error);
+                            break;
+                          default:
                         }
-                      );
+                      },
+                      error => {
+                        console.log(error)
+                      });
                   }
                 });
             }
@@ -323,23 +314,24 @@ export class NavbarComponent implements OnInit {
         )
         .subscribe(result => {
           console.log(result);
-          if ((result.status = 200)) {
+          if(result.status = 200){
             this.modalTitle = "Success";
             this.modalBody =
               "Your service order has been submitted successfully";
-            this.modal.open();
-          } else {
+              this.modal.open()
+          }else{
             this.modalTitle = "System Error";
             this.modalBody =
               " Oops! It looks like something went wrong on our side. Please try again. If the issue remains, send us a note at support@247jack.com";
-            this.modal.open();
+              this.modal.open()
           }
+          
         });
     } else {
       this.modalTitle = "Empty field";
       this.modalBody =
         "Oops! It looks like we missing some important information in the contact ";
-      this.modal.open();
+        this.modal.open()
     }
   }
 
