@@ -1,5 +1,4 @@
 import { Component, OnInit } from "@angular/core";
-import { Subscription } from 'rxjs';
 import { TicketsService } from "../../services/tickets.service";
 import { ContactsService } from "../../services/contacts.service";
 
@@ -14,7 +13,6 @@ export class HomeComponent implements OnInit {
   public date;
   public currentPropertyManager;
   public currentTicket;
-  public busy: Subscription;
   constructor(
     private ticket: TicketsService,
     private contacts: ContactsService
@@ -27,7 +25,7 @@ export class HomeComponent implements OnInit {
       );
       if (this.currentPropertyManager) {
         clearInterval(waitForPMData);
-        this.busy = this.ticket
+        this.ticket
           .getTickets(this.currentPropertyManager["_id"])
           .subscribe(data => {
             console.log(data);
