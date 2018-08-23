@@ -201,6 +201,14 @@ li a .btn-rounded i {
   height: 25px;
   border-radius: 20px;
 }
+.overflow-text{
+  display: block;
+  max-width:190px;
+  height: 100%;;
+  overflow: hidden ;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
 .sl-left span {
   display: block;
   ruby-align: center;
@@ -495,14 +503,14 @@ img.preview-image-chat {
 .messages-slider-button {
   display: none;
   position: absolute;
-  top: 100%;
-  right: -10%;
+  top: 125%;
+  right: -80%;
 }
 .user-slider-button {
   display: none;
   position: absolute;
-  top: 100%;
-  right: -20%;
+  top: 125%;
+  right: -80%;
 }
 #arrow-messages,
 #arrow-user,
@@ -512,7 +520,8 @@ img.preview-image-chat {
 #button-see-h,
 #button-add-a,
 #notifications-b,
-#arrow-auto-ds {
+#arrow-auto-ds,
+#issue-popup {
   position: relative;
 }
 #user-edit label{
@@ -529,9 +538,16 @@ img.preview-image-chat {
 #button-see-h:hover .see-history,
 #button-add-a:hover .add-agent,
 #archive-conversation:hover .arrow-archive-conversation,
+#issue-popup:hover .arrow-issue,
 #logout-button:hover .arrow-sing-out,
 #notifications-b:hover .arrow-notifications {
   display: block;
+}
+.arrow-issue{
+  display: none;
+  position: absolute;
+  top: -170%;
+  left: 300%;
 }
 .arrow-dispatch {
   display: none;

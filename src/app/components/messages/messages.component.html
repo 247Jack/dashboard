@@ -34,9 +34,8 @@
                     <i class="on b-white avatar-right"></i>
                     {{user.initials}}
                   </span-->
-                  <div class="list-body" >
-                    <a [routerLink]="['/messages', user._id]" [queryParams]="{ service: user.lastMessage.platform }"
-                      class="">
+                  <div class="list-body">
+                    <a [routerLink]="['/messages', user._id]" [queryParams]="{ service: user.lastMessage.platform }" class="">
                       {{user.firstName}} {{user.lastName}} [{{user.service}}]
                     </a>
                     <div class="item-except text-sm text-muted h-1x">
@@ -165,21 +164,21 @@
                     <div class="chat-item" *ngIf="item.typeMessage === 'book.service'">
                       <a href="#" class="avatar w-40">
                         <span class="w-40 circle green avatar">
-                        <span class="fa fa-2x  fa-send-o" ></span>
+                          <span class="fa fa-2x  fa-send-o"></span>
                         </span>
                       </a>
                       <div class="chat-body">
                         <div class="chat-content d-block rounded msg">
-                          <p>Looks like a new request for a service. Do you want to 
-                            dispatch to vendors?
+                          <p>Looks like a new request for a service. Do you want to dispatch to vendors?
                           </p>
                           <div>
-                            <button class="btn btn-outline btn-rounded b-success text-success"  type="button" data-toggle="modal" data-target="#selec-vendors" (onclick)="dispatch()">SELECT VENDORS</button>
+                            <button class="btn btn-outline btn-rounded b-success text-success" type="button" data-toggle="modal" data-target="#selec-vendors"
+                              (onclick)="dispatch()">SELECT VENDORS</button>
                             <!--button class="btn btn-outline btn-rounded b-success text-success"  type="button" data-toggle="modal" data-target="#selec-vendors">VENDOR POOL</button-->
                           </div>
                         </div>
                         <div class="chat-date date">
-                          
+
                         </div>
                       </div>
                     </div>
@@ -190,14 +189,19 @@
             </div>
             <div class="p-3 white lt b-t mt-auto" id="chat-form">
               <div class="input-group">
-                <input type="text" class="form-control" placeholder="Send message to tenant" #chatInput (keyup.enter)="sendMessage(chatInput);" [disabled]="!humanTakeover">
+                <input type="text" class="form-control" placeholder="Send message to tenant" #chatInput (keyup.enter)="sendMessage(chatInput);"
+                  [disabled]="!humanTakeover">
                 <span class="input-group-btn">
                   <button class="btn white b-a no-shadow" type="button" id="newBtn" (click)="sendMessage(chatInput);">
                     <i class="fa fa-send text-success"></i>
                   </button>
                 </span>
               </div>
-              <div class="pull-right" *ngIf="userId"><label class="ui-switch primary mt-1 mr-2"><input type="checkbox" [(ngModel)]="humanTakeover" (change)="setHumanTakeover()"> <i></i> </label> Human takeover</div>
+              <div class="pull-right" *ngIf="userId">
+                <label class="ui-switch primary mt-1 mr-2">
+                  <input type="checkbox" [(ngModel)]="humanTakeover" (change)="setHumanTakeover()">
+                  <i></i>
+                </label> Human takeover</div>
             </div>
           </div>
         </div>
