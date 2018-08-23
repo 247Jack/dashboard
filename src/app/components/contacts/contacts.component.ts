@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { ContactsService } from "../../services/contacts.service";
 import { ActivatedRoute, Router } from "@angular/router";
+import { Subscription } from 'rxjs';
 import * as _ from "lodash";
 import { ModalComponent } from "dsg-ng2-bs4-modal/ng2-bs4-modal";
 @Component({
@@ -25,6 +26,8 @@ export class ContactsComponent implements OnInit {
   modal: ModalComponent;
   public modalTitle = "";
   public modalBody = "";
+  public busyContacts: Subscription;
+  public busyContact: Subscription;
 
   public editResidentData = {
     initials: "",
@@ -172,12 +175,13 @@ export class ContactsComponent implements OnInit {
       );
       this.dataLoaded = true;
     });
+    this.busyContacts = this.getContactsConn;
     this.activatedRoute.params.subscribe(params => {
       this.currentContactType = "";
       if(params.contactId)
       {
         document.getElementById("openModalButton").click();
-        this.contacts.getSingleContact(this.currentPropertyManager._id, params.contactId)
+        this.busyContact = this.contacts.getSingleContact(this.currentPropertyManager._id, params.contactId)
         .subscribe(contactData => {
           console.log(contactData.contactResult)
           switch(contactData.contactType)

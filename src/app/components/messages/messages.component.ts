@@ -6,12 +6,11 @@ import {
   ViewChild,
   OnInit
 } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import { NotificationsService } from "angular2-notifications";
+import { ActivatedRoute } from "@angular/router";
+import { Subscription } from 'rxjs';
 import { ChatService } from "../../services/chat.service";
 import { AccountService } from "../../services/account.service";
 import { ContactsService } from "../../services/contacts.service";
-import { StompService } from "@stomp/ng2-stompjs";
 import * as _ from "lodash";
 
 @Component({
@@ -25,7 +24,8 @@ export class MessagesComponent
   private contactConn;
   private chatListConn;
   private chatPastConn;
-
+  public busyUsers: Subscription;
+  public busyHistoryChat: Subscription;
   public userId: String;
   public userInitials: String;
   public service: String = "";
@@ -107,6 +107,7 @@ export class MessagesComponent
           this.users.push(data[i]);
         }
       });
+    this.busyUsers = this.chatListConn;
     this.activatedRoute.params.subscribe(params => {
       this.activatedRoute.queryParams.subscribe(queryparams => {
         this.userId = params["userId"];
@@ -134,6 +135,7 @@ export class MessagesComponent
                 //console.log(error);
               }
             );
+          this.busyHistoryChat = this.chatPastConn;
         }
       });
     });

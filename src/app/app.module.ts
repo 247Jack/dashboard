@@ -20,6 +20,7 @@ import {
 import { SimpleNotificationsModule } from "angular2-notifications";
 import { PushNotificationsModule } from "ng-push";
 import { ModalModule } from "dsg-ng2-bs4-modal/ng2-bs4-modal";
+import {BusyModule} from 'angular2-busy';
 
 //import { StompService, StompConfig } from "@stomp/ng2-stompjs";
 
@@ -94,7 +95,8 @@ const stompConfig: StompConfig = {
     AngularMultiSelectModule,
     ReactiveFormsModule,
     //SocketIoModule.forRoot(SocketConfig),
-    ModalModule
+    ModalModule,
+    BusyModule
   ],
   providers: [
     ContactsService,

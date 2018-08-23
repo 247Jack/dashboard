@@ -1,4 +1,5 @@
 <div class="app" id="app">
+  <div [ngBusy]="busy"></div>
   <app-navbar></app-navbar>
   <div id="content" class="app-content box-shadow-0" role="main">
     <div class="content-header white  box-shadow-1" id="content-header">
@@ -102,22 +103,22 @@
                 <td>${{ item.issueData.repairCost }}</td>
                 <td>
                   <div [ngSwitch]="item.status">
-                    <div *ngSwitchCase="'created'">
+                    <div *ngSwitchCase="'available'">
                       <button class="badge btn-clean blue" type="button">Created</button>
                     </div>
-                    <div *ngSwitchCase="'checked'">
+                    <div *ngSwitchCase="'assigned'">
                       <button class="badge btn-clean yellow" type="button">Accepted</button>
                     </div>
-                    <div *ngSwitchCase="'pendient_complete'">
-                      <button class="badge btn-clean orange" type="button">To be completed</button>
+                    <div *ngSwitchCase="'checked'">
+                      <button class="badge btn-clean yellow" type="button">To be started</button>
                     </div>
-                    <div *ngSwitchCase="'pendient_approve'">
+                    <div *ngSwitchCase="'evaluating'">
                       <button class="badge btn-clean red" (click)="checkPendientTask($event, item)" type="button" data-toggle="modal" data-target="#modal-status">Requires atention</button>
                     </div>
-                    <div *ngSwitchCase="'canceled'">
+                    <div *ngSwitchCase="'denied'">
                       <button class="badge btn-clean grey" type="button">Canceled</button>
                     </div>
-                    <div *ngSwitchCase="'done'">
+                    <div *ngSwitchCase="'finished'">
                       <button class="badge btn-clean green" type="button">Completed</button>
                     </div>
                     <div *ngSwitchDefault>

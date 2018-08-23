@@ -307,7 +307,7 @@ export class NavbarComponent implements OnInit {
       for (var v in this.vendorselectedItems) {
         arrayVendors.push(this.vendorselectedItems[v]["id"]);
       }
-
+      console.log(arrayVendors)
       this.tasks
         .createTicket(
           {
@@ -315,9 +315,9 @@ export class NavbarComponent implements OnInit {
             relatedIssue: this.issueselectedItems[0]["id"],
             scheduledFor: this.date,
             relatedManager: this.currentPropertyManager.task_id,
-            to: "vendorsArray",
+            //to: "vendorsArray",
             toValue: arrayVendors,
-            description: this.taskDescription
+            ticketDescription: this.taskDescription
           },
           this.currentPropertyManager["_id"]
         )
