@@ -4,5 +4,5 @@ export const environment = {
   api_domain: "https://15kcv4z18f.execute-api.us-east-1.amazonaws.com/prod",
   socket_host: "https://message-broker.247jack.com/",
   secureSocket: false,
-  self_host: "http://dashboard.247jack.com"
+  self_host: "https://dashboard.247jack.com"
 };
