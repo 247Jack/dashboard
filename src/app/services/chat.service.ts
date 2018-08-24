@@ -47,7 +47,7 @@ export class ChatService {
 
   public listenMessages(pm) {
     let observable = new Observable(observer => {
-      this.socket = io(environment.socket_host);
+      this.socket = io(environment.socket_host, {secure:true});
       this.socket.on('user-login',(data) => {
         this.socket.emit('login', {
           propertyManagerId: pm._id,
