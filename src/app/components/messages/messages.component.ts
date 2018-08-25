@@ -6,12 +6,11 @@ import {
   ViewChild,
   OnInit
 } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import { NotificationsService } from "angular2-notifications";
+import { ActivatedRoute } from "@angular/router";
+import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { ChatService } from "../../services/chat.service";
 import { AccountService } from "../../services/account.service";
 import { ContactsService } from "../../services/contacts.service";
-import { StompService } from "@stomp/ng2-stompjs";
 import * as _ from "lodash";
 
 @Component({
@@ -45,8 +44,8 @@ export class MessagesComponent
 
   constructor(
     private activatedRoute: ActivatedRoute,
+    private spinnerService: Ng4LoadingSpinnerService,
     private chat: ChatService,
-    private account: AccountService,
     private contacts: ContactsService
   ) {}
 
@@ -97,7 +96,6 @@ export class MessagesComponent
     this.chatListConn = this.chat
       .getMessagesList(this.currentPropertyManager._id)
       .subscribe(data => {
-        //console.log(data)
         this.users = [];
         for (var i in data) {
           data[i].initials = data[i].firstName[0] + data[i].lastName[0];
@@ -113,6 +111,7 @@ export class MessagesComponent
         this.service = queryparams["service"];
         //this.key = queryparams["key"];
         if (this.userId) {
+          this.spinnerService.show();
           this.chatPastConn = this.chat
             .getPastMessages(
               this.userId,
@@ -129,6 +128,7 @@ export class MessagesComponent
                 this.humanTakeover = data.threads[0]["humanTakeover"];
                 this.threadId = data.threads[0]["_id"];
                 this.scrollToBottom();
+                this.spinnerService.hide();
               },
               error => {
                 //console.log(error);

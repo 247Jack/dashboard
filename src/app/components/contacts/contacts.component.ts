@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { ContactsService } from "../../services/contacts.service";
-import { ActivatedRoute, Router } from "@angular/router";
-import * as _ from "lodash";
 import { ModalComponent } from "dsg-ng2-bs4-modal/ng2-bs4-modal";
+import * as _ from "lodash";
 @Component({
   selector: "app-contacts",
   templateUrl: "./contacts.component.html",
@@ -104,10 +105,12 @@ export class ContactsComponent implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
+    private spinnerService: Ng4LoadingSpinnerService,
     private contacts: ContactsService
   ) {}
 
   ngOnInit() {
+    this.spinnerService.show();
     this.currentPropertyManager = JSON.parse(localStorage.getItem('propertyManagerData'));
     this.getContactsConn = this.contacts.getContacts(this.currentPropertyManager['_id']).subscribe(data => {
       for (let i in data.usersResult) {
@@ -171,6 +174,7 @@ export class ContactsComponent implements OnInit {
         this.contactsPropertyManagers
       );
       this.dataLoaded = true;
+      this.spinnerService.hide();
     });
     this.activatedRoute.params.subscribe(params => {
       this.currentContactType = "";

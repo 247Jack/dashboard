@@ -35,6 +35,7 @@
     "ng-push": "^0.2.2",
     "ng-socket-io": "^0.2.4",
     "ng2-simple-mq": "^1.2.9",
+    "ng4-loading-spinner": "^1.2.3",
     "ngx-dropzone-wrapper": "^5.3.5",
     "rxjs": "^5.5.6",
     "socket.io-client": "^2.1.1",

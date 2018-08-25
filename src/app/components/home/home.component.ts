@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { TicketsService } from "../../services/tickets.service";
 import { ContactsService } from "../../services/contacts.service";
 
@@ -14,11 +15,12 @@ export class HomeComponent implements OnInit {
   public currentPropertyManager;
   public currentTicket;
   constructor(
-    private ticket: TicketsService,
-    private contacts: ContactsService
+    private spinnerService: Ng4LoadingSpinnerService,
+    private ticket: TicketsService
   ) {}
 
   ngOnInit() {
+    this.spinnerService.show();
     var waitForPMData = setInterval(() => {
       this.currentPropertyManager = JSON.parse(
         localStorage.getItem("propertyManagerData")
@@ -29,6 +31,7 @@ export class HomeComponent implements OnInit {
           .getTickets(this.currentPropertyManager["_id"])
           .subscribe(data => {
             console.log(data);
+            this.spinnerService.hide();
             this.tickets = data;
             for (let i in data) {
               this.date = data[i].creationDate.split("T")[0];

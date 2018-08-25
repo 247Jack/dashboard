@@ -1,5 +1,7 @@
 <!-- Simple notification module. Needed to refresh page content, for some reason -->
 <simple-notifications></simple-notifications>
+<!-- Loader module. Needed when making a request. -->
+<ng4-loading-spinner> </ng4-loading-spinner>
 <!-- Navbar main code -->
 <div id="aside" class="app-aside fade nav-expand dark" aria-hidden="true">
   <div class="sidenav modal-dialog dk">
@@ -70,7 +72,9 @@
         </a>
         <div class="dropdown-menu w pt-0 mt-2 animate fadeIn">
           <a class="dropdown-item" *ngIf="currentPropertyManager.email">You're logged as
-            <br/>{{currentPropertyManager.email}}</a>
+            <br/>{{currentPropertyManager.email}}
+            <br/>from 
+            <br/>{{currentPropertyManager.company}}</a>
         </div>
         <div class="hidden-folded flex p-2-3 folded-1 overflow-n">
           <div class="d-flex p-1">
@@ -162,7 +166,7 @@
                 <button class="btn btn-primary float-left" (click)="broadcastNewTask()">Send</button>
               </div>
               <div class="col-2 mt-3">
-                <button class="btn btn-danger float-left" data-dismiss="modal" (click)="cancelNewTask()">Cancel</button>
+                <button id="cancelTask" class="btn btn-danger float-left" data-dismiss="modal" (click)="cancelNewTask()">Cancel</button>
               </div>
             </div>
           </div>

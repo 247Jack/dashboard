@@ -6,7 +6,7 @@ import { HttpModule } from "@angular/http";
 import { ReactiveFormsModule } from '@angular/forms';
 import { AngularDateTimePickerModule } from 'angular2-datetimepicker';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown'
-import { OktaAuthModule, OktaCallbackComponent } from "@okta/okta-angular";
+import { OktaAuthModule } from "@okta/okta-angular";
 import {
   DropzoneModule,
   DROPZONE_CONFIG,
@@ -14,12 +14,12 @@ import {
 } from "ngx-dropzone-wrapper";
 import {
   LocationStrategy,
-  HashLocationStrategy,
   PathLocationStrategy
 } from "@angular/common";
 import { SimpleNotificationsModule } from "angular2-notifications";
 import { PushNotificationsModule } from "ng-push";
 import { ModalModule } from "dsg-ng2-bs4-modal/ng2-bs4-modal";
+import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 
 //import { StompService, StompConfig } from "@stomp/ng2-stompjs";
 
@@ -93,7 +93,7 @@ const stompConfig: StompConfig = {
     AngularDateTimePickerModule,
     AngularMultiSelectModule,
     ReactiveFormsModule,
-    //SocketIoModule.forRoot(SocketConfig),
+    Ng4LoadingSpinnerModule.forRoot(),
     ModalModule
   ],
   providers: [

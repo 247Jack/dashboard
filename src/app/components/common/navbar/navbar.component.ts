@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NotificationsService } from "angular2-notifications";
+import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { ChatService } from "../../../services/chat.service";
 import { AccountService } from "../../../services/account.service";
 import { IssuesService } from "../../../services/issues.service";
@@ -49,9 +50,12 @@ export class NavbarComponent implements OnInit {
   public modalTitle = "";
   public modalBody = "";
   public newTaskForm;
+  private validTask = false;
 
   constructor(
     private router: Router,
+    private activatedRouter: ActivatedRoute,
+    private spinnerService: Ng4LoadingSpinnerService,
     private _notificationsService: NotificationsService,
     private _push: PushNotificationsService,
     private oktaAuth: OktaAuthService,
@@ -253,10 +257,7 @@ export class NavbarComponent implements OnInit {
       enableSearchFilter: true,
       badgeShowLimit: 2
     };
-    /*
-      Set of notification services
-      // TODO: Change current service to listen from socket.io instead of rabbitMQ
-    */
+        
   }
 
   /*
@@ -307,7 +308,7 @@ export class NavbarComponent implements OnInit {
       for (var v in this.vendorselectedItems) {
         arrayVendors.push(this.vendorselectedItems[v]["id"]);
       }
-
+      this.spinnerService.show();
       this.tasks
         .createTicket(
           {
@@ -315,14 +316,16 @@ export class NavbarComponent implements OnInit {
             relatedIssue: this.issueselectedItems[0]["id"],
             scheduledFor: this.date,
             relatedManager: this.currentPropertyManager.task_id,
-            to: "vendorsArray",
             toValue: arrayVendors,
-            description: this.taskDescription
+            ticketDescription: this.taskDescription
           },
           this.currentPropertyManager["_id"]
         )
         .subscribe(result => {
-          console.log(result);
+          //console.log(result);
+          this.spinnerService.hide();
+          this.validTask = true;
+          document.getElementById("cancelTask").click();
           if ((result.status = 200)) {
             this.modalTitle = "Success";
             this.modalBody =
