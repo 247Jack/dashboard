@@ -163,23 +163,15 @@
                       </div>
                     </div>
                     <div class="chat-item" *ngIf="item.typeMessage === 'book.service'">
-                      <a href="#" class="avatar w-40">
-                        <span class="w-40 circle green avatar">
-                          <span class="fa fa-2x  fa-send-o"></span>
-                        </span>
-                      </a>
                       <div class="chat-body">
                         <div class="chat-content d-block rounded msg">
                           <p>Looks like a new request for a service. Do you want to dispatch to vendors?
                           </p>
                           <div>
-                            <button class="btn btn-outline btn-rounded b-success text-success" type="button" data-toggle="modal" data-target="#selec-vendors"
-                              (onclick)="dispatch()">SELECT VENDORS</button>
+                            <button class="btn btn-outline btn-rounded b-success text-success" type="button"
+                              (click)="dispatch()">SELECT VENDORS</button>
                             <!--button class="btn btn-outline btn-rounded b-success text-success"  type="button" data-toggle="modal" data-target="#selec-vendors">VENDOR POOL</button-->
                           </div>
-                        </div>
-                        <div class="chat-date date">
-
                         </div>
                       </div>
                     </div>

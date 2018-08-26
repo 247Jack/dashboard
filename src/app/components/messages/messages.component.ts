@@ -220,6 +220,8 @@ export class MessagesComponent
   }
 
   dispatch() {
+    //console.log('dispatch')
+    //console.log(idUser)
     document.getElementById("setNewOrder").click();
   }
 }
