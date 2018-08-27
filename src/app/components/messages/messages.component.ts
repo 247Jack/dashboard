@@ -6,10 +6,9 @@ import {
   ViewChild,
   OnInit
 } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { ChatService } from "../../services/chat.service";
-import { AccountService } from "../../services/account.service";
 import { ContactsService } from "../../services/contacts.service";
 import * as _ from "lodash";
 
@@ -43,6 +42,7 @@ export class MessagesComponent
   private myScrollContainer: ElementRef;
 
   constructor(
+    private router: Router,
     private activatedRoute: ActivatedRoute,
     private spinnerService: Ng4LoadingSpinnerService,
     private chat: ChatService,
@@ -111,29 +111,35 @@ export class MessagesComponent
         this.service = queryparams["service"];
         //this.key = queryparams["key"];
         if (this.userId) {
-          this.spinnerService.show();
-          this.chatPastConn = this.chat
-            .getPastMessages(
-              this.userId,
-              this.service,
-              this.currentPropertyManager._id
-            )
-            .subscribe(
-              data => {
-                //console.log(data)
-                this.messages = data.messages;
-                this.user = data;
-                this.userInitials = data.firstName[0] + data.lastName[0];
-                this.key = data.threads[0]["service"];
-                this.humanTakeover = data.threads[0]["humanTakeover"];
-                this.threadId = data.threads[0]["_id"];
-                this.scrollToBottom();
-                this.spinnerService.hide();
-              },
-              error => {
-                //console.log(error);
-              }
-            );
+          if(this.service)
+          {
+            this.spinnerService.show();
+            this.chatPastConn = this.chat
+              .getPastMessages(
+                this.userId,
+                this.service,
+                this.currentPropertyManager._id
+              )
+              .subscribe(
+                data => {
+                  console.log(data)
+                  this.messages = data.messages;
+                  this.user = data;
+                  this.userInitials = data.firstName[0] + data.lastName[0];
+                  this.key = data.threads[0]["service"];
+                  this.humanTakeover = data.threads[0]["humanTakeover"];
+                  this.threadId = data.threads[0]["_id"];
+                  this.scrollToBottom();
+                  this.spinnerService.hide();
+                },
+                error => {
+                  //console.log(error);
+                }
+              );
+          }
+          else{
+            this.router.navigate(["/messages", this.userId], { queryParams: { service : "sms" }});
+          }
         }
       });
     });
