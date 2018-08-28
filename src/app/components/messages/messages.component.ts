@@ -96,6 +96,7 @@ export class MessagesComponent
     this.chatListConn = this.chat
       .getMessagesList(this.currentPropertyManager._id)
       .subscribe(data => {
+        console.log(data)
         this.users = [];
         for (var i in data) {
           data[i].initials = data[i].firstName[0] + data[i].lastName[0];
@@ -122,7 +123,7 @@ export class MessagesComponent
               )
               .subscribe(
                 data => {
-                  console.log(data)
+                  //console.log(data)
                   this.messages = data.messages;
                   this.user = data;
                   this.userInitials = data.firstName[0] + data.lastName[0];

@@ -612,6 +612,10 @@ img.preview-image-chat {
 .w-ssd {
   width: 35% !important;
 }
+.unread-message
+{
+  font-weight: 700;
+}
 @media screen and (max-width: 992px) {
   .w-ssd {
     width: 320px !important;

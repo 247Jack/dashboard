@@ -36,7 +36,7 @@
                     {{user.initials}}
                   </span-->
                   <div class="list-body">
-                    <a [routerLink]="['/messages', user._id]" [queryParams]="{ service: user.lastMessage.platform }" class="">
+                    <a [routerLink]="['/messages', user._id]" [queryParams]="{ service: user.lastMessage.platform }" [ngClass]="{'unread-message': user.unread }">
                       {{user.firstName}} {{user.lastName}} [{{user.service}}]
                     </a>
                     <div class="item-except text-sm text-muted h-1x">
