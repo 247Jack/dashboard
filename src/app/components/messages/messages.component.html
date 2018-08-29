@@ -1,5 +1,6 @@
 <div class="app" id="app">
   <ng4-loading-spinner> </ng4-loading-spinner>
+  <button id="invisibletriggerbutton" style="display: none;"></button>
   <app-navbar></app-navbar>
   <div id="content" class="app-content box-shadow-0" role="main">
     <div class="content-header white  box-shadow-1" id="content-header">
@@ -182,7 +183,7 @@
             </div>
             <div class="p-3 white lt b-t mt-auto" id="chat-form">
               <div class="input-group">
-                <input type="text" class="form-control" placeholder="Send message to tenant" #chatInput (keyup.enter)="sendMessage(chatInput);"
+                <input type="text" id="messageBox" class="form-control" placeholder="Send message to tenant" #chatInput (keyup.enter)="sendMessage(chatInput);"
                   [disabled]="!humanTakeover">
                 <span class="input-group-btn">
                   <button class="btn white b-a no-shadow" type="button" id="newBtn" (click)="sendMessage(chatInput);">

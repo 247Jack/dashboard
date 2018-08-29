@@ -37,6 +37,7 @@ export class MessagesComponent
   public teammatesettings = {};
   private currentPropertyManager: any;
   public humanTakeover: Boolean = false;
+  public userListLoaded:Boolean = false;
 
   @ViewChild("chatScroll")
   private myScrollContainer: ElementRef;
@@ -82,11 +83,32 @@ export class MessagesComponent
       .subscribe(
         incoming_message => {
           console.log(incoming_message);
-          if (incoming_message["userId"] && incoming_message["platform"]) {
-            //setTimeout(() => {
-            this.messages.push(incoming_message);
-            this.scrollToBottom();
-            //}, 10);
+          if (incoming_message["userId"] === this.userId && incoming_message["platform"] === this.service) {
+            var targetUser = _.findIndex(this.users, o => {return o['composedKey'] === `${incoming_message['userId']}:${incoming_message['platform']}`})
+            if(targetUser >= 0)
+            {
+              this.users[targetUser].lastMessage.content = incoming_message['content'];
+              document.getElementById("invisibletriggerbutton").click();
+            }
+            setTimeout(() => {
+              this.messages.push(incoming_message);
+              this.scrollToBottom();
+              document.getElementById("messageBox").click();
+            },10)
+          }
+          else
+          {
+            console.log('marking thread as unread')
+            var targetUser = _.findIndex(this.users, o => {return o['composedKey'] === `${incoming_message['userId']}:${incoming_message['platform']}`})
+            console.log(targetUser)
+            if(targetUser >= 0)
+            {
+              //setTimeout(() => {
+                this.users[targetUser].unread = true;
+                this.users[targetUser].lastMessage.content = incoming_message['content'];
+                document.getElementById("invisibletriggerbutton").click();
+              //},10)
+            }
           }
         },
         error => {
@@ -97,6 +119,7 @@ export class MessagesComponent
       .getMessagesList(this.currentPropertyManager._id)
       .subscribe(data => {
         console.log(data)
+        this.userListLoaded = true;
         this.users = [];
         for (var i in data) {
           data[i].initials = data[i].firstName[0] + data[i].lastName[0];
@@ -123,15 +146,28 @@ export class MessagesComponent
               )
               .subscribe(
                 data => {
-                  //console.log(data)
+                  console.log(data)
                   this.messages = data.messages;
                   this.user = data;
                   this.userInitials = data.firstName[0] + data.lastName[0];
-                  this.key = data.threads[0]["service"];
+                  this.key = data.app[`${this.service}`]
                   this.humanTakeover = data.threads[0]["humanTakeover"];
                   this.threadId = data.threads[0]["_id"];
                   this.scrollToBottom();
                   this.spinnerService.hide();
+                  var waitForUsersData = setInterval(() => {
+                    console.log(this.userListLoaded)
+                    if (this.userListLoaded) {
+                      clearInterval(waitForUsersData);
+                      var currentUserIndex = _.findIndex(this.users, o => {
+                        return (o['composedKey'] === `${this.userId}:${this.service}`)
+                      });
+                      if(currentUserIndex >= 0)
+                      {
+                        this.users[currentUserIndex].unread = false;
+                      }
+                    }
+                  }, 100);
                 },
                 error => {
                   //console.log(error);
@@ -195,7 +231,7 @@ export class MessagesComponent
           this.scrollToBottom();
         },
         error => {
-          //console.log(error);
+          console.log(error);
         }
       );
       //console.log(messageData);
