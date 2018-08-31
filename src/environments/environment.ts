@@ -8,8 +8,7 @@ export const environment = {
   okta_clientId: "0oaeu3zgonjGZw0qE0h7",
   api_domain: "https://15kcv4z18f.execute-api.us-east-1.amazonaws.com/dev",
   socket_host: "https://dev.message-broker.247jack.com/",
-  //socket_host: "http://localhost:8443/",
+  one_signal_appId: "1a63b37e-abee-4706-b3d0-91b34c02e988",
   secureSocket: false,
   self_host: "http://localhost:4200"
-  //self_host: "http://dev.dashboard.247jack.com"
 };

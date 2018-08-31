@@ -1,15 +1,16 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { NotificationsService } from "angular2-notifications";
+//import { NotificationsService } from "angular2-notifications";
+//import { PushNotificationsService } from "ng-push";
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { ChatService } from "../../../services/chat.service";
 import { AccountService } from "../../../services/account.service";
 import { IssuesService } from "../../../services/issues.service";
 import { ContactsService } from "../../../services/contacts.service";
 import { TicketsService } from "../../../services/tickets.service";
-import { PushNotificationsService } from "ng-push";
 import { OktaAuthService } from "@okta/okta-angular";
 import { ModalComponent } from "dsg-ng2-bs4-modal";
+
 @Component({
   selector: "app-navbar",
   templateUrl: "./navbar.component.html",
@@ -56,8 +57,8 @@ export class NavbarComponent implements OnInit {
     private router: Router,
     private activatedRouter: ActivatedRoute,
     private spinnerService: Ng4LoadingSpinnerService,
-    private _notificationsService: NotificationsService,
-    private _push: PushNotificationsService,
+    //private _notificationsService: NotificationsService,
+    //private _push: PushNotificationsService,
     private oktaAuth: OktaAuthService,
     private chat: ChatService,
     private account: AccountService,
@@ -184,6 +185,7 @@ export class NavbarComponent implements OnInit {
                             case "unattended":
                             case "attended_by_me":
                               this.unread_messages = "New!";
+                              /*
                               this._push
                                 .create("New message from resident", {
                                   icon:
@@ -196,6 +198,8 @@ export class NavbarComponent implements OnInit {
                                   err => this._push.requestPermission()
                                 );
                               this.unread_messages = this.chat.getNewMessagesCount();
+                              */
+                             /*
                               this._notificationsService.html(
                                 "A resident request help",
                                 "would you like to attend them?",
@@ -207,7 +211,19 @@ export class NavbarComponent implements OnInit {
                                   maxLength: 15
                                 }
                               );
-
+                              */
+                              var push = window['Push']
+                              if(push){
+                                push.create("A resident made a request", {
+                                  body: "A resident send a message to Jack. Please help them.",
+                                  icon: 'https://scontent.fmex3-1.fna.fbcdn.net/v/t1.0-1/p50x50/31326812_163089087703705_3588846289191503395_n.png?_nc_cat=0&_nc_eui2=AeFGlGoRkE6nBxIJS6YAw3n2AzVxrF5cJV9GRoVdSKF_9IvOENAwTOSitBbj1NBPuyqYcWf-K-2n3OX_jua9shAYWj-BuZughEEUVksbDKYsQQ&oh=278db548787764531dc14478690c2be7&oe=5BB86A03',
+                                  //timeout: 4000,
+                                  onClick: function () {
+                                    window.focus();
+                                    //this.close();
+                                  }
+                              });
+                              }
                               break;
                             default:
                           }
@@ -257,7 +273,18 @@ export class NavbarComponent implements OnInit {
       enableSearchFilter: true,
       badgeShowLimit: 2
     };
-        
+    var push = window['Push']
+    if(push){
+      if(!push.Permission.has())
+      {
+        push.Permission.request(() => {
+          console.log(push.Permission.has());
+        }, () => {
+          console.log(push.Permission.has());
+        });
+      }
+    }
+    
   }
 
   /*

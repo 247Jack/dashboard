@@ -1,7 +1,6 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 import { AppRouting } from "./app.routes";
-//import { SocketIoModule, SocketIoConfig } from "ng-socket-io";
 import { HttpModule } from "@angular/http";
 import { ReactiveFormsModule } from '@angular/forms';
 import { AngularDateTimePickerModule } from 'angular2-datetimepicker';
@@ -16,8 +15,8 @@ import {
   LocationStrategy,
   PathLocationStrategy
 } from "@angular/common";
-import { SimpleNotificationsModule } from "angular2-notifications";
-import { PushNotificationsModule } from "ng-push";
+//import { SimpleNotificationsModule } from "angular2-notifications";
+//import { PushNotificationsModule } from "ng-push";
 import { ModalModule } from "dsg-ng2-bs4-modal/ng2-bs4-modal";
 import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 
@@ -88,8 +87,8 @@ const stompConfig: StompConfig = {
     DropzoneModule,
     BrowserAnimationsModule,
     OktaAuthModule.initAuth(oktaConfig),
-    SimpleNotificationsModule.forRoot(),
-    PushNotificationsModule,
+    //SimpleNotificationsModule.forRoot(),
+    //PushNotificationsModule,
     AngularDateTimePickerModule,
     AngularMultiSelectModule,
     ReactiveFormsModule,
