@@ -212,9 +212,8 @@ export class NavbarComponent implements OnInit {
                                 }
                               );
                               */
-                              var push = window['Push']
-                              if(push){
-                                push.create("A resident made a request", {
+                              if(window['Push']){
+                                window['Push'].create("A resident made a request", {
                                   body: "A resident send a message to Jack. Please help them.",
                                   icon: 'https://scontent.fmex3-1.fna.fbcdn.net/v/t1.0-1/p50x50/31326812_163089087703705_3588846289191503395_n.png?_nc_cat=0&_nc_eui2=AeFGlGoRkE6nBxIJS6YAw3n2AzVxrF5cJV9GRoVdSKF_9IvOENAwTOSitBbj1NBPuyqYcWf-K-2n3OX_jua9shAYWj-BuZughEEUVksbDKYsQQ&oh=278db548787764531dc14478690c2be7&oe=5BB86A03',
                                   //timeout: 4000,
@@ -222,7 +221,7 @@ export class NavbarComponent implements OnInit {
                                     window.focus();
                                     //this.close();
                                   }
-                              });
+                                });
                               }
                               break;
                             default:
@@ -273,14 +272,13 @@ export class NavbarComponent implements OnInit {
       enableSearchFilter: true,
       badgeShowLimit: 2
     };
-    var push = window['Push']
-    if(push){
-      if(!push.Permission.has())
+    if(window['Push']){
+      if(!window['Push'].Permission.has())
       {
-        push.Permission.request(() => {
-          console.log(push.Permission.has());
+        window['Push'].Permission.request(() => {
+          console.log(window['Push'].Permission.has());
         }, () => {
-          console.log(push.Permission.has());
+          console.log(window['Push'].Permission.has());
         });
       }
     }
