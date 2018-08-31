@@ -74,7 +74,7 @@
                 <td>
                   <span *ngFor="let resident of item.residents">{{resident.firstName}} {{resident.lastName}}</span>
                 </td>
-                <td>{{item.creationDate | date}}</td>
+                <td>{{item.creationDate | date:'medium':'-0500' }}</td>
                 <td>
                   <span *ngFor="let resident of item.residents">{{resident.building.address}}</span>
                 </td>
@@ -95,7 +95,7 @@
                     </span>
                   </span>
                 </td>
-                <td>{{ item.scheduledFor | date }}</td>
+                <td>{{ item.scheduledFor | date:'medium':'-0500' }}</td>
                 <!-- <td></td> -->
                 <td>
                   <span *ngFor="let vendor of item.assignedVendors">{{vendor.vendorData.name}}</span>
