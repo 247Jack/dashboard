@@ -30,8 +30,10 @@
   <script src="assets/scripts/app.min.js"></script>
   <script>
     $(document).ready(function(){
+      var currentPM = JSON.parse(localStorage.getItem("propertyManagerData"))
       window.Intercom("boot", {
-        app_id: "n6774gvu"
+        app_id: "n6774gvu",
+        email: currentPM.email || ""
       });
       $('#collapse-inputs').click(function (){
         $('.editor').collapse('hide')
