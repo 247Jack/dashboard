@@ -49,7 +49,7 @@ export class TicketsService {
     const options = new RequestOptions({ 'headers': headers });
     */
     return this.http.get(
-      `${environment.api_domain}/dashboard/tasks/${task_id}/evaluatethreshold?action=${action}`,
+      `${environment.api_domain}/dashboard/tasks/${task_id}/evaluatethreshold?type=${action}`,
       {}
     )
     .catch(error => {
