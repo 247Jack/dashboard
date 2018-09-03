@@ -146,8 +146,9 @@ export class NavbarComponent implements OnInit {
                   console.log(incoming_message);
                   if (
                     incoming_message &&
-                    (incoming_message["typeMessage"] === "book.service" ||
-                      incoming_message["typeMessage"] === "unknown")
+                    incoming_message['humanTakeover'] ||
+                    (!incoming_message['humanTakeover'] && incoming_message["typeMessage"] === "book.service") ||
+                    (!incoming_message['humanTakeover'] && incoming_message["typeMessage"] === "hold")
                   ) {
                     this.chat
                       .checkIncomingMessage(
