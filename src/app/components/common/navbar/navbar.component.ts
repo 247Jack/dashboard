@@ -215,7 +215,7 @@ export class NavbarComponent implements OnInit {
                               if(window['Push']){
                                 window['Push'].create("A resident made a request", {
                                   body: "A resident send a message to Jack. Please help them.",
-                                  icon: 'https://scontent.fmex3-1.fna.fbcdn.net/v/t1.0-1/p50x50/31326812_163089087703705_3588846289191503395_n.png?_nc_cat=0&_nc_eui2=AeFGlGoRkE6nBxIJS6YAw3n2AzVxrF5cJV9GRoVdSKF_9IvOENAwTOSitBbj1NBPuyqYcWf-K-2n3OX_jua9shAYWj-BuZughEEUVksbDKYsQQ&oh=278db548787764531dc14478690c2be7&oe=5BB86A03',
+                                  icon: 'assets/images/Notification_logo.png',
                                   //timeout: 4000,
                                   onClick: function () {
                                     window.focus();
