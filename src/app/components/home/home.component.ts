@@ -20,24 +20,16 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.spinnerService.show();
     var waitForPMData = setInterval(() => {
       this.currentPropertyManager = JSON.parse(
         localStorage.getItem("propertyManagerData")
       );
       if (this.currentPropertyManager) {
         clearInterval(waitForPMData);
-        this.ticket
-          .getTickets(this.currentPropertyManager["_id"])
-          .subscribe(data => {
-            console.log(data);
-            this.spinnerService.hide();
-            this.tickets = data;
-            for (let i in data) {
-              this.date = data[i].creationDate.split("T")[0];
-              this.time = data[i].creationDate.split(/\.|\T/)[1];
-            }
-          });
+        this.loadTasks();
+        this.ticket.update.subscribe(updating => {
+          this.loadTasks();
+        });
       }
     }, 100);
   }
@@ -57,5 +49,20 @@ export class HomeComponent implements OnInit {
       .subscribe(data => {
         console.log(data);
       });
+  }
+
+  private loadTasks(){
+    this.spinnerService.show();
+    this.ticket
+    .getTickets(this.currentPropertyManager["_id"])
+    .subscribe(data => {
+      console.log(data);
+      this.spinnerService.hide();
+      this.tickets = data;
+      for (let i in data) {
+        this.date = data[i].creationDate.split("T")[0];
+        this.time = data[i].creationDate.split(/\.|\T/)[1];
+      }
+    });
   }
 }

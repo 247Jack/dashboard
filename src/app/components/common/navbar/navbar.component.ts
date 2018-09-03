@@ -356,6 +356,7 @@ export class NavbarComponent implements OnInit {
             this.modalBody =
               "Your service order has been submitted successfully";
             this.modal.open();
+            this.tasks.updateDashoboard();
           } else {
             this.modalTitle = "System Error";
             this.modalBody =

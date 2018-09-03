@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, Output, EventEmitter } from "@angular/core";
 import { Http, Headers, RequestOptions } from "@angular/http";
 import { Subject } from "rxjs/Subject";
 import { Observable } from "rxjs/Observable";
@@ -8,6 +8,9 @@ import { environment } from "../../environments/environment";
 
 @Injectable()
 export class TicketsService {
+
+  @Output() update: EventEmitter<boolean> = new EventEmitter();
+
   constructor(private http: Http) {}
 
   public getTickets(pm_id) {
@@ -55,6 +58,10 @@ export class TicketsService {
     .catch(error => {
       return Observable.throw(error.message || error);
     });
+  }
+
+  public updateDashoboard(){
+    this.update.emit(null);
   }
 
 
