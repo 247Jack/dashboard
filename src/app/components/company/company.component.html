@@ -10,11 +10,20 @@
           </svg>
         </a>
         <!-- Page title -->
-        <div class="navbar-text nav-title flex" id="pageTitle">Select Company</div>
+        <div class="navbar-text nav-title flex" id="pageTitle"></div>
       </div>
     </div>
     <div class="container">
       <div class="content-main d-flex flex mt-5">
+        <div class="select-company w-75 mx-auto">
+          <div class="form-group">
+            <h5>Select Property</h5>
+            <angular2-multiselect [data]="itemList" [(ngModel)]="selectedItems" [settings]="settings" (onSelect)="onItemSelect($event)"
+              (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)">
+            </angular2-multiselect>
+
+          </div>
+        </div>
       </div>
     </div>
   </div>
