@@ -4,6 +4,7 @@ import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { ContactsService } from "../../services/contacts.service";
 import { ModalComponent } from "dsg-ng2-bs4-modal/ng2-bs4-modal";
 import * as _ from "lodash";
+import { Console } from "@angular/core/src/console";
 @Component({
   selector: "app-contacts",
   templateUrl: "./contacts.component.html",
@@ -12,6 +13,8 @@ import * as _ from "lodash";
 export class ContactsComponent implements OnInit {
 
   private getContactsConn;
+  items= [{ name: "archie" }, { name: "jake" }, { name: "richard" }];
+
 
   public contactsUsers = [];
   public contactsProviders = [];
@@ -175,6 +178,7 @@ export class ContactsComponent implements OnInit {
       );
       this.dataLoaded = true;
       this.spinnerService.hide();
+      console.log(this.currentContacts)
     });
     this.activatedRoute.params.subscribe(params => {
       this.currentContactType = "";

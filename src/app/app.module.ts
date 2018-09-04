@@ -2,24 +2,23 @@ import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 import { AppRouting } from "./app.routes";
 import { HttpModule } from "@angular/http";
-import { ReactiveFormsModule } from '@angular/forms';
-import { AngularDateTimePickerModule } from 'angular2-datetimepicker';
-import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown'
-import {NgxDatatableModule} from '@swimlane/ngx-datatable'
+import { ReactiveFormsModule } from "@angular/forms";
+import { AngularDateTimePickerModule } from "angular2-datetimepicker";
+import { AngularMultiSelectModule } from "angular2-multiselect-dropdown/angular2-multiselect-dropdown";
+import { NgxDatatableModule } from "@swimlane/ngx-datatable";
+import { Ng2SearchPipeModule } from "ng2-search-filter";
+
 import { OktaAuthModule } from "@okta/okta-angular";
 import {
   DropzoneModule,
   DROPZONE_CONFIG,
   DropzoneConfigInterface
 } from "ngx-dropzone-wrapper";
-import {
-  LocationStrategy,
-  PathLocationStrategy
-} from "@angular/common";
+import { LocationStrategy, PathLocationStrategy } from "@angular/common";
 //import { SimpleNotificationsModule } from "angular2-notifications";
 //import { PushNotificationsModule } from "ng-push";
 import { ModalModule } from "dsg-ng2-bs4-modal/ng2-bs4-modal";
-import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
+import { Ng4LoadingSpinnerModule } from "ng4-loading-spinner";
 
 //import { StompService, StompConfig } from "@stomp/ng2-stompjs";
 
@@ -38,9 +37,9 @@ import { TicketsService } from "./services/tickets.service";
 import { environment } from "../environments/environment";
 import { RelativeDatePipe } from "./pipes/relative-date.pipe";
 import { ContactsService } from "./services/contacts.service";
-import { AccountService } from './services/account.service';
+import { AccountService } from "./services/account.service";
 import { IssuesService } from "./services/issues.service";
-import { CompanyComponent } from './components/company/company.component';
+import { CompanyComponent } from "./components/company/company.component";
 
 const oktaConfig = {
   issuer: "https://dev-825764.oktapreview.com/oauth2/default",
@@ -97,7 +96,8 @@ const stompConfig: StompConfig = {
     ReactiveFormsModule,
     Ng4LoadingSpinnerModule.forRoot(),
     ModalModule,
-    NgxDatatableModule
+    NgxDatatableModule,
+    Ng2SearchPipeModule
   ],
   providers: [
     ContactsService,
