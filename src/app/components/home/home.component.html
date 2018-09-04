@@ -52,6 +52,115 @@
           </div>
         </div> -->
         <div class="box mb-0 height-table">
+          <ngx-datatable class="material" [rows]="tickets" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
+            [rowHeight]="'auto'" [limit]="5" [scrollbarH]="true">
+            <ngx-datatable-column name="Name" [width]="90">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                <span *ngFor="let resident of row.residents">{{resident.firstName}} {{resident.lastName}}</span>
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Received" [width]="125">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                <span>{{row.creationDate | date:'medium':'-0500' }}</span>
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Address" [width]="125">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                <span *ngFor="let resident of row.residents">{{resident.building.address}}</span>
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Portfolio" [width]="150">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                <span *ngFor="let resident of row.residents">{{resident.portfolio}}</span>
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Service" [width]="100">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                <span *ngFor="let issue of row.relatedIssue">{{issue.issueToken}}</span>
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Issue" [width]="80">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                <span id="issue-popup" data-placement="bottom">
+                  <span class="overflow-text">{{ row.issueData.repairDescription}}</span>
+                  <span class="position-relative">
+                    <div class="box-color text-color pos-rlt arrow-issue">
+                      <span class="arrow b-white top"></span>
+                      <div class="box-body">{{ row.issueData.repairDescription}}</div>
+                    </div>
+                  </span>
+                </span>
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Preferred Date/Time" [width]="135">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                <span>{{ row.scheduledFor | date:'medium':'-0500' }}</span>
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Vendor" [width]="100">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                <span *ngFor="let vendor of row.assignedVendors">{{vendor.vendorData.name}}</span>
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Cost" [width]="50">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                <span>${{ row.issueData.repairCost }}</span>
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Status" [width]="120">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                <div [ngSwitch]="row.status">
+                  <div *ngSwitchCase="'available'">
+                    <button class="badge btn-clean blue" type="button">Created</button>
+                  </div>
+                  <div *ngSwitchCase="'checked'">
+                    <button class="badge btn-clean yellow" type="button">Checked by vendor</button>
+                  </div>
+                  <div *ngSwitchCase="'assigned'">
+                    <button class="badge btn-clean orange" type="button">Asigned to vendor</button>
+                  </div>
+                  <div *ngSwitchCase="'evaluating'">
+                    <button class="badge btn-clean red" (click)="checkPendientTask($event, row)" type="button"
+                      data-toggle="modal" data-target="#modal-status">Requires atention</button>
+                  </div>
+                  <div *ngSwitchCase="'approved'">
+                    <button class="badge btn-clean brown" type="button">Approved</button>
+                  </div>
+                  <div *ngSwitchCase="'denied'">
+                    <button class="badge btn-clean grey" type="button">Canceled</button>
+                  </div>
+                  <div *ngSwitchCase="'finished'">
+                    <button class="badge btn-clean green" type="button">Completed</button>
+                  </div>
+                  <div *ngSwitchDefault>
+                    <button class="badge btn-clean white" type="button">This status shouldn't exist</button>
+                  </div>
+                </div>
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="" [width]="50">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                <div *ngFor="let resident of row.residents">
+                  <a [routerLink]="['/messages', resident._id]" class="white btn-border" id="arrow-messages">
+                    <div class="box-color text-color pos-rlt messages-slider-button">
+                      <span class="arrow top pull-right b-white "></span>
+                      <div class="box-body">Click to go to chat user</div>
+                    </div>
+                    <i class="fa fa-comment"></i>
+                  </a>
+                  <a [routerLink]="['/contacts', resident._id]" class="white btn-border " id="arrow-user">
+                    <div class="box-color text-color pos-rlt user-slider-button">
+                      <span class="arrow top pull-right b-white "></span>
+                      <div class="box-body">Click to go to user info</div>
+                    </div>
+                    <i class="fa fa-user"></i>
+                  </a>
+                </div>
+              </ng-template>
+            </ngx-datatable-column>
+          </ngx-datatable>
+        </div>
+        <!-- <div class="box mb-0 height-table">
           <table class="table">
             <thead>
               <tr>
@@ -62,7 +171,6 @@
                 <th>Service</th>
                 <th>Issue</th>
                 <th>Preferred Date/Time</th>
-                <!-- <th>Teammate</th> -->
                 <th>Vendor</th>
                 <th>Cost</th>
                 <th>Status</th>
@@ -96,7 +204,6 @@
                   </span>
                 </td>
                 <td>{{ item.scheduledFor | date:'medium':'-0500' }}</td>
-                <!-- <td></td> -->
                 <td>
                   <span *ngFor="let vendor of item.assignedVendors">{{vendor.vendorData.name}}</span>
                 </td>
@@ -148,7 +255,7 @@
               </tr>
             </tbody>
           </table>
-        </div>
+        </div> -->
       </div>
     </div>
     <div class="modal fade show" id="user" data-backdrop="true" data-class="modal-open-aside">
@@ -282,7 +389,8 @@
                     </div>
                     <div class="chat-content rounded msg">
                       <button class="btn-sm btn-rounded primary b-2x" data-dismiss="modal">Select vendors</button>&nbsp;
-                      <button class="btn-sm btn-rounded primary b-2x" data-toggle="modal" data-target="#m-a-f">Vendors pool</button>
+                      <button class="btn-sm btn-rounded primary b-2x" data-toggle="modal" data-target="#m-a-f">Vendors
+                        pool</button>
                     </div>
                     <div class="chat-date date">
                       Rigth now (only visible for you)
@@ -310,8 +418,10 @@
             <p>Repair description: {{currentTicket.issueData.repairDescription}}</p>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="evaluateTask('approve')">Approve task cost</button>
-            <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="evaluateTask('deny')">Deny and cancel task</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="evaluateTask('approve')">Approve
+              task cost</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="evaluateTask('deny')">Deny and
+              cancel task</button>
           </div>
         </div>
       </div>

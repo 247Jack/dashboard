@@ -5,6 +5,7 @@ import { HttpModule } from "@angular/http";
 import { ReactiveFormsModule } from '@angular/forms';
 import { AngularDateTimePickerModule } from 'angular2-datetimepicker';
 import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown'
+import {NgxDatatableModule} from '@swimlane/ngx-datatable'
 import { OktaAuthModule } from "@okta/okta-angular";
 import {
   DropzoneModule,
@@ -93,7 +94,8 @@ const stompConfig: StompConfig = {
     AngularMultiSelectModule,
     ReactiveFormsModule,
     Ng4LoadingSpinnerModule.forRoot(),
-    ModalModule
+    ModalModule,
+    NgxDatatableModule
   ],
   providers: [
     ContactsService,

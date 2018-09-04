@@ -23,6 +23,7 @@
     "@angular/router": "^5.2.0",
     "@okta/okta-angular": "^1.0.1",
     "@stomp/ng2-stompjs": "^4.0.0",
+    "@swimlane/ngx-datatable": "^11.3.2",
     "@types/lodash": "^4.14.109",
     "@types/socket.io-client": "^1.4.32",
     "amqplib": "^0.5.2",
