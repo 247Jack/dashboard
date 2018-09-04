@@ -88,13 +88,13 @@ export class MessagesComponent
             if(targetUser >= 0)
             {
               this.users[targetUser].lastMessage.content = incoming_message['content'];
-              document.getElementById("invisibletriggerbutton").click();
-            }
-            setTimeout(() => {
               this.messages.push(incoming_message);
-              this.scrollToBottom();
-              document.getElementById("messageBox").click();
-            },10)
+              setTimeout(() => {
+                this.scrollToBottom();
+                document.getElementById("invisibletriggerbutton").click();
+                document.getElementById("messageBox").click();
+              },50)
+            }
           }
           else
           {
@@ -103,11 +103,11 @@ export class MessagesComponent
             console.log(targetUser)
             if(targetUser >= 0)
             {
-              //setTimeout(() => {
-                this.users[targetUser].unread = true;
-                this.users[targetUser].lastMessage.content = incoming_message['content'];
+              this.users[targetUser].unread = true;
+              this.users[targetUser].lastMessage.content = incoming_message['content'];
+              setTimeout(() => {
                 document.getElementById("invisibletriggerbutton").click();
-              //},10)
+              },50)
             }
           }
         },

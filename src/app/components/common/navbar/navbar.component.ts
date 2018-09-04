@@ -145,11 +145,23 @@ export class NavbarComponent implements OnInit {
                 .subscribe(incoming_message => {
                   console.log(incoming_message);
                   if (
-                    incoming_message &&
-                    incoming_message['humanTakeover'] ||
-                    (!incoming_message['humanTakeover'] && incoming_message["typeMessage"] === "book.service") ||
-                    (!incoming_message['humanTakeover'] && incoming_message["typeMessage"] === "hold")
+                    incoming_message && incoming_message['direction'] === 'in'
                   ) {
+                    if(window['Push']){
+                      window['Push'].create("A resident made a request", {
+                        body: "A resident send a message to Jack. Please help them.",
+                        icon: 'assets/images/Notification_logo.png',
+                        requireInteraction: true,
+                        onClick: function () {
+                          window.focus();
+                          this.close();
+                        }
+                      });
+                      setTimeout(() => {
+                        document.getElementById("invisibletriggerbuttonNav").click();
+                      },25)
+                    }
+                    /*
                     this.chat
                       .checkIncomingMessage(
                         incoming_message["threadId"],
@@ -158,80 +170,12 @@ export class NavbarComponent implements OnInit {
                       .subscribe(
                         messageStatus => {
                           console.log(messageStatus["status"]);
-                          /*
-                    this.chatConn = this.chat
-                      .listenMessages(this.currentPropertyManager)
-                      .map((message: any) => {
-                        return message;
-                      })
-                      .subscribe(incoming_message => {
-                        if (
-                          incoming_message &&
-                          incoming_message["typeMessage"] !== "greeting"
-                        ) {
-                          this.chat
-                            .checkIncomingMessage(
-                              incoming_message.threadId,
-                              this.currentPropertyManager._id
-                            )
-                            .subscribe(messageStatus => {
-                              console.log(messageStatus["status"]);
-                              /*
-                            Cases of message notifications:
-                              unattended: Attended by no property manager, needs to be responded by a human, so it triggers a notification.
-                              attended_by_me: Attended by current property manager, so it triggers a notification.
-                              attended_by_other: Attended by another propery manager, so it doesn't trigger a notification.
-                      */
-                          switch (messageStatus["status"]) {
-                            case "unattended":
-                            case "attended_by_me":
-                              this.unread_messages = "New!";
-                              /*
-                              this._push
-                                .create("New message from resident", {
-                                  icon:
-                                    "https://scontent.fmex3-1.fna.fbcdn.net/v/t1.0-1/p50x50/31326812_163089087703705_3588846289191503395_n.png?_nc_cat=0&_nc_eui2=AeFGlGoRkE6nBxIJS6YAw3n2AzVxrF5cJV9GRoVdSKF_9IvOENAwTOSitBbj1NBPuyqYcWf-K-2n3OX_jua9shAYWj-BuZughEEUVksbDKYsQQ&oh=278db548787764531dc14478690c2be7&oe=5BB86A03",
-                                  body:
-                                    "A resident send a message to Jack. Please help them."
-                                })
-                                .subscribe(
-                                  res => console.log(res),
-                                  err => this._push.requestPermission()
-                                );
-                              this.unread_messages = this.chat.getNewMessagesCount();
-                              */
-                             /*
-                              this._notificationsService.html(
-                                "A resident request help",
-                                "would you like to attend them?",
-                                {
-                                  timeOut: 100,
-                                  showProgressBar: true,
-                                  pauseOnHover: false,
-                                  clickToClose: true,
-                                  maxLength: 15
-                                }
-                              );
-                              */
-                              if(window['Push']){
-                                window['Push'].create("A resident made a request", {
-                                  body: "A resident send a message to Jack. Please help them.",
-                                  icon: 'assets/images/Notification_logo.png',
-                                  //timeout: 4000,
-                                  onClick: function () {
-                                    window.focus();
-                                    //this.close();
-                                  }
-                                });
-                              }
-                              break;
-                            default:
-                          }
                         },
                         error => {
                           console.log(error);
                         }
                       );
+                      */
                   }
                 });
             }
