@@ -53,7 +53,7 @@
         </div> -->
         <div class="box mb-0 height-table">
           <ngx-datatable class="material" [rows]="tickets" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
-            [rowHeight]="'auto'" [limit]="5" [scrollbarH]="true">
+            [rowHeight]="'auto'" [limit]="limitRows" [scrollbarH]="true">
             <ngx-datatable-column name="Name" [width]="90">
               <ng-template ngx-datatable-cell-template let-row="row">
                 <span *ngFor="let resident of row.residents">{{resident.firstName}} {{resident.lastName}}</span>

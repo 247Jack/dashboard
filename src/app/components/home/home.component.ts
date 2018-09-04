@@ -14,12 +14,14 @@ export class HomeComponent implements OnInit {
   public date;
   public currentPropertyManager;
   public currentTicket;
+  public limitRows:Number = 1
   constructor(
     private spinnerService: Ng4LoadingSpinnerService,
     private ticket: TicketsService
   ) {}
 
   ngOnInit() {
+    this.limitRows = Math.ceil((window.innerHeight-300)/100)
     var waitForPMData = setInterval(() => {
       this.currentPropertyManager = JSON.parse(
         localStorage.getItem("propertyManagerData")
