@@ -13,10 +13,9 @@ import { Console } from "@angular/core/src/console";
 export class ContactsComponent implements OnInit {
 
   private getContactsConn;
-  items= [{ name: "archie" }, { name: "jake" }, { name: "richard" }];
-
 
   public contactsUsers = [];
+  public filtercontacts = "";
   public contactsProviders = [];
   public contactsPropertyManagers = [];
   public currentContacts = [];
@@ -146,7 +145,7 @@ export class ContactsComponent implements OnInit {
                 }`
               : "",
           email: data.vendorsResult[i].vendorData.email,
-          mobile: data.vendorsResult[i].vendorData.mobile,
+          mobile: data.vendorsResult[i].vendorData.mobile || "",
           originalData: data.usersResult[i]
         };
         this.contactsProviders.push(userData);
@@ -244,14 +243,17 @@ export class ContactsComponent implements OnInit {
             case "users":
               this.currentContacts = [];
               this.currentContacts = this.contactsUsers;
+              console.log(this.currentContacts)
               break;
             case "providers":
               this.currentContacts = [];
               this.currentContacts = this.contactsProviders;
+              console.log(this.currentContacts)
               break;
             case "managers":
               this.currentContacts = [];
               this.currentContacts = this.contactsPropertyManagers;
+              console.log(this.currentContacts)
               break;
             default:
               this.currentContacts = [];

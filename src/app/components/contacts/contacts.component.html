@@ -80,7 +80,7 @@
           <div class="d-flex flex-column flex" id="user-list">
             <div class="navbar white no-radius box-shadow pos-rlt">
                 <div class="input-group">
-                  <input type="text" class="form-control form-control-sm search" placeholder="Search" [(ngModel)]="term" id="input-contact">
+                  <input type="text" class="form-control form-control-sm search" placeholder="Search" [(ngModel)]="filtercontacts" id="input-contact">
                   <span class="input-group-btn">
                     <button class="btn btn-default btn-sm no-shadow" type="button">
                       <i class="fa fa-search"></i>
@@ -92,7 +92,7 @@
               <div class="d-flex flex-column flex white lt">
                 <div class="scroll-y">
                   <div class="list animate fadeIn">
-                    <div class="list-item " *ngFor="let item of currentContacts | filter:term">
+                    <div class="list-item " *ngFor="let item of currentContacts | filter:filtercontacts">
                       <span class="w-40 avatar circle {{item.color}}">
                         {{item.initials}}
                       </span>
@@ -104,9 +104,6 @@
                           </span>
                         </a>
                         <div class="item-except text-sm text-muted h-1x">
-                        </div>
-                        <div class="item-tag tag hide" id="tag-id">
-                          Providers
                         </div>
                       </div>
                       <!--div>
