@@ -56,9 +56,9 @@ export class HomeComponent implements OnInit {
     this.ticket
     .getTickets(this.currentPropertyManager["_id"])
     .subscribe(data => {
-      console.log(data);
       this.spinnerService.hide();
       this.tickets = data;
+      console.log(this.tickets);
       for (let i in data) {
         this.date = data[i].creationDate.split("T")[0];
         this.time = data[i].creationDate.split(/\.|\T/)[1];
