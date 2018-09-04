@@ -60,6 +60,7 @@ export class HomeComponent implements OnInit {
     .subscribe(data => {
       this.spinnerService.hide();
       this.tickets = data;
+      this.tickets.reverse()
       console.log(this.tickets);
       for (let i in data) {
         this.date = data[i].creationDate.split("T")[0];

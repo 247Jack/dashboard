@@ -40,6 +40,7 @@ import { RelativeDatePipe } from "./pipes/relative-date.pipe";
 import { ContactsService } from "./services/contacts.service";
 import { AccountService } from './services/account.service';
 import { IssuesService } from "./services/issues.service";
+import { CompanyComponent } from './components/company/company.component';
 
 const oktaConfig = {
   issuer: "https://dev-825764.oktapreview.com/oauth2/default",
@@ -79,7 +80,8 @@ const stompConfig: StompConfig = {
     HomeComponent,
     AutomationsComponent,
     ContactsComponent,
-    RelativeDatePipe
+    RelativeDatePipe,
+    CompanyComponent
   ],
   imports: [
     AppRouting,

@@ -5,6 +5,7 @@ import { HomeComponent } from "./components/home/home.component";
 import { MessagesComponent } from "./components/messages/messages.component";
 import { AutomationsComponent } from "./components/automations/automations.component";
 import { ContactsComponent } from "./components/contacts/contacts.component";
+import { CompanyComponent } from "./components/company/company.component";
 
 const app_routes: Routes = [
   { path: "login", component: LoginComponent },
@@ -33,6 +34,11 @@ const app_routes: Routes = [
   {
     path: "contacts/:contactId",
     component: ContactsComponent,
+    canActivate: [OktaAuthGuard]
+  },
+  {
+    path: "company",
+    component: CompanyComponent,
     canActivate: [OktaAuthGuard]
   },
   { path: "**", pathMatch: "full", redirectTo: "home" }
