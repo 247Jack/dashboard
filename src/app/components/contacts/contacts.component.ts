@@ -146,7 +146,7 @@ export class ContactsComponent implements OnInit {
               : "",
           email: data.vendorsResult[i].vendorData.email,
           mobile: data.vendorsResult[i].vendorData.mobile || "",
-          originalData: data.usersResult[i]
+          originalData: data.vendorsResult[i]
         };
         this.contactsProviders.push(userData);
       }
@@ -163,7 +163,7 @@ export class ContactsComponent implements OnInit {
           }`,
           email: data.pManagersResult[i].email,
           mobile: data.pManagersResult[i].contact.mobile,
-          originalData: data.usersResult[i]
+          originalData: data.pManagersResult[i]
         };
         this.contactsPropertyManagers.push(userData);
       }
