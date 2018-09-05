@@ -151,8 +151,8 @@ export class MessagesComponent
                   this.user = data;
                   this.userInitials = data.firstName[0] + data.lastName[0];
                   this.key = data.app[`${this.service}`]
-                  this.humanTakeover = data.threads[0]["humanTakeover"];
-                  this.threadId = data.threads[0]["_id"];
+                  this.humanTakeover = (data.threads.length) ? data.threads[0]["humanTakeover"] : true;
+                  this.threadId = (data.threads.length) ? data.threads[0]["_id"] : "";
                   this.scrollToBottom();
                   this.spinnerService.hide();
                   var waitForUsersData = setInterval(() => {
