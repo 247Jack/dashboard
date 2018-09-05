@@ -23,4 +23,13 @@ export class CompanyComponent implements OnInit {
   onItemSelect(item: any) {
     console.log(item);
   }
+  OnItemDeSelect(item: any) {
+    console.log(item);
+  }
+  onSelectAll(item: any) {
+    console.log(item);
+  }
+  onDeSelectAll(item: any) {
+    console.log(item);
+  }
 }
