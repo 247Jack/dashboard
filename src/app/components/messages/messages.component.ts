@@ -150,8 +150,8 @@ export class MessagesComponent
                   this.messages = data.messages;
                   this.user = data;
                   this.userInitials = data.firstName[0] + data.lastName[0];
-                  this.key = data.app[`${this.service}`]
-                  this.humanTakeover = (data.threads.length) ? data.threads[0]["humanTakeover"] : true;
+                  this.key = (this.service === "alexa") ? data.app["sms"] : data.app[`${this.service}`];
+                  this.humanTakeover = (data.threads.length && this.service !== "alexa") ? data.threads[0]["humanTakeover"] : true;
                   this.threadId = (data.threads.length) ? data.threads[0]["_id"] : "";
                   this.scrollToBottom();
                   this.spinnerService.hide();
@@ -199,7 +199,7 @@ export class MessagesComponent
   sendMessage(e) {
     if (!!e.value.trim()) {
       var messageData = {
-        platform: this.service,
+        platform: (this.service === "alexa") ? "sms": this.service,
         content: e.value,
         uid: this.key,
         userId: this.userId,
