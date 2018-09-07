@@ -8,6 +8,7 @@ import { AccountService } from "../../../services/account.service";
 import { IssuesService } from "../../../services/issues.service";
 import { ContactsService } from "../../../services/contacts.service";
 import { TicketsService } from "../../../services/tickets.service";
+import { environment } from "../../../../environments/environment";
 import { OktaAuthService } from "@okta/okta-angular";
 import { ModalComponent } from "dsg-ng2-bs4-modal";
 
@@ -24,6 +25,8 @@ export class NavbarComponent implements OnInit {
   private getVendorsConn;
   private getTenatsConn;
   private getIssuesConn;
+  public validTask = false;
+  public canSwitchCompany = false;
 
   public currentPropertyManager: any = {};
   public messageCounter = {
@@ -51,14 +54,10 @@ export class NavbarComponent implements OnInit {
   public modalTitle = "";
   public modalBody = "";
   public newTaskForm;
-  private validTask = false;
 
   constructor(
     private router: Router,
-    private activatedRouter: ActivatedRoute,
     private spinnerService: Ng4LoadingSpinnerService,
-    //private _notificationsService: NotificationsService,
-    //private _push: PushNotificationsService,
     private oktaAuth: OktaAuthService,
     private chat: ChatService,
     private account: AccountService,
@@ -82,7 +81,7 @@ export class NavbarComponent implements OnInit {
             if (!accountData) {
               alert(
                 `You've access this platform with the email ${
-                  user.email
+                user.email
                 }, however, you need active account to interact with the platform. Please contact Jack support.`
               );
             } else {
@@ -95,6 +94,7 @@ export class NavbarComponent implements OnInit {
               /*
               Storage of vendors and tenants to desplay in the "New task" modal.
             */
+              this.canSwitchCompany = (accountData.email.split('@')[1] === environment.validEmailDom )
               this.getVendorsConn = this.contacts
                 .getContacts(this.currentPropertyManager["_id"], "vendors")
                 .subscribe(listVendors => {
@@ -104,9 +104,9 @@ export class NavbarComponent implements OnInit {
                       id: listVendors["vendorsResult"][v]._id,
                       itemName: `${
                         listVendors["vendorsResult"][v]["vendorData"]["name"]
-                      } (${
+                        } (${
                         listVendors["vendorsResult"][v]["vendorData"]["jobType"]
-                      })`
+                        })`
                     });
                   this.vendorlist = vendorsList;
                 });
@@ -119,7 +119,7 @@ export class NavbarComponent implements OnInit {
                       id: listResidents["usersResult"][r]._id,
                       itemName: `${
                         listResidents["usersResult"][r]["firstName"]
-                      } ${listResidents["usersResult"][r]["lastName"]}`
+                        } ${listResidents["usersResult"][r]["lastName"]}`
                     });
                   this.residentlist = residentsList;
                 });
@@ -147,7 +147,7 @@ export class NavbarComponent implements OnInit {
                   if (
                     incoming_message && incoming_message['direction'] === 'in'
                   ) {
-                    if(window['Push']){
+                    if (window['Push']) {
                       window['Push'].create("A resident made a request", {
                         body: "A resident send a message to Jack. Please help them.",
                         icon: 'assets/images/Notification_logo.png',
@@ -159,7 +159,7 @@ export class NavbarComponent implements OnInit {
                       });
                       setTimeout(() => {
                         document.getElementById("invisibletriggerbuttonNav").click();
-                      },25)
+                      }, 25)
                     }
                     /*
                     this.chat
@@ -217,9 +217,8 @@ export class NavbarComponent implements OnInit {
       enableSearchFilter: true,
       badgeShowLimit: 2
     };
-    if(window['Push']){
-      if(!window['Push'].Permission.has())
-      {
+    if (window['Push']) {
+      if (!window['Push'].Permission.has()) {
         window['Push'].Permission.request(() => {
           console.log(window['Push'].Permission.has());
         }, () => {
@@ -227,7 +226,7 @@ export class NavbarComponent implements OnInit {
         });
       }
     }
-    
+
   }
 
   /*

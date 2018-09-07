@@ -60,6 +60,14 @@
                 <span class="nav-text">Contacts</span>
               </a>
             </li>
+            <li *ngIf="canSwitchCompany">
+              <a [routerLink]="['/company']" class="btn-active">
+                <span class="nav-icon">
+                  <i class="fa fa-gear"></i>
+                </span>
+                <span class="nav-text">Switch company</span>
+              </a>
+            </li>
             <li class="pb-2 hidden-folded"></li>
           </ul>
         </div>

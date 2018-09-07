@@ -1,4 +1,6 @@
 import { Component, OnInit } from "@angular/core";
+import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
+import { CompanyService } from "../../services/companies.service"
 
 @Component({
   selector: "app-company",
@@ -7,21 +9,39 @@ import { Component, OnInit } from "@angular/core";
 })
 export class CompanyComponent implements OnInit {
 
-  itemList = [];
-  selectedItems = [];
-  settings = {};
+  private currentPropertyManager: any;
+  public itemList = [];
+  public selectedItems = [];
+  public settings = {};
 
-  constructor() {}
+  constructor(
+    private spinnerService: Ng4LoadingSpinnerService,
+    private companies: CompanyService
+  ) {}
   ngOnInit() {
-    this.itemList = [
-      { id: 1, itemName: "Property 1"},
-      { id: 2, itemName: "Property 2" },
-      { id: 3, itemName: "Property 3" },
-    ];
     this.settings = { singleSelection: true, text: "Select Property" };
+    this.spinnerService.show();
+    this.currentPropertyManager = JSON.parse(localStorage.getItem('propertyManagerData'));
+    this.companies.getCompanies(this.currentPropertyManager['_id']).subscribe(data => {
+      this.spinnerService.hide();
+      for(var co in data)
+      {
+        var currentItem = {
+          id: data[co]['_id'],
+          itemName: data[co]['name']
+        }
+        this.itemList.push(currentItem)
+        if(data[co]['name'] === this.currentPropertyManager.company)
+        {
+          this.selectedItems.push(currentItem)
+        }
+      }
+    })
   }
   onItemSelect(item: any) {
-    console.log(item);
+    this.companies.switchCompany(this.currentPropertyManager['_id'],item.id).subscribe(data => {
+      window.location.href = "/home";
+    });
   }
   OnItemDeSelect(item: any) {
     console.log(item);

@@ -10,5 +10,6 @@ export const environment = {
   socket_host: "https://dev.message-broker.247jack.com/",
   one_signal_appId: "1a63b37e-abee-4706-b3d0-91b34c02e988",
   secureSocket: false,
+  validEmailDom: "hotmail.com",
   self_host: "http://localhost:4200"
 };

@@ -31,6 +31,7 @@ import { HomeComponent } from "./components/home/home.component";
 import { AutomationsComponent } from "./components/automations/automations.component";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { ContactsComponent } from "./components/contacts/contacts.component";
+import { CompanyComponent } from "./components/company/company.component";
 
 import { ChatService } from "./services/chat.service";
 import { TicketsService } from "./services/tickets.service";
@@ -39,7 +40,7 @@ import { RelativeDatePipe } from "./pipes/relative-date.pipe";
 import { ContactsService } from "./services/contacts.service";
 import { AccountService } from "./services/account.service";
 import { IssuesService } from "./services/issues.service";
-import { CompanyComponent } from "./components/company/company.component";
+import { CompanyService } from "./services/companies.service";
 
 const oktaConfig = {
   issuer: "https://dev-825764.oktapreview.com/oauth2/default",
@@ -105,6 +106,7 @@ const stompConfig: StompConfig = {
     AccountService,
     TicketsService,
     IssuesService,
+    CompanyService,
     /*
     StompService,
     {
