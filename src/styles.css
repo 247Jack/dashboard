@@ -826,6 +826,9 @@ img.preview-image-chat {
   border-color: transparent;
   z-index: 1001;
 }
+.selected-list[_ngcontent-c3] .c-btn[_ngcontent-c3]{
+  padding: 7px !important; 
+}
 .active-nav span:before {
   top: 7px;
   border-bottom-color: #53a6fa;
