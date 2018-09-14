@@ -41,6 +41,7 @@ import { ContactsService } from "./services/contacts.service";
 import { AccountService } from "./services/account.service";
 import { IssuesService } from "./services/issues.service";
 import { CompanyService } from "./services/companies.service";
+import { BroadcastComponent } from './components/broadcast/broadcast.component';
 
 const oktaConfig = {
   issuer: "https://dev-825764.oktapreview.com/oauth2/default",
@@ -81,7 +82,8 @@ const stompConfig: StompConfig = {
     AutomationsComponent,
     ContactsComponent,
     RelativeDatePipe,
-    CompanyComponent
+    CompanyComponent,
+    BroadcastComponent
   ],
   imports: [
     AppRouting,

@@ -60,6 +60,14 @@
                 <span class="nav-text">Contacts</span>
               </a>
             </li>
+            <li>
+              <a [routerLink]="['/broadcast']" class="btn-active">
+                <span class="nav-icon">
+                  <i class="fa fa-book"></i>
+                </span>
+                <span class="nav-text">Broadcast</span>
+              </a>
+            </li>
             <li *ngIf="canSwitchCompany">
               <a [routerLink]="['/company']" class="btn-active">
                 <span class="nav-icon">

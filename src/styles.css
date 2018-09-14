@@ -13,7 +13,7 @@ app-messages {
 .ngx-datatable .datatable-body-cell,
 .ngx-datatable .datatable-header-cell {
   overflow-x: visible !important;
-  display: inline-block; 
+  display: inline-block;
   line-height: 1.625;
 }
 
@@ -136,10 +136,12 @@ app-home #content-main {
   max-width: 100vw;
   display: block;
 }
-.pager{
+
+.pager {
   padding-right: 50% !important;
   width: 100%;
 }
+
 .scroll-y {
   position: static;
 }
@@ -677,10 +679,12 @@ img.preview-image-chat {
 #notifications-b:hover .arrow-notifications {
   display: block;
 }
+
 #arrow-messages,
-#arrow-user{
-  background-color:transparent;
+#arrow-user {
+  background-color: transparent;
 }
+
 .arrow-issue {
   display: none;
   position: absolute;
@@ -783,11 +787,54 @@ img.preview-image-chat {
   #selec-vendors .modal-dialog {
     width: 60%;
   }
-  .pager{
+
+  .pager {
     padding: 0px 200px 0px 0px !important;
   }
 }
 
+#navbar-broadcast {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-flow: row nowrap;
+  flex-flow: row nowrap;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+}
+#navbar-broadcast .navbar-nav {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
+.border-navbar-broadcast{
+  border: 1px solid #53a6fa;
+  position: absolute;
+  bottom: 0px;
+  max-width: 75.7vw;
+}
+.active-nav span::before,
+.active-nav span::after {
+  content: "";
+  position: absolute;
+  display: block;
+  width: 0;
+  height: 0;
+  border-width: 20px 19px;
+  border-style: solid;
+  border-color: transparent;
+  z-index: 1001;
+}
+.active-nav span:before {
+  top: 7px;
+  border-bottom-color: #53a6fa;
+}
+
+.active-nav span:after {
+  top: 9px;
+  border-bottom-color: white;
+}
 @media screen and (max-width: 600px) {
 
   #new-auto-dispatch .modal-dialog-dispatch,

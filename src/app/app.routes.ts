@@ -6,6 +6,7 @@ import { MessagesComponent } from "./components/messages/messages.component";
 import { AutomationsComponent } from "./components/automations/automations.component";
 import { ContactsComponent } from "./components/contacts/contacts.component";
 import { CompanyComponent } from "./components/company/company.component";
+import { BroadcastComponent } from "./components/broadcast/broadcast.component";
 
 const app_routes: Routes = [
   { path: "login", component: LoginComponent },
@@ -35,6 +36,15 @@ const app_routes: Routes = [
     path: "contacts/:contactId",
     component: ContactsComponent,
     canActivate: [OktaAuthGuard]
+  },
+  {
+    path: "broadcast",
+    component: BroadcastComponent,
+    canActivate: [OktaAuthGuard], children: [
+      { path: 'tenants', component: BroadcastComponent},
+      { path: 'vendors', component: BroadcastComponent}
+
+    ]
   },
   {
     path: "company",
