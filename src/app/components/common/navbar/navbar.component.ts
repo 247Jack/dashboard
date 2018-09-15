@@ -127,7 +127,7 @@ export class NavbarComponent implements OnInit {
               Get issues cataloge for "new Task" modal
             */
               this.getIssuesConn = this.issues
-                .getIssues()
+                .getIssues(this.currentPropertyManager["_id"])
                 .subscribe(listIssues => {
                   var issueListNav = [];
                   for (var i in listIssues)

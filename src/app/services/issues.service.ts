@@ -11,10 +11,14 @@ export class IssuesService {
 
   constructor(private http: Http) { }
 
-  public getIssues() {
+  public getIssues(pm_id) {
+    const headers = new Headers();
+    headers.append('property_manager_id', pm_id);
+    const options = new RequestOptions({ 'headers': headers });
     return this.http
       .get(
-        `${environment.api_domain}/dashboard/issues`
+        `${environment.api_domain}/dashboard/issues`,
+        options
       )
       .map(res => {
         return res.json();
