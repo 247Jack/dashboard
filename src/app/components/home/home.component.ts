@@ -37,12 +37,10 @@ export class HomeComponent implements OnInit {
   }
 
   public checkPendientTask(event, task) {
-    console.log(task)
     this.currentTicket = task;
   }
 
   public evaluateTask(response) {
-    //console.log(response)
     this.ticket
       .evaluateTaskThreshold(
         this.currentTicket._id,
@@ -50,7 +48,7 @@ export class HomeComponent implements OnInit {
         this.currentPropertyManager._id
       )
       .subscribe(data => {
-        console.log(data);
+        this.loadTasks()
       });
   }
 
@@ -62,7 +60,6 @@ export class HomeComponent implements OnInit {
       this.spinnerService.hide();
       this.tickets = data;
       this.tickets.reverse()
-      console.log(this.tickets);
       for (let i in data) {
         this.date = data[i].creationDate.split("T")[0];
         this.time = data[i].creationDate.split(/\.|\T/)[1];
