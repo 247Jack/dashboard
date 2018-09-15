@@ -37,6 +37,7 @@ export class HomeComponent implements OnInit {
   }
 
   public checkPendientTask(event, task) {
+    console.log(task)
     this.currentTicket = task;
   }
 
