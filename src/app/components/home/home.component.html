@@ -417,7 +417,11 @@
             <p>Repair cost: {{currentTicket.issueData.repairCost}}</p>
             <p>Repair description: {{currentTicket.issueData.repairDescription}}</p>
             <p>Related pictures:</p>
-            <!--The images from currentTicket.issueData.issueImages go here -->
+            <div class="row">
+              <div class="col-4" *ngFor="let src of currentTicket.issueData.issueImages">
+                <img src="{{src}}" class="rounded img-fluid" alt="">
+              </div>
+            </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="evaluateTask('approve')">Approve
