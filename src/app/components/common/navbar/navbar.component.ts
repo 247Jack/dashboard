@@ -161,21 +161,23 @@ export class NavbarComponent implements OnInit {
                         document.getElementById("invisibletriggerbuttonNav").click();
                       }, 25)
                     }
-                    /*
-                    this.chat
-                      .checkIncomingMessage(
-                        incoming_message["threadId"],
-                        this.currentPropertyManager._id
-                      )
-                      .subscribe(
-                        messageStatus => {
-                          console.log(messageStatus["status"]);
-                        },
-                        error => {
-                          console.log(error);
+                  }
+                  else if(incoming_message && incoming_message['coreLogic'])
+                  {
+                    if (window['Push']) {
+                      window['Push'].create("An issue requires validation!", {
+                        body: "A task requires to be evaluated. Please check it.",
+                        icon: 'assets/images/Notification_logo.png',
+                        requireInteraction: true,
+                        onClick: function () {
+                          window.focus();
+                          this.close();
                         }
-                      );
-                      */
+                      });
+                      setTimeout(() => {
+                        document.getElementById("invisibletriggerbuttonNav").click();
+                      }, 25)
+                    }
                   }
                 });
             }

@@ -417,6 +417,7 @@
             <p>Repair cost: {{currentTicket.issueData.repairCost}}</p>
             <p>Repair description: {{currentTicket.issueData.repairDescription}}</p>
             <p>Related pictures:</p>
+            <p *ngIf="!currentTicket.issueData.repairDescription.length">No images were attached.</p>
             <div class="row">
               <div class="col-4" *ngFor="let src of currentTicket.issueData.issueImages">
                 <img src="{{src}}" class="rounded img-fluid" alt="">
