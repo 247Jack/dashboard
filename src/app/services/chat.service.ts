@@ -146,14 +146,17 @@ export class ChatService {
       });
   }
 
-  public assignTeammate(listTeam,threadId)
+  public assignTeammate(pm_id,listTeam,threadId)
   {
+    const headers = new Headers();
+    headers.append('property_manager_id', pm_id);
+    const options = new RequestOptions({ 'headers': headers });
     return this.http.post(
       `${environment.api_domain}/dashboard/messages`,
       {
         listPMs: listTeam,
         threadId: threadId
-      }
+      },options
     )
     .catch(error => {
       return Observable.throw(error.message || error);

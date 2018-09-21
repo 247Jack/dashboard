@@ -251,7 +251,7 @@ export class MessagesComponent
     //console.log(this.threadId)
     let arrayPMs = this.humanTakeover ? [this.currentPropertyManager._id] : [];
     this.chat
-      .assignTeammate(arrayPMs, this.threadId)
+      .assignTeammate(this.currentPropertyManager._id, arrayPMs, this.threadId)
       .subscribe(resultAssing => {
         //console.log(resultAssing);
       });
