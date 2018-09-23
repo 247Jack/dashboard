@@ -87,7 +87,9 @@ app-home #content-main {
   height: 28px;
   width: 28px;
 }
-
+.ngx-datatable.scroll-horz .datatable-body{
+  min-height: 20vh
+}
 .col-ms {
   display: inline-block;
   margin-right: 2%;

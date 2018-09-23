@@ -64,29 +64,42 @@
                 <span>{{row.creationDate | date:'medium':'-0500' }}</span>
               </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column name="Address" [width]="125">
+            <ngx-datatable-column name="Address" [width]="115">
               <ng-template ngx-datatable-cell-template let-row="row">
                 <span *ngFor="let resident of row.residents">{{resident.building.address}}</span>
               </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column name="Portfolio" [width]="150">
+            <ngx-datatable-column name="Portfolio" [width]="115">
               <ng-template ngx-datatable-cell-template let-row="row">
                 <span *ngFor="let resident of row.residents">{{resident.portfolio}}</span>
               </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column name="Service" [width]="100">
+            <ngx-datatable-column name="Service" [width]="110">
               <ng-template ngx-datatable-cell-template let-row="row">
                 <span *ngFor="let issue of row.relatedIssue">{{issue.issueToken}}</span>
               </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column name="Issue" [width]="80">
+            <ngx-datatable-column name="Issue" [width]="90">
               <ng-template ngx-datatable-cell-template let-row="row">
                 <span id="issue-popup" data-placement="bottom">
-                  <span class="overflow-text">{{ row.issueData.repairDescription}}</span>
+                  <span class="overflow-text">{{ row.ticketDescription }}</span>
                   <span class="position-relative">
                     <div class="box-color text-color pos-rlt arrow-issue">
                       <span class="arrow b-white top"></span>
-                      <div class="box-body">{{ row.issueData.repairDescription}}</div>
+                      <div class="box-body">{{ row.ticketDescription }}</div>
+                    </div>
+                  </span>
+                </span>
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Description" [width]="100">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                <span id="issue-popup" data-placement="bottom">
+                  <span class="overflow-text">{{ row.issueData.repairDescription }}</span>
+                  <span class="position-relative">
+                    <div class="box-color text-color pos-rlt arrow-issue">
+                      <span class="arrow b-white top"></span>
+                      <div class="box-body">{{ row.issueData.repairDescription }}</div>
                     </div>
                   </span>
                 </span>
@@ -97,7 +110,7 @@
                 <span>{{ row.scheduledFor | date:'medium':'-0500' }}</span>
               </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column name="Vendor" [width]="100">
+            <ngx-datatable-column name="Vendor" [width]="110">
               <ng-template ngx-datatable-cell-template let-row="row">
                 <span *ngFor="let vendor of row.assignedVendors">{{vendor.vendorData.name}}</span>
               </ng-template>
