@@ -33,7 +33,8 @@
       var currentPM = JSON.parse(localStorage.getItem("propertyManagerData"))
       window.Intercom("boot", {
         app_id: "n6774gvu",
-        email: currentPM.email || ""
+        email: currentPM.email || "",
+        user_hash: "QXoDNHbwiE0Y0Y087G6trqdQmi21XpQ8zBxr9gYs"
       });
       $('#collapse-inputs').click(function (){
         $('.editor').collapse('hide')
