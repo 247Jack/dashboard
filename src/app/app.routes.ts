@@ -38,13 +38,9 @@ const app_routes: Routes = [
     canActivate: [OktaAuthGuard]
   },
   {
-    path: "broadcast",
+    path: "broadcast/:contactType",
     component: BroadcastComponent,
-    canActivate: [OktaAuthGuard], children: [
-      { path: 'tenants', component: BroadcastComponent},
-      { path: 'vendors', component: BroadcastComponent}
-
-    ]
+    canActivate: [OktaAuthGuard]
   },
   {
     path: "company",

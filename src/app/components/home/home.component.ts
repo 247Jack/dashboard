@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { TicketsService } from "../../services/tickets.service";
-import { ContactsService } from "../../services/contacts.service";
 
 @Component({
   selector: "app-home",

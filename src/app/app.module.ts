@@ -32,6 +32,7 @@ import { AutomationsComponent } from "./components/automations/automations.compo
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { ContactsComponent } from "./components/contacts/contacts.component";
 import { CompanyComponent } from "./components/company/company.component";
+import { BroadcastComponent } from './components/broadcast/broadcast.component';
 
 import { ChatService } from "./services/chat.service";
 import { TicketsService } from "./services/tickets.service";
@@ -41,7 +42,7 @@ import { ContactsService } from "./services/contacts.service";
 import { AccountService } from "./services/account.service";
 import { IssuesService } from "./services/issues.service";
 import { CompanyService } from "./services/companies.service";
-import { BroadcastComponent } from './components/broadcast/broadcast.component';
+import { BroadcastService } from "./services/broadcast.service";
 
 const oktaConfig = {
   issuer: "https://dev-825764.oktapreview.com/oauth2/default",
@@ -109,6 +110,7 @@ const stompConfig: StompConfig = {
     TicketsService,
     IssuesService,
     CompanyService,
+    BroadcastService,
     /*
     StompService,
     {
