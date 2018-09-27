@@ -38,7 +38,7 @@
                 <label for="comment">Message:</label>
                 <textarea class="form-control" rows="8" id="message" [(ngModel)]="messageText"></textarea>
               </div>
-              <button class="btn mx-2  btn-fw warning" (click)="cleanSelected()">Cancel</button>
+              <button class="btn mx-2  btn-fw danger" (click)="cleanSelected()">Cancel</button>
               <button class="btn mx-2  btn-fw success" (click)="sendBroadcast()">Send</button>
             </div>
           </div>
@@ -47,3 +47,16 @@
     </div>
   </div>
 </div>
+
+
+<modal #modalBroadcast class="mt-10">
+  <modal-header [show-close]="true">
+    <h4 class="modal-title">{{modalTitle}}</h4>
+  </modal-header>
+  <modal-body>
+    {{modalBody}}
+  </modal-body>
+  <modal-footer>
+    <button type="button" class="btn btn-primary" (click)="modal.close()">Close</button>
+  </modal-footer>
+</modal>

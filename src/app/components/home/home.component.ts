@@ -13,14 +13,13 @@ export class HomeComponent implements OnInit {
   public date;
   public currentPropertyManager;
   public currentTicket;
-  public limitRows:Number = 1
+  public limitRows = 8;
   constructor(
     private spinnerService: Ng4LoadingSpinnerService,
     private ticket: TicketsService
   ) {}
 
   ngOnInit() {
-    this.limitRows = Math.ceil((window.innerHeight-300)/100)
     var waitForPMData = setInterval(() => {
       this.currentPropertyManager = JSON.parse(
         localStorage.getItem("propertyManagerData")
@@ -64,5 +63,8 @@ export class HomeComponent implements OnInit {
         this.time = data[i].creationDate.split(/\.|\T/)[1];
       }
     });
+  }
+  onChange(deviceValue) {
+    this.limitRows = deviceValue;
   }
 }

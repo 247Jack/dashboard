@@ -16,7 +16,15 @@ app-messages {
   display: inline-block;
   line-height: 1.625;
 }
-
+.badge{
+  cursor: default !important;
+}
+#limit{
+  width: 75px;
+}
+.page-count{
+  max-width: 40%;
+}
 #modal-dialog-slider {
   margin-top: 15%;
 }
@@ -133,16 +141,13 @@ app-home #content-main {
 
 .height-table {
   height: auto;
+  max-height: 89vh;
   overflow: auto;
   width: 100%;
   max-width: 100vw;
   display: block;
 }
 
-.pager {
-  padding-right: 50% !important;
-  width: 100%;
-}
 
 .scroll-y {
   position: static;
@@ -788,10 +793,6 @@ img.preview-image-chat {
 
   #selec-vendors .modal-dialog {
     width: 60%;
-  }
-
-  .pager {
-    padding: 0px 200px 0px 0px !important;
   }
 }
 
