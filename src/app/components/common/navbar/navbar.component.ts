@@ -93,6 +93,7 @@ export class NavbarComponent implements OnInit {
                 "propertyManagerData",
                 JSON.stringify(accountData)
               );
+              this.unread_messages = accountData.unread.length - 1
               /*
               Storage of vendors and tenants to desplay in the "New task" modal.
             */
