@@ -26,6 +26,7 @@ export class BroadcastService {
         return res.json();
       })
       .catch(error => {
+        window.location.reload();
         return error;
       });
   }

@@ -24,6 +24,7 @@ export class IssuesService {
         return res.json();
       })
       .catch(error => {
+        window.location.reload();
         return Observable.throw(error.message || error);
       });
   }

@@ -26,6 +26,7 @@ export class TicketsService {
         return res.json();
       })
       .catch(error => {
+        window.location.reload();
         return Observable.throw(error.message || error);
       });
   }
@@ -40,6 +41,7 @@ export class TicketsService {
       options
     )
     .catch(error => {
+      window.location.reload();
       return Observable.throw(error.message || error);
     });
   }
@@ -56,6 +58,7 @@ export class TicketsService {
       {}
     )
     .catch(error => {
+      window.location.reload();
       return Observable.throw(error.message || error);
     });
   }

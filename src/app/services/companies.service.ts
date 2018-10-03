@@ -21,6 +21,7 @@ export class CompanyService {
         return res.json();
       })
       .catch(error => {
+        window.location.reload();
         return error;
       });
   }
@@ -38,6 +39,7 @@ export class CompanyService {
         return res.json();
       })
       .catch(error => {
+        window.location.reload();
         return error;
       });
   }

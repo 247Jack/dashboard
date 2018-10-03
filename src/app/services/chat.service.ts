@@ -34,6 +34,7 @@ export class ChatService {
           return res.json();
         })
         .catch(error => {
+          window.location.reload();
           return error;
         });
     }
@@ -104,6 +105,7 @@ export class ChatService {
         return res.json();
       })
       .catch(error => {
+        window.location.reload();
         return Observable.throw(error.message || error);
       });
   }
@@ -125,6 +127,7 @@ export class ChatService {
         return res.json();
       })
       .catch(error => {
+        window.location.reload();
         return Observable.throw(error.message || error);
       });
   }
@@ -142,6 +145,7 @@ export class ChatService {
         return res.json();
       })
       .catch(error => {
+        window.location.reload();
         return Observable.throw(error.message || error);
       });
   }
@@ -159,6 +163,7 @@ export class ChatService {
       },options
     )
     .catch(error => {
+      window.location.reload();
       return Observable.throw(error.message || error);
     });
   }
