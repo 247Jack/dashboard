@@ -10,6 +10,7 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { ChatService } from "../../services/chat.service";
 import { ContactsService } from "../../services/contacts.service";
+import { AutopopulateService } from "../../services/autopopulate.service";
 import * as _ from "lodash";
 
 @Component({
@@ -47,7 +48,8 @@ export class MessagesComponent
     private activatedRoute: ActivatedRoute,
     private spinnerService: Ng4LoadingSpinnerService,
     private chat: ChatService,
-    private contacts: ContactsService
+    private contacts: ContactsService,
+    private autopopulate: AutopopulateService
   ) {}
 
   ngOnInit() {
@@ -262,9 +264,10 @@ export class MessagesComponent
     return "#FFFFFF";
   }
 
-  dispatch() {
-    //console.log('dispatch')
-    //console.log(idUser)
+  dispatch(serviceData) {
+    if(serviceData){
+      this.autopopulate.sendService(serviceData)
+    }
     document.getElementById("setNewOrder").click();
   }
 }

@@ -8,6 +8,7 @@ import { AccountService } from "../../../services/account.service";
 import { IssuesService } from "../../../services/issues.service";
 import { ContactsService } from "../../../services/contacts.service";
 import { TicketsService } from "../../../services/tickets.service";
+import { AutopopulateService } from "../../../services/autopopulate.service";
 import { environment } from "../../../../environments/environment";
 import { OktaAuthService } from "@okta/okta-angular";
 import { ModalComponent } from "dsg-ng2-bs4-modal";
@@ -63,7 +64,8 @@ export class NavbarComponent implements OnInit {
     private account: AccountService,
     private issues: IssuesService,
     private contacts: ContactsService,
-    private tasks: TicketsService
+    private tasks: TicketsService,
+    private autopopulate: AutopopulateService
   ) {
     /*
       After invoking the constructor, method getUser() fron okta retrieves the property manager email, which is used as key to get the property manager data.
@@ -228,7 +230,26 @@ export class NavbarComponent implements OnInit {
         });
       }
     }
-
+    this.autopopulate.change.subscribe(serviceData => {
+      console.log(serviceData)
+      var targetTime = new Date(serviceData.time)
+      var tzDifference = targetTime.getTimezoneOffset();
+      var offsetTime = new Date(targetTime.getTime() + tzDifference * 60 * 1000);
+      this.date = offsetTime
+      for(var t in this.residentlist){
+        if(this.residentlist[t].id === serviceData.tenantId){
+          this.residentselectedItems = [this.residentlist[t]]
+          break;
+        }
+      }
+      for(var i in this.issuelist){
+        if(this.issuelist[i].id === serviceData.issueId){
+          this.issueselectedItems = [this.issuelist[i]]
+          break;
+        }
+      }
+      this.taskDescription = serviceData.description
+    });
   }
 
   /*
