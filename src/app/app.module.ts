@@ -44,6 +44,7 @@ import { IssuesService } from "./services/issues.service";
 import { CompanyService } from "./services/companies.service";
 import { BroadcastService } from "./services/broadcast.service";
 import { AutopopulateService } from "./services/autopopulate.service";
+import { StatsService } from "./services/stats.service";
 
 const oktaConfig = {
   issuer: "https://dev-825764.oktapreview.com/oauth2/default",
@@ -113,6 +114,7 @@ const stompConfig: StompConfig = {
     CompanyService,
     BroadcastService,
     AutopopulateService,
+    StatsService,
     /*
     StompService,
     {
