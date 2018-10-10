@@ -9,7 +9,7 @@
             <path d="M80 304h352v16H80zM80 248h352v16H80zM80 192h352v16H80z" />
           </svg>
         </a>
-        <div class="navbar-text nav-title flex" id="pageTitle">Dashboard</div>
+        <div class="navbar-text nav-title flex" id="pageTitle">Welcome to Jack Dashboard!</div>
       </div>
     </div>
     <div class="content-main d-flex flex" id="content-main">
@@ -211,101 +211,69 @@
             </ngx-datatable-footer>
           </ngx-datatable>
         </div>
-        <!-- <div class="box mb-0 height-table">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Received</th>
-                <th>Address</th>
-                <th>Portfolio</th>
-                <th>Service</th>
-                <th>Issue</th>
-                <th>Preferred Date/Time</th>
-                <th>Vendor</th>
-                <th>Cost</th>
-                <th>Status</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let item of tickets">
-                <td>
-                  <span *ngFor="let resident of item.residents">{{resident.firstName}} {{resident.lastName}}</span>
-                </td>
-                <td>{{item.creationDate | date:'medium':'-0500' }}</td>
-                <td>
-                  <span *ngFor="let resident of item.residents">{{resident.building.address}}</span>
-                </td>
-                <td>
-                  <span *ngFor="let resident of item.residents">{{resident.portfolio}}</span>
-                </td>
-                <td>
-                  <span *ngFor="let issue of item.relatedIssue">{{issue.issueToken}}</span>
-                </td>
-                <td>
-                  <span id="issue-popup" data-placement="bottom">
-                    <span class="overflow-text">{{ item.issueData.repairDescription}}</span>
-                    <span class="position-relative">
-                      <div class="box-color text-color pos-rlt arrow-issue">
-                        <span class="arrow b-white top"></span>
-                        <div class="box-body">{{ item.issueData.repairDescription}}</div>
-                      </div>
-                    </span>
-                  </span>
-                </td>
-                <td>{{ item.scheduledFor | date:'medium':'-0500' }}</td>
-                <td>
-                  <span *ngFor="let vendor of item.assignedVendors">{{vendor.vendorData.name}}</span>
-                </td>
-                <td>${{ item.issueData.repairCost }}</td>
-                <td>
-                  <div [ngSwitch]="item.status">
-                    <div *ngSwitchCase="'available'">
-                      <button class="badge btn-clean blue" type="button">Created</button>
-                    </div>
-                    <div *ngSwitchCase="'checked'">
-                      <button class="badge btn-clean yellow" type="button">Checked by vendor</button>
-                    </div>
-                    <div *ngSwitchCase="'assigned'">
-                      <button class="badge btn-clean orange" type="button">Asigned to vendor</button>
-                    </div>
-                    <div *ngSwitchCase="'evaluating'">
-                      <button class="badge btn-clean red" (click)="checkPendientTask($event, item)" type="button" data-toggle="modal" data-target="#modal-status">Requires atention</button>
-                    </div>
-                    <div *ngSwitchCase="'approved'">
-                      <button class="badge btn-clean brown" type="button">Approved</button>
-                    </div>
-                    <div *ngSwitchCase="'denied'">
-                      <button class="badge btn-clean grey" type="button">Canceled</button>
-                    </div>
-                    <div *ngSwitchCase="'finished'">
-                      <button class="badge btn-clean green" type="button">Completed</button>
-                    </div>
-                    <div *ngSwitchDefault>
-                      <button class="badge btn-clean white" type="button">This status shouldn't exist</button>
-                    </div>
-                  </div>
-                </td>
-                <td *ngFor="let resident of item.residents">
-                  <a [routerLink]="['/messages', resident._id]" class="white btn-border" id="arrow-messages">
-                    <div class="box-color text-color pos-rlt messages-slider-button">
-                      <span class="arrow top pull-right b-white "></span>
-                      <div class="box-body">Click to go to chat user</div>
-                    </div>
-                    <i class="fa fa-comment"></i>
-                  </a>
-                  <a [routerLink]="['/contacts', resident._id]" class="white btn-border " id="arrow-user">
-                    <div class="box-color text-color pos-rlt user-slider-button">
-                      <span class="arrow top pull-right b-white "></span>
-                      <div class="box-body">Click to go to user info</div>
-                    </div>
-                    <i class="fa fa-user"></i>
-                  </a>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <!-- <div class="mb-0">
+          <div class="row m-0">
+            <div class="col-sm-3">
+              <div class="col box box-tickets">
+                <div class="box-header">
+                  <h4 class="small">Active Work Orders</h4>
+                </div>
+                <div class="box-body pt-0 box-number">
+                  <span class="d-table mx-auto">4</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="col box box-tickets">
+                <div class="box-header">
+                  <h4 class="small">Needs Approval</h4>
+                </div>
+                <div class="box-body pt-0 box-number">
+                  <span class="d-table mx-auto">1</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="col box box-tickets">
+                <div class="box-header">
+                  <h4 class="small">Closed Work Orders</h4>
+                </div>
+                <div class="box-body pt-0 box-number">
+                  <span class="d-table mx-auto">2</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="col box box-tickets">
+                <div class="box-header">
+                  <h4 class="small">Dispatched</h4>
+                </div>
+                <div class="box-body pt-0 box-number">
+                  <span class="d-table mx-auto">7</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="col box box-tickets">
+                <div class="box-header">
+                  <h4 class="small">Active Tenants</h4>
+                </div>
+                <div class="box-body pt-0 box-number">
+                  <span class="d-table mx-auto">109</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="col box box-tickets">
+                <div class="box-header">
+                  <h4 class="small">Active Vendors</h4>
+                </div>
+                <div class="box-body pt-0 box-number">
+                  <span class="d-table mx-auto">20</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div> -->
       </div>
     </div>

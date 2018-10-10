@@ -90,7 +90,18 @@ app-home #content-main {
 .nav-fold-icon {
   background: #46348f;
 }
+.box-tickets{
+  min-height: 17vh;
 
+}
+.box-number{
+  width: auto !important;
+}
+.box-number span{
+  font-size: 3rem;
+  color: #22b66e;
+  line-height: 5rem
+}
 .w-30 {
   height: 28px;
   width: 28px;
