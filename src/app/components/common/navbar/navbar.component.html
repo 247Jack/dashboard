@@ -23,13 +23,20 @@
                 <span class="hidden-folded d-inline new-order">New Work Order</span>
               </button>
             </li>
-            <li class="pb-2 hidden-folded mt-3"></li>
-            <li>
+            <li class="pb-2 hidden-folded mt-3"></li><li>
               <a [routerLink]="['/home']" class="btn-active">
                 <span class="nav-icon">
                   <i class="fa fa-dashboard"></i>
                 </span>
-                <span class="nav-text">Work Orders</span>
+                <span class="nav-text">Home</span>
+              </a>
+            </li>
+            <li>
+              <a [routerLink]="['/work-orders']" class="btn-active">
+                <span class="nav-icon">
+                  <i class="fa fa-book"></i>
+                </span>
+                <span class="nav-text">Requests</span>
               </a>
             </li>
             <!-- Temporarily Disabled Due to https://www.pivotaltracker.com/story/show/161097961 -->
@@ -64,7 +71,7 @@
             <li *ngIf="canSwitchCompany">
               <a [routerLink]="['/broadcast/tenants']" class="btn-active">
                 <span class="nav-icon">
-                  <i class="fa fa-book"></i>
+                  <i class="fa fa-bullhorn"></i>
                 </span>
                 <span class="nav-text">Broadcast</span>
               </a>
@@ -72,7 +79,7 @@
             <li *ngIf="canSwitchCompany">
               <a [routerLink]="['/company']" class="btn-active">
                 <span class="nav-icon">
-                  <i class="fa fa-gear"></i>
+                  <i class="fa fa-exchange"></i>
                 </span>
                 <span class="nav-text">Switch company</span>
               </a>
