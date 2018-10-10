@@ -97,7 +97,14 @@ export class NavbarComponent implements OnInit {
               /*
               Storage of vendors and tenants to desplay in the "New task" modal.
             */
-              this.canSwitchCompany = (accountData.email.split('@')[1] === environment.validEmailDom )
+              var validDoms = environment.validEmailDom.split('|')
+              var email = (accountData) ? accountData.email.split('@')[1] : "none"
+              for(var vd in validDoms){
+                if(validDoms[vd] === email){
+                  this.canSwitchCompany = true;
+                  break;
+                }
+              }
               this.getVendorsConn = this.contacts
                 .getContacts(this.currentPropertyManager["_id"], "vendors")
                 .subscribe(listVendors => {

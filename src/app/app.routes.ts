@@ -2,6 +2,7 @@ import { RouterModule, Routes } from "@angular/router";
 import { LoginComponent } from "./components/session/login/login.component";
 import { OktaAuthGuard, OktaCallbackComponent } from "@okta/okta-angular";
 import { HomeComponent } from "./components/home/home.component";
+import { WoComponent } from "./components/wo/wo.component";
 import { MessagesComponent } from "./components/messages/messages.component";
 import { AutomationsComponent } from "./components/automations/automations.component";
 import { ContactsComponent } from "./components/contacts/contacts.component";
@@ -12,6 +13,7 @@ const app_routes: Routes = [
   { path: "login", component: LoginComponent },
   { path: "implicit/callback", component: OktaCallbackComponent },
   { path: "home", component: HomeComponent, canActivate: [OktaAuthGuard] },
+  { path: "work-orders", component: WoComponent, canActivate: [OktaAuthGuard] },
   // Temporarily Disabled Due to https://www.pivotaltracker.com/story/show/161097961
   // {
   //   path: "messages",
