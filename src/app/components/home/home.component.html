@@ -21,7 +21,7 @@
                             <h4 class="small">Active Work Orders</h4>
                             </div>
                             <div class="box-body pt-0 box-number">
-                            <span class="d-table mx-auto">4</span>
+                            <span class="d-table mx-auto" *ngIf="status == true">{{stats.active}}</span>
                             </div>
                         </div>
                         </div>
@@ -31,7 +31,7 @@
                             <h4 class="small">Needs Approval</h4>
                             </div>
                             <div class="box-body pt-0 box-number">
-                            <span class="d-table mx-auto">1</span>
+                            <span class="d-table mx-auto" *ngIf="status == true">{{stats.approval}}</span>
                             </div>
                         </div>
                         </div>
@@ -41,7 +41,7 @@
                             <h4 class="small">Closed Work Orders</h4>
                             </div>
                             <div class="box-body pt-0 box-number">
-                            <span class="d-table mx-auto">2</span>
+                            <span class="d-table mx-auto" *ngIf="status == true">{{stats.closed}}</span>
                             </div>
                         </div>
                         </div>
@@ -51,7 +51,7 @@
                             <h4 class="small">Dispatched</h4>
                             </div>
                             <div class="box-body pt-0 box-number">
-                            <span class="d-table mx-auto">7</span>
+                            <span class="d-table mx-auto" *ngIf="status == true">{{stats.dispatch}}</span>
                             </div>
                         </div>
                         </div>
@@ -61,7 +61,7 @@
                             <h4 class="small">Active Tenants</h4>
                             </div>
                             <div class="box-body pt-0 box-number">
-                            <span class="d-table mx-auto">109</span>
+                            <span class="d-table mx-auto" *ngIf="status == true">{{stats.tenants}}</span>
                             </div>
                         </div>
                         </div>
@@ -71,7 +71,7 @@
                             <h4 class="small">Active Vendors</h4>
                             </div>
                             <div class="box-body pt-0 box-number">
-                            <span class="d-table mx-auto">20</span>
+                            <span class="d-table mx-auto" *ngIf="status == true">{{stats.vendors}}</span>
                             </div>
                         </div>
                         </div>
