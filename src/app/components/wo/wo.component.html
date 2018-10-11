@@ -125,9 +125,9 @@
                 <div [ngSwitch]="row.status">
                   <div *ngSwitchCase="'available'">
                     <button class="badge btn-clean blue" type="button">Created</button>
-                    <a class="badge btn-outline-red">
+                    <!--a class="badge btn-outline-red">
                       <i class="fa fa-times"></i> Cancel
-                    </a>
+                    </a-->
                   </div>
                   <div *ngSwitchCase="'checked'">
                     <button class="badge btn-clean yellow" type="button">Checked by vendor</button>
@@ -137,23 +137,23 @@
                   </div>
                   <div *ngSwitchCase="'assigned'">
                     <button class="badge btn-clean orange" type="button">Asigned to vendor</button>
-                    <a class="badge btn-outline-red">
+                    <!--a class="badge btn-outline-red">
                       <i class="fa fa-times"></i> Cancel
-                    </a>
+                    </a-->
                   </div>
                   <div *ngSwitchCase="'evaluating'">
                     <button class="badge btn-clean red">Requires atention</button>
                     <small (click)="checkPendientTask($event, row)" data-toggle="modal" data-target="#modal-status"
                       class="btn-clean text-primary d-flex text-center"> View Details</small>
-                    <a class="badge btn-outline-red">
+                    <!--a class="badge btn-outline-red">
                       <i class="fa fa-times"></i> Cancel
-                    </a>
+                    </a-->
                   </div>
                   <div *ngSwitchCase="'approved'">
                     <button class="badge btn-clean brown" type="button">Approved</button>
-                    <a class="badge btn-outline-red">
+                    <!--a class="badge btn-outline-red">
                       <i class="fa fa-times"></i> Cancel
-                    </a>
+                    </a-->
                   </div>
                   <div *ngSwitchCase="'denied'">
                     <button class="badge btn-clean grey" type="button">Canceled</button>
