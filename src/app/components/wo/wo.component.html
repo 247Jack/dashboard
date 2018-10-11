@@ -52,8 +52,8 @@
           </div>
         </div> -->
         <div class="box mb-0 height-table">
-          <ngx-datatable #myTable class="material" [rows]="tickets" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
-            [rowHeight]="'auto'" [limit]="limitRows" [scrollbarH]="true">
+          <ngx-datatable #myTable class="material" [rows]="tickets" [columnMode]="'force'" [headerHeight]="50"
+            [footerHeight]="50" [rowHeight]="'auto'" [limit]="limitRows" [scrollbarH]="true">
             <ngx-datatable-column name="Name" [width]="90">
               <ng-template ngx-datatable-cell-template let-row="row">
                 <span *ngFor="let resident of row.residents">{{resident.firstName}} {{resident.lastName}}</span>
@@ -125,20 +125,35 @@
                 <div [ngSwitch]="row.status">
                   <div *ngSwitchCase="'available'">
                     <button class="badge btn-clean blue" type="button">Created</button>
+                    <a class="badge btn-outline-red">
+                      <i class="fa fa-times"></i> Cancel
+                    </a>
                   </div>
                   <div *ngSwitchCase="'checked'">
                     <button class="badge btn-clean yellow" type="button">Checked by vendor</button>
+                    <a class="badge btn-outline-red">
+                      <i class="fa fa-times"></i> Cancel
+                    </a>
                   </div>
                   <div *ngSwitchCase="'assigned'">
                     <button class="badge btn-clean orange" type="button">Asigned to vendor</button>
+                    <a class="badge btn-outline-red">
+                      <i class="fa fa-times"></i> Cancel
+                    </a>
                   </div>
                   <div *ngSwitchCase="'evaluating'">
                     <button class="badge btn-clean red">Requires atention</button>
-                    <small (click)="checkPendientTask($event, row)"
-                    data-toggle="modal" data-target="#modal-status" class="btn-clean text-primary d-flex text-center"> View Details</small>
+                    <small (click)="checkPendientTask($event, row)" data-toggle="modal" data-target="#modal-status"
+                      class="btn-clean text-primary d-flex text-center"> View Details</small>
+                    <a class="badge btn-outline-red">
+                      <i class="fa fa-times"></i> Cancel
+                    </a>
                   </div>
                   <div *ngSwitchCase="'approved'">
                     <button class="badge btn-clean brown" type="button">Approved</button>
+                    <a class="badge btn-outline-red">
+                      <i class="fa fa-times"></i> Cancel
+                    </a>
                   </div>
                   <div *ngSwitchCase="'denied'">
                     <button class="badge btn-clean grey" type="button">Canceled</button>
@@ -173,40 +188,27 @@
               </ng-template>
             </ngx-datatable-column>
             <ngx-datatable-footer>
-              <ng-template 
-                ngx-datatable-footer-template
-                let-rowCount="rowCount"
-                let-pageSize="pageSize"
-                let-selectedCount="selectedCount"
-                let-curPage="curPage"
-                let-offset="offset"
-                let-isVisible="isVisible">
-                  <div class="page-count">
-                    <span *ngIf="selectedMessage">
-                      {{selectedCount.toLocaleString()}} {{selectedMessage}} / 
-                    </span>
-                    {{rowCount.toLocaleString()}} {{totalMessage}} Total
-                  </div>
-                  <div class="form-group float-left mb-0">
-                    <select class="form-control" id="limit" (change)="onChange($event.target.value)">
-                      <option value="8">8</option>
-                      <option value="16">16</option>
-                      <option value="24">24</option>
-                      <option value="48">48</option>
-                      <option value="1000000">All</option>
-                    </select>
-                  </div>
-                  <datatable-pager
-                  [pagerLeftArrowIcon]="'datatable-icon-left'"
-                  [pagerRightArrowIcon]="'datatable-icon-right'"
-                  [pagerPreviousIcon]="'datatable-icon-prev'"
-                  [pagerNextIcon]="'datatable-icon-skip'"
-                  [page]="curPage"
-                  [size]="pageSize"
-                  [count]="rowCount"
-                  [hidden]="!((rowCount / pageSize) > 1)"
-                  (change)="myTable.onFooterPage($event)">
-              </datatable-pager>
+              <ng-template ngx-datatable-footer-template let-rowCount="rowCount" let-pageSize="pageSize"
+                let-selectedCount="selectedCount" let-curPage="curPage" let-offset="offset" let-isVisible="isVisible">
+                <div class="page-count">
+                  <span *ngIf="selectedMessage">
+                    {{selectedCount.toLocaleString()}} {{selectedMessage}} /
+                  </span>
+                  {{rowCount.toLocaleString()}} {{totalMessage}} Total
+                </div>
+                <div class="form-group float-left mb-0">
+                  <select class="form-control" id="limit" (change)="onChange($event.target.value)">
+                    <option value="8">8</option>
+                    <option value="16">16</option>
+                    <option value="24">24</option>
+                    <option value="48">48</option>
+                    <option value="1000000">All</option>
+                  </select>
+                </div>
+                <datatable-pager [pagerLeftArrowIcon]="'datatable-icon-left'" [pagerRightArrowIcon]="'datatable-icon-right'"
+                  [pagerPreviousIcon]="'datatable-icon-prev'" [pagerNextIcon]="'datatable-icon-skip'" [page]="curPage"
+                  [size]="pageSize" [count]="rowCount" [hidden]="!((rowCount / pageSize) > 1)" (change)="myTable.onFooterPage($event)">
+                </datatable-pager>
               </ng-template>
             </ngx-datatable-footer>
           </ngx-datatable>

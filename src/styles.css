@@ -35,6 +35,25 @@ app-messages {
   outline: inherit;
 }
 
+.btn-outline-red {
+  cursor: pointer !important;
+  background-color: white;
+  padding: 2px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 3px 2px;
+  cursor: pointer;
+  border-radius: 6px;
+  color: black; 
+  border: 2px solid red;
+  display: none;
+}
+
+.datatable-row-group:hover .btn-outline-red  {
+  display: inline-block;
+}
+
 #selec-vendors .modal-dialog {
   width: 43%;
 }
