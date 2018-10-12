@@ -25,6 +25,7 @@ export class HomeComponent implements OnInit {
       if (this.currentPropertyManager) {
         clearInterval(waitForPMData);
         this.loadStats()
+        console.log(this.currentPropertyManager)
       }
     }, 100);
   }
