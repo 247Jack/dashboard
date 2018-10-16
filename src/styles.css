@@ -35,6 +35,23 @@ app-messages {
   outline: inherit;
 }
 
+.underlieAnimation:after {
+  content: "";
+  display: block;
+  width: 20px;
+  height: 2px;
+  left: 0;
+  border-radius: 10px;
+  background-color: #111;
+  -webkit-transition: width .3s cubic-bezier(.77,0,.175,1),background-color .3s cubic-bezier(.77,0,.175,1);
+  -moz-transition: width .3s cubic-bezier(.77,0,.175,1),background-color .3s cubic-bezier(.77,0,.175,1);
+  -ms-transition: width .3s cubic-bezier(.77,0,.175,1),background-color .3s cubic-bezier(.77,0,.175,1);
+  -o-transition: width .3s cubic-bezier(.77,0,.175,1),background-color .3s cubic-bezier(.77,0,.175,1);
+  transition: width .3s cubic-bezier(.77,0,.175,1),background-color .3s cubic-bezier(.77,0,.175,1);
+  position: relative;
+  bottom: -9px;
+}
+
 .btn-outline-red {
   cursor: pointer !important;
   background-color: white;
@@ -109,10 +126,35 @@ app-home #content-main {
 .nav-fold-icon {
   background: #46348f;
 }
+
 .box-tickets{
   min-height: 17vh;
-
 }
+
+.box-tickets:hover  {
+  width: 100%;
+  background-color:rgb(85, 255, 128); 
+  color: #fff !important;
+  box-shadow: 0 8px 17px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);  
+  transition: box-shadow .25s, -webkit-box-shadow .25s;
+  -webkit-transition: background-color .1s ease-in;
+  -moz-transition: background-color .1s ease-in;
+  -o-transition: background-color .1s ease-in;
+  transition: background-color .1s ease-in;
+}
+
+.box-tickets:hover span {
+  color: #fff !important;
+}
+
+.box-tickets:hover .underlieAnimation:after {
+  width: 100%;
+  background: -webkit-linear-gradient(#ffff, #0000);
+  background: -o-linear-gradient(left, #ffff, #0000);
+  background: -moz-linear-gradient(left, #ffff, #0000);
+  background: linear-gradient(to left, #ffff, #0000);
+}
+
 .box-number{
   width: auto !important;
 }
