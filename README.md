@@ -1,5 +1,8 @@
+# ¡Welcome to Jack Dashboard Source Code! 
 
-# ¿How debug this project?
+<img src="src/assets/images/jack_icon.gif" alt="drawing" width="200px"/>
+
+## ¿How debug this project?
 
 If you are using VSCode as text editor you can install the official Microsoft VSCode extension that allows you to debug on chrome [(Click here)](https://marketplace.visualstudio.com/items?itemName=msjsdiag.debugger-for-chrome).
 
