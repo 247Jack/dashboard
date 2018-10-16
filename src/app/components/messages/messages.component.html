@@ -183,7 +183,7 @@
             </div>
             <div class="p-3 white lt b-t mt-auto" id="chat-form">
               <div class="input-group">
-                <input type="text" id="messageBox" class="form-control" placeholder="Send message to tenant" #chatInput (keyup.enter)="sendMessage(chatInput);"
+                <input type="text" id="messageBox" class="form-control" placeholder="Message" #chatInput (keyup.enter)="sendMessage(chatInput);"
                   [disabled]="!humanTakeover">
                 <span class="input-group-btn">
                   <button class="btn white b-a no-shadow" type="button" id="newBtn" (click)="sendMessage(chatInput);">
