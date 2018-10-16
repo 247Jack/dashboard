@@ -39,7 +39,7 @@ export class NavbarComponent implements OnInit {
   public calendarsettings = {
     bigBanner: true,
     timePicker: true,
-    format: "dd-MM-yyyy hh:mm a",
+    format: "dd-MM-yyyy",
     defaultOpen: false
   };
   public vendorlist = [];
@@ -211,7 +211,7 @@ export class NavbarComponent implements OnInit {
     */
     this.vendorsettings = {
       singleSelection: false,
-      text: "Select Vendors",
+      text: "Select",
       selectAllText: "Select All",
       unSelectAllText: "UnSelect All",
       enableSearchFilter: true,
@@ -219,7 +219,7 @@ export class NavbarComponent implements OnInit {
     };
     this.issuesettings = {
       singleSelection: true,
-      text: "Select Issues",
+      text: "Select",
       selectAllText: "Select All",
       unSelectAllText: "UnSelect All",
       enableSearchFilter: true,
