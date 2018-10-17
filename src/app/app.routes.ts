@@ -14,17 +14,16 @@ const app_routes: Routes = [
   { path: "implicit/callback", component: OktaCallbackComponent },
   { path: "home", component: HomeComponent, canActivate: [OktaAuthGuard] },
   { path: "work-orders", component: WoComponent, canActivate: [OktaAuthGuard] },
-  // Temporarily Disabled Due to https://www.pivotaltracker.com/story/show/161097961
-  // {
-  //   path: "messages",
-  //   component: MessagesComponent,
-  //   canActivate: [OktaAuthGuard]
-  // },
-  // {
-  //   path: "messages/:userId",
-  //   component: MessagesComponent,
-  //   canActivate: [OktaAuthGuard]
-  // },
+  {
+    path: "messages",
+    component: MessagesComponent,
+    canActivate: [OktaAuthGuard]
+  },
+  {
+    path: "messages/:userId",
+    component: MessagesComponent,
+    canActivate: [OktaAuthGuard]
+  },
   {
     path: "automations",
     component: AutomationsComponent,
