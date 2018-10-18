@@ -68,7 +68,7 @@
                 </span>
               </a>
               <span class="text-md text-ellipsis flex" *ngIf="userId && user">
-                Messages from {{user.firstName}}
+                Messages from {{user.firstName}}{{user.name}}
               </span>
               <span class="text-md text-ellipsis flex" *ngIf="!userId">
                 No user selected
