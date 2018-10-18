@@ -148,8 +148,8 @@ export class MessagesComponent
               )
               .subscribe(
                 data => {
-                  console.log(data)
                   this.messages = data.messages;
+                  console.log(this.messages)
                   this.user = data;
                   this.userInitials = data.firstName[0] + data.lastName[0];
                   this.key = (this.service === "alexa") ? data.app["sms"] : data.app[`${this.service}`];

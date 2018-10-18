@@ -65,7 +65,8 @@ export class NavbarComponent implements OnInit {
     private issues: IssuesService,
     private contacts: ContactsService,
     private tasks: TicketsService,
-    private autopopulate: AutopopulateService
+    private autopopulate: AutopopulateService,
+    private activatedRoute: ActivatedRoute
   ) {
     /*
       After invoking the constructor, method getUser() fron okta retrieves the property manager email, which is used as key to get the property manager data.
@@ -243,11 +244,17 @@ export class NavbarComponent implements OnInit {
       }
     }
     this.autopopulate.change.subscribe(serviceData => {
+      this.issueselectedItems = [];
       console.log(serviceData)
-      var targetTime = new Date(serviceData.time)
+      var targetTime = new Date(serviceData.dateIssue)
       var tzDifference = targetTime.getTimezoneOffset();
       var offsetTime = new Date(targetTime.getTime() + tzDifference * 60 * 1000);
       this.date = offsetTime
+
+      this.activatedRoute.params.subscribe(params => {
+        serviceData.tenantId = params.userId 
+      })
+
       for(var t in this.residentlist){
         if(this.residentlist[t].id === serviceData.tenantId){
           this.residentselectedItems = [this.residentlist[t]]
@@ -255,12 +262,12 @@ export class NavbarComponent implements OnInit {
         }
       }
       for(var i in this.issuelist){
-        if(this.issuelist[i].id === serviceData.issueId){
+        if(this.issuelist[i].itemName === serviceData.contentIssue){
           this.issueselectedItems = [this.issuelist[i]]
           break;
         }
       }
-      this.taskDescription = serviceData.description
+      this.taskDescription = serviceData.problem
     });
   }
 
