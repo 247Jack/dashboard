@@ -125,10 +125,9 @@ export class MessagesComponent
         this.userListLoaded = true;
         this.users = [];
         for (var i in data) {
-          data[i].initials = data[i].firstName[0] + data[i].lastName[0];
+          var names = data[i].name.split(" ")
+          data[i].initials = (names.length > 1) ? `${names[0][0]}${names[1][0]}`: names[0][0]
           data[i]._id = data[i].composedKey.split(":")[0];
-          data[i].firstName = data[i].firstName.split(" ")[0];
-          data[i].lastName = data[i].lastName.split(" ")[0];
           this.users.push(data[i]);
         }
       });
