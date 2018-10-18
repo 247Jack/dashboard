@@ -58,6 +58,7 @@ export class NavbarComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private activatedRoute: ActivatedRoute,
     private spinnerService: Ng4LoadingSpinnerService,
     private oktaAuth: OktaAuthService,
     private chat: ChatService,
@@ -243,24 +244,37 @@ export class NavbarComponent implements OnInit {
       }
     }
     this.autopopulate.change.subscribe(serviceData => {
+      this.issueselectedItems = [];
       console.log(serviceData)
-      var targetTime = new Date(serviceData.time)
-      var tzDifference = targetTime.getTimezoneOffset();
-      var offsetTime = new Date(targetTime.getTime() + tzDifference * 60 * 1000);
-      this.date = offsetTime
-      for (var t in this.residentlist) {
-        if (this.residentlist[t].id === serviceData.tenantId) {
+      this.date = new Date(serviceData.dateIssue)
+      this.activatedRoute.params.subscribe(params => {
+        serviceData.tenantId = params.userId 
+      })
+      var flagNoTenant = true;
+      for(var t in this.residentlist){
+        if(this.residentlist[t].id === serviceData.tenantId){
           this.residentselectedItems = [this.residentlist[t]]
+          flagNoTenant = false;
           break;
         }
       }
-      for (var i in this.issuelist) {
-        if (this.issuelist[i].id === serviceData.issueId) {
+      var flagNoIssue = true;
+      for(var i in this.issuelist){
+        if(this.issuelist[i].itemName === serviceData.contentIssue){
           this.issueselectedItems = [this.issuelist[i]]
+          flagNoIssue = false
           break;
         }
       }
-      this.taskDescription = serviceData.description
+      this.taskDescription = serviceData.problem
+      if(
+        !serviceData.problem || 
+        flagNoTenant ||
+        flagNoIssue
+        ){
+          this.modalShowMessage("CLP00010")
+        }
+
     });
   }
 
@@ -287,22 +301,7 @@ export class NavbarComponent implements OnInit {
     if (this.getIssuesConn) this.getIssuesConn.unsubscribe();
   }
 
-  /*
-    Makes a request to add a new task, given:}
-      List of vendors
-      ID of property relatedManager
-      ID of tenant
-      ID of issue
-      Description
-  */
   public broadcastNewTask() {
-    /*
-    console.log(this.date)
-    console.log(this.issueselectedItems)
-    console.log(this.vendorselectedItems)
-    console.log(this.residentselectedItems)
-    console.log(this.taskDescription)
-    */
     if (
       this.residentselectedItems.length > 0 &&
       this.issueselectedItems.length > 0 &&
