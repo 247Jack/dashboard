@@ -26,6 +26,7 @@ export class MessagesComponent
   private chatPastConn;
 
   public userId: String;
+  public userType: String;
   public userInitials: String;
   public service: String = "";
   public key: String = "";
@@ -148,11 +149,22 @@ export class MessagesComponent
               )
               .subscribe(
                 data => {
+                  console.log(data)
+                  this.userType = data.userType
                   this.messages = data.messages;
-                  console.log(this.messages)
-                  this.user = data;
-                  this.userInitials = data.firstName[0] + data.lastName[0];
-                  this.key = (this.service === "alexa") ? data.app["sms"] : data.app[`${this.service}`];
+                  switch(data.userType){
+                    case "tenant":
+                      this.user = data.tenantData
+                      this.userInitials = data.tenantData.firstName[0] + data.tenantData.lastName[0];
+                      this.key = (this.service === "alexa") ? data.tenantData.app["sms"] : data.tenantData.app[`${this.service}`];
+                    break;
+                    case "vendor":
+                      this.user = data.vendorData
+                      this.userInitials = data.vendorData.name[0]
+                      this.key = data.vendorData.phone
+                    break;
+                    default:
+                  }
                   this.humanTakeover = (data.threads.length && this.service !== "alexa") ? data.threads[0]["humanTakeover"] : true;
                   this.threadId = (data.threads.length) ? data.threads[0]["_id"] : "";
                   this.scrollToBottom();
