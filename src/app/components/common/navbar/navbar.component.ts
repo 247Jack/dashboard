@@ -334,7 +334,6 @@ export class NavbarComponent implements OnInit {
             this.tasks.updateDashoboard();
           } else {
             this.modalShowMessage("SystemError");
-            this.modal.open();
           }
         });
     } else {
