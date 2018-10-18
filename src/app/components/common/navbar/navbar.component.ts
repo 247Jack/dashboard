@@ -65,8 +65,7 @@ export class NavbarComponent implements OnInit {
     private issues: IssuesService,
     private contacts: ContactsService,
     private tasks: TicketsService,
-    private autopopulate: AutopopulateService,
-    private activatedRoute: ActivatedRoute
+    private autopopulate: AutopopulateService
   ) {
     /*
       After invoking the constructor, method getUser() fron okta retrieves the property manager email, which is used as key to get the property manager data.
@@ -100,8 +99,8 @@ export class NavbarComponent implements OnInit {
             */
               var validDoms = environment.validEmailDom.split('|')
               var email = (accountData) ? accountData.email.split('@')[1] : "none"
-              for(var vd in validDoms){
-                if(validDoms[vd] === email){
+              for (var vd in validDoms) {
+                if (validDoms[vd] === email) {
                   this.canSwitchCompany = true;
                   break;
                 }
@@ -244,30 +243,24 @@ export class NavbarComponent implements OnInit {
       }
     }
     this.autopopulate.change.subscribe(serviceData => {
-      this.issueselectedItems = [];
       console.log(serviceData)
-      var targetTime = new Date(serviceData.dateIssue)
+      var targetTime = new Date(serviceData.time)
       var tzDifference = targetTime.getTimezoneOffset();
       var offsetTime = new Date(targetTime.getTime() + tzDifference * 60 * 1000);
       this.date = offsetTime
-
-      this.activatedRoute.params.subscribe(params => {
-        serviceData.tenantId = params.userId 
-      })
-
-      for(var t in this.residentlist){
-        if(this.residentlist[t].id === serviceData.tenantId){
+      for (var t in this.residentlist) {
+        if (this.residentlist[t].id === serviceData.tenantId) {
           this.residentselectedItems = [this.residentlist[t]]
           break;
         }
       }
-      for(var i in this.issuelist){
-        if(this.issuelist[i].itemName === serviceData.contentIssue){
+      for (var i in this.issuelist) {
+        if (this.issuelist[i].id === serviceData.issueId) {
           this.issueselectedItems = [this.issuelist[i]]
           break;
         }
       }
-      this.taskDescription = serviceData.problem
+      this.taskDescription = serviceData.description
     });
   }
 
@@ -338,24 +331,48 @@ export class NavbarComponent implements OnInit {
           this.validTask = true;
           document.getElementById("cancelTask").click();
           if ((result.status = 200)) {
-            this.modalTitle = "Success";
-            this.modalBody =
-              "Your service order has been submitted successfully";
-            this.modal.open();
+            this.modalShowMessage("Success");
             this.tasks.updateDashoboard();
           } else {
-            this.modalTitle = "System Error";
-            this.modalBody =
-              " Oops! It looks like something went wrong on our side. Please try again. If the issue remains, send us a note at support@247jack.com";
+            this.modalShowMessage("SystemError");
             this.modal.open();
           }
         });
     } else {
-      this.modalTitle = "Empty field";
-      this.modalBody =
-        "Oops! It looks like we missing some important information in the contact ";
-      this.modal.open();
+      this.modalShowMessage("EmptyField");
     }
+  }
+
+  public modalShowMessage(messageType) {
+    switch (messageType) {
+      case "CLP00010": {
+        this.modalTitle = "Oops!";
+        this.modalBody = "Something went wrong on our end. Nothing terrible; however, you will need to enter the request information. Error #CLP00010";
+        break;
+      }
+      case "Success": {
+        this.modalTitle = "Success";
+        this.modalBody = "Your service order has been submitted successfully";
+        break;
+      }
+      case "SystemError": {
+        this.modalTitle = "System Error";
+        this.modalBody = "Oops! It looks like something went wrong on our side. Please try again. If the issue remains, send us a note at support@247jack.com";
+        break;
+      }
+
+      case "EmptyField": {
+        this.modalTitle = "Empty field";
+        this.modalBody = "Oops! It looks like we missing some important information in the contact ";
+        break;
+      }
+      default: {
+        this.modalTitle = "Oops!";
+        this.modalBody = "Something went wrong on our end. Nothing terrible; however, you will need to enter the request information.";
+        break;
+      }
+    }
+    this.modal.open();
   }
 
   /*
