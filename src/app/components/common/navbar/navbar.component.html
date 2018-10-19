@@ -41,7 +41,7 @@
                 <span class="nav-text">Requests</span>
               </a>
             </li>
-            <li>
+            <li routerLinkActive="active">
               <a [routerLink]="['/messages']" class="btn-active">
                 <span class="nav-icon">
                   <i class="fa fa-comment"></i>
@@ -108,8 +108,8 @@
               <i class="fa fa-bell text-muted mr-1"></i>
               <span class="badge badge-pill theme"></span>
             </a> -->
-            <a class="px-2 mr-1 ml-auto" id="logout-button" data-toggle="tooltip" title="" data-original-title="Logout">
-              <i class="fa fa-power-off text-muted" (click)="logout()"></i>
+            <a class="px-2 mr-1 ml-auto" id="logout-button" (click)="logout()" data-toggle="tooltip" title="" data-original-title="Logout">
+              <i class="fa fa-power-off text-muted"></i>
             </a>
           </div>
         </div>
@@ -159,7 +159,7 @@
                 </span>
               </div>
               <div class="col-8 mt-4">
-                <angular2-multiselect [data]="issuelist" [(ngModel)]="issueselectedItems" [settings]="issuesettings">
+                <angular2-multiselect [data]="issuelist"  [(ngModel)]="issueselectedItems" [settings]="issuesettings">
                 </angular2-multiselect>
               </div>
               <div class="w-100"></div>
