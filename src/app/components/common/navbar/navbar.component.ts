@@ -154,10 +154,6 @@ export class NavbarComponent implements OnInit {
               this.chatConn = this.chat
                 .listenMessages(this.currentPropertyManager)
                 .subscribe(incoming_message => {
-                  /**
-                   * Disabled notifications
-                   */
-                  /*
                   if (
                     incoming_message && incoming_message['direction'] === 'in'
                   ) {
@@ -193,7 +189,6 @@ export class NavbarComponent implements OnInit {
                       }, 25)
                     }
                   }
-                  */
                 });
             }
           });
