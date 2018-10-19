@@ -254,19 +254,19 @@ export class NavbarComponent implements OnInit {
           break;
         }
       }
-      var flagNoIssue = true;
+      //var flagNoIssue = true;
       for(var i in this.issuelist){
         if(this.issuelist[i].itemName === serviceData.contentIssue){
           this.issueselectedItems = [this.issuelist[i]]
-          flagNoIssue = false
+          //flagNoIssue = false
           break;
         }
       }
       this.taskDescription = serviceData.problem
       if(
-        !serviceData.problem || 
-        flagNoTenant ||
-        flagNoIssue
+        !serviceData.problem
+        || flagNoTenant
+        // || flagNoIssue
         ){
           this.modalShowMessage("CLP00010")
         }
