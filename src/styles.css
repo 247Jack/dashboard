@@ -10,6 +10,15 @@ app-messages {
   width: 100%;
 }
 
+.redBorder { 
+  border-radius: 4px;
+  border: 3px solid #ff0018;
+}
+
+.requiredField::after { 
+  content: "Required Field";
+}
+
 .ngx-datatable .datatable-body-cell,
 .ngx-datatable .datatable-header-cell {
   overflow-x: visible !important;
@@ -693,11 +702,27 @@ label {
   overflow-y: scroll;
   height: 68vh;
 }
+.avatarMed {
+  text-transform: uppercase;
+  height: 40px;
+  width: 40px;
+  transition-duration: .1s;
+  justify-content: center;
+  align-items: center;
+  align-content: center;  
+}
+.avatarMed:hover {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(2555,255,255,.1)));
+  background-image: linear-gradient(rgba(2555,255,255,.1) rgba(1,1,1,0));
+  height: 43px;
+  width: 43px;
+  transition-duration: .1s;  
+}
 
 #logout-button {
   position: relative;
   color: #22b66e;
-  font-size: 1.1em;
+  font-size: 2em;
 }
 
 #logout-button:hover {
