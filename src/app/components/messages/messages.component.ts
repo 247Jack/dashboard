@@ -211,6 +211,7 @@ export class MessagesComponent
 
   sendMessage(e) {
     if (!!e.value.trim()) {
+      var initialsPM = `${this.currentPropertyManager.name[0]}${this.currentPropertyManager.surname[0]}`
       var messageData = {
         platform: (this.service === "alexa") ? "sms": this.service,
         content: e.value,
@@ -219,6 +220,8 @@ export class MessagesComponent
         userType: this.userType,
         company: this.currentPropertyManager.company,
         direction: "out",
+        attendBy: this.currentPropertyManager._id,
+        initials: initialsPM,
         timestamp: new Date(),
         threadId: "",
         originalMsg: e.value,
