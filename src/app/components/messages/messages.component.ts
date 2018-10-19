@@ -216,6 +216,8 @@ export class MessagesComponent
         content: e.value,
         uid: this.key,
         userId: this.userId,
+        userType: this.userType,
+        company: this.currentPropertyManager.company,
         direction: "out",
         timestamp: new Date(),
         threadId: "",
@@ -228,7 +230,8 @@ export class MessagesComponent
       this.messages.push(messageData);
       this.chat.sendMessage(messageData).subscribe(
         data => {
-          //console.log(data);
+          console.log(data);
+          /*
           this.chat
             .getMessagesList(this.currentPropertyManager._id)
             .subscribe(data => {
@@ -241,6 +244,7 @@ export class MessagesComponent
                 this.users.push(data[i]);
               }
             });
+            */
           this.scrollToBottom();
         },
         error => {
