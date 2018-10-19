@@ -26,6 +26,7 @@ export class NavbarComponent implements OnInit {
   private getVendorsConn;
   private getTenatsConn;
   private getIssuesConn;
+  private autoPopulateConn;
   public validTask = false;
   public canSwitchCompany = false;
 
@@ -238,7 +239,7 @@ export class NavbarComponent implements OnInit {
         });
       }
     }
-    this.autopopulate.change.subscribe(serviceData => {
+    this.autoPopulateConn = this.autopopulate.change.subscribe(serviceData => {
       this.issueselectedItems = [];
       console.log(serviceData)
       this.date = new Date(serviceData.dateIssue)
@@ -286,7 +287,6 @@ export class NavbarComponent implements OnInit {
     If user closes the window, unsubscribes from chat notifications.
   */
   ngOnDestroy() {
-    this.modal = undefined
     if (this.chatConn) {
       this.chat.closeSocket();
       this.chatConn.unsubscribe();
@@ -295,6 +295,7 @@ export class NavbarComponent implements OnInit {
     if (this.getVendorsConn) this.getVendorsConn.unsubscribe();
     if (this.getTenatsConn) this.getTenatsConn.unsubscribe();
     if (this.getIssuesConn) this.getIssuesConn.unsubscribe();
+    if (this.autoPopulateConn) this.autoPopulateConn.unsubscribe();
   }
 
   public broadcastNewTask() {
