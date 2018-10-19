@@ -241,8 +241,8 @@ export class NavbarComponent implements OnInit {
     }
     this.autoPopulateConn = this.autopopulate.change.subscribe(serviceData => {
       this.issueselectedItems = [];
+      this.date = new Date(serviceData.dateIssue.replace(/-/g, '\/'))
       console.log(serviceData)
-      this.date = new Date(serviceData.dateIssue)
       this.activatedRoute.params.subscribe(params => {
         serviceData.tenantId = params.userId 
       })
