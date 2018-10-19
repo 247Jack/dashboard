@@ -291,6 +291,7 @@ export class NavbarComponent implements OnInit {
     If user closes the window, unsubscribes from chat notifications.
   */
   ngOnDestroy() {
+    this.modal = undefined
     if (this.chatConn) {
       this.chat.closeSocket();
       this.chatConn.unsubscribe();
