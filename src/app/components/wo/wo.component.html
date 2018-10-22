@@ -53,15 +53,10 @@
         </div> -->
         <div class="box mb-0 height-table">
           <ngx-datatable #myTable class="material" [rows]="tickets" [columnMode]="'force'" [headerHeight]="50"
-            [footerHeight]="50" [rowHeight]="'auto'" [limit]="limitRows" [scrollbarH]="true">
-            <ngx-datatable-column name="Name" [width]="90">
+            [footerHeight]="50" [rowHeight]="'auto'" [limit]="limitRows" [scrollbarH]="true" >
+            <ngx-datatable-column name="Name" [width]="90" >
               <ng-template ngx-datatable-cell-template let-row="row">
                 <span *ngFor="let resident of row.residents">{{resident.firstName}} {{resident.lastName}}</span>
-              </ng-template>
-            </ngx-datatable-column>
-            <ngx-datatable-column name="Received" [width]="125">
-              <ng-template ngx-datatable-cell-template let-row="row">
-                <span>{{row.creationDate | date:'medium':'-0500' }}</span>
               </ng-template>
             </ngx-datatable-column>
             <ngx-datatable-column name="Address" [width]="115">
@@ -69,17 +64,12 @@
                 <span *ngFor="let resident of row.residents">{{resident.building.address}}</span>
               </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column name="Portfolio" [width]="115">
-              <ng-template ngx-datatable-cell-template let-row="row">
-                <span *ngFor="let resident of row.residents">{{resident.portfolio}}</span>
-              </ng-template>
-            </ngx-datatable-column>
             <ngx-datatable-column name="Service" [width]="110">
               <ng-template ngx-datatable-cell-template let-row="row">
                 <span *ngFor="let issue of row.relatedIssue">{{issue.issueToken}}</span>
               </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column name="Issue" [width]="90">
+            <ngx-datatable-column name="Issue" [width]="110">
               <ng-template ngx-datatable-cell-template let-row="row">
                 <span id="issue-popup" data-placement="bottom">
                   <span class="overflow-text">{{ row.ticketDescription }}</span>
@@ -90,6 +80,16 @@
                     </div>
                   </span>
                 </span>
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Vendor" [width]="110">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                <span *ngFor="let vendor of row.assignedVendors">{{vendor.vendorData.name}}</span>
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Cost" [width]="50">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                <span>${{ row.issueData.repairCost }}</span>
               </ng-template>
             </ngx-datatable-column>
             <ngx-datatable-column name="Description" [width]="100">
@@ -105,26 +105,11 @@
                 </span>
               </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column name="Preferred Date/Time" [width]="135">
-              <ng-template ngx-datatable-cell-template let-row="row">
-                <span>{{ row.scheduledFor | date:'medium':'-0500' }}</span>
-              </ng-template>
-            </ngx-datatable-column>
-            <ngx-datatable-column name="Vendor" [width]="110">
-              <ng-template ngx-datatable-cell-template let-row="row">
-                <span *ngFor="let vendor of row.assignedVendors">{{vendor.vendorData.name}}</span>
-              </ng-template>
-            </ngx-datatable-column>
-            <ngx-datatable-column name="Cost" [width]="50">
-              <ng-template ngx-datatable-cell-template let-row="row">
-                <span>${{ row.issueData.repairCost }}</span>
-              </ng-template>
-            </ngx-datatable-column>
             <ngx-datatable-column name="Status" [width]="120">
               <ng-template ngx-datatable-cell-template let-row="row">
                 <div [ngSwitch]="row.status">
                   <div *ngSwitchCase="'available'">
-                    <button class="badge btn-clean blue" type="button">Created</button>
+                    <button class="badge btn-clean blue" type="button">Dispatched</button>
                     <!--a class="badge btn-outline-red">
                       <i class="fa fa-times"></i> Cancel
                     </a-->
@@ -136,7 +121,7 @@
                     </a-->
                   </div>
                   <div *ngSwitchCase="'assigned'">
-                    <button class="badge btn-clean orange" type="button">Asigned to vendor</button>
+                    <button class="badge btn-clean orange" type="button">Assigned  to vendor</button>
                     <!--a class="badge btn-outline-red">
                       <i class="fa fa-times"></i> Cancel
                     </a-->
