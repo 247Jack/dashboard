@@ -278,9 +278,16 @@ export class NavbarComponent implements OnInit {
     Kills current session
   */
   async logout() {
-    this.chat.closeSocket();
     localStorage.setItem("propertyManagerData", null);
-    await this.oktaAuth.logout("/login");
+    if(this.chatConn){
+      this.chat.closeSocket();
+      this.chatConn.unsubscribe();
+    }
+    if(this.oktaAuth){
+      await this.oktaAuth.logout("/login");
+    } else {
+      window.location.href = "/login";
+    }
   }
 
   /*
