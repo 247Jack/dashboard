@@ -39,7 +39,7 @@ export class NavbarComponent implements OnInit {
   public date: Date = new Date();
   public calendarsettings = {
     bigBanner: true,
-    timePicker: true,
+    timePicker: false,
     format: "dd-MM-yyyy",
     defaultOpen: false
   };
@@ -166,6 +166,7 @@ export class NavbarComponent implements OnInit {
                         onClick: function () {
                           window.focus();
                           this.close();
+                          window.location.href = `/messages/${incoming_message['userId']}?service=${incoming_message['platform']}`
                         }
                       });
                       setTimeout(() => {
