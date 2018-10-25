@@ -37,7 +37,8 @@
                     {{user.initials}}
                   </span-->
                   <div class="list-body">
-                    <a [routerLink]="['/messages', user._id]" [queryParams]="{ service: user.lastMessage.platform }" [ngClass]="{'unread-message': user.unread }">
+                    <a [routerLink]="['/messages', user._id]" [queryParams]="{ service: user.lastMessage.platform }"
+                      [ngClass]="{'unread-message': user.unread }">
                       {{user.name}} [{{user.service}}]
                     </a>
                     <div class="item-except text-sm text-muted h-1x">
@@ -164,16 +165,36 @@
                       </div>
                     </div>
                     <div class="chat-item" *ngIf="item.typeMessage === 'confirmedBookService'">
-                      <div class="chat-body">
+                      <!-- <div class="chat-body">
                         <div class="chat-content d-block rounded msg">
                           <p>Looks like a new request for {{item.parsedInput.contentIssue}}. Do you want to dispatch to vendors?
                           </p>
                           <div>
                             <button class="btn btn-outline btn-rounded b-success text-success" type="button"
                               (click)="dispatch(item.parsedInput)">SELECT VENDORS</button>
-                            <!--button class="btn btn-outline btn-rounded b-success text-success"  type="button" data-toggle="modal" data-target="#selec-vendors">VENDOR POOL</button-->
                           </div>
                         </div>
+                      </div> -->
+                      <div class="col-sm-12 ml-auto col-md-9 col-xl-6">
+                        <div class="box mb-1">
+                          <div class="item">
+                            <div class="item-bg light rounded-top">
+                            </div>
+                            <div class="py-5 px-3 pos-rlt">
+                              <img src="../../../assets/images/jack_icon.svg" alt="." class="circle w-56" style="margin-bottom: -7rem"></div>
+                          </div>
+                          <div class="p-3">
+                            <div class="text-md mt-3 d-block">
+                              <h6>New {{item.parsedInput.contentIssue}} Request</h6>
+                            </div>
+                            <p>{{item.parsedInput.problem}}</p>
+                            <div class="text-xs">
+                              <p><strong>Date Requested:</strong> {{item.parsedInput.dateIssue}}</p>
+                            </div>
+                            <p><button (click)="dispatch(item.parsedInput)" class="btn text-white jack-btn">Dispatch</button></p>
+                          </div>
+                        </div>
+                        <p class="mb-0 text-op text-center"><small><i class="fa fa-eye mr-2"></i>Only visible to you</small></p>
                       </div>
                     </div>
                   </div>
