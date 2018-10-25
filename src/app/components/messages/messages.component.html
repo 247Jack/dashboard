@@ -1,25 +1,23 @@
-<div class="app" id="app">
-  <ng4-loading-spinner> </ng4-loading-spinner>
-  <button id="invisibletriggerbutton" style="display: none;"></button>
-  <app-navbar></app-navbar>
-  <div id="content" class="app-content box-shadow-0" role="main">
-    <div class="content-header white  box-shadow-1" id="content-header">
-      <div class="navbar navbar-expand-lg">
-        <!-- btn to toggle sidenav on small screen -->
-        <a class="d-lg-none mx-2" data-toggle="modal" data-target="#aside">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512">
-            <path d="M80 304h352v16H80zM80 248h352v16H80zM80 192h352v16H80z" />
-          </svg>
-        </a>
-        <!-- Page title -->
-        <div class="navbar-text nav-title flex" id="pageTitle">Messages</div>
-      </div>
+<ng4-loading-spinner> </ng4-loading-spinner>
+<button id="invisibletriggerbutton" style="display: none;"></button>
+<div id="content" class="app-content box-shadow-0" role="main">
+  <div class="content-header white  box-shadow-1" id="content-header">
+    <div class="navbar navbar-expand-lg">
+      <!-- btn to toggle sidenav on small screen -->
+      <a class="d-lg-none mx-2" data-toggle="modal" data-target="#aside">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512">
+          <path d="M80 304h352v16H80zM80 248h352v16H80zM80 192h352v16H80z" />
+        </svg>
+      </a>
+      <!-- Page title -->
+      <div class="navbar-text nav-title flex" id="pageTitle">Messages</div>
     </div>
-    <div class="content-main d-flex flex" id="content-main">
-      <div class="d-flex flex" data-plugin="chat">
-        <div class="fade aside aside-sm" id="content-aside">
-          <div class="d-flex flex-column w-xl b-r white modal-dialog" id="chat-nav">
-            <!-- <div class="navbar box-shadow">
+  </div>
+  <div class="content-main d-flex flex" id="content-main">
+    <div class="d-flex flex" data-plugin="chat">
+      <div class="fade aside aside-sm" id="content-aside">
+        <div class="d-flex flex-column w-xl b-r white modal-dialog" id="chat-nav">
+          <!-- <div class="navbar box-shadow">
               <div class="input-group flex">
                 <input type="text" class="form-control px-0 no-bg no-border no-shadow search" placeholder="Search" required="">
                 <span class="input-group-btn">
@@ -29,51 +27,52 @@
                 </span>
               </div>
             </div> -->
-            <div class="scrollable hover">
-              <div class="list inset" *ngFor="let user of users">
-                <div class="list-item " data-id="item-14" [style.background-color]="isSelected(user._id, user.service)">
-                  <!--span class="w-40 avatar circle dark blue">
+          <div class="scrollable hover">
+            <div class="list inset" *ngFor="let user of users">
+              <div class="list-item " data-id="item-14" [style.background-color]="isSelected(user._id, user.service)">
+                <!--span class="w-40 avatar circle dark blue">
                     <i class="on b-white avatar-right"></i>
                     {{user.initials}}
                   </span-->
-                  <div class="list-body">
-                    <a [routerLink]="['/messages', user._id]" [queryParams]="{ service: user.lastMessage.platform }" [ngClass]="{'unread-message': user.unread }">
-                      {{user.name}} [{{user.service}}]
-                    </a>
-                    <div class="item-except text-sm text-muted h-1x">
-                      {{user.lastMessage.content}}
-                    </div>
-                    <div class="item-tag tag hide">
-                    </div>
+                <div class="list-body">
+                  <a [routerLink]="['/messages', user._id]" [queryParams]="{ service: user.lastMessage.platform }"
+                    [ngClass]="{'unread-message': user.unread }">
+                    {{user.name}} [{{user.service}}]
+                  </a>
+                  <div class="item-except text-sm text-muted h-1x">
+                    {{user.lastMessage.content}}
+                  </div>
+                  <div class="item-tag tag hide">
                   </div>
                 </div>
               </div>
-              <div class="no-result hide">
-                <div class="p-4 text-center">
-                  No Results
-                </div>
+            </div>
+            <div class="no-result hide">
+              <div class="p-4 text-center">
+                No Results
               </div>
             </div>
-            <div class="p-3 mt-auto">
-              <span class="text-sm text-muted">Messages: {{messages.length}}</span>
-            </div>
+          </div>
+          <div class="p-3 mt-auto">
+            <span class="text-sm text-muted">Messages: {{messages.length}}</span>
           </div>
         </div>
-        <div class="d-flex flex" id="content-body">
-          <div class="d-flex flex-column flex" id="chat-list">
-            <div class="navbar flex-nowrap white lt box-shadow">
-              <a data-toggle="modal" data-target="#content-aside" data-modal class="mr-1 d-md-none">
-                <span class="btn btn-sm btn-icon primary">
-                  <i class="fa fa-th"></i>
-                </span>
-              </a>
-              <span class="text-md text-ellipsis flex" *ngIf="userId && user">
-                Messages from {{user.firstName}}{{user.name}}
+      </div>
+      <div class="d-flex flex" id="content-body">
+        <div class="d-flex flex-column flex" id="chat-list">
+          <div class="navbar flex-nowrap white lt box-shadow">
+            <a data-toggle="modal" data-target="#content-aside" data-modal class="mr-1 d-md-none">
+              <span class="btn btn-sm btn-icon primary">
+                <i class="fa fa-th"></i>
               </span>
-              <span class="text-md text-ellipsis flex" *ngIf="!userId">
-                No user selected
-              </span>
-              <!-- <ul class="nav nav-xs flex-row no-border">
+            </a>
+            <span class="text-md text-ellipsis flex" *ngIf="userId && user">
+              Messages from {{user.firstName}}{{user.name}}
+            </span>
+            <span class="text-md text-ellipsis flex" *ngIf="!userId">
+              No user selected
+            </span>
+            <!-- <ul class="nav nav-xs flex-row no-border">
                 <li class="nav-item">
                   <a class="nav-link" data-toggle="modal" id="button-add-a" data-target="#assing-teammate">
                     <span class="btn btn-sm btn-icon btn-rounded white ">
@@ -111,218 +110,218 @@
 
                 </li>
               </ul> -->
-            </div>
-            <div class="d-flex flex-column flex chat-scroll hover scrollable" #chatScroll *ngIf="userId">
-              <div class="p-3">
-                <div class="chat-list">
-                  <div class="chat-item" *ngIf="messages.length >= 50">
-                    <a>
-                      <span class="center">
-                        Load previous messages...
+          </div>
+          <div class="d-flex flex-column flex chat-scroll hover scrollable" #chatScroll *ngIf="userId">
+            <div class="p-3">
+              <div class="chat-list">
+                <div class="chat-item" *ngIf="messages.length >= 50">
+                  <a>
+                    <span class="center">
+                      Load previous messages...
+                    </span>
+                  </a>
+                </div>
+                <div *ngFor="let item of messages">
+                  <div class="chat-item" data-class="alt" *ngIf="item.direction === 'out'">
+                    <a href="#" class="avatar w-40">
+                      <span class="w-40 avatar circle purple">
+                        <i class="on b-white avatar-right"></i>
+                        {{item.initials || 'J'}}
                       </span>
                     </a>
+                    <div *ngIf="item.content" class="chat-body">
+                      <div class="chat-content rounded msg">
+                        {{item.content}}
+                      </div>
+                      <div class="chat-date date">
+                        {{item.timestamp | relativeDate}}
+                      </div>
+                    </div>
                   </div>
-                  <div *ngFor="let item of messages">
-                    <div class="chat-item" data-class="alt" *ngIf="item.direction === 'out'">
-                      <a href="#" class="avatar w-40">
-                        <span class="w-40 avatar circle purple">
-                          <i class="on b-white avatar-right"></i>
-                          {{item.initials || 'J'}}
-                        </span>
-                      </a>
-                      <div *ngIf="item.content" class="chat-body">
-                        <div class="chat-content rounded msg">
-                          {{item.content}}
-                        </div>
-                        <div class="chat-date date">
-                          {{item.timestamp | relativeDate}}
-                        </div>
+                  <div class="chat-item" *ngIf="item.direction === 'in'">
+                    <a href="#" class="avatar w-40">
+                      <span class="w-40 avatar circle blue">
+                        <i class="on b-white avatar-right"></i>
+                        {{userInitials}}
+                      </span>
+                    </a>
+                    <div *ngIf="item.content" class="chat-body">
+                      <div class="chat-content rounded msg">
+                        {{item.content}}
+                      </div>
+                      <div class="chat-date date">
+                        {{item.timestamp | relativeDate}}
                       </div>
                     </div>
-                    <div class="chat-item" *ngIf="item.direction === 'in'">
-                      <a href="#" class="avatar w-40">
-                        <span class="w-40 avatar circle blue">
-                          <i class="on b-white avatar-right"></i>
-                          {{userInitials}}
-                        </span>
-                      </a>
-                      <div *ngIf="item.content" class="chat-body">
-                        <div class="chat-content rounded msg">
-                          {{item.content}}
-                        </div>
-                        <div class="chat-date date">
-                          {{item.timestamp | relativeDate}}
-                        </div>
+                    <div *ngIf="item.meta.attachments && item.meta.attachments.length > 0" class="chat-body">
+                      <div class="chat-content rounded msg" *ngFor="let attachment of item.meta.attachments">
+                        <img class="preview-image-chat" [src]="attachment.payload.url" />
                       </div>
-                      <div *ngIf="item.meta.attachments && item.meta.attachments.length > 0" class="chat-body">
-                        <div class="chat-content rounded msg" *ngFor="let attachment of item.meta.attachments">
-                          <img class="preview-image-chat" [src]="attachment.payload.url" />
-                        </div>
-                        <div class="chat-date date">
-                          {{item.timestamp | relativeDate}}
-                        </div>
+                      <div class="chat-date date">
+                        {{item.timestamp | relativeDate}}
                       </div>
                     </div>
-                    <div class="chat-item" *ngIf="item.typeMessage === 'confirmedBookService'">
-                      <div class="chat-body">
-                        <div class="chat-content d-block rounded msg">
-                          <p>Looks like a new request for {{item.parsedInput.contentIssue}}. Do you want to dispatch to vendors?
-                          </p>
-                          <div>
-                            <button class="btn btn-outline btn-rounded b-success text-success" type="button"
-                              (click)="dispatch(item.parsedInput)">SELECT VENDORS</button>
-                            <!--button class="btn btn-outline btn-rounded b-success text-success"  type="button" data-toggle="modal" data-target="#selec-vendors">VENDOR POOL</button-->
-                          </div>
+                  </div>
+                  <div class="chat-item" *ngIf="item.typeMessage === 'confirmedBookService'">
+                    <div class="chat-body">
+                      <div class="chat-content d-block rounded msg">
+                        <p>Looks like a new request for {{item.parsedInput.contentIssue}}. Do you want to dispatch to
+                          vendors?
+                        </p>
+                        <div>
+                          <button class="btn btn-outline btn-rounded b-success text-success" type="button" (click)="dispatch(item.parsedInput)">SELECT
+                            VENDORS</button>
+                          <!--button class="btn btn-outline btn-rounded b-success text-success"  type="button" data-toggle="modal" data-target="#selec-vendors">VENDOR POOL</button-->
                         </div>
                       </div>
                     </div>
                   </div>
+                </div>
 
-                </div>
               </div>
             </div>
-            <div class="p-3 white lt b-t mt-auto" id="chat-form">
-              <div class="input-group">
-                <input type="text" id="messageBox" class="form-control" placeholder="Message" #chatInput (keyup.enter)="sendMessage(chatInput);"
-                  [disabled]="!humanTakeover">
-                <span class="input-group-btn">
-                  <button class="btn white b-a no-shadow" type="button" id="newBtn" (click)="sendMessage(chatInput);">
-                    <i class="fa fa-send text-success"></i>
-                  </button>
+          </div>
+          <div class="p-3 white lt b-t mt-auto" id="chat-form">
+            <div class="input-group">
+              <input type="text" id="messageBox" class="form-control" placeholder="Message" #chatInput (keyup.enter)="sendMessage(chatInput);"
+                [disabled]="!humanTakeover">
+              <span class="input-group-btn">
+                <button class="btn white b-a no-shadow" type="button" id="newBtn" (click)="sendMessage(chatInput);">
+                  <i class="fa fa-send text-success"></i>
+                </button>
+              </span>
+            </div>
+            <div class="pull-right" *ngIf="userId">
+              <label class="ui-switch primary mt-1 mr-2">
+                <input type="checkbox" [(ngModel)]="humanTakeover" (change)="setHumanTakeover()">
+                <i></i>
+              </label> Human takeover</div>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex flex-column flex white aside-sm" id="profile-messages" *ngIf="userId && user">
+        <div class="row h-100" [ngSwitch]="userType">
+          <div id="border" class="col" *ngSwitchCase="'tenant'">
+            <div class="p-4 mt-3 d-flex flex-column align-items-center">
+              <a href="#" class="avatar w-40">
+                <span class="w-40 avatar circle blue">
+                  {{userInitials}}
                 </span>
-              </div>
-              <div class="pull-right" *ngIf="userId">
-                <label class="ui-switch primary mt-1 mr-2">
-                  <input type="checkbox" [(ngModel)]="humanTakeover" (change)="setHumanTakeover()">
-                  <i></i>
-                </label> Human takeover</div>
+              </a>
+              <span class="text-md mt-3 block">{{user.first_name}} {{user.last_name}}</span>
             </div>
-          </div>
-        </div>
-        <div class="d-flex flex-column flex white aside-sm" id="profile-messages" *ngIf="userId && user">
-          <div class="row h-100" [ngSwitch]="userType">
-            <div id="border" class="col" *ngSwitchCase="'tenant'">
-              <div class="p-4 mt-3 d-flex flex-column align-items-center">
-                <a href="#" class="avatar w-40">
-                  <span class="w-40 avatar circle blue">
-                    {{userInitials}}
+            <div class="p-2 info-user">
+              <ul class="nav flex-column">
+                <li class="nav-item">
+                  <span class="nav-link d-flex flex-row text-muted">
+                    <span>Addres:</span> {{user.building.address}}, {{user.building.city}} {{user.building.zip}}
                   </span>
-                </a>
-                <span class="text-md mt-3 block">{{user.first_name}} {{user.last_name}}</span>
-              </div>
-              <div class="p-2 info-user">
-                <ul class="nav flex-column">
-                  <li class="nav-item">
-                    <span class="nav-link d-flex flex-row text-muted">
-                      <span>Addres:</span> {{user.building.address}}, {{user.building.city}} {{user.building.zip}}
-                    </span>
-                  </li>
-                  <li class="nav-item">
-                    <span class="nav-link d-flex flex-row text-muted">
-                      <span>Mobile:</span>{{user.contact.phone}}</span>
-                  </li>
-                  <li class="nav-item">
-                    <span class="nav-link d-flex flex-row text-muted">
-                      <span>Email:</span>{{user.contact.email}}</span>
-                  </li>
-                  <li class="nav-item">
-                    <span class="nav-link d-flex flex-row text-muted">
-                      <span>Portfolio:</span>{{user.portfolio}}</span>
-                  </li>
-                </ul>
-              </div>
+                </li>
+                <li class="nav-item">
+                  <span class="nav-link d-flex flex-row text-muted">
+                    <span>Mobile:</span>{{user.contact.phone}}</span>
+                </li>
+                <li class="nav-item">
+                  <span class="nav-link d-flex flex-row text-muted">
+                    <span>Email:</span>{{user.contact.email}}</span>
+                </li>
+                <li class="nav-item">
+                  <span class="nav-link d-flex flex-row text-muted">
+                    <span>Portfolio:</span>{{user.portfolio}}</span>
+                </li>
+              </ul>
             </div>
-            <div id="border" class="col" *ngSwitchCase="'vendor'">
-              <div class="p-4 mt-3 d-flex flex-column align-items-center">
-                <a href="#" class="avatar w-40">
-                  <span class="w-40 avatar circle blue">
-                    {{userInitials}}
+          </div>
+          <div id="border" class="col" *ngSwitchCase="'vendor'">
+            <div class="p-4 mt-3 d-flex flex-column align-items-center">
+              <a href="#" class="avatar w-40">
+                <span class="w-40 avatar circle blue">
+                  {{userInitials}}
+                </span>
+              </a>
+              <span class="text-md mt-3 block">{{user.name}}</span>
+            </div>
+            <div class="p-2 info-user">
+              <ul class="nav flex-column">
+                <li class="nav-item">
+                  <span class="nav-link d-flex flex-row text-muted">
+                    <span>Addres:</span> {{user.address}}
                   </span>
-                </a>
-                <span class="text-md mt-3 block">{{user.name}}</span>
-              </div>
-              <div class="p-2 info-user">
-                <ul class="nav flex-column">
-                  <li class="nav-item">
-                    <span class="nav-link d-flex flex-row text-muted">
-                      <span>Addres:</span> {{user.address}}
-                    </span>
-                  </li>
-                  <li class="nav-item">
-                    <span class="nav-link d-flex flex-row text-muted">
-                      <span>Mobile:</span>{{user.phone}}</span>
-                  </li>
-                  <li class="nav-item">
-                    <span class="nav-link d-flex flex-row text-muted">
-                      <span>Email:</span>{{user.email}}</span>
-                  </li>
-                  <li class="nav-item">
-                    <span class="nav-link d-flex flex-row text-muted">
-                      <span>Job Type:</span>{{user.jobType}}</span>
-                  </li>
-                </ul>
-              </div>
+                </li>
+                <li class="nav-item">
+                  <span class="nav-link d-flex flex-row text-muted">
+                    <span>Mobile:</span>{{user.phone}}</span>
+                </li>
+                <li class="nav-item">
+                  <span class="nav-link d-flex flex-row text-muted">
+                    <span>Email:</span>{{user.email}}</span>
+                </li>
+                <li class="nav-item">
+                  <span class="nav-link d-flex flex-row text-muted">
+                    <span>Job Type:</span>{{user.jobType}}</span>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div id="delete-conversation" class="modal fade show" data-backdrop="true">
-      <div class="modal-dialog" id="modal-dialog-slider">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Delete Conversation</h5>
-          </div>
-          <div class="modal-body text-center p-lg">
-            <p>Are you sure to execute this action?</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn dark-white p-x-md" data-dismiss="modal">No</button>
-            <button type="button" class="btn danger p-x-md" data-dismiss="modal">Yes</button>
-          </div>
+  </div>
+  <div id="delete-conversation" class="modal fade show" data-backdrop="true">
+    <div class="modal-dialog" id="modal-dialog-slider">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Delete Conversation</h5>
+        </div>
+        <div class="modal-body text-center p-lg">
+          <p>Are you sure to execute this action?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn dark-white p-x-md" data-dismiss="modal">No</button>
+          <button type="button" class="btn danger p-x-md" data-dismiss="modal">Yes</button>
         </div>
       </div>
     </div>
-    <div id="archive-conversation-modal" class="modal fade show" data-backdrop="true">
-      <div class="modal-dialog" id="modal-dialog-slider">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Archive Conversation</h5>
-          </div>
-          <div class="modal-body text-center p-lg">
-            <p>Are you sure to execute this action?</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn dark-white p-x-md" data-dismiss="modal">No</button>
-            <button type="button" class="btn danger p-x-md" data-dismiss="modal">Yes</button>
-          </div>
+  </div>
+  <div id="archive-conversation-modal" class="modal fade show" data-backdrop="true">
+    <div class="modal-dialog" id="modal-dialog-slider">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Archive Conversation</h5>
+        </div>
+        <div class="modal-body text-center p-lg">
+          <p>Are you sure to execute this action?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn dark-white p-x-md" data-dismiss="modal">No</button>
+          <button type="button" class="btn danger p-x-md" data-dismiss="modal">Yes</button>
         </div>
       </div>
     </div>
-    <div class="modal fade show" id="assing-teammate" data-backdrop="true" data-class="modal-open-aside">
-      <div class="modal-dialog modal-right w-xl white b-l modal-dialog-dispatch">
-        <div class="d-flex flex-column h-100">
-          <div class="d-flex flex" id="profile">
-            <div class="modal-dialog modal-right w-auto-sm white dk b-l">
-              <div class="d-flex flex-column h-100 w-100 white b-r">
-                <div id="title-auto-dispatch">
-                  <span>Assing to teammate</span>
+  </div>
+  <div class="modal fade show" id="assing-teammate" data-backdrop="true" data-class="modal-open-aside">
+    <div class="modal-dialog modal-right w-xl white b-l modal-dialog-dispatch">
+      <div class="d-flex flex-column h-100">
+        <div class="d-flex flex" id="profile">
+          <div class="modal-dialog modal-right w-auto-sm white dk b-l">
+            <div class="d-flex flex-column h-100 w-100 white b-r">
+              <div id="title-auto-dispatch">
+                <span>Assing to teammate</span>
+              </div>
+              <div class="row">
+                <div class="col-2 mt-5 ml-4">
+                  <span>
+                    <Strong>To:</Strong>
+                  </span>
                 </div>
-                <div class="row">
-                  <div class="col-2 mt-5 ml-4">
-                    <span>
-                      <Strong>To:</Strong>
-                    </span>
-                  </div>
-                  <div class="col-8 mt-5">
-                    <angular2-multiselect [data]="teammatelist" [(ngModel)]="teammateselectedItems" [settings]="teammatesettings">
-                    </angular2-multiselect>
-                  </div>
+                <div class="col-8 mt-5">
+                  <angular2-multiselect [data]="teammatelist" [(ngModel)]="teammateselectedItems" [settings]="teammatesettings">
+                  </angular2-multiselect>
                 </div>
-                <div id="buttons-2" class="text-center">
-                  <button class="btn btn-outline btn-rounded text-success btn-cancel" data-dismiss="modal">Cancel</button>
-                  <button class="btn btn-rounded b-success success btn-save" data-dismiss="modal">Save</button>
-                </div>
+              </div>
+              <div id="buttons-2" class="text-center">
+                <button class="btn btn-outline btn-rounded text-success btn-cancel" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-rounded b-success success btn-save" data-dismiss="modal">Save</button>
               </div>
             </div>
           </div>
