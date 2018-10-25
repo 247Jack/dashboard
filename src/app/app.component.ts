@@ -3,15 +3,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 
 @Component({
   selector: "app-root",
-  template: `
-  <div *ngIf="!isLogin; else login" class="app" id="app">
-    <app-navbar></app-navbar>
-    <router-outlet ></router-outlet>
-  </div>
-  <ng-template #login>
-    <router-outlet ></router-outlet>
-  </ng-template>  
-  `,
+  templateUrl: "./app.component.html",
   styleUrls: ["./app.component.css"]
 })
 
