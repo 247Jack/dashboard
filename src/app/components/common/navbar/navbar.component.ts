@@ -155,6 +155,7 @@ export class NavbarComponent implements OnInit {
               this.chatConn = this.chat
                 .listenMessages(this.currentPropertyManager)
                 .subscribe(incoming_message => {
+                  console.log(incoming_message)
                   if (
                     incoming_message && incoming_message['direction'] === 'in'
                   ) {
