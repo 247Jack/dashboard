@@ -6,7 +6,7 @@ body {
   overflow: hidden;
 }
 
-app-messages {
+app-messages, app-wo, app-company {
   width: 100%;
 }
 
