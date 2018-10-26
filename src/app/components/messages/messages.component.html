@@ -30,7 +30,7 @@
           <div class="scrollable hover">
             <div class="list inset" *ngFor="let user of users">
               <div class="list-item " data-id="item-14" [style.background-color]="isSelected(user._id, user.service)">
-                <!--span class="w-40 avatar circle dark blue">
+                <!--span class="w-40 avatar circle dark pms-color">
                     <i class="on b-white avatar-right"></i>
                     {{user.initials}}
                   </span-->
@@ -124,7 +124,7 @@
                 <div *ngFor="let item of messages">
                   <div class="chat-item" data-class="alt" *ngIf="item.direction === 'out'">
                     <a href="#" class="avatar w-40">
-                      <span class="w-40 avatar circle purple">
+                      <span class="w-40 avatar circle jack-color" [class.pms-color]="item.initials">
                         <i class="on b-white avatar-right"></i>
                         {{item.initials || 'J'}}
                       </span>
@@ -140,7 +140,7 @@
                   </div>
                   <div class="chat-item" *ngIf="item.direction === 'in'">
                     <a href="#" class="avatar w-40">
-                      <span class="w-40 avatar circle blue">
+                      <span class="w-40 avatar circle tenant-color">
                         <i class="on b-white avatar-right"></i>
                         {{userInitials}}
                       </span>
@@ -217,7 +217,7 @@
           <div id="border" class="col" *ngSwitchCase="'tenant'">
             <div class="p-4 mt-3 d-flex flex-column align-items-center">
               <a href="#" class="avatar w-40">
-                <span class="w-40 avatar circle blue">
+                <span class="w-40 avatar circle tenant-color">
                   {{userInitials}}
                 </span>
               </a>
@@ -248,7 +248,7 @@
           <div id="border" class="col" *ngSwitchCase="'vendor'">
             <div class="p-4 mt-3 d-flex flex-column align-items-center">
               <a href="#" class="avatar w-40">
-                <span class="w-40 avatar circle blue">
+                <span class="w-40 avatar circle vendor-color">
                   {{userInitials}}
                 </span>
               </a>
