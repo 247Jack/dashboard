@@ -34,17 +34,17 @@
                     <i class="on b-white avatar-right"></i>
                     {{user.initials}}
                   </span-->
-                  <div class="list-body">
-                    <a [routerLink]="['/messages', user._id]" [queryParams]="{ service: user.lastMessage.platform }"
-                      [ngClass]="{'unread-message': user.unread }">
-                      {{user.name}} [{{user.service}}]
-                    </a>
-                    <div class="item-except text-sm text-muted h-1x">
-                      {{user.lastMessage.content}}
-                    </div>
-                    <div class="item-tag tag hide">
-                    </div>
+                <div class="list-body">
+                  <a [routerLink]="['/messages', user._id]" [queryParams]="{ service: user.lastMessage.platform }"
+                    [ngClass]="{'unread-message': user.unread }">
+                    {{user.name}} [{{user.service}}]
+                  </a>
+                  <div class="item-except text-sm text-muted h-1x">
+                    {{user.lastMessage.content}}
                   </div>
+                  <div class="item-tag tag hide">
+                  </div>
+                </div>
               </div>
             </div>
             <div class="no-result hide">
@@ -123,7 +123,7 @@
                 </div>
                 <div *ngFor="let item of messages">
                   <div class="chat-item" data-class="alt" *ngIf="item.direction === 'out'">
-                    <a href="#" class="avatar w-40">
+                    <a class="avatar w-40">
                       <span class="w-40 avatar circle jack-color" [class.pms-color]="item.initials">
                         <i class="on b-white avatar-right"></i>
                         {{item.initials || 'J'}}
@@ -139,7 +139,7 @@
                     </div>
                   </div>
                   <div class="chat-item" *ngIf="item.direction === 'in'">
-                    <a href="#" class="avatar w-40">
+                    <a class="avatar w-40">
                       <span class="w-40 avatar circle tenant-color">
                         <i class="on b-white avatar-right"></i>
                         {{userInitials}}
@@ -167,9 +167,10 @@
                       <div class="box mb-1">
                         <div class="item">
                           <div class="item-bg light rounded-top">
-                              <div class="w-100">
-                                  <img *ngIf="item.address" class="MapContainer" src="https://maps.googleapis.com/maps/api/staticmap?center={{this.newAddress}}&zoom=13&size=600x350&maptype=roadmap&key=AIzaSyALzEI922MxFSWMGPI4Kf5rGqk8C4jAqKI&output=embed"alt="">
-                              </div>
+                            <div class="w-100">
+                              <img *ngIf="item.address" class="MapContainer" src="https://maps.googleapis.com/maps/api/staticmap?center={{this.newAddress}}&zoom=13&size=600x350&maptype=roadmap&key=AIzaSyALzEI922MxFSWMGPI4Kf5rGqk8C4jAqKI&output=embed"
+                                alt="">
+                            </div>
                           </div>
                           <div class="py-5 px-3">
                             <img src="../../../assets/images/jack_icon.svg" alt="." class="pos-rlt circle w-56" style="margin-bottom: -7rem">
@@ -216,7 +217,7 @@
         <div class="row h-100" [ngSwitch]="userType">
           <div id="border" class="col" *ngSwitchCase="'tenant'">
             <div class="p-4 mt-3 d-flex flex-column align-items-center">
-              <a href="#" class="avatar w-40">
+              <a class="avatar w-40">
                 <span class="w-40 avatar circle tenant-color">
                   {{userInitials}}
                 </span>
@@ -247,7 +248,7 @@
           </div>
           <div id="border" class="col" *ngSwitchCase="'vendor'">
             <div class="p-4 mt-3 d-flex flex-column align-items-center">
-              <a href="#" class="avatar w-40">
+              <a class="avatar w-40">
                 <span class="w-40 avatar circle vendor-color">
                   {{userInitials}}
                 </span>
