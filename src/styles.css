@@ -36,7 +36,7 @@ app-messages, app-wo, app-company, app-broadcast {
   width: 150px;
 }
 #confirmedBookService{
-  min-width: 22vw;
+  min-width: 25vw;
 }
 .MapContainer{
   position: relative !important;
