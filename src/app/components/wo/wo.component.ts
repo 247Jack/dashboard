@@ -56,6 +56,7 @@ export class WoComponent implements OnInit {
     this.ticket
     .getTickets(this.currentPropertyManager["_id"])
     .subscribe(data => {
+      console.log(data)
       this.spinnerService.hide();
       this.tickets = data;
       this.tickets.reverse()
