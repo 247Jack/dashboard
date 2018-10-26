@@ -40,7 +40,7 @@ export class MessagesComponent
   private currentPropertyManager: any;
   public humanTakeover: Boolean = false;
   public userListLoaded:Boolean = false;
-
+  public newAddress;
   @ViewChild("chatScroll")
   private myScrollContainer: ElementRef;
 
@@ -151,6 +151,13 @@ export class MessagesComponent
                   console.log(data)
                   this.userType = data.userType
                   this.messages = data.messages;
+                  for(var i in this.messages){
+                    if (this.messages[i].address) {
+                      if (this.messages[i].address.address) {
+                        this.newAddress = this.messages[i].address.address.replace(/\s+/g, '+') + "+" + this.messages[i].address.city
+                      }
+                    }
+                  }
                   switch(data.userType){
                     case "tenant":
                       this.user = data.tenantData

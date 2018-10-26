@@ -165,27 +165,22 @@
                       </div>
                     </div>
                     <div class="chat-item" *ngIf="item.typeMessage === 'confirmedBookService'">
-                      <!-- <div class="chat-body">
-                        <div class="chat-content d-block rounded msg">
-                          <p>Looks like a new request for {{item.parsedInput.contentIssue}}. Do you want to dispatch to vendors?
-                          </p>
-                          <div>
-                            <button class="btn btn-outline btn-rounded b-success text-success" type="button"
-                              (click)="dispatch(item.parsedInput)">SELECT VENDORS</button>
-                          </div>
-                        </div>
-                      </div> -->
                       <div class="col-sm-12 ml-auto col-md-9 col-xl-6">
                         <div class="box mb-1">
                           <div class="item">
                             <div class="item-bg light rounded-top">
+                                <div class="w-100">
+                                    <img *ngIf="item.address" class="MapContainer" src="https://maps.googleapis.com/maps/api/staticmap?center={{this.newAddress}}&zoom=13&size=600x350&maptype=roadmap&key=AIzaSyALzEI922MxFSWMGPI4Kf5rGqk8C4jAqKI&output=embed"alt="">
+                                </div>
                             </div>
-                            <div class="py-5 px-3 pos-rlt">
-                              <img src="../../../assets/images/jack_icon.svg" alt="." class="circle w-56" style="margin-bottom: -7rem"></div>
+                            <div class="py-5 px-3">
+                              <img src="../../../assets/images/jack_icon.svg" alt="." class="pos-rlt circle w-56" style="margin-bottom: -7rem">
+                            </div>
                           </div>
                           <div class="p-3">
                             <div class="text-md mt-3 d-block">
                               <h6>New {{item.parsedInput.contentIssue}} Request</h6>
+                              <h6 *ngIf="item.address">{{item.address.address}}</h6>
                             </div>
                             <p>{{item.parsedInput.problem}}</p>
                             <div class="text-xs">
