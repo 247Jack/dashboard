@@ -161,33 +161,32 @@
                         {{item.timestamp | relativeDate}}
                       </div>
                     </div>
-                    <div class="chat-item" *ngIf="item.typeMessage === 'confirmedBookService'">
-                      <div class="col-sm-12 ml-auto col-md-9 col-xl-6">
-                        <div class="box mb-1">
-                          <div class="item">
-                            <div class="item-bg light rounded-top">
-                                <div class="w-100">
-                                    <img *ngIf="item.address" class="MapContainer" src="https://maps.googleapis.com/maps/api/staticmap?center={{this.newAddress}}&zoom=13&size=600x350&maptype=roadmap&key=AIzaSyALzEI922MxFSWMGPI4Kf5rGqk8C4jAqKI&output=embed"alt="">
-                                </div>
-                            </div>
-                            <div class="py-5 px-3">
-                              <img src="../../../assets/images/jack_icon.svg" alt="." class="pos-rlt circle w-56" style="margin-bottom: -7rem">
-                            </div>
+                  </div>
+                  <div class="chat-item" *ngIf="item.typeMessage === 'confirmedBookService'">
+                    <div class="col-sm-12 ml-auto col-md-9 col-xl-6" id="confirmedBookService">
+                      <div class="box mb-1">
+                        <div class="item">
+                          <div class="item-bg light rounded-top">
+                              <div class="w-100">
+                                  <img *ngIf="item.address" class="MapContainer" src="https://maps.googleapis.com/maps/api/staticmap?center={{this.newAddress}}&zoom=13&size=600x350&maptype=roadmap&key=AIzaSyALzEI922MxFSWMGPI4Kf5rGqk8C4jAqKI&output=embed"alt="">
+                              </div>
                           </div>
-                          <div class="p-3">
-                            <div class="text-md mt-3 d-block">
-                              <h6>New {{item.parsedInput.contentIssue}} Request</h6>
-                              <h6 *ngIf="item.address">{{item.address.address}}</h6>
-                            </div>
-                            <p>{{item.parsedInput.problem}}</p>
-                            <div class="text-xs">
-                              <p><strong>Date Requested:</strong> {{item.parsedInput.dateIssue}}</p>
-                            </div>
-                            <p><button (click)="dispatch(item.parsedInput)" class="btn text-white jack-btn">Dispatch</button></p>
+                          <div class="py-5 px-3">
+                            <img src="../../../assets/images/jack_icon.svg" alt="." class="pos-rlt circle w-56" style="margin-bottom: -7rem">
                           </div>
                         </div>
-                        <p class="mb-0 text-op text-center"><small><i class="fa fa-eye mr-2"></i>Only visible to you</small></p>
+                        <div class="p-3">
+                          <div class="text-md mt-3 d-block">
+                            <h6>New {{item.parsedInput.contentIssue}} Request</h6>
+                          </div>
+                          <p>{{item.parsedInput.problem}}</p>
+                          <div class="text-xs">
+                            <p><strong>Date Requested:</strong> {{item.parsedInput.dateIssue}}</p>
+                          </div>
+                          <p><button (click)="dispatch(item.parsedInput)" class="btn text-white jack-btn">Dispatch</button></p>
+                        </div>
                       </div>
+                      <p class="mb-0 text-op text-center"><small><i class="fa fa-eye mr-2"></i>Only visible to you</small></p>
                     </div>
                   </div>
                 </div>
