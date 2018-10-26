@@ -85,7 +85,6 @@ export class MessagesComponent
       .listenMessages(this.currentPropertyManager)
       .subscribe(
         incoming_message => {
-          console.log(incoming_message);
           if (incoming_message["userId"] === this.userId && incoming_message["platform"] === this.service) {
             var targetUser = _.findIndex(this.users, o => {return o['composedKey'] === `${incoming_message['userId']}:${incoming_message['platform']}`})
             if(targetUser >= 0)
@@ -101,9 +100,7 @@ export class MessagesComponent
           }
           else
           {
-            console.log('marking thread as unread')
             var targetUser = _.findIndex(this.users, o => {return o['composedKey'] === `${incoming_message['userId']}:${incoming_message['platform']}`})
-            console.log(targetUser)
             if(targetUser >= 0)
             {
               this.users[targetUser].unread = true;
@@ -121,7 +118,6 @@ export class MessagesComponent
     this.chatListConn = this.chat
       .getMessagesList(this.currentPropertyManager._id)
       .subscribe(data => {
-        console.log(data)
         this.userListLoaded = true;
         this.users = [];
         for (var i in data) {
@@ -148,7 +144,6 @@ export class MessagesComponent
               )
               .subscribe(
                 data => {
-                  console.log(data)
                   this.userType = data.userType
                   this.messages = data.messages;
                   switch(data.userType){
@@ -169,7 +164,6 @@ export class MessagesComponent
                   this.scrollToBottom();
                   this.spinnerService.hide();
                   var waitForUsersData = setInterval(() => {
-                    console.log(this.userListLoaded)
                     if (this.userListLoaded) {
                       clearInterval(waitForUsersData);
                       var currentUserIndex = _.findIndex(this.users, o => {
@@ -183,7 +177,7 @@ export class MessagesComponent
                   }, 100);
                 },
                 error => {
-                  //console.log(error);
+                  console.log(error);
                 }
               );
           }
@@ -228,12 +222,10 @@ export class MessagesComponent
         originalRequest: {},
         meta: {}
       };
-      console.log(messageData);
       e.value = "";
       this.messages.push(messageData);
       this.chat.sendMessage(messageData).subscribe(
         data => {
-          console.log(data);
           /*
           this.chat
             .getMessagesList(this.currentPropertyManager._id)
@@ -254,8 +246,6 @@ export class MessagesComponent
           console.log(error);
         }
       );
-      //console.log(messageData);
-      //console.log("Message sended");
       this.scrollToBottom();
     }
   }
@@ -267,13 +257,10 @@ export class MessagesComponent
   }
 
   setHumanTakeover() {
-    //console.log(this.humanTakeover)
-    //console.log(this.threadId)
     let arrayPMs = this.humanTakeover ? [this.currentPropertyManager._id] : [];
     this.chat
       .assignTeammate(this.currentPropertyManager._id, arrayPMs, this.threadId)
       .subscribe(resultAssing => {
-        //console.log(resultAssing);
       });
   }
 
