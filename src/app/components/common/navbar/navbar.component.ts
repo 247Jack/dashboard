@@ -245,12 +245,9 @@ export class NavbarComponent implements OnInit {
       this.issueselectedItems = [];
       this.date = new Date(serviceData.dateIssue.replace(/-/g, '\/'))
       console.log(serviceData)
-      this.activatedRoute.params.subscribe(params => {
-        serviceData.tenantId = params.userId 
-      })
       var flagNoTenant = true;
       for(var t in this.residentlist){
-        if(this.residentlist[t].id === serviceData.tenantId){
+        if(this.residentlist[t].id === serviceData.id){
           this.residentselectedItems = [this.residentlist[t]]
           flagNoTenant = false;
           break;

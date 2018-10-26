@@ -41,6 +41,7 @@ export class MessagesComponent
   public humanTakeover: Boolean = false;
   public userListLoaded:Boolean = false;
   public newAddress;
+  public serviceDataId;
   @ViewChild("chatScroll")
   private myScrollContainer: ElementRef;
 
@@ -277,6 +278,10 @@ export class MessagesComponent
   }
 
   dispatch(serviceData) {
+    this.activatedRoute.params.subscribe(params => {
+      this.serviceDataId = params.userId
+    })
+    serviceData.id = this.serviceDataId
     if(serviceData){
       this.autopopulate.sendService(serviceData)
     }
