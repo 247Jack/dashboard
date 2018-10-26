@@ -15,7 +15,14 @@ app-messages, app-wo, app-company, app-broadcast {
   background-color: #34E3AB;
   width: 150px;
 }
-
+.MapContainer{
+  position: relative !important;
+  width: 100% !important;
+  left: unset !important;
+  top: unset !important;
+  margin-left: auto !important;
+  margin-top: auto !important;
+}
 .text-op {
   color: #A9B4BE;
 }
