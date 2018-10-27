@@ -10,6 +10,26 @@ app-messages, app-wo, app-company, app-broadcast {
   width: 100%;
 }
 
+.jack-color {
+  background-color: #cccccc;
+  color:rgba(255,255,255,.85)
+}
+
+.tenant-color {
+  background-color: #2196f3;
+  color:rgba(255,255,255,.85)
+}
+
+.pms-color {
+  background-color: #f44336;
+  color:rgba(255,255,255,.85)
+}
+
+.vendor-color {
+  background-color: #4caf50;
+  color:rgba(255,255,255,.85)
+}
+
 .jack-btn {
   border-radius: 4px;
   background-color: #34E3AB;

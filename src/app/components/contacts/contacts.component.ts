@@ -119,7 +119,7 @@ export class ContactsComponent implements OnInit {
         let userData = {
           id: data.usersResult[i]._id,
           contact_type: "user",
-          color: "red",
+          color: "tenant-color",
           name: `${data.usersResult[i].firstName} ${
             data.usersResult[i].lastName
           }`,
@@ -136,7 +136,7 @@ export class ContactsComponent implements OnInit {
         let userData = {
           id: data.vendorsResult[i]._id,
           contact_type: "provider",
-          color: "green",
+          color: "vendor-color",
           name: data.vendorsResult[i].vendorData.name,
           initials:
             (data.vendorsResult[i].vendorData.name && data.vendorsResult[i].vendorData.name.split(" ").length > 1)
@@ -154,7 +154,7 @@ export class ContactsComponent implements OnInit {
         let userData = {
           id: data.pManagersResult[i]._id,
           contact_type: "property manager",
-          color: "blue",
+          color: "pms-color",
           name: `${data.pManagersResult[i].name} ${
             data.pManagersResult[i].surname
           }`,
