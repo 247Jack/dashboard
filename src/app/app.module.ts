@@ -46,6 +46,7 @@ import { BroadcastService } from "./services/broadcast.service";
 import { AutopopulateService } from "./services/autopopulate.service";
 import { StatsService } from "./services/stats.service";
 import { WoComponent } from './components/wo/wo.component';
+import { ReadMoreDirective } from './directives/read-more.directive';
 
 const oktaConfig = {
   issuer: "https://dev-825764.oktapreview.com/oauth2/default",
@@ -88,7 +89,8 @@ const stompConfig: StompConfig = {
     RelativeDatePipe,
     CompanyComponent,
     BroadcastComponent,
-    WoComponent
+    WoComponent,
+    ReadMoreDirective
   ],
   imports: [
     AppRouting,

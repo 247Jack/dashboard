@@ -180,7 +180,13 @@
                           <div class="text-md mt-3 d-block">
                             <h6>New {{item.parsedInput.contentIssue}} Request</h6>
                           </div>
-                          <p>{{item.parsedInput.problem}}</p>
+                          <p #textContent id="{{item._id}}">{{item.parsedInput.problem}}</p>
+                             <div class="read-more-link">
+                               <a readMore [readMore-length]="144" [readMore-element]="textContent">
+                                 <span class="less text-blue">View Less <i class="fa fa-angle-right" aria-hidden="true"></i></span>
+                                 <span class="more text-blue">View More <i class="fa fa-angle-right" aria-hidden="true"></i></span>
+                               </a>
+                             </div>
                           <div class="text-xs">
                             <p><strong>Date Requested:</strong> {{item.parsedInput.dateIssue}}</p>
                           </div>
