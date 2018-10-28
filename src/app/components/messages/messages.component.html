@@ -190,7 +190,11 @@
                           <div class="text-xs">
                             <p><strong>Date Requested:</strong> {{item.parsedInput.dateIssue}}</p>
                           </div>
-                          <p><button (click)="dispatch(item.parsedInput)" class="btn text-white jack-btn">Dispatch</button></p>
+                          <p>
+                            <button  *ngIf="item.dispatch && (item.dispatch.status == false)" (click)="dispatch(item.parsedInput)"  class="btn text-white jack-btn">Dispatch</button>
+                            <button *ngIf="item.dispatch && (item.dispatch.status == true)" disabled class="btn text-white jack-btn">Dispatched</button>
+                          </p>
+                          <p *ngIf="item.dispatch && (item.dispatch.status == true)" class="text-op">Dispatched by: {{item.dispatch.pmName}} on 'Date'</p>
                         </div>
                       </div>
                       <p class="mb-0 text-op text-center"><small><i class="fa fa-eye mr-2"></i>Only visible to you</small></p>
