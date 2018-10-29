@@ -56,6 +56,7 @@ export class NavbarComponent implements OnInit {
   public modalTitle = "";
   public modalBody = "";
   public newTaskForm;
+  public currentDispatchMessage;
 
   constructor(
     private router: Router,
@@ -242,6 +243,7 @@ export class NavbarComponent implements OnInit {
       }
     }
     this.autoPopulateConn = this.autopopulate.change.subscribe(serviceData => {
+      console.log(serviceData)
       this.issueselectedItems = [];
       this.date = new Date(serviceData.dateIssue.replace(/-/g, '\/'))
       console.log(serviceData)
@@ -253,11 +255,9 @@ export class NavbarComponent implements OnInit {
           break;
         }
       }
-      //var flagNoIssue = true;
       for(var i in this.issuelist){
         if(this.issuelist[i].itemName === serviceData.contentIssue){
           this.issueselectedItems = [this.issuelist[i]]
-          //flagNoIssue = false
           break;
         }
       }
@@ -265,11 +265,10 @@ export class NavbarComponent implements OnInit {
       if(
         !serviceData.problem
         || flagNoTenant
-        // || flagNoIssue
         ){
           this.modalShowMessage("CLP00010")
         }
-
+      this.currentDispatchMessage = serviceData.messageId
     });
   }
 
@@ -323,7 +322,8 @@ export class NavbarComponent implements OnInit {
             scheduledFor: this.date,
             relatedManager: this.currentPropertyManager.task_id,
             toValue: arrayVendors,
-            ticketDescription: this.taskDescription
+            ticketDescription: this.taskDescription,
+            messageId: this.currentDispatchMessage
           },
           this.currentPropertyManager["_id"]
         )
@@ -335,6 +335,7 @@ export class NavbarComponent implements OnInit {
           if ((result.status = 200)) {
             this.modalShowMessage("Success");
             this.tasks.updateDashoboard();
+            //window.location.reload();
           } else {
             this.modalShowMessage("SystemError");
           }

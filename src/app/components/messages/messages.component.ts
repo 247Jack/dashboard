@@ -277,11 +277,12 @@ export class MessagesComponent
     return "#FFFFFF";
   }
 
-  dispatch(serviceData) {
+  dispatch(messageId, serviceData) {
     this.activatedRoute.params.subscribe(params => {
       this.serviceDataId = params.userId
     })
     serviceData.id = this.serviceDataId
+    serviceData.messageId = messageId
     if(serviceData){
       this.autopopulate.sendService(serviceData)
     }

@@ -191,7 +191,7 @@
                             <p><strong>Date Requested:</strong> {{item.parsedInput.dateIssue}}</p>
                           </div>
                           <p>
-                            <button  *ngIf="item.dispatch && (item.dispatch.status == false)" (click)="dispatch(item.parsedInput)"  class="btn text-white jack-btn">Dispatch</button>
+                            <button  *ngIf="!item.dispatch || (item.dispatch.status == false)" (click)="dispatch(item._id, item.parsedInput)"  class="btn text-white jack-btn">Dispatch</button>
                             <button *ngIf="item.dispatch && (item.dispatch.status == true)" disabled class="btn text-white jack-btn">Dispatched</button>
                           </p>
                           <p *ngIf="item.dispatch && (item.dispatch.status == true)" class="text-op">Dispatched by: {{item.dispatch.pmName}} on {{item.dispatch.dt | date}}</p>
