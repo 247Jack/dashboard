@@ -243,7 +243,6 @@ export class NavbarComponent implements OnInit {
       }
     }
     this.autoPopulateConn = this.autopopulate.change.subscribe(serviceData => {
-      console.log(serviceData)
       this.issueselectedItems = [];
       this.date = new Date(serviceData.dateIssue.replace(/-/g, '\/'))
       console.log(serviceData)
@@ -335,7 +334,7 @@ export class NavbarComponent implements OnInit {
           if ((result.status = 200)) {
             this.modalShowMessage("Success");
             this.tasks.updateDashoboard();
-            //window.location.reload();
+            window.location.reload();
           } else {
             this.modalShowMessage("SystemError");
           }
