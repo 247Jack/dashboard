@@ -1,18 +1,18 @@
-  <ng4-loading-spinner> </ng4-loading-spinner>
-  <div id="content" class="app-content box-shadow-0" role="main">
-    <div class="content-header white  box-shadow-1" id="content-header">
-      <div class="navbar navbar-expand-lg">
-        <a class="d-lg-none mx-2" data-toggle="modal" href="#aside">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512">
-            <path d="M80 304h352v16H80zM80 248h352v16H80zM80 192h352v16H80z" />
-          </svg>
-        </a>
-        <div class="navbar-text nav-title flex" id="pageTitle">Service Requests</div>
-      </div>
+<ng4-loading-spinner> </ng4-loading-spinner>
+<div id="content" class="app-content box-shadow-0" role="main">
+  <div class="content-header white  box-shadow-1" id="content-header">
+    <div class="navbar navbar-expand-lg">
+      <a class="d-lg-none mx-2" data-toggle="modal" href="#aside">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512">
+          <path d="M80 304h352v16H80zM80 248h352v16H80zM80 192h352v16H80z" />
+        </svg>
+      </a>
+      <div class="navbar-text nav-title flex" id="pageTitle">Service Requests</div>
     </div>
-    <div class="content-main d-flex flex" id="content-main">
-      <div class="padding">
-        <!-- <div class="row">
+  </div>
+  <div class="content-main d-flex flex" id="content-main">
+    <div class="padding">
+      <!-- <div class="row">
           <div class="col mb-2">
             <div class="col">
               <div class="row">
@@ -49,328 +49,333 @@
             </div>
           </div>
         </div> -->
-        <div class="box mb-0 height-table">
-          <ngx-datatable #myTable class="material" [rows]="tickets" [columnMode]="'force'" [headerHeight]="50"
-            [footerHeight]="50" [rowHeight]="'auto'" [limit]="limitRows" [scrollbarH]="true" >
-            <ngx-datatable-column name="Name" [width]="90" >
-              <ng-template ngx-datatable-cell-template let-row="row">
-                <span *ngFor="let resident of row.residents">{{resident.firstName}} {{resident.lastName}}</span>
-              </ng-template>
-            </ngx-datatable-column>
-            <ngx-datatable-column name="Address" [width]="115">
-              <ng-template ngx-datatable-cell-template let-row="row">
-                <span *ngFor="let resident of row.residents">{{resident.building.address}}</span>
-              </ng-template>
-            </ngx-datatable-column>
-            <ngx-datatable-column name="Service" [width]="110">
-              <ng-template ngx-datatable-cell-template let-row="row">
-                <span *ngFor="let issue of row.relatedIssue">{{issue.issueToken}}</span>
-              </ng-template>
-            </ngx-datatable-column>
-            <ngx-datatable-column name="Issue" [width]="110">
-              <ng-template ngx-datatable-cell-template let-row="row">
-                <span id="issue-popup" data-placement="bottom">
-                  <span class="overflow-text">{{ row.ticketDescription }}</span>
-                  <span class="position-relative">
-                    <div class="box-color text-color pos-rlt arrow-issue">
-                      <span class="arrow b-white top"></span>
-                      <div class="box-body">{{ row.ticketDescription }}</div>
-                    </div>
-                  </span>
+      <div class="box mb-0 height-table">
+        <ngx-datatable #myTable class="material" [rows]="tickets" [columnMode]="'force'" [headerHeight]="50"
+          [footerHeight]="50" [rowHeight]="'auto'" [limit]="limitRows" [scrollbarH]="true">
+          <ngx-datatable-column name="Name" [sortable]="false" [width]="90" prop="firstName">
+            <ng-template ngx-datatable-cell-template let-row="row">
+              <span *ngFor="let resident of row.residents">{{resident.firstName}} {{resident.lastName}}</span>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Address" [width]="115" [sortable]="false">
+            <ng-template ngx-datatable-cell-template let-row="row">
+              <span *ngFor="let resident of row.residents">{{resident.building.address}}</span>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Service" [width]="110" [sortable]="false">
+            <ng-template ngx-datatable-cell-template let-row="row">
+              <span *ngFor="let issue of row.relatedIssue">{{issue.issueToken}}</span>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Issue" [width]="110" [sortable]="false" prop="ticketDescription">
+            <ng-template ngx-datatable-cell-template let-row="row">
+              <span id="issue-popup" data-placement="bottom">
+                <span class="overflow-text">{{ row.ticketDescription }}</span>
+                <span class="position-relative">
+                  <div class="box-color text-color pos-rlt arrow-issue">
+                    <span class="arrow b-white top"></span>
+                    <div class="box-body">{{ row.ticketDescription }}</div>
+                  </div>
                 </span>
-              </ng-template>
-            </ngx-datatable-column>
-            <ngx-datatable-column name="Vendor" [width]="110">
-              <ng-template ngx-datatable-cell-template let-row="row">
-                <span *ngFor="let vendor of row.assignedVendors">{{vendor.vendorData.name}}</span>
-              </ng-template>
-            </ngx-datatable-column>
-            <ngx-datatable-column name="Cost" [width]="50">
-              <ng-template ngx-datatable-cell-template let-row="row">
-                <span>${{ row.issueData.repairCost }}</span>
-              </ng-template>
-            </ngx-datatable-column>
-            <ngx-datatable-column name="Description" [width]="100">
-              <ng-template ngx-datatable-cell-template let-row="row">
-                <span id="issue-popup" data-placement="bottom">
-                  <span class="overflow-text">{{ row.issueData.repairDescription }}</span>
-                  <span class="position-relative">
-                    <div class="box-color text-color pos-rlt arrow-issue">
-                      <span class="arrow b-white top"></span>
-                      <div class="box-body">{{ row.issueData.repairDescription }}</div>
-                    </div>
-                  </span>
+              </span>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Vendor" [width]="110" [sortable]="false">
+            <ng-template ngx-datatable-cell-template let-row="row">
+              <span *ngFor="let vendor of row.assignedVendors">{{vendor.vendorData.name}}</span>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Cost" [width]="50" [sortable]="false">
+            <ng-template ngx-datatable-cell-template let-row="row">
+              <span>${{ row.issueData.repairCost }}</span>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Description" [width]="100" [sortable]="false">
+            <ng-template ngx-datatable-cell-template let-row="row">
+              <span id="issue-popup" data-placement="bottom">
+                <span class="overflow-text">{{ row.issueData.repairDescription }}</span>
+                <span class="position-relative">
+                  <div class="box-color text-color pos-rlt arrow-issue">
+                    <span class="arrow b-white top"></span>
+                    <div class="box-body">{{ row.issueData.repairDescription }}</div>
+                  </div>
                 </span>
-              </ng-template>
-            </ngx-datatable-column>
-            <ngx-datatable-column name="Status" [width]="120">
-              <ng-template ngx-datatable-cell-template let-row="row">
-                <div [ngSwitch]="row.status">
-                  <div *ngSwitchCase="'available'">
-                    <button class="badge btn-clean blue" type="button">Dispatched</button>
-                    <!--a class="badge btn-outline-red">
+              </span>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Status" [width]="120">
+            <ng-template let-column="column" ngx-datatable-header-template let-sort="sortFn">
+              <span (click)="sort()">
+                {{column.name}}
+              </span>
+            </ng-template>
+            <ng-template ngx-datatable-cell-template let-row="row">
+              <div [ngSwitch]="row.status">
+                <div *ngSwitchCase="'available'">
+                  <button class="badge btn-clean blue" type="button">Dispatched</button>
+                  <!--a class="badge btn-outline-red">
                       <i class="fa fa-times"></i> Cancel
                     </a-->
-                  </div>
-                  <div *ngSwitchCase="'checked'">
-                    <button class="badge btn-clean yellow" type="button">Assigned to Vendor</button>
-                    <!--a class="badge btn-outline-red">
-                      <i class="fa fa-times"></i> Cancel
-                    </a-->
-                  </div>
-                  <div *ngSwitchCase="'assigned'">
-                    <button class="badge btn-clean orange" type="button">Assigned  to vendor</button>
-                    <!--a class="badge btn-outline-red">
-                      <i class="fa fa-times"></i> Cancel
-                    </a-->
-                  </div>
-                  <div *ngSwitchCase="'evaluating'">
-                    <button class="badge btn-clean red">Requires attention</button>
-                    <small (click)="checkPendientTask($event, row)" data-toggle="modal" data-target="#modal-status"
-                      class="btn-clean text-primary d-flex text-center"> View Details</small>
-                    <!--a class="badge btn-outline-red">
-                      <i class="fa fa-times"></i> Cancel
-                    </a-->
-                  </div>
-                  <div *ngSwitchCase="'approved'">
-                    <button class="badge btn-clean brown" type="button">Approved</button>
-                    <!--a class="badge btn-outline-red">
-                      <i class="fa fa-times"></i> Cancel
-                    </a-->
-                  </div>
-                  <div *ngSwitchCase="'denied'">
-                    <button class="badge btn-clean grey" type="button">Canceled</button>
-                  </div>
-                  <div *ngSwitchCase="'finished'">
-                    <button class="badge btn-clean green" type="button">Completed</button>
-                  </div>
-                  <div *ngSwitchDefault>
-                    <button class="badge btn-clean white" type="button">This status shouldn't exist</button>
-                  </div>
                 </div>
-              </ng-template>
-            </ngx-datatable-column>
-            <ngx-datatable-column name="" [width]="50">
-              <ng-template ngx-datatable-cell-template let-row="row">
-                <div *ngFor="let resident of row.residents">
-                  <a [routerLink]="['/messages', resident._id]" class="white btn-border" id="arrow-messages">
-                    <div class="box-color text-color pos-rlt messages-slider-button">
-                      <span class="arrow top pull-right b-white "></span>
-                      <div class="box-body">Click to go to chat user</div>
-                    </div>
-                    <i class="fa fa-comment"></i>
-                  </a>
-                  <a [routerLink]="['/contacts', resident._id]" class="white btn-border " id="arrow-user">
-                    <div class="box-color text-color pos-rlt user-slider-button">
-                      <span class="arrow top pull-right b-white "></span>
-                      <div class="box-body">Click to go to user info</div>
-                    </div>
-                    <i class="fa fa-user"></i>
-                  </a>
+                <div *ngSwitchCase="'checked'">
+                  <button class="badge btn-clean yellow" type="button">Assigned to Vendor</button>
+                  <!--a class="badge btn-outline-red">
+                      <i class="fa fa-times"></i> Cancel
+                    </a-->
                 </div>
-              </ng-template>
-            </ngx-datatable-column>
-            <ngx-datatable-footer>
-              <ng-template ngx-datatable-footer-template let-rowCount="rowCount" let-pageSize="pageSize"
-                let-selectedCount="selectedCount" let-curPage="curPage" let-offset="offset" let-isVisible="isVisible">
-                <div class="page-count">
-                  <span *ngIf="selectedMessage">
-                    {{selectedCount.toLocaleString()}} {{selectedMessage}} /
-                  </span>
-                  {{rowCount.toLocaleString()}} {{totalMessage}} Total
+                <div *ngSwitchCase="'assigned'">
+                  <button class="badge btn-clean orange" type="button">Assigned to vendor</button>
+                  <!--a class="badge btn-outline-red">
+                      <i class="fa fa-times"></i> Cancel
+                    </a-->
                 </div>
-                <div class="form-group float-left mb-0">
-                  <select class="form-control" id="limit" (change)="onChange($event.target.value)">
-                    <option value="8">8</option>
-                    <option value="16">16</option>
-                    <option value="24">24</option>
-                    <option value="48">48</option>
-                    <option value="1000000">All</option>
-                  </select>
+                <div *ngSwitchCase="'evaluating'">
+                  <button class="badge btn-clean red">Requires atention</button>
+                  <small (click)="checkPendientTask($event, row)" data-toggle="modal" data-target="#modal-status" class="btn-clean text-primary d-flex text-center">
+                    View Details</small>
+                  <!--a class="badge btn-outline-red">
+                      <i class="fa fa-times"></i> Cancel
+                    </a-->
                 </div>
-                <datatable-pager [pagerLeftArrowIcon]="'datatable-icon-left'" [pagerRightArrowIcon]="'datatable-icon-right'"
-                  [pagerPreviousIcon]="'datatable-icon-prev'" [pagerNextIcon]="'datatable-icon-skip'" [page]="curPage"
-                  [size]="pageSize" [count]="rowCount" [hidden]="!((rowCount / pageSize) > 1)" (change)="myTable.onFooterPage($event)">
-                </datatable-pager>
-              </ng-template>
-            </ngx-datatable-footer>
-          </ngx-datatable>
-        </div>
-      </div>
-    </div>
-    <div class="modal fade show" id="user" data-backdrop="true" data-class="modal-open-aside">
-      <div class="modal-dialog modal-right w-xl white b-l">
-        <div class="d-flex flex-column h-100">
-          <div class="d-flex flex" id="profile">
-            <div class="modal-dialog modal-right w-auto-sm white dk b-l">
-              <div class="d-flex flex-column h-100 w-100 white b-r">
-                <div class="scroll-y" id="border">
-                  <div class="p-4 mt-3 d-flex flex-column align-items-center">
-                    <a href="#" class="avatar w-40">
-                      <span class="w-40 avatar circle pms-color">
-                        <i class="on b-white avatar-right"></i>
-                        TN
-                      </span>
-                    </a>
-                    <span class="text-md mt-3 block">Tiger Nixon</span>
-                  </div>
-                  <div class="p-2">
-                    <ul class="nav flex-column">
-                      <li class="nav-item">
-                        <span class="nav-link d-flex flex-row text-muted">
-                          <span>Addres:</span> 123 Easy St Miami, FL 33101</span>
-                      </li>
-                      <li class="nav-item">
-                        <span class="nav-link d-flex flex-row text-muted">
-                          <span>Mobile:</span>123-456-789</span>
-                      </li>
-                      <li class="nav-item">
-                        <span class="nav-link d-flex flex-row text-muted">
-                          <span>Email:</span>Tiger@gmail.com</span>
-                      </li>
-                      <li class="nav-item">
-                        <span class="nav-link d-flex flex-row text-muted">
-                          <span>Property:</span> The Quantum</span>
-                      </li>
-                      <li class="nav-item">
-                        <span class="nav-link d-flex flex-row text-muted">
-                          <span>Owner:</span> Cornelius Vanderbilt</span>
-                      </li>
-                      <li class="nav-item">
-                        <span class="nav-link d-flex flex-row text-muted">
-                          <span>Service plan:</span> Home Maintenance</span>
-                      </li>
-                      <li class="nav-item">
-                        <span class="nav-link d-flex flex-row text-muted">
-                          <span>Preferred vendor:</span> ABC Plumbing</span>
-                      </li>
-                    </ul>
-                  </div>
+                <div *ngSwitchCase="'approved'">
+                  <button class="badge btn-clean brown" type="button">Approved</button>
+                  <!--a class="badge btn-outline-red">
+                      <i class="fa fa-times"></i> Cancel
+                    </a-->
+                </div>
+                <div *ngSwitchCase="'denied'">
+                  <button class="badge btn-clean grey" type="button">Canceled</button>
+                </div>
+                <div *ngSwitchCase="'finished'">
+                  <button class="badge btn-clean green" type="button">Completed</button>
+                </div>
+                <div *ngSwitchDefault>
+                  <button class="badge btn-clean white" type="button">This status shouldn't exist</button>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="" [width]="50">
+            <ng-template ngx-datatable-cell-template let-row="row">
+              <div *ngFor="let resident of row.residents">
+                <a [routerLink]="['/messages', resident._id]" class="white btn-border" id="arrow-messages">
+                  <div class="box-color text-color pos-rlt messages-slider-button">
+                    <span class="arrow top pull-right b-white "></span>
+                    <div class="box-body">Click to go to chat user</div>
+                  </div>
+                  <i class="fa fa-comment"></i>
+                </a>
+                <a [routerLink]="['/contacts', resident._id]" class="white btn-border " id="arrow-user">
+                  <div class="box-color text-color pos-rlt user-slider-button">
+                    <span class="arrow top pull-right b-white "></span>
+                    <div class="box-body">Click to go to user info</div>
+                  </div>
+                  <i class="fa fa-user"></i>
+                </a>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-footer>
+            <ng-template ngx-datatable-footer-template let-rowCount="rowCount" let-pageSize="pageSize"
+              let-selectedCount="selectedCount" let-curPage="curPage" let-offset="offset" let-isVisible="isVisible">
+              <div class="page-count">
+                <span *ngIf="selectedMessage">
+                  {{selectedCount.toLocaleString()}} {{selectedMessage}} /
+                </span>
+                {{rowCount.toLocaleString()}} {{totalMessage}} Total
+              </div>
+              <div class="form-group float-left mb-0">
+                <select class="form-control" id="limit" (change)="onChange($event.target.value)">
+                  <option value="8">8</option>
+                  <option value="16">16</option>
+                  <option value="24">24</option>
+                  <option value="48">48</option>
+                  <option value="1000000">All</option>
+                </select>
+              </div>
+              <datatable-pager [pagerLeftArrowIcon]="'datatable-icon-left'" [pagerRightArrowIcon]="'datatable-icon-right'"
+                [pagerPreviousIcon]="'datatable-icon-prev'" [pagerNextIcon]="'datatable-icon-skip'" [page]="curPage"
+                [size]="pageSize" [count]="rowCount" [hidden]="!((rowCount / pageSize) > 1)" (change)="myTable.onFooterPage($event)">
+              </datatable-pager>
+            </ng-template>
+          </ngx-datatable-footer>
+        </ngx-datatable>
       </div>
     </div>
-    <div class="modal fade show" id="messages-slider" data-backdrop="true" data-class="modal-open-aside">
-      <div class="modal-dialog modal-right w-xl white b-l">
-        <div class="d-flex flex-column h-100">
-          <div class="scrollable hover scrollable-slider">
-            <div class="p-3">
-              <div class="chat-list">
-                <div class="chat-item" data-class>
+  </div>
+  <div class="modal fade show" id="user" data-backdrop="true" data-class="modal-open-aside">
+    <div class="modal-dialog modal-right w-xl white b-l">
+      <div class="d-flex flex-column h-100">
+        <div class="d-flex flex" id="profile">
+          <div class="modal-dialog modal-right w-auto-sm white dk b-l">
+            <div class="d-flex flex-column h-100 w-100 white b-r">
+              <div class="scroll-y" id="border">
+                <div class="p-4 mt-3 d-flex flex-column align-items-center">
                   <a href="#" class="avatar w-40">
                     <span class="w-40 avatar circle pms-color">
                       <i class="on b-white avatar-right"></i>
                       TN
                     </span>
                   </a>
-                  <div class="chat-body">
-                    <div class="chat-content rounded msg">
-                      Hi Jack..
-                    </div>
-                    <div class="chat-content rounded msg">
-                      I have a problem!
-                    </div>
-                    <div class="chat-date date">
-                      2 mins ago
-                    </div>
-                  </div>
+                  <span class="text-md mt-3 block">Tiger Nixon</span>
                 </div>
-                <div class="chat-item" data-class="alt">
-                  <a href="#" class="avatar w-40">
-                    <span class="w-40 avatar circle jack-color">
-                      <i class="on b-white avatar-right"></i>
-                      Jack
-                    </span>
-                  </a>
-                  <div class="chat-body">
-                    <div class="chat-content rounded msg">
-                      Hi Tiger, what's the issue?
-                    </div>
-                    <div class="chat-date date">
-                      1 min ago
-                    </div>
-                  </div>
-                </div>
-                <div class="chat-item" data-class>
-                  <a href="#" class="avatar w-40">
-                    <span class="w-40 avatar circle pms-color">
-                      <i class="on b-white avatar-right"></i>
-                      TN
-                    </span>
-                  </a>
-                  <div class="chat-body">
-                    <div class="chat-content rounded msg">
-                      My kitchen sink is clogged again
-                    </div>
-                    <div class="chat-date date">
-                      Rigth now
-                    </div>
-                  </div>
-                </div>
-                <div class="chat-item" data-class="alt">
-                  <a href="#" class="avatar w-40">
-                    <span class="w-40 avatar circle jack-color">
-                      <i class="on b-white avatar-right"></i>
-                      Jack
-                    </span>
-                  </a>
-                  <div class="chat-body">
-                    <div class="chat-content rounded msg">
-                      Looks like a new request for
-                      <span style="display: inline;">
-                        <i>plumbing</i>
-                      </span>. Do you want to
-                      <span style="display: inline;">
-                        <b>auto-dispatch</b>
-                      </span> to vendors?
-                    </div>
-                    <div class="chat-content rounded msg">
-                      <button class="btn-sm btn-rounded primary b-2x" data-dismiss="modal">Select vendors</button>&nbsp;
-                      <button class="btn-sm btn-rounded primary b-2x" data-toggle="modal" data-target="#m-a-f">Vendors
-                        pool</button>
-                    </div>
-                    <div class="chat-date date">
-                      Rigth now (only visible for you)
-                    </div>
-                  </div>
+                <div class="p-2">
+                  <ul class="nav flex-column">
+                    <li class="nav-item">
+                      <span class="nav-link d-flex flex-row text-muted">
+                        <span>Addres:</span> 123 Easy St Miami, FL 33101</span>
+                    </li>
+                    <li class="nav-item">
+                      <span class="nav-link d-flex flex-row text-muted">
+                        <span>Mobile:</span>123-456-789</span>
+                    </li>
+                    <li class="nav-item">
+                      <span class="nav-link d-flex flex-row text-muted">
+                        <span>Email:</span>Tiger@gmail.com</span>
+                    </li>
+                    <li class="nav-item">
+                      <span class="nav-link d-flex flex-row text-muted">
+                        <span>Property:</span> The Quantum</span>
+                    </li>
+                    <li class="nav-item">
+                      <span class="nav-link d-flex flex-row text-muted">
+                        <span>Owner:</span> Cornelius Vanderbilt</span>
+                    </li>
+                    <li class="nav-item">
+                      <span class="nav-link d-flex flex-row text-muted">
+                        <span>Service plan:</span> Home Maintenance</span>
+                    </li>
+                    <li class="nav-item">
+                      <span class="nav-link d-flex flex-row text-muted">
+                        <span>Preferred vendor:</span> ABC Plumbing</span>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="modal fade" id="modal-status" tabindex="-1" role="dialog" aria-labelledby="modal-status" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content" *ngIf="currentTicket">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">Task fare over threshold </h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true"></span>
-            </button>
-          </div>
-          <div class="modal-body">
-            The following task fare, set by the vendor, is greater than the task threshold. Details:
-            <p>Repair cost: {{currentTicket.issueData.repairCost}}</p>
-            <p>Repair description: {{currentTicket.issueData.repairDescription}}</p>
-            <p>Related pictures:</p>
-            <p *ngIf="!currentTicket.issueData.repairDescription.length">No images were attached.</p>
-            <div class="row">
-              <div class="col-4" *ngFor="let src of currentTicket.issueData.issueImages">
-                <img src="{{src}}" class="rounded img-fluid" alt="">
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="evaluateTask('approve')">Approve
-              task cost</button>
-            <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="evaluateTask('deny')">Deny and
-              cancel task</button>
           </div>
         </div>
       </div>
     </div>
   </div>
+  <div class="modal fade show" id="messages-slider" data-backdrop="true" data-class="modal-open-aside">
+    <div class="modal-dialog modal-right w-xl white b-l">
+      <div class="d-flex flex-column h-100">
+        <div class="scrollable hover scrollable-slider">
+          <div class="p-3">
+            <div class="chat-list">
+              <div class="chat-item" data-class>
+                <a href="#" class="avatar w-40">
+                  <span class="w-40 avatar circle pms-color">
+                    <i class="on b-white avatar-right"></i>
+                    TN
+                  </span>
+                </a>
+                <div class="chat-body">
+                  <div class="chat-content rounded msg">
+                    Hi Jack..
+                  </div>
+                  <div class="chat-content rounded msg">
+                    I have a problem!
+                  </div>
+                  <div class="chat-date date">
+                    2 mins ago
+                  </div>
+                </div>
+              </div>
+              <div class="chat-item" data-class="alt">
+                <a href="#" class="avatar w-40">
+                  <span class="w-40 avatar circle jack-color">
+                    <i class="on b-white avatar-right"></i>
+                    Jack
+                  </span>
+                </a>
+                <div class="chat-body">
+                  <div class="chat-content rounded msg">
+                    Hi Tiger, what's the issue?
+                  </div>
+                  <div class="chat-date date">
+                    1 min ago
+                  </div>
+                </div>
+              </div>
+              <div class="chat-item" data-class>
+                <a href="#" class="avatar w-40">
+                  <span class="w-40 avatar circle pms-color">
+                    <i class="on b-white avatar-right"></i>
+                    TN
+                  </span>
+                </a>
+                <div class="chat-body">
+                  <div class="chat-content rounded msg">
+                    My kitchen sink is clogged again
+                  </div>
+                  <div class="chat-date date">
+                    Rigth now
+                  </div>
+                </div>
+              </div>
+              <div class="chat-item" data-class="alt">
+                <a href="#" class="avatar w-40">
+                  <span class="w-40 avatar circle jack-color">
+                    <i class="on b-white avatar-right"></i>
+                    Jack
+                  </span>
+                </a>
+                <div class="chat-body">
+                  <div class="chat-content rounded msg">
+                    Looks like a new request for
+                    <span style="display: inline;">
+                      <i>plumbing</i>
+                    </span>. Do you want to
+                    <span style="display: inline;">
+                      <b>auto-dispatch</b>
+                    </span> to vendors?
+                  </div>
+                  <div class="chat-content rounded msg">
+                    <button class="btn-sm btn-rounded primary b-2x" data-dismiss="modal">Select vendors</button>&nbsp;
+                    <button class="btn-sm btn-rounded primary b-2x" data-toggle="modal" data-target="#m-a-f">Vendors
+                      pool</button>
+                  </div>
+                  <div class="chat-date date">
+                    Rigth now (only visible for you)
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="modal-status" tabindex="-1" role="dialog" aria-labelledby="modal-status" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content" *ngIf="currentTicket">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Task fare over threshold </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="modal-body">
+          The following task fare, set by the vendor, is greater than the task threshold. Details:
+          <p>Repair cost: {{currentTicket.issueData.repairCost}}</p>
+          <p>Repair description: {{currentTicket.issueData.repairDescription}}</p>
+          <p>Related pictures:</p>
+          <p *ngIf="!currentTicket.issueData.repairDescription.length">No images were attached.</p>
+          <div class="row">
+            <div class="col-4" *ngFor="let src of currentTicket.issueData.issueImages">
+              <img src="{{src}}" class="rounded img-fluid" alt="">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="evaluateTask('approve')">Approve
+            task cost</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="evaluateTask('deny')">Deny and
+            cancel task</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
