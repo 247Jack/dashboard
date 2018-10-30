@@ -1,8 +1,10 @@
 export const environment = {
-  production: false,
+  production: true,
   okta_clientId: "0oaeu3zgonjGZw0qE0h7",
-  api_domain: "https://15kcv4z18f.execute-api.us-east-1.amazonaws.com/stg",
-  socket_host: "https://stage.corelogic.247jack.com/",
+  api_domain: "https://15kcv4z18f.execute-api.us-east-1.amazonaws.com/dev",
+  socket_host: "https://stage.message-broker.247jack.com/",
+  one_signal_appId: "",
   secureSocket: false,
-  self_host: "http://stage.dashboard.247jack.com"
+  validEmailDom: "247jack.com|hotmail.com",
+  self_host: "https://stage.dashboard.247jack.com"
 };
