@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
   okta_clientId: "0oaeu3zgonjGZw0qE0h7",
-  api_domain: "https://15kcv4z18f.execute-api.us-east-1.amazonaws.com/dev",
+  api_domain: "https://15kcv4z18f.execute-api.us-east-1.amazonaws.com/stage",
   socket_host: "https://stage.message-broker.247jack.com/",
   one_signal_appId: "",
   secureSocket: false,
