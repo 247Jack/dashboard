@@ -273,8 +273,8 @@ export class MessagesComponent
   }
 
   isSelected(userID, service) {
-    if (userID === this.userId && service === this.service) return "#EEEEEE";
-    return "#FFFFFF";
+    if (userID === this.userId && service === this.service) return "list-item list-item-selected";
+    return "list-item";
   }
 
   dispatch(messageId, serviceData) {

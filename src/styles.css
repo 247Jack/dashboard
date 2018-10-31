@@ -66,9 +66,37 @@ app-messages, app-wo, app-company, app-broadcast {
   line-height: 1.625;
 }
 
-.scrollable.hover, .scrollable.hover {
+.scrollable.hover, .scrollable.hover, .scrollable.hover:hover {
   overflow-y: scroll;
 }
+
+.list-item-selected
+{
+  background-color: rgb(114, 230, 143) !important;
+  /* background-image: linear-gradient(141deg, #91d1ff 0%, rgb(82, 187, 168) 33.33%, rgb(52, 227, 171) 66.66%); */
+  color: #fff !important;
+}
+
+.list-item
+{
+  background-color: rgb(255, 255, 255);
+  moz-transition: all .4s ease-in-out;
+  -o-transition: all .4s ease-in-out;
+  -webkit-transition: all .4s ease-in-out;
+  transition: all .4s ease-in-out;
+}
+
+.list-item:hover
+{
+  background-color: rgb(71, 221, 109) !important;
+  color: #fff !important;
+  padding: 20px 8px 20px 8px;
+  moz-transition: all .4s ease-in-out;
+  -o-transition: all .4s ease-in-out;
+  -webkit-transition: all .4s ease-in-out;
+  transition: all .4s ease-in-out;
+}
+
 
 .scrollbar::-webkit-scrollbar-track
 {
