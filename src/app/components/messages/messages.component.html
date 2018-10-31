@@ -29,7 +29,7 @@
             </div> -->
           <div class="scrollable hover scrollbar">
             <div class="list inset" *ngFor="let user of users">
-              <div class="list-item " data-id="item-14" [style.background-color]="isSelected(user._id, user.service)">
+              <div data-id="item-14" [class]="isSelected(user._id, user.service)">
                 <!--span class="w-40 avatar circle dark pms-color">
                     <i class="on b-white avatar-right"></i>
                     {{user.initials}}
