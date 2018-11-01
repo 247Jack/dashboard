@@ -28,9 +28,11 @@ export class NavbarComponent implements OnInit {
   private getIssuesConn;
   private autoPopulateConn;
   public validTask = false;
-  public canSwitchCompany = false;
 
   public currentPropertyManager: any = {};
+  public currentCompany: string = "";
+  public currentPermissions = [];
+
   public messageCounter = {
     unassigned: 0,
     assigned: 0
@@ -70,6 +72,8 @@ export class NavbarComponent implements OnInit {
     private tasks: TicketsService,
     private autopopulate: AutopopulateService
   ) {
+    localStorage.removeItem("propertyManagerData");
+    localStorage.removeItem("PMcompany");
     /*
       After invoking the constructor, method getUser() fron okta retrieves the property manager email, which is used as key to get the property manager data.
     */
@@ -92,24 +96,30 @@ export class NavbarComponent implements OnInit {
             } else {
               /* Storage of the current property manager data to be used in following functions. */
               this.currentPropertyManager = accountData;
+              this.currentPermissions = accountData.permissions || []
               localStorage.setItem(
                 "propertyManagerData",
                 JSON.stringify(accountData)
               );
-              this.unread_messages = accountData.unread.length - 1
-              /*
-              Storage of vendors and tenants to desplay in the "New task" modal.
-            */
-              var validDoms = environment.validEmailDom.split('|')
-              var email = (accountData) ? accountData.email.split('@')[1] : "none"
-              for (var vd in validDoms) {
-                if (validDoms[vd] === email) {
-                  this.canSwitchCompany = true;
-                  break;
+              this.activatedRoute.queryParams.subscribe(queryparams => {
+                if(queryparams.company){
+                  localStorage.setItem(
+                    "PMcompany",
+                    queryparams.company
+                  );
+                } else{
+                  if(!localStorage.getItem("PMcompany")){
+                    localStorage.setItem(
+                      "PMcompany",
+                      accountData.company
+                    );
+                  }
                 }
-              }
+                this.currentCompany = localStorage.getItem("PMcompany")
+              })
+              this.unread_messages = accountData.unread.length - 1
               this.getVendorsConn = this.contacts
-                .getContacts(this.currentPropertyManager["_id"], "vendors")
+                .getContacts(this.currentPropertyManager["_id"], this.currentCompany, "vendors")
                 .subscribe(listVendors => {
                   var vendorsList = [];
                   for (var v in listVendors["vendorsResult"])
@@ -124,7 +134,7 @@ export class NavbarComponent implements OnInit {
                   this.vendorlist = vendorsList;
                 });
               this.getTenatsConn = this.contacts
-                .getContacts(this.currentPropertyManager["_id"], "users")
+                .getContacts(this.currentPropertyManager["_id"], this.currentCompany, "users")
                 .subscribe(listResidents => {
                   var residentsList = [];
                   for (var r in listResidents["usersResult"])
@@ -154,7 +164,7 @@ export class NavbarComponent implements OnInit {
               Subscribes to socket.io server
             */
               this.chatConn = this.chat
-                .listenMessages(this.currentPropertyManager)
+                .listenMessages(this.currentPropertyManager, this.currentCompany)
                 .subscribe(incoming_message => {
                   console.log(incoming_message)
                   if (
@@ -324,7 +334,8 @@ export class NavbarComponent implements OnInit {
             ticketDescription: this.taskDescription,
             messageId: this.currentDispatchMessage
           },
-          this.currentPropertyManager["_id"]
+          this.currentPropertyManager["_id"],
+          this.currentCompany
         )
         .subscribe(result => {
           //console.log(result);

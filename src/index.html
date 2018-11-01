@@ -30,15 +30,20 @@
   <script src="assets/scripts/app.min.js"></script>
   <script>
     $(document).ready(function(){
-      var currentPM = JSON.parse(localStorage.getItem("propertyManagerData"))
-      window.Intercom("boot", {
-        app_id: "n6774gvu",
-        email: currentPM.email || "",
-        user_hash: currentPM.intercom_hash || ""
-      });
-      $('#collapse-inputs').click(function (){
-        $('.editor').collapse('hide')
-      })
+      var waitForPMData = setInterval(() => {
+        var currentPM = JSON.parse(localStorage.getItem("propertyManagerData"))
+        if (currentPM) {
+          clearInterval(waitForPMData);
+          window.Intercom("boot", {
+            app_id: "n6774gvu",
+            email: currentPM.email || "",
+            user_hash: currentPM.intercom_hash || ""
+          });
+          $('#collapse-inputs').click(function (){
+            $('.editor').collapse('hide')
+          })
+        }
+      }, 100);
     })
   </script>
 </body>

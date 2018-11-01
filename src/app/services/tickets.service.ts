@@ -13,9 +13,10 @@ export class TicketsService {
 
   constructor(private http: Http) {}
 
-  public getTickets(pm_id) {
+  public getTickets(pm_id, company) {
     const headers = new Headers();
     headers.append('property_manager_id', pm_id);
+    headers.append('property_manager_company', company);
     const options = new RequestOptions({ 'headers': headers });
     return this.http
       .get(
@@ -31,9 +32,10 @@ export class TicketsService {
       });
   }
 
-  public createTicket(ticketInfo,pm_id) {
+  public createTicket(ticketInfo,pm_id, company) {
     const headers = new Headers();
     headers.append('property_manager_id', pm_id);
+    headers.append('property_manager_company', company);
     const options = new RequestOptions({ 'headers': headers });
     return this.http.post(
       `${environment.api_domain}/dashboard/tasks/`,

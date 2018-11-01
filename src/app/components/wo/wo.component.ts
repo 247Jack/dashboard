@@ -13,6 +13,7 @@ export class WoComponent implements OnInit {
   public time;
   public date;
   public currentPropertyManager;
+  public currentCompany;
   public currentTicket;
   public limitRows = 8;
   constructor(
@@ -25,7 +26,8 @@ export class WoComponent implements OnInit {
       this.currentPropertyManager = JSON.parse(
         localStorage.getItem("propertyManagerData")
       );
-      if (this.currentPropertyManager) {
+      this.currentCompany = localStorage.getItem("PMcompany")
+      if (this.currentPropertyManager && this.currentCompany) {
         clearInterval(waitForPMData);
         this.loadTasks();
         this.ticket.update.subscribe(updating => {
@@ -54,7 +56,7 @@ export class WoComponent implements OnInit {
   private loadTasks(){
     this.spinnerService.show();
     this.ticket
-    .getTickets(this.currentPropertyManager["_id"])
+    .getTickets(this.currentPropertyManager["_id"], this.currentCompany)
     .subscribe(data => {
       console.log(data)
       this.spinnerService.hide();

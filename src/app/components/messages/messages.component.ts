@@ -37,7 +37,8 @@ export class MessagesComponent
   public teammatelist = [];
   public teammateselectedItems = [];
   public teammatesettings = {};
-  private currentPropertyManager: any;
+  public currentPropertyManager: any;
+  public currentCompany: String = ""
   public humanTakeover: Boolean = false;
   public userListLoaded:Boolean = false;
   public newAddress;
@@ -55,9 +56,144 @@ export class MessagesComponent
   ) {}
 
   ngOnInit() {
-    this.currentPropertyManager = JSON.parse(
-      localStorage.getItem("propertyManagerData")
-    );
+    
+    var waitForPMData = setInterval(() => {
+      this.currentPropertyManager = JSON.parse(
+        localStorage.getItem("propertyManagerData")
+      );
+      this.currentCompany = localStorage.getItem("PMcompany")
+      if (this.currentPropertyManager && this.currentCompany) {
+        clearInterval(waitForPMData);
+        this.contactConn = this.contacts
+        .getContacts(this.currentPropertyManager["_id"], "pms")
+        .subscribe(listPMs => {
+          var PMlist = [];
+          for (var pm in listPMs["pManagersResult"])
+            PMlist.push({
+              id: listPMs["pManagersResult"][pm]._id,
+              itemName: `${listPMs["pManagersResult"][pm]["name"]} ${
+                listPMs["pManagersResult"][pm]["surname"]
+              }`
+            });
+          this.teammatelist = PMlist;
+        });
+        this.chat.clearNewMessagesCount();
+        this.chatConn = this.chat
+          .listenMessages(this.currentPropertyManager, this.currentCompany)
+          .subscribe(
+            incoming_message => {
+              if (incoming_message["userId"] === this.userId && incoming_message["platform"] === this.service) {
+                var targetUser = _.findIndex(this.users, o => {return o['composedKey'] === `${incoming_message['userId']}:${incoming_message['platform']}`})
+                if(targetUser >= 0)
+                {
+                  this.users[targetUser].lastMessage.content = incoming_message['content'];
+                  this.messages.push(incoming_message);
+                  setTimeout(() => {
+                    this.scrollToBottom();
+                    document.getElementById("invisibletriggerbutton").click();
+                    document.getElementById("messageBox").click();
+                  },50)
+                }
+              }
+              else
+              {
+                var targetUser = _.findIndex(this.users, o => {return o['composedKey'] === `${incoming_message['userId']}:${incoming_message['platform']}`})
+                if(targetUser >= 0)
+                {
+                  this.users[targetUser].unread = true;
+                  this.users[targetUser].lastMessage.content = incoming_message['content'];
+                  setTimeout(() => {
+                    document.getElementById("invisibletriggerbutton").click();
+                  },50)
+                }
+              }
+            },
+            error => {
+              console.log(error);
+            }
+          );
+        this.chatListConn = this.chat
+          .getMessagesList(this.currentPropertyManager._id, this.currentCompany)
+          .subscribe(data => {
+            this.userListLoaded = true;
+            this.users = [];
+            for (var i in data) {
+              var names = data[i].name.split(" ")
+              data[i].initials = (names.length > 1) ? `${names[0][0]}${names[1][0]}`: names[0][0]
+              data[i]._id = data[i].composedKey.split(":")[0];
+              this.users.push(data[i]);
+            }
+          });
+          this.activatedRoute.params.subscribe(params => {
+            this.activatedRoute.queryParams.subscribe(queryparams => {
+              this.userId = params["userId"];
+              this.service = queryparams["service"];
+              //this.key = queryparams["key"];
+              if (this.userId) {
+                if(this.service)
+                {
+                  this.spinnerService.show();
+                  this.chatPastConn = this.chat
+                    .getPastMessages(
+                      this.userId,
+                      this.service,
+                      this.currentPropertyManager._id,
+                      this.currentCompany
+                    )
+                    .subscribe(
+                      data => {
+                        this.userType = data.userType
+                        this.messages = data.messages;
+                        for(var i in this.messages){
+                          if (this.messages[i].address) {
+                            if (this.messages[i].address.address) {
+                              this.newAddress = this.messages[i].address.address.replace(/\s+/g, '+') + "+" + this.messages[i].address.city
+                            }
+                          }
+                        }
+                        switch(data.userType){
+                          case "tenant":
+                            this.user = data.tenantData
+                            this.userInitials = data.tenantData.firstName[0] + data.tenantData.lastName[0];
+                            this.key = (this.service === "alexa") ? data.tenantData.app["sms"] : data.tenantData.app[`${this.service}`];
+                          break;
+                          case "vendor":
+                            this.user = data.vendorData
+                            this.userInitials = data.vendorData.name[0]
+                            this.key = data.vendorData.phone
+                          break;
+                          default:
+                        }
+                        this.humanTakeover = (data.threads.length && this.service !== "alexa") ? data.threads[0]["humanTakeover"] : true;
+                        this.threadId = (data.threads.length) ? data.threads[0]["_id"] : "";
+                        this.scrollToBottom();
+                        this.spinnerService.hide();
+                        var waitForUsersData = setInterval(() => {
+                          if (this.userListLoaded) {
+                            clearInterval(waitForUsersData);
+                            var currentUserIndex = _.findIndex(this.users, o => {
+                              return (o['composedKey'] === `${this.userId}:${this.service}`)
+                            });
+                            if(currentUserIndex >= 0)
+                            {
+                              this.users[currentUserIndex].unread = false;
+                            }
+                          }
+                        }, 100);
+                      },
+                      error => {
+                        console.log(error);
+                      }
+                    );
+                }
+                else{
+                  this.router.navigate(["/messages", this.userId], { queryParams: { service : "sms" }});
+                }
+              }
+            });
+          });
+      }
+    }, 100);
 
     this.teammatesettings = {
       singleSelection: false,
@@ -67,134 +203,7 @@ export class MessagesComponent
       enableSearchFilter: true,
       badgeShowLimit: 2
     };
-
-    this.contactConn = this.contacts
-      .getContacts(this.currentPropertyManager["_id"], "pms")
-      .subscribe(listPMs => {
-        var PMlist = [];
-        for (var pm in listPMs["pManagersResult"])
-          PMlist.push({
-            id: listPMs["pManagersResult"][pm]._id,
-            itemName: `${listPMs["pManagersResult"][pm]["name"]} ${
-              listPMs["pManagersResult"][pm]["surname"]
-            }`
-          });
-        this.teammatelist = PMlist;
-      });
-    this.chat.clearNewMessagesCount();
-    this.chatConn = this.chat
-      .listenMessages(this.currentPropertyManager)
-      .subscribe(
-        incoming_message => {
-          if (incoming_message["userId"] === this.userId && incoming_message["platform"] === this.service) {
-            var targetUser = _.findIndex(this.users, o => {return o['composedKey'] === `${incoming_message['userId']}:${incoming_message['platform']}`})
-            if(targetUser >= 0)
-            {
-              this.users[targetUser].lastMessage.content = incoming_message['content'];
-              this.messages.push(incoming_message);
-              setTimeout(() => {
-                this.scrollToBottom();
-                document.getElementById("invisibletriggerbutton").click();
-                document.getElementById("messageBox").click();
-              },50)
-            }
-          }
-          else
-          {
-            var targetUser = _.findIndex(this.users, o => {return o['composedKey'] === `${incoming_message['userId']}:${incoming_message['platform']}`})
-            if(targetUser >= 0)
-            {
-              this.users[targetUser].unread = true;
-              this.users[targetUser].lastMessage.content = incoming_message['content'];
-              setTimeout(() => {
-                document.getElementById("invisibletriggerbutton").click();
-              },50)
-            }
-          }
-        },
-        error => {
-          console.log(error);
-        }
-      );
-    this.chatListConn = this.chat
-      .getMessagesList(this.currentPropertyManager._id)
-      .subscribe(data => {
-        this.userListLoaded = true;
-        this.users = [];
-        for (var i in data) {
-          var names = data[i].name.split(" ")
-          data[i].initials = (names.length > 1) ? `${names[0][0]}${names[1][0]}`: names[0][0]
-          data[i]._id = data[i].composedKey.split(":")[0];
-          this.users.push(data[i]);
-        }
-      });
-    this.activatedRoute.params.subscribe(params => {
-      this.activatedRoute.queryParams.subscribe(queryparams => {
-        this.userId = params["userId"];
-        this.service = queryparams["service"];
-        //this.key = queryparams["key"];
-        if (this.userId) {
-          if(this.service)
-          {
-            this.spinnerService.show();
-            this.chatPastConn = this.chat
-              .getPastMessages(
-                this.userId,
-                this.service,
-                this.currentPropertyManager._id
-              )
-              .subscribe(
-                data => {
-                  this.userType = data.userType
-                  this.messages = data.messages;
-                  for(var i in this.messages){
-                    if (this.messages[i].address) {
-                      if (this.messages[i].address.address) {
-                        this.newAddress = this.messages[i].address.address.replace(/\s+/g, '+') + "+" + this.messages[i].address.city
-                      }
-                    }
-                  }
-                  switch(data.userType){
-                    case "tenant":
-                      this.user = data.tenantData
-                      this.userInitials = data.tenantData.firstName[0] + data.tenantData.lastName[0];
-                      this.key = (this.service === "alexa") ? data.tenantData.app["sms"] : data.tenantData.app[`${this.service}`];
-                    break;
-                    case "vendor":
-                      this.user = data.vendorData
-                      this.userInitials = data.vendorData.name[0]
-                      this.key = data.vendorData.phone
-                    break;
-                    default:
-                  }
-                  this.humanTakeover = (data.threads.length && this.service !== "alexa") ? data.threads[0]["humanTakeover"] : true;
-                  this.threadId = (data.threads.length) ? data.threads[0]["_id"] : "";
-                  this.scrollToBottom();
-                  this.spinnerService.hide();
-                  var waitForUsersData = setInterval(() => {
-                    if (this.userListLoaded) {
-                      clearInterval(waitForUsersData);
-                      var currentUserIndex = _.findIndex(this.users, o => {
-                        return (o['composedKey'] === `${this.userId}:${this.service}`)
-                      });
-                      if(currentUserIndex >= 0)
-                      {
-                        this.users[currentUserIndex].unread = false;
-                      }
-                    }
-                  }, 100);
-                },
-                error => {
-                  console.log(error);
-                }
-              );
-          }
-          else{
-            this.router.navigate(["/messages", this.userId], { queryParams: { service : "sms" }});
-          }
-        }
-      });
-    });
+    
   }
 
   ngAfterViewInit() {}
@@ -220,7 +229,7 @@ export class MessagesComponent
         uid: this.key,
         userId: this.userId,
         userType: this.userType,
-        company: this.currentPropertyManager.company,
+        company: this.currentCompany,
         direction: "out",
         attendBy: this.currentPropertyManager._id,
         initials: initialsPM,

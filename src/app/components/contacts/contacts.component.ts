@@ -21,7 +21,8 @@ export class ContactsComponent implements OnInit {
   public currentContacts = [];
   public currentContact: any;
   public currentContactType = "";
-  private currentPropertyManager: any;
+  public currentPropertyManager: any;
+  public currentCompany;
   public newContactType = "";
   public dataLoaded = false;
   @ViewChild('modalmessage')
@@ -112,166 +113,175 @@ export class ContactsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.spinnerService.show();
-    this.currentPropertyManager = JSON.parse(localStorage.getItem('propertyManagerData'));
-    this.getContactsConn = this.contacts.getContacts(this.currentPropertyManager['_id']).subscribe(data => {
-      for (let i in data.usersResult) {
-        let userData = {
-          id: data.usersResult[i]._id,
-          contact_type: "user",
-          color: "tenant-color",
-          name: `${data.usersResult[i].firstName} ${
-            data.usersResult[i].lastName
-          }`,
-          initials: `${data.usersResult[i].firstName[0]}${
-            data.usersResult[i].lastName[0]
-          }`,
-          email: data.usersResult[i].contact.email,
-          mobile: data.usersResult[i].contact.email,
-          originalData: data.usersResult[i]
-        };
-        this.contactsUsers.push(userData);
-      }
-      for (let i in data.vendorsResult) {
-        let userData = {
-          id: data.vendorsResult[i]._id,
-          contact_type: "provider",
-          color: "vendor-color",
-          name: data.vendorsResult[i].vendorData.name,
-          initials:
-            (data.vendorsResult[i].vendorData.name && data.vendorsResult[i].vendorData.name.split(" ").length > 1)
-              ? `${data.vendorsResult[i].vendorData.name.split(" ")[0][0]}${
-                  data.vendorsResult[i].vendorData.name.split(" ")[1][0]
-                }`
-              : "",
-          email: data.vendorsResult[i].vendorData.email,
-          mobile: data.vendorsResult[i].vendorData.mobile || "",
-          originalData: data.vendorsResult[i]
-        };
-        this.contactsProviders.push(userData);
-      }
-      for (let i in data.pManagersResult) {
-        let userData = {
-          id: data.pManagersResult[i]._id,
-          contact_type: "property manager",
-          color: "pms-color",
-          name: `${data.pManagersResult[i].name} ${
-            data.pManagersResult[i].surname
-          }`,
-          initials: `${data.pManagersResult[i].name[0]}${
-            data.pManagersResult[i].surname[0]
-          }`,
-          email: data.pManagersResult[i].email,
-          mobile: data.pManagersResult[i].contact.mobile,
-          originalData: data.pManagersResult[i]
-        };
-        this.contactsPropertyManagers.push(userData);
-      }
-      this.currentContacts = [];
-      this.currentContacts = this.currentContacts.concat(this.contactsUsers);
-      this.currentContacts = this.currentContacts.concat(
-        this.contactsProviders
+    var waitForPMData = setInterval(() => {
+      this.currentPropertyManager = JSON.parse(
+        localStorage.getItem("propertyManagerData")
       );
-      this.currentContacts = this.currentContacts.concat(
-        this.contactsPropertyManagers
-      );
-      this.dataLoaded = true;
-      this.spinnerService.hide();
-      console.log(this.currentContacts)
-    });
-    this.activatedRoute.params.subscribe(params => {
-      this.currentContactType = "";
-      if(params.contactId)
-      {
-        document.getElementById("openModalButton").click();
-        this.contacts.getSingleContact(this.currentPropertyManager._id, params.contactId)
-        .subscribe(contactData => {
-          console.log(contactData.contactResult)
-          switch(contactData.contactType)
-          {
-            case 'tenant':
-              this.editResidentData.initials = contactData.contactResult.firstName[0] + contactData.contactResult.lastName[0];
-              this.editResidentData.firstName = contactData.contactResult.firstName;
-              this.editResidentData.lastName = contactData.contactResult.lastName;
-              this.editResidentData.portfolio = contactData.contactResult.portfolio;
-              this.editResidentData.unit_abbr_name = contactData.contactResult.unit_abbr_name;
-              this.editResidentData.service_threshold = contactData.contactResult.service_threshold;
-              this.editResidentData.address = contactData.contactResult.building.address;
-              this.editResidentData.address2 = contactData.contactResult.building.address2;
-              this.editResidentData.city = contactData.contactResult.building.city;
-              this.editResidentData.zip = contactData.contactResult.building.zip;
-              this.editResidentData.phone = contactData.contactResult.contact.phone;
-              this.editResidentData.workPhone = contactData.contactResult.contact.workPhone;
-              this.editResidentData.email = contactData.contactResult.contact.email;
-              this.editResidentData.alexa = contactData.contactResult.app.alexa;
-              this.editResidentData.fb = contactData.contactResult.app.fb;
-              this.editResidentData.sms = contactData.contactResult.app.sms;
-              break;
-            case 'vendor':
-              this.editVendorData.initials = (contactData.contactResult.vendorData.name && contactData.contactResult.vendorData.name.split(" ").length > 1)
-              ? `${contactData.contactResult.vendorData.name.split(" ")[0][0]}${
-                contactData.contactResult.vendorData.name.split(" ")[1][0]
-                }`
-              : "",
-              this.editVendorData.name = contactData.contactResult.vendorData.name;
-              this.editVendorData.address = contactData.contactResult.vendorData.address;
-              this.editVendorData.jobType = contactData.contactResult.vendorData.jobType;
-              this.editVendorData.phone = contactData.contactResult.vendorData.phone;
-              this.editVendorData.email = contactData.contactResult.vendorData.email;
-              this.editVendorData.comments = contactData.contactResult.vendorData.comments;
-              break;
-            case 'property manager':
-              this.editPMData.initials = contactData.contactResult.name[0] + contactData.contactResult.surname[0];
-              this.editPMData.name = contactData.contactResult.name;
-              this.editPMData.surname = contactData.contactResult.surname;
-              this.editPMData.email = contactData.contactResult.email;
-              this.editPMData.phone = contactData.contactResult.phone;
-              this.editPMData.address = contactData.contactResult.address;
-
-              break;
-            default:
+      this.currentCompany = localStorage.getItem("PMcompany")
+      if (this.currentPropertyManager && this.currentCompany) {
+        clearInterval(waitForPMData);
+        this.spinnerService.show();
+        this.currentPropertyManager = JSON.parse(localStorage.getItem('propertyManagerData'));
+        this.getContactsConn = this.contacts.getContacts(this.currentPropertyManager['_id'], this.currentCompany).subscribe(data => {
+          for (let i in data.usersResult) {
+            let userData = {
+              id: data.usersResult[i]._id,
+              contact_type: "user",
+              color: "tenant-color",
+              name: `${data.usersResult[i].firstName} ${
+                data.usersResult[i].lastName
+              }`,
+              initials: `${data.usersResult[i].firstName[0]}${
+                data.usersResult[i].lastName[0]
+              }`,
+              email: data.usersResult[i].contact.email,
+              mobile: data.usersResult[i].contact.email,
+              originalData: data.usersResult[i]
+            };
+            this.contactsUsers.push(userData);
           }
-          this.currentContactType = contactData.contactType;
-          this.currentContact = contactData.contactResult;
+          for (let i in data.vendorsResult) {
+            let userData = {
+              id: data.vendorsResult[i]._id,
+              contact_type: "provider",
+              color: "vendor-color",
+              name: data.vendorsResult[i].vendorData.name,
+              initials:
+                (data.vendorsResult[i].vendorData.name && data.vendorsResult[i].vendorData.name.split(" ").length > 1)
+                  ? `${data.vendorsResult[i].vendorData.name.split(" ")[0][0]}${
+                      data.vendorsResult[i].vendorData.name.split(" ")[1][0]
+                    }`
+                  : "",
+              email: data.vendorsResult[i].vendorData.email,
+              mobile: data.vendorsResult[i].vendorData.mobile || "",
+              originalData: data.vendorsResult[i]
+            };
+            this.contactsProviders.push(userData);
+          }
+          for (let i in data.pManagersResult) {
+            let userData = {
+              id: data.pManagersResult[i]._id,
+              contact_type: "property manager",
+              color: "pms-color",
+              name: `${data.pManagersResult[i].name} ${
+                data.pManagersResult[i].surname
+              }`,
+              initials: `${data.pManagersResult[i].name[0]}${
+                data.pManagersResult[i].surname[0]
+              }`,
+              email: data.pManagersResult[i].email,
+              mobile: data.pManagersResult[i].contact.mobile,
+              originalData: data.pManagersResult[i]
+            };
+            this.contactsPropertyManagers.push(userData);
+          }
+          this.currentContacts = [];
+          this.currentContacts = this.currentContacts.concat(this.contactsUsers);
+          this.currentContacts = this.currentContacts.concat(
+            this.contactsProviders
+          );
+          this.currentContacts = this.currentContacts.concat(
+            this.contactsPropertyManagers
+          );
+          this.dataLoaded = true;
+          this.spinnerService.hide();
+          console.log(this.currentContacts)
+        });
+        this.activatedRoute.params.subscribe(params => {
+          this.currentContactType = "";
+          if(params.contactId)
+          {
+            document.getElementById("openModalButton").click();
+            this.contacts.getSingleContact(this.currentPropertyManager._id, this.currentCompany, params.contactId)
+            .subscribe(contactData => {
+              console.log(contactData.contactResult)
+              switch(contactData.contactType)
+              {
+                case 'tenant':
+                  this.editResidentData.initials = contactData.contactResult.firstName[0] + contactData.contactResult.lastName[0];
+                  this.editResidentData.firstName = contactData.contactResult.firstName;
+                  this.editResidentData.lastName = contactData.contactResult.lastName;
+                  this.editResidentData.portfolio = contactData.contactResult.portfolio;
+                  this.editResidentData.unit_abbr_name = contactData.contactResult.unit_abbr_name;
+                  this.editResidentData.service_threshold = contactData.contactResult.service_threshold;
+                  this.editResidentData.address = contactData.contactResult.building.address;
+                  this.editResidentData.address2 = contactData.contactResult.building.address2;
+                  this.editResidentData.city = contactData.contactResult.building.city;
+                  this.editResidentData.zip = contactData.contactResult.building.zip;
+                  this.editResidentData.phone = contactData.contactResult.contact.phone;
+                  this.editResidentData.workPhone = contactData.contactResult.contact.workPhone;
+                  this.editResidentData.email = contactData.contactResult.contact.email;
+                  this.editResidentData.alexa = contactData.contactResult.app.alexa;
+                  this.editResidentData.fb = contactData.contactResult.app.fb;
+                  this.editResidentData.sms = contactData.contactResult.app.sms;
+                  break;
+                case 'vendor':
+                  this.editVendorData.initials = (contactData.contactResult.vendorData.name && contactData.contactResult.vendorData.name.split(" ").length > 1)
+                  ? `${contactData.contactResult.vendorData.name.split(" ")[0][0]}${
+                    contactData.contactResult.vendorData.name.split(" ")[1][0]
+                    }`
+                  : "",
+                  this.editVendorData.name = contactData.contactResult.vendorData.name;
+                  this.editVendorData.address = contactData.contactResult.vendorData.address;
+                  this.editVendorData.jobType = contactData.contactResult.vendorData.jobType;
+                  this.editVendorData.phone = contactData.contactResult.vendorData.phone;
+                  this.editVendorData.email = contactData.contactResult.vendorData.email;
+                  this.editVendorData.comments = contactData.contactResult.vendorData.comments;
+                  break;
+                case 'property manager':
+                  this.editPMData.initials = contactData.contactResult.name[0] + contactData.contactResult.surname[0];
+                  this.editPMData.name = contactData.contactResult.name;
+                  this.editPMData.surname = contactData.contactResult.surname;
+                  this.editPMData.email = contactData.contactResult.email;
+                  this.editPMData.phone = contactData.contactResult.phone;
+                  this.editPMData.address = contactData.contactResult.address;
+
+                  break;
+                default:
+              }
+              this.currentContactType = contactData.contactType;
+              this.currentContact = contactData.contactResult;
+            })
+          }
+        })
+        this.activatedRoute.queryParams.subscribe(queryparams => {
+          var waitForContacts = setInterval(() => {
+            if(this.dataLoaded) {
+              switch (queryparams["typecontact"]) {
+                case "users":
+                  this.currentContacts = [];
+                  this.currentContacts = this.contactsUsers;
+                  console.log(this.currentContacts)
+                  break;
+                case "providers":
+                  this.currentContacts = [];
+                  this.currentContacts = this.contactsProviders;
+                  console.log(this.currentContacts)
+                  break;
+                case "managers":
+                  this.currentContacts = [];
+                  this.currentContacts = this.contactsPropertyManagers;
+                  console.log(this.currentContacts)
+                  break;
+                default:
+                  this.currentContacts = [];
+                  this.currentContacts = this.currentContacts.concat(
+                    this.contactsUsers
+                  );
+                  this.currentContacts = this.currentContacts.concat(
+                    this.contactsProviders
+                  );
+                  this.currentContacts = this.currentContacts.concat(
+                    this.contactsPropertyManagers
+                  );
+                  break;
+              }
+              clearInterval(waitForContacts)
+            }
+          },100)
         })
       }
-    })
-    this.activatedRoute.queryParams.subscribe(queryparams => {
-      var waitForContacts = setInterval(() => {
-        if(this.dataLoaded) {
-          switch (queryparams["typecontact"]) {
-            case "users":
-              this.currentContacts = [];
-              this.currentContacts = this.contactsUsers;
-              console.log(this.currentContacts)
-              break;
-            case "providers":
-              this.currentContacts = [];
-              this.currentContacts = this.contactsProviders;
-              console.log(this.currentContacts)
-              break;
-            case "managers":
-              this.currentContacts = [];
-              this.currentContacts = this.contactsPropertyManagers;
-              console.log(this.currentContacts)
-              break;
-            default:
-              this.currentContacts = [];
-              this.currentContacts = this.currentContacts.concat(
-                this.contactsUsers
-              );
-              this.currentContacts = this.currentContacts.concat(
-                this.contactsProviders
-              );
-              this.currentContacts = this.currentContacts.concat(
-                this.contactsPropertyManagers
-              );
-              break;
-          }
-          clearInterval(waitForContacts)
-        }
-      },100)
-    })
+    }, 100);
   }
 
   ngOnDestroy(){

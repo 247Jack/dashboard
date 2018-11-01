@@ -46,16 +46,16 @@ export class ChatService {
   );
   */
 
-  public listenMessages(pm) {
+  public listenMessages(pm, company) {
     let observable = new Observable(observer => {
       this.socket = io(environment.socket_host, {secure:true});
       this.socket.on('user-login',(data) => {
         this.socket.emit('login', {
           propertyManagerId: pm._id,
-          company: pm.company
+          company: company
         })
       })
-      this.socket.on(`jack-broker-to-dahsboard|${pm.company}`, (data) => {
+      this.socket.on(`jack-broker-to-dahsboard|${company}`, (data) => {
         observer.next(data);    
       });
       return () => {
@@ -91,9 +91,10 @@ export class ChatService {
     this.new_messages = 0;
   }
 
-  public getMessagesList(pm_id) {
+  public getMessagesList(pm_id, company) {
     const headers = new Headers();
     headers.append('property_manager_id', pm_id);
+    headers.append('property_manager_company', company);
     const options = new RequestOptions({ 'headers': headers });
 
     return this.http
@@ -114,9 +115,10 @@ export class ChatService {
     this.socket.disconnect();
   }
 
-  public getPastMessages(userId, service, pm_id) {
+  public getPastMessages(userId, service, pm_id, company) {
     const headers = new Headers();
     headers.append('property_manager_id', pm_id);
+    headers.append('property_manager_company', company);
     const options = new RequestOptions({ 'headers': headers });
     return this.http
       .get(

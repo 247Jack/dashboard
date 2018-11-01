@@ -10,7 +10,9 @@ import { Ng4LoadingSpinnerService } from "ng4-loading-spinner";
 export class HomeComponent implements OnInit {
   public stats = Array;
   public currentPropertyManager = Array;
-  status: boolean = false;
+  public currentCompany;
+  public status: boolean = false;
+  public navbarLoad
   constructor(
     private spinnerService: Ng4LoadingSpinnerService,
     private stat: StatsService
@@ -21,7 +23,8 @@ export class HomeComponent implements OnInit {
       this.currentPropertyManager = JSON.parse(
         localStorage.getItem("propertyManagerData")
       );
-      if (this.currentPropertyManager) {
+      this.currentCompany = localStorage.getItem("PMcompany")
+      if (this.currentPropertyManager && this.currentCompany) {
         clearInterval(waitForPMData);
         this.loadStats();
       }
@@ -31,7 +34,7 @@ export class HomeComponent implements OnInit {
   public loadStats() {
     this.spinnerService.show();
     this.stat
-      .getStats(this.currentPropertyManager["_id"], 30)
+      .getStats(this.currentPropertyManager["_id"], this.currentCompany, 30)
       .subscribe(data => {
         this.stats = data;
         this.spinnerService.hide();

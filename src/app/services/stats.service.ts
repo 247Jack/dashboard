@@ -11,9 +11,10 @@ export class StatsService {
 
   constructor(private http: Http) { }
 
-  public getStats(pm_id, period) {
+  public getStats(pm_id, company, period) {
     const headers = new Headers();
     headers.append('property_manager_id', pm_id);
+    headers.append('property_manager_company', company);
     const options = new RequestOptions({ 'headers': headers });
     return this.http
       .get(

@@ -10,9 +10,10 @@ import { environment } from "../../environments/environment";
 export class ContactsService {
   constructor(private http: Http) {}
 
-  public getContacts(pm_id, type?) {
+  public getContacts(pm_id, company, type?) {
     const headers = new Headers();
     headers.append('property_manager_id', pm_id);
+    headers.append('property_manager_company', company);
     const options = new RequestOptions({ 'headers': headers });
 
     var selected_type = type ? `?type=${type}` : '';
@@ -30,13 +31,12 @@ export class ContactsService {
       });
   }
 
-  public getSingleContact(pm_id, contactId)
+  public getSingleContact(pm_id, company, contactId)
   {
     const headers = new Headers();
     headers.append('property_manager_id', pm_id);
+    headers.append('property_manager_company', company);
     const options = new RequestOptions({ 'headers': headers });
-    console.log(pm_id)
-    console.log(contactId)
     return this.http
       .get(
         `${environment.api_domain}/dashboard/contacts/${contactId}`,
