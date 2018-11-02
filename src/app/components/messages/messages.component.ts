@@ -59,9 +59,9 @@ export class MessagesComponent
     
     var waitForPMData = setInterval(() => {
       this.currentPropertyManager = JSON.parse(
-        localStorage.getItem("propertyManagerData")
+        sessionStorage.getItem("propertyManagerData")
       );
-      this.currentCompany = localStorage.getItem("PMcompany")
+      this.currentCompany = sessionStorage.getItem("PMcompany")
       if (this.currentPropertyManager && this.currentCompany) {
         clearInterval(waitForPMData);
         this.contactConn = this.contacts

@@ -115,13 +115,13 @@ export class ContactsComponent implements OnInit {
   ngOnInit() {
     var waitForPMData = setInterval(() => {
       this.currentPropertyManager = JSON.parse(
-        localStorage.getItem("propertyManagerData")
+        sessionStorage.getItem("propertyManagerData")
       );
-      this.currentCompany = localStorage.getItem("PMcompany")
+      this.currentCompany = sessionStorage.getItem("PMcompany")
       if (this.currentPropertyManager && this.currentCompany) {
         clearInterval(waitForPMData);
         this.spinnerService.show();
-        this.currentPropertyManager = JSON.parse(localStorage.getItem('propertyManagerData'));
+        this.currentPropertyManager = JSON.parse(sessionStorage.getItem('propertyManagerData'));
         this.getContactsConn = this.contacts.getContacts(this.currentPropertyManager['_id'], this.currentCompany).subscribe(data => {
           for (let i in data.usersResult) {
             let userData = {

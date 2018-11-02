@@ -31,7 +31,7 @@
   <script>
     $(document).ready(function(){
       var waitForPMData = setInterval(() => {
-        var currentPM = JSON.parse(localStorage.getItem("propertyManagerData"))
+        var currentPM = JSON.parse(sessionStorage.getItem("propertyManagerData"))
         if (currentPM) {
           clearInterval(waitForPMData);
           window.Intercom("boot", {

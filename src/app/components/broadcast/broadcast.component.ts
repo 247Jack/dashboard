@@ -36,7 +36,7 @@ export class BroadcastComponent implements OnInit {
 
   ngOnInit() {
     this.currentPropertyManager = JSON.parse(
-      localStorage.getItem("propertyManagerData")
+      sessionStorage.getItem("propertyManagerData")
     );
     this.currentCompany = this.currentPropertyManager.company;
     this.dropdownSettings = {

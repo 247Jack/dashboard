@@ -72,8 +72,8 @@ export class NavbarComponent implements OnInit {
     private tasks: TicketsService,
     private autopopulate: AutopopulateService
   ) {
-    localStorage.removeItem("propertyManagerData");
-    localStorage.removeItem("PMcompany");
+    sessionStorage.removeItem("propertyManagerData");
+    sessionStorage.removeItem("PMcompany");
     /*
       After invoking the constructor, method getUser() fron okta retrieves the property manager email, which is used as key to get the property manager data.
     */
@@ -97,25 +97,25 @@ export class NavbarComponent implements OnInit {
               /* Storage of the current property manager data to be used in following functions. */
               this.currentPropertyManager = accountData;
               this.currentPermissions = accountData.permissions || []
-              localStorage.setItem(
+              sessionStorage.setItem(
                 "propertyManagerData",
                 JSON.stringify(accountData)
               );
               this.activatedRoute.queryParams.subscribe(queryparams => {
                 if(queryparams.company){
-                  localStorage.setItem(
+                  sessionStorage.setItem(
                     "PMcompany",
                     queryparams.company
                   );
                 } else{
-                  if(!localStorage.getItem("PMcompany")){
-                    localStorage.setItem(
+                  if(!sessionStorage.getItem("PMcompany")){
+                    sessionStorage.setItem(
                       "PMcompany",
                       accountData.company
                     );
                   }
                 }
-                this.currentCompany = localStorage.getItem("PMcompany")
+                this.currentCompany = sessionStorage.getItem("PMcompany")
               })
               this.unread_messages = accountData.unread.length - 1
               this.getVendorsConn = this.contacts
@@ -285,7 +285,7 @@ export class NavbarComponent implements OnInit {
     Kills current session
   */
   async logout() {
-    localStorage.setItem("propertyManagerData", null);
+    sessionStorage.setItem("propertyManagerData", null);
     if(this.chatConn){
       this.chat.closeSocket();
       this.chatConn.unsubscribe();
