@@ -35,10 +35,57 @@ export class BroadcastComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.currentPropertyManager = JSON.parse(
-      sessionStorage.getItem("propertyManagerData")
-    );
-    this.currentCompany = this.currentPropertyManager.company;
+    var waitForPMData = setInterval(() => {
+      this.currentPropertyManager = JSON.parse(
+        sessionStorage.getItem("propertyManagerData")
+      );
+      this.currentCompany = sessionStorage.getItem("PMcompany")
+      if (this.currentPropertyManager && this.currentCompany) {
+        clearInterval(waitForPMData);
+        this.activatedRoute.params.subscribe(params => {
+          this.spinnerService.show();
+          this.selectedItems = [];
+          switch (params.contactType) {
+            case "tenants":
+              this.currentTypeUser = "tenant";
+              this.getTenatsConn = this.contacts
+                .getContacts(this.currentPropertyManager._id, this.currentCompany, "users")
+                .subscribe(listResidents => {
+                  var tenantsList = [];
+                  for (var r in listResidents["usersResult"]) {
+                    tenantsList.push({
+                      id: listResidents["usersResult"][r]._id,
+                      itemName: `${listResidents["usersResult"][r]["firstName"]} ${
+                        listResidents["usersResult"][r]["lastName"]
+                      }`
+                    });
+                  }
+                  this.dropdownList = tenantsList;
+                  this.spinnerService.hide();
+                });
+              break;
+            case "vendors":
+              this.currentTypeUser = "vendor";
+              this.getVendorsConn = this.contacts
+                .getContacts(this.currentPropertyManager._id, this.currentCompany, "vendors")
+                .subscribe(listResidents => {
+                  var vendorsList = [];
+                  for (var r in listResidents["vendorsResult"]) {
+                    vendorsList.push({
+                      id: listResidents["vendorsResult"][r]._id,
+                      itemName: `${
+                        listResidents["vendorsResult"][r]["vendorData"]["name"]
+                      }`
+                    });
+                  }
+                  this.dropdownList = vendorsList;
+                  this.spinnerService.hide();
+                });
+              break;
+          }
+        });
+      }
+    }, 100);
     this.dropdownSettings = {
       singleSelection: false,
       text: "Select Receivers",
@@ -46,48 +93,6 @@ export class BroadcastComponent implements OnInit {
       unSelectAllText: "UnSelect All",
       enableSearchFilter: true
     };
-    this.activatedRoute.params.subscribe(params => {
-      this.spinnerService.show();
-      this.selectedItems = [];
-      switch (params.contactType) {
-        case "tenants":
-          this.currentTypeUser = "tenant";
-          this.getTenatsConn = this.contacts
-            .getContacts(this.currentPropertyManager._id, "users")
-            .subscribe(listResidents => {
-              var tenantsList = [];
-              for (var r in listResidents["usersResult"]) {
-                tenantsList.push({
-                  id: listResidents["usersResult"][r]._id,
-                  itemName: `${listResidents["usersResult"][r]["firstName"]} ${
-                    listResidents["usersResult"][r]["lastName"]
-                  }`
-                });
-              }
-              this.dropdownList = tenantsList;
-              this.spinnerService.hide();
-            });
-          break;
-        case "vendors":
-          this.currentTypeUser = "vendor";
-          this.getVendorsConn = this.contacts
-            .getContacts(this.currentPropertyManager._id, "vendors")
-            .subscribe(listResidents => {
-              var vendorsList = [];
-              for (var r in listResidents["vendorsResult"]) {
-                vendorsList.push({
-                  id: listResidents["vendorsResult"][r]._id,
-                  itemName: `${
-                    listResidents["vendorsResult"][r]["vendorData"]["name"]
-                  }`
-                });
-              }
-              this.dropdownList = vendorsList;
-              this.spinnerService.hide();
-            });
-          break;
-      }
-    });
   }
 
   ngOnDestroy() {
