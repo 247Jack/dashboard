@@ -6,8 +6,12 @@ body {
   overflow: hidden;
 }
 
-app-messages, app-wo, app-company, app-broadcast {
+app-messages, app-wo, app-company, app-broadcast, app-home {
   width: 100%;
+}
+
+app-home #content-main {
+  display: inline-block;
 }
 
 .jack-color {
@@ -66,9 +70,9 @@ app-messages, app-wo, app-company, app-broadcast {
   line-height: 1.625;
 }
 
-.scrollable.hover, .scrollable.hover, .scrollable.hover:hover {
+/* .scrollable.hover, .scrollable.hover, .scrollable.hover:hover {
   overflow-y: scroll;
-}
+} */
 
 .list-item-selected
 {
@@ -97,7 +101,7 @@ app-messages, app-wo, app-company, app-broadcast {
   transition: all .4s ease-in-out;
 } */
 
-
+/* 
 .scrollbar::-webkit-scrollbar-track
 {
 	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
@@ -115,8 +119,8 @@ app-messages, app-wo, app-company, app-broadcast {
 {
 	border-radius: 10px;
 	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
-	background-color: #22b66e;
-}
+	background-color: #666666;
+} */
 
 
 .modal-open .modal {
@@ -194,13 +198,6 @@ app-messages, app-wo, app-company, app-broadcast {
   margin-top: 11rem;
 }
 
-app-home {
-  width: 100%;
-}
-
-app-home #content-main {
-  display: inline-block;
-}
 
 .nav-active-theme .nav>li.active>a.btn-active {
   background-color: transparent !important;
@@ -243,7 +240,7 @@ app-home #content-main {
 
 .box-tickets:hover {
   width: 100%;
-  background-color: rgb(85, 255, 128);
+  background-color: #666666;
   color: #fff !important;
   box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   transition: box-shadow .25s, -webkit-box-shadow .25s;
