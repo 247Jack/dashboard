@@ -123,8 +123,12 @@ app-home #content-main {
 } */
 
 
-.modal-open .modal {
+#backdrop, #selec-vendors {
   background-color: #00000057;
+}
+
+#backdrop > div {
+    margin-top: 11rem;
 }
 
 .badge {
