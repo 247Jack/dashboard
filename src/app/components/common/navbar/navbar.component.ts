@@ -59,6 +59,8 @@ export class NavbarComponent implements OnInit {
   public modalBody = "";
   public newTaskForm;
   public currentDispatchMessage;
+  public service;
+  public idService: any;
 
   constructor(
     private router: Router,
@@ -102,13 +104,13 @@ export class NavbarComponent implements OnInit {
                 JSON.stringify(accountData)
               );
               this.activatedRoute.queryParams.subscribe(queryparams => {
-                if(queryparams.company){
+                if (queryparams.company) {
                   sessionStorage.setItem(
                     "PMcompany",
                     queryparams.company
                   );
-                } else{
-                  if(!sessionStorage.getItem("PMcompany")){
+                } else {
+                  if (!sessionStorage.getItem("PMcompany")) {
                     sessionStorage.setItem(
                       "PMcompany",
                       accountData.company
@@ -186,8 +188,7 @@ export class NavbarComponent implements OnInit {
                       }, 25)
                     }
                   }
-                  else if(incoming_message && incoming_message['coreLogic'])
-                  {
+                  else if (incoming_message && incoming_message['coreLogic']) {
                     if (window['Push']) {
                       window['Push'].create("An issue requires validation!", {
                         body: "A task requires to be evaluated. Please check it.",
@@ -254,29 +255,31 @@ export class NavbarComponent implements OnInit {
     }
     this.autoPopulateConn = this.autopopulate.change.subscribe(serviceData => {
       this.issueselectedItems = [];
+      this.service = serviceData.service
+      this.idService = serviceData.id
       this.date = new Date(serviceData.dateIssue.replace(/-/g, '\/'))
       console.log(serviceData)
       var flagNoTenant = true;
-      for(var t in this.residentlist){
-        if(this.residentlist[t].id === serviceData.id){
+      for (var t in this.residentlist) {
+        if (this.residentlist[t].id === serviceData.id) {
           this.residentselectedItems = [this.residentlist[t]]
           flagNoTenant = false;
           break;
         }
       }
-      for(var i in this.issuelist){
-        if(this.issuelist[i].itemName === serviceData.contentIssue){
+      for (var i in this.issuelist) {
+        if (this.issuelist[i].itemName === serviceData.contentIssue) {
           this.issueselectedItems = [this.issuelist[i]]
           break;
         }
       }
       this.taskDescription = serviceData.problem
-      if(
+      if (
         !serviceData.problem
         || flagNoTenant
-        ){
-          this.modalShowMessage("CLP00010")
-        }
+      ) {
+        this.modalShowMessage("CLP00010")
+      }
       this.currentDispatchMessage = serviceData.messageId
     });
   }
@@ -286,11 +289,11 @@ export class NavbarComponent implements OnInit {
   */
   async logout() {
     sessionStorage.setItem("propertyManagerData", null);
-    if(this.chatConn){
+    if (this.chatConn) {
       this.chat.closeSocket();
       this.chatConn.unsubscribe();
     }
-    if(this.oktaAuth){
+    if (this.oktaAuth) {
       await this.oktaAuth.logout("/login");
     } else {
       window.location.href = "/login";
@@ -345,7 +348,16 @@ export class NavbarComponent implements OnInit {
           if ((result.status = 200)) {
             this.modalShowMessage("Success");
             this.tasks.updateDashoboard();
-            window.location.reload();
+            this.chat
+              .getPastMessages(
+                this.idService,
+                this.service,
+                this.currentPropertyManager._id,
+                this.currentCompany
+              )
+              .subscribe(data => {
+                this.autopopulate.sendMessages(data.messages)
+              })
           } else {
             this.modalShowMessage("SystemError");
           }

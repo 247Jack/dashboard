@@ -45,6 +45,7 @@ export class MessagesComponent
   public serviceDataId;
   @ViewChild("chatScroll")
   private myScrollContainer: ElementRef;
+  updateMessages: any;
 
   constructor(
     private router: Router,
@@ -204,6 +205,9 @@ export class MessagesComponent
       badgeShowLimit: 2
     };
     
+    this.updateMessages = this.autopopulate.changeMessages.subscribe(UpdateMessagess =>{
+      this.messages = UpdateMessagess
+    })
   }
 
   ngAfterViewInit() {}
@@ -218,6 +222,7 @@ export class MessagesComponent
     if (this.contactConn) this.contactConn.unsubscribe();
     if (this.chatListConn) this.chatListConn.unsubscribe();
     if (this.chatPastConn) this.chatPastConn.unsubscribe();
+    if (this.updateMessages)this.updateMessages.unsubscribe();
   }
 
   sendMessage(e) {
@@ -290,6 +295,7 @@ export class MessagesComponent
     this.activatedRoute.params.subscribe(params => {
       this.serviceDataId = params.userId
     })
+    serviceData.service = this.service
     serviceData.id = this.serviceDataId
     serviceData.messageId = messageId
     if(serviceData){
