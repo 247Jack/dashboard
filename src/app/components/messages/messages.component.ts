@@ -188,7 +188,7 @@ export class MessagesComponent
                     );
                 }
                 else{
-                  this.router.navigate(["/messages", this.userId], { queryParams: { service : "sms" }});
+                  this.router.navigate(["/messages", this.userId], { queryParams: { service : "sms" }, queryParamsHandling: "merge"});
                 }
               }
             });

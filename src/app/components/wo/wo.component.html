@@ -158,14 +158,14 @@
           <ngx-datatable-column name="" [width]="50">
             <ng-template ngx-datatable-cell-template let-row="row">
               <div *ngFor="let resident of row.residents">
-                <a [routerLink]="['/messages', resident._id]" class="white btn-border" id="arrow-messages">
+                <a [routerLink]="['/messages', resident._id]" queryParamsHandling="merge" class="white btn-border" id="arrow-messages">
                   <div class="box-color text-color pos-rlt messages-slider-button">
                     <span class="arrow top pull-right b-white "></span>
                     <div class="box-body">Click to go to chat user</div>
                   </div>
                   <i class="fa fa-comment"></i>
                 </a>
-                <a [routerLink]="['/contacts', resident._id]" class="white btn-border " id="arrow-user">
+                <a [routerLink]="['/contacts', resident._id]" queryParamsHandling="merge" class="white btn-border " id="arrow-user">
                   <div class="box-color text-color pos-rlt user-slider-button">
                     <span class="arrow top pull-right b-white "></span>
                     <div class="box-body">Click to go to user info</div>

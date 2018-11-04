@@ -44,7 +44,7 @@
                 <nav class="nav-border b-primary" data-nav>
                   <ul class="nav">
                     <li>
-                      <a class="item-class" [routerLink]="['/contacts']" [queryParams]="{ typecontact: 'managers' }">
+                      <a class="item-class" [routerLink]="['/contacts']" queryParamsHandling="merge" [queryParams]="{ typecontact: 'managers' }">
                         <span class="nav-badge">
                           <b class="badge badge-sm badge-pill primary">{{contactsPropertyManagers.length}}</b>
                         </span>
@@ -52,7 +52,7 @@
                       </a>
                     </li>
                     <li>
-                      <a class="item-class" [routerLink]="['/contacts']" [queryParams]="{ typecontact: 'users' }">
+                      <a class="item-class" [routerLink]="['/contacts']" queryParamsHandling="merge" [queryParams]="{ typecontact: 'users' }">
                         <span class="nav-badge">
                           <b class="badge badge-sm badge-pill primary">{{contactsUsers.length}}</b>
                         </span>
@@ -60,7 +60,7 @@
                       </a>
                     </li>
                     <li>
-                      <a class="item-class" [routerLink]="['/contacts']" [queryParams]="{ typecontact: 'providers' }">
+                      <a class="item-class" [routerLink]="['/contacts']" queryParamsHandling="merge" [queryParams]="{ typecontact: 'providers' }">
                         <span class="nav-badge">
                           <b class="badge badge-sm badge-pill primary">{{contactsProviders.length}}</b>
                         </span>
@@ -95,13 +95,13 @@
                         {{item.initials}}
                       </span>
                       <div class="list-body">
-                        <a [routerLink]="['/contacts', item.id]">
+                        <a [routerLink]="['/contacts', item.id]" queryParamsHandling="merge">
                           <!--span class="item-title _500" data-target="#user" data-toggle="modal" data-toggle-class="fade-right" data-toggle-class-target="#animate"-->
                           <span class="item-title _500">
                             {{item.name}}
                           </span>
                         </a>
-                        <a class="float-right" [routerLink]="['/messages', item.id]" *ngIf="item.contact_type === 'user' || item.contact_type === 'provider'" >
+                        <a class="float-right" [routerLink]="['/messages', item.id]" queryParamsHandling="merge" *ngIf="item.contact_type === 'user' || item.contact_type === 'provider'" >
                           <i class="fa fa-comment"></i>
                         </a>
                         <div class="item-except text-sm text-muted h-1x">

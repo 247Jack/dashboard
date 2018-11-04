@@ -16,12 +16,12 @@
         <div class="col-sm-12">
           <div class="box">
             <div class="box-header">
-              <h6 class="">Current Company: {{currentCompany}} ( <a [routerLink]="['/company']">Change it?</a> )</h6>
+              <h6 class="">Current Company: {{currentCompany}} ( <a [routerLink]="['/company']" queryParamsHandling="merge">Change it?</a> )</h6>
               <h6 class="">Send messages to</h6>
               <div class="b-b nav-active-bg">
                 <ul class="nav nav-tabs">
-                  <li class="nav-item"><a class="nav-link" routerLink="/broadcast/tenants" routerLinkActive="active">Tenants</a></li>
-                  <li class="nav-item"><a class="nav-link" routerLink="/broadcast/vendors" routerLinkActive="active">Vendors</a></li>
+                  <li class="nav-item"><a class="nav-link" routerLink="/broadcast/tenants" routerLinkActive="active" queryParamsHandling="merge">Tenants</a></li>
+                  <li class="nav-item"><a class="nav-link" routerLink="/broadcast/vendors" routerLinkActive="active" queryParamsHandling="merge">Vendors</a></li>
                 </ul>
               </div>
             </div>

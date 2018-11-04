@@ -7,7 +7,7 @@
 <div id="aside" class="app-aside fade nav-expand dark" aria-hidden="true">
   <div class="sidenav modal-dialog dk">
     <div class="navbar navbar-nav-1">
-      <a [routerLink]="['/home']" class="">
+      <a [routerLink]="['/home']" queryParamsHandling="merge" class="">
         <img src="../../../../assets/images/jack_icon.svg" class="img-icon" alt=".">
       </a>
     </div>
@@ -26,7 +26,7 @@
             </li>
             <li class="pb-2 hidden-folded mt-3"></li>
             <li routerLinkActive="active">
-              <a [routerLink]="['/home']" class="btn-active">
+              <a [routerLink]="['/home']" queryParamsHandling="merge" class="btn-active">
                 <span class="nav-icon">
                   <i class="fa fa-dashboard"></i>
                 </span>
@@ -34,7 +34,7 @@
               </a>
             </li>
             <li routerLinkActive="active">
-              <a [routerLink]="['/work-orders']" class="btn-active">
+              <a [routerLink]="['/work-orders']" queryParamsHandling="merge" class="btn-active">
                 <span class="nav-icon">
                   <i class="fa fa-book"></i>
                 </span>
@@ -42,7 +42,7 @@
               </a>
             </li>
             <li routerLinkActive="active">
-              <a [routerLink]="['/messages']" class="btn-active">
+              <a [routerLink]="['/messages']" queryParamsHandling="merge" [routerLinkActive]="['is-active']" class="btn-active">
                 <span class="nav-icon">
                   <i class="fa fa-comment"></i>
                 </span>
@@ -54,7 +54,7 @@
             </li>
             <!-- While NLU is in training, we hide this submenu -->
             <!--li>
-              <a [routerLink]="['/automations']" class="btn-active">
+              <a [routerLink]="['/automations']" queryParamsHandling="merge" class="btn-active">
                 <span class="nav-icon">
                   <i class="fa fa-magic"></i>
                 </span>
@@ -62,7 +62,7 @@
               </a>
             </li> -->
             <li routerLinkActive="active">
-              <a [routerLink]="['/contacts']" class="btn-active">
+              <a [routerLink]="['/contacts']" queryParamsHandling="merge" class="btn-active">
                 <span class="nav-icon">
                   <i class="fa fa-user"></i>
                 </span>
@@ -70,7 +70,7 @@
               </a>
             </li>
             <li *ngIf="currentPermissions.indexOf('awareness_blast') >= 0" routerLinkActive="active">
-              <a [routerLink]="['/broadcast/tenants']" class="btn-active">
+              <a [routerLink]="['/broadcast/tenants']" queryParamsHandling="merge" class="btn-active">
                 <span class="nav-icon">
                   <i class="fa fa-bullhorn"></i>
                 </span>
@@ -78,7 +78,7 @@
               </a>
             </li>
             <li *ngIf="currentPermissions.indexOf('switch_company') >= 0" routerLinkActive="active">
-              <a [routerLink]="['/company']" class="btn-active">
+              <a [routerLink]="['/company']" queryParamsHandling="merge" class="btn-active">
                 <span class="nav-icon">
                   <i class="fa fa-exchange"></i>
                 </span>
