@@ -161,7 +161,9 @@ export class NavbarComponent implements OnInit {
                       itemName: listIssues[i].issueToken
                     });
                   this.issuelist = issueListNav;
+                  this.issues.sendData(this.issuelist)
                 });
+              
               /*
               Subscribes to socket.io server
             */

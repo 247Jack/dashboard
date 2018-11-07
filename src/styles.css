@@ -123,7 +123,7 @@ app-home #content-main {
 } */
 
 
-#backdrop, #selec-vendors {
+#backdrop, #selec-vendors , #modal-edit {
   background-color: #00000057;
 }
 
@@ -189,8 +189,8 @@ app-home #content-main {
   display: inline-block;
 }
 
-#selec-vendors .modal-dialog {
-  width: 43%;
+#selec-vendors .modal-dialog, #modal-edit .modal-dialog{
+  width: 43vw;
 }
 
 #buttons-2 {
@@ -996,7 +996,7 @@ img.preview-image-chat {
     width: 100%;
   }
 
-  #selec-vendors .modal-dialog {
+  #selec-vendors .modal-dialog, #modal-edit .modal-dialog {
     width: 60%;
   }
 }
@@ -1118,7 +1118,7 @@ img.preview-image-chat {
     width: 80%;
   }
 
-  #selec-vendors .modal-dialog {
+  #selec-vendors .modal-dialog, #modal-edit .modal-dialog {
     width: 80%;
   }
 }
@@ -1128,7 +1128,7 @@ img.preview-image-chat {
     top: 18% !important;
   }
 
-  #selec-vendors .modal-dialog {
+  #selec-vendors .modal-dialog, #modal-edit .modal-dialog {
     width: 90%;
   }
 }

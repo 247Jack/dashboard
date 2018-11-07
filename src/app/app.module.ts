@@ -47,7 +47,7 @@ import { AutopopulateService } from "./services/autopopulate.service";
 import { StatsService } from "./services/stats.service";
 import { WoComponent } from './components/wo/wo.component';
 import { ReadMoreDirective } from './directives/read-more.directive';
-
+import { ClipboardModule } from 'ngx-clipboard';
 const oktaConfig = {
   issuer: "https://dev-825764.oktapreview.com/oauth2/default",
   redirectUri: `${environment.self_host}/implicit/callback`,
@@ -107,7 +107,8 @@ const stompConfig: StompConfig = {
     Ng4LoadingSpinnerModule.forRoot(),
     ModalModule,
     NgxDatatableModule,
-    Ng2SearchPipeModule
+    Ng2SearchPipeModule,
+    ClipboardModule
   ],
   providers: [
     ContactsService,
