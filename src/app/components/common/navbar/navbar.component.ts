@@ -134,6 +134,7 @@ export class NavbarComponent implements OnInit {
                         })`
                     });
                   this.vendorlist = vendorsList;
+                  this.issues.sendData(this.vendorlist)
                 });
               this.getTenatsConn = this.contacts
                 .getContacts(this.currentPropertyManager["_id"], this.currentCompany, "users")
@@ -161,7 +162,6 @@ export class NavbarComponent implements OnInit {
                       itemName: listIssues[i].issueToken
                     });
                   this.issuelist = issueListNav;
-                  this.issues.sendData(this.issuelist)
                 });
               
               /*

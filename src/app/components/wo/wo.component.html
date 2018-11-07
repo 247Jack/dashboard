@@ -289,27 +289,29 @@
                   [cbContent]="item.vendorData.name">Copy</button>
               </li>
             </ul>
-            <select [(ngModel)]="woStatus" class="form-control my-4">
-              <option selected disabled>Edit Status</option>
-              <option [ngValue]="selectedRow.status">{{selectedRow.status}}</option>
-            </select>
-            <select [(ngModel)]="woVendors" class="form-control my-4">
-              <option selected disabled>Edit Vendor</option>
-              <option [ngValue]="selectedRow.status">{{selectedRow.status}}</option>
-            </select>
-            <div class="form-group row">
-              <label for="inputEmail3" class="col-sm-3 pr-0 col-form-label"><h6>Edit Cost</h6></label>
-              <div class="col-sm-4 pl-0">
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text">$</span>
+            <form  [formGroup]="editForm">
+              <select formControlName="status" class="form-control my-4">
+                <option selected disabled>Edit Status</option>
+                <option [ngValue]="selectedRow.status">{{selectedRow.status}}</option>
+              </select>
+              <select formControlName="vendor"  class="form-control my-4">
+                <option selected disabled>Edit Vendor</option>
+                <option *ngFor="let item of vendorlist" [ngValue]="item.id">{{item.itemName}}</option>
+              </select>
+              <div class="form-group row">
+                <label for="inputEmail3" class="col-sm-3 pr-0 col-form-label"><h6>Edit Cost</h6></label>
+                <div class="col-sm-4 pl-0">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">$</span>
+                    </div>
+                    <input formControlName="cost" type="number" class="form-control">
                   </div>
-                  <input type="number" class="form-control">
                 </div>
               </div>
-            </div>
+            </form>
             <div class="mb-5 d-flex fixed-bottom"> 
-                <button class="btn btn-outline btn-rounded b-success text-success m-auto">Save</button>
+                <button class="btn btn-outline btn-rounded b-success text-success m-auto"  data-dismiss="modal"  (click)="saveEdit()">Save</button>
                 <button class="btn btn-outline btn-rounded b-danger text-danger m-auto" data-dismiss="modal" (click)="cancelEdit()">Cancel</button>
             </div>
           </div>
@@ -347,4 +349,15 @@
       </div>
     </div>
   </div>
+  <modal #modalmessage id="backdrop">
+    <modal-header [show-close]="true">
+      <h4 class="modal-title">{{modalTitle}}</h4>
+    </modal-header>
+    <modal-body>
+      {{modalBody}}
+    </modal-body>
+    <modal-footer>
+      <button type="button" class="btn btn-primary" (click)="modalmessage.close()">Close</button>
+    </modal-footer>
+  </modal>
 </div>
