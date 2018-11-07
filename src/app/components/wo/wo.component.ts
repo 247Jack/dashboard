@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { TicketsService } from "../../services/tickets.service";
+import { IssuesService } from "../../services/issues.service";
 
 @Component({
   selector: 'app-wo',
@@ -16,9 +17,16 @@ export class WoComponent implements OnInit {
   public currentCompany;
   public currentTicket;
   public limitRows = 8;
+  public recivedData;
+  issuelist: any;
+  issueToken: any;
+  issue: any;
+  selectedRow = [];
+  selected = [];
   constructor(
     private spinnerService: Ng4LoadingSpinnerService,
-    private ticket: TicketsService
+    private ticket: TicketsService,
+    private issues: IssuesService
   ) {}
 
   ngOnInit() {
@@ -35,6 +43,14 @@ export class WoComponent implements OnInit {
         });
       }
     }, 100);
+    this.recivedData = this.issues.senddata.subscribe(data =>{
+      this.issuelist = data
+      for (const i in this.issuelist) {
+        if(this.issue = this.issuelist[i].id){
+          console.log("iguales")
+        }
+      }
+    })
   }
 
   public checkPendientTask(event, task) {
@@ -62,14 +78,23 @@ export class WoComponent implements OnInit {
       this.spinnerService.hide();
       this.tickets = data;
       this.tickets.reverse()
-      for (let i in data) {
-        this.date = data[i].creationDate.split("T")[0];
-        this.time = data[i].creationDate.split(/\.|\T/)[1];
+      for (let i in this.tickets) {
+        this.date = this.tickets[i].creationDate.split("T")[0];
+        this.time = this.tickets[i].creationDate.split(/\.|\T/)[1];
+        for(var e in this.tickets[i].relatedIssue){
+          this.issue = this.tickets[i].relatedIssue[e]._id
+        }
       }
     });
   }
   onChange(deviceValue) {
     this.limitRows = deviceValue;
   }
-
+  onSelect({ selected }) {
+    this.selectedRow = selected[0]
+    document.getElementById("editRow").click();
+  }
+  cancelEdit(){
+    this.selected = []
+  }
 }

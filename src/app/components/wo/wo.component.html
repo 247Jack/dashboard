@@ -49,9 +49,12 @@
             </div>
           </div>
         </div> -->
+      <button id="editRow" class="invisible position-absolute" data-dismiss="modal" data-toggle="modal" data-target="#modal-edit">
+      </button>
       <div class="box mb-0 height-table">
         <ngx-datatable #myTable class="material" [rows]="tickets" [columnMode]="'force'" [headerHeight]="50"
-          [footerHeight]="50" [rowHeight]="'auto'" [limit]="limitRows" [scrollbarH]="true">
+          [footerHeight]="50" [rowHeight]="'auto'" [limit]="limitRows" [scrollbarH]="true" [selected]="selected"
+          [selectionType]="'single'" (select)='onSelect($event)'>
           <ngx-datatable-column name="Name" [sortable]="false" [width]="90" prop="firstName">
             <ng-template ngx-datatable-cell-template let-row="row">
               <span *ngFor="let resident of row.residents">{{resident.firstName}} {{resident.lastName}}</span>
@@ -258,90 +261,56 @@
       </div>
     </div>
   </div>
-  <div class="modal fade show" id="messages-slider" data-backdrop="true" data-class="modal-open-aside">
+  <div class="modal fade show" id="modal-edit" *ngIf="selectedRow" data-backdrop="true" data-class="modal-open-aside">
     <div class="modal-dialog modal-right w-xl white b-l">
       <div class="d-flex flex-column h-100">
         <div class="scrollable hover scrollable-slider">
-          <div class="p-3">
-            <div class="chat-list">
-              <div class="chat-item" data-class>
-                <a href="#" class="avatar w-40">
-                  <span class="w-40 avatar circle pms-color">
-                    <i class="on b-white avatar-right"></i>
-                    TN
-                  </span>
-                </a>
-                <div class="chat-body">
-                  <div class="chat-content rounded msg">
-                    Hi Jack..
+          <div class="p-5 h-100">
+            <h5 *ngFor="let item of selectedRow.residents" class=""><strong>Service Request For {{item.firstName}}
+                {{item.lastName}}</strong>
+            </h5>
+            <h5 *ngFor="let item of selectedRow.history" class="my-4"><small *ngIf="item.action === 'ticket-dispatched' "
+                class="text-muted">This request was dispatched by agent on {{item.eventTime | date:'medium'}} to the
+                following service providers:</small>
+            </h5>
+            <ul *ngFor="let item of selectedRow.assignedVendors" class="list-group list-group-flush">
+              <li class="list-group-item">
+                <h6 class="d-flex">
+                  {{item.vendorData.name}}
+                  <div class="ml-auto" *ngFor="let item of selectedRow.residents">
+                    <a [routerLink]="['/messages', item._id]" queryParamsHandling="merge" class="white btn-border" id="arrow-messages">
+                      <i class="fa fa-comment"></i>
+                    </a>
                   </div>
-                  <div class="chat-content rounded msg">
-                    I have a problem!
+                </h6>
+              </li>
+              <li class="list-group-item">
+                <small>Job Link: <strong> {{item.vendorData.name}}</strong></small><button ngxClipboard class="btn btn-link"
+                  [cbContent]="item.vendorData.name">Copy</button>
+              </li>
+            </ul>
+            <select [(ngModel)]="woStatus" class="form-control my-4">
+              <option selected disabled>Edit Status</option>
+              <option [ngValue]="selectedRow.status">{{selectedRow.status}}</option>
+            </select>
+            <select [(ngModel)]="woVendors" class="form-control my-4">
+              <option selected disabled>Edit Vendor</option>
+              <option [ngValue]="selectedRow.status">{{selectedRow.status}}</option>
+            </select>
+            <div class="form-group row">
+              <label for="inputEmail3" class="col-sm-3 pr-0 col-form-label"><h6>Edit Cost</h6></label>
+              <div class="col-sm-4 pl-0">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
                   </div>
-                  <div class="chat-date date">
-                    2 mins ago
-                  </div>
+                  <input type="number" class="form-control">
                 </div>
               </div>
-              <div class="chat-item" data-class="alt">
-                <a href="#" class="avatar w-40">
-                  <span class="w-40 avatar circle jack-color">
-                    <i class="on b-white avatar-right"></i>
-                    Jack
-                  </span>
-                </a>
-                <div class="chat-body">
-                  <div class="chat-content rounded msg">
-                    Hi Tiger, what's the issue?
-                  </div>
-                  <div class="chat-date date">
-                    1 min ago
-                  </div>
-                </div>
-              </div>
-              <div class="chat-item" data-class>
-                <a href="#" class="avatar w-40">
-                  <span class="w-40 avatar circle pms-color">
-                    <i class="on b-white avatar-right"></i>
-                    TN
-                  </span>
-                </a>
-                <div class="chat-body">
-                  <div class="chat-content rounded msg">
-                    My kitchen sink is clogged again
-                  </div>
-                  <div class="chat-date date">
-                    Rigth now
-                  </div>
-                </div>
-              </div>
-              <div class="chat-item" data-class="alt">
-                <a href="#" class="avatar w-40">
-                  <span class="w-40 avatar circle jack-color">
-                    <i class="on b-white avatar-right"></i>
-                    Jack
-                  </span>
-                </a>
-                <div class="chat-body">
-                  <div class="chat-content rounded msg">
-                    Looks like a new request for
-                    <span style="display: inline;">
-                      <i>plumbing</i>
-                    </span>. Do you want to
-                    <span style="display: inline;">
-                      <b>auto-dispatch</b>
-                    </span> to vendors?
-                  </div>
-                  <div class="chat-content rounded msg">
-                    <button class="btn-sm btn-rounded primary b-2x" data-dismiss="modal">Select vendors</button>&nbsp;
-                    <button class="btn-sm btn-rounded primary b-2x" data-toggle="modal" data-target="#m-a-f">Vendors
-                      pool</button>
-                  </div>
-                  <div class="chat-date date">
-                    Rigth now (only visible for you)
-                  </div>
-                </div>
-              </div>
+            </div>
+            <div class="mb-5 d-flex fixed-bottom"> 
+                <button class="btn btn-outline btn-rounded b-success text-success m-auto">Save</button>
+                <button class="btn btn-outline btn-rounded b-danger text-danger m-auto" data-dismiss="modal" (click)="cancelEdit()">Cancel</button>
             </div>
           </div>
         </div>
