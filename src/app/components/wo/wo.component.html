@@ -51,6 +51,12 @@
         </div> -->
       <button id="editRow" class="invisible position-absolute" data-dismiss="modal" data-toggle="modal" data-target="#modal-edit">
       </button>
+      <div class="boxsearch">
+        <div class="search-container">
+          <span class="icon"><i class="fa fa-search"></i></span>
+          <input type="text" id="search" placeholder="Search by issue description..." (keyup)='updateFilter($event)' />
+        </div>
+      </div>
       <div class="box mb-0 height-table">
         <ngx-datatable #myTable class="material" [rows]="tickets" [columnMode]="'force'" [headerHeight]="50"
           [footerHeight]="50" [rowHeight]="'auto'" [limit]="limitRows" [scrollbarH]="true" [selected]="selected"
@@ -289,17 +295,19 @@
                   [cbContent]="item.vendorData.name">Copy</button>
               </li>
             </ul>
-            <form  [formGroup]="editForm">
+            <form [formGroup]="editForm">
               <select formControlName="status" class="form-control my-4">
                 <option selected disabled>Edit Status</option>
                 <option [ngValue]="selectedRow.status">{{selectedRow.status}}</option>
               </select>
-              <select formControlName="vendor"  class="form-control my-4">
+              <select formControlName="vendor" class="form-control my-4">
                 <option selected disabled>Edit Vendor</option>
                 <option *ngFor="let item of vendorlist" [ngValue]="item.id">{{item.itemName}}</option>
               </select>
               <div class="form-group row">
-                <label for="inputEmail3" class="col-sm-3 pr-0 col-form-label"><h6>Edit Cost</h6></label>
+                <label for="inputEmail3" class="col-sm-3 pr-0 col-form-label">
+                  <h6>Edit Cost</h6>
+                </label>
                 <div class="col-sm-4 pl-0">
                   <div class="input-group">
                     <div class="input-group-prepend">
@@ -310,9 +318,9 @@
                 </div>
               </div>
             </form>
-            <div class="mb-5 d-flex fixed-bottom"> 
-                <button class="btn btn-outline btn-rounded b-success text-success m-auto"  data-dismiss="modal"  (click)="saveEdit()">Save</button>
-                <button class="btn btn-outline btn-rounded b-danger text-danger m-auto" data-dismiss="modal" (click)="cancelEdit()">Cancel</button>
+            <div class="mb-5 d-flex fixed-bottom">
+              <button class="btn btn-outline btn-rounded b-success text-success m-auto" data-dismiss="modal" (click)="saveEdit()">Save</button>
+              <button class="btn btn-outline btn-rounded b-danger text-danger m-auto" data-dismiss="modal" (click)="cancelEdit()">Cancel</button>
             </div>
           </div>
         </div>
