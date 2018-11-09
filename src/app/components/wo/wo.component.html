@@ -285,31 +285,31 @@
                 </h6>
               </li>
               <li class="list-group-item">
-                <small>Job Link: <strong> {{item.vendorData.name}}</strong></small><button ngxClipboard class="btn btn-link"
-                  [cbContent]="item.vendorData.name">Copy</button>
+                <small>Job Link: <strong> {{bitlyURL}}</strong></small><button ngxClipboard class="btn btn-link"
+                  [cbContent]="bitlyURL">Copy</button>
               </li>
             </ul>
-            <form  [formGroup]="editForm">
-              <select formControlName="status" class="form-control my-4">
-                <option selected disabled>Edit Status</option>
-                <option [ngValue]="selectedRow.status">{{selectedRow.status}}</option>
-              </select>
-              <select formControlName="vendor"  class="form-control my-4">
-                <option selected disabled>Edit Vendor</option>
-                <option *ngFor="let item of vendorlist" [ngValue]="item.id">{{item.itemName}}</option>
-              </select>
-              <div class="form-group row">
-                <label for="inputEmail3" class="col-sm-3 pr-0 col-form-label"><h6>Edit Cost</h6></label>
-                <div class="col-sm-4 pl-0">
-                  <div class="input-group">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text">$</span>
-                    </div>
-                    <input formControlName="cost" type="number" class="form-control">
+            <div class="row">
+              <div class="col-12 my-4">
+                  <angular2-multiselect [data]="statusList" [(ngModel)]="statusSelectedItems" [settings]="statusSettings">
+                  </angular2-multiselect>
+                </div>
+              <div class="col-12 my-2">
+                <angular2-multiselect [data]="vendorList" [(ngModel)]="vendorSelectedItems" [settings]="vendorSettings" (onSelect)="onVendorSelect($event)">
+                </angular2-multiselect>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="inputEmail3" class="col-sm-3 pr-0 col-form-label"><h6>Edit Cost</h6></label>
+              <div class="col-sm-4 pl-0 my-2">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
                   </div>
+                  <input type="number" class="form-control" [(ngModel)]="newCost">
                 </div>
               </div>
-            </form>
+            </div>
             <div class="mb-5 d-flex fixed-bottom"> 
                 <button class="btn btn-outline btn-rounded b-success text-success m-auto"  data-dismiss="modal"  (click)="saveEdit()">Save</button>
                 <button class="btn btn-outline btn-rounded b-danger text-danger m-auto" data-dismiss="modal" (click)="cancelEdit()">Cancel</button>
