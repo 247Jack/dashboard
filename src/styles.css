@@ -6,7 +6,11 @@ body {
   overflow: hidden;
 }
 
-app-messages, app-wo, app-company, app-broadcast, app-home {
+app-messages,
+app-wo,
+app-company,
+app-broadcast,
+app-home {
   width: 100%;
 }
 
@@ -16,22 +20,22 @@ app-home #content-main {
 
 .jack-color {
   background-color: #cccccc;
-  color:rgba(255,255,255,.85)
+  color: rgba(255, 255, 255, .85)
 }
 
 .tenant-color {
   background-color: #2196f3;
-  color:rgba(255,255,255,.85)
+  color: rgba(255, 255, 255, .85)
 }
 
 .pms-color {
   background-color: #f44336;
-  color:rgba(255,255,255,.85)
+  color: rgba(255, 255, 255, .85)
 }
 
 .vendor-color {
   background-color: #4caf50;
-  color:rgba(255,255,255,.85)
+  color: rgba(255, 255, 255, .85)
 }
 
 .jack-btn {
@@ -39,10 +43,12 @@ app-home #content-main {
   background-color: #34E3AB;
   width: 150px;
 }
-#confirmedBookService{
+
+#confirmedBookService {
   min-width: 22vw;
 }
-.MapContainer{
+
+.MapContainer {
   position: relative !important;
   width: 100% !important;
   left: unset !important;
@@ -50,6 +56,7 @@ app-home #content-main {
   margin-left: auto !important;
   margin-top: auto !important;
 }
+
 .text-op {
   color: #A9B4BE;
 }
@@ -74,15 +81,13 @@ app-home #content-main {
   overflow-y: scroll;
 } */
 
-.list-item-selected
-{
+.list-item-selected {
   background-color: #eeeeee !important;
   /* color: #fff !important; */
   /* background-color: rgb(114, 230, 143) !important; */
 }
 
-.list-item
-{
+.list-item {
   background-color: rgb(255, 255, 255);
   /* moz-transition: all .4s ease-in-out;
   -o-transition: all .4s ease-in-out;
@@ -123,12 +128,14 @@ app-home #content-main {
 } */
 
 
-#backdrop, #selec-vendors , #modal-edit {
+#backdrop,
+#selec-vendors,
+#modal-edit {
   background-color: #00000057;
 }
 
-#backdrop > div {
-    margin-top: 11rem;
+#backdrop>div {
+  margin-top: 11rem;
 }
 
 .badge {
@@ -153,6 +160,20 @@ app-home #content-main {
   outline: inherit;
 }
 
+#modal-edit .box {
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.14), 0 3px 4px 0 rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+}
+.fa-15x{
+  font-size: 1.4rem;
+}
+#modal-edit small {
+  color: #9B9B9B;
+  line-height: 23px;
+}
+.w-25{
+  width: 25px !important;
+  height: 25px;
+}
 .underlieAnimation:after {
   content: "";
   display: block;
@@ -189,7 +210,8 @@ app-home #content-main {
   display: inline-block;
 }
 
-#selec-vendors .modal-dialog, #modal-edit .modal-dialog{
+#selec-vendors .modal-dialog,
+#modal-edit .modal-dialog {
   width: 43vw;
 }
 
@@ -219,6 +241,14 @@ app-home #content-main {
 
 .bg-c {
   background-color: #1e2835;
+}
+
+.b-close {
+  background: transparent !important;
+}
+
+.b-close:hover {
+  background-color: transparent !important
 }
 
 .new-p {
@@ -996,7 +1026,8 @@ img.preview-image-chat {
     width: 100%;
   }
 
-  #selec-vendors .modal-dialog, #modal-edit .modal-dialog {
+  #selec-vendors .modal-dialog,
+  #modal-edit .modal-dialog {
     width: 60%;
   }
 }
@@ -1118,7 +1149,8 @@ img.preview-image-chat {
     width: 80%;
   }
 
-  #selec-vendors .modal-dialog, #modal-edit .modal-dialog {
+  #selec-vendors .modal-dialog,
+  #modal-edit .modal-dialog {
     width: 80%;
   }
 }
@@ -1128,7 +1160,8 @@ img.preview-image-chat {
     top: 18% !important;
   }
 
-  #selec-vendors .modal-dialog, #modal-edit .modal-dialog {
+  #selec-vendors .modal-dialog,
+  #modal-edit .modal-dialog {
     width: 90%;
   }
 }

@@ -43,6 +43,7 @@ export class WoComponent implements OnInit {
   public statusList = [];
   public statusSelectedItems = [];
   public statusSettings = {};
+  newAddress: string;
 
   constructor(
     private spinnerService: Ng4LoadingSpinnerService,
@@ -59,8 +60,8 @@ export class WoComponent implements OnInit {
     this.editForm.controls['status'].setValue(this.defaultStatus, {onlySelf: true})
     this.editForm.controls['vendor'].setValue(this.defaultVendor, {onlySelf: true})
     this.vendorSettings = {
-      singleSelection: true,
-      text: "Edit vendor",
+      singleSelection: false,
+      text: "+ Dispatch to more vendors…",
       enableSearchFilter: true,
       badgeShowLimit: 1
     }
@@ -73,27 +74,27 @@ export class WoComponent implements OnInit {
     this.statusList = [
       {
         id: 0,
-        itemName: "available"
+        itemName: "Available"
       },
       {
         id: 1,
-        itemName: "checked"
+        itemName: "Checked"
       },
       {
         id: 2,
-        itemName: "evaluating"
+        itemName: "Evaluating"
       },
       {
         id: 3,
-        itemName: "approved"
+        itemName: "Approved"
       },
       {
         id: 4,
-        itemName: "denied"
+        itemName: "Denied"
       },
       {
         id: 5,
-        itemName: "finished"
+        itemName: "Finished"
       }
     ]
 }
@@ -168,7 +169,7 @@ export class WoComponent implements OnInit {
 
   onSelect({ selected }) {
     this.selectedRow = selected[0]
-    console.log(this.selectedRow)
+    console.log(this.selectedRow.issueData.repairCost)
     if(this.selectedRow.assignedVendors.length > 0){
       this.selectedVendor = this.selectedRow.assignedVendors[0]._id
       this.vendorSelectedItems = []
@@ -191,6 +192,9 @@ export class WoComponent implements OnInit {
         this.statusSelectedItems.push(this.statusList[i])
         break
       }
+    }
+    for(var e in this.selectedRow.residents){
+      this.newAddress = this.selectedRow.residents[e].building.address.replace(/\s+/g, '+') + "+" + this.selectedRow.residents[e].building.city
     }
     if(selected[0]._id){
       this.editForm.controls['id'].setValue(selected[0]._id, {onlySelf: true})
