@@ -233,8 +233,8 @@
   <div class="modal fade show" id="modal-edit" *ngIf="selectedRow" data-backdrop="true" data-class="modal-open-aside">
     <div class="modal-dialog modal-right w-xl white b-l">
       <div class="d-flex flex-column h-100">
-        <div class="scrollable hover scrollable-slider">
-          <button class="position-absolute btn btn-clean mt-3 ml-2 b-close" data-dismiss="modal" (click)="cancelEdit()">
+        <div class="scrollable scrollable-slider">
+          <button class="position-absolute btn btn-clean mt-3 ml-2 b-close" data-dismiss="modal" id="cancelEdit" (click)="cancelEdit()">
             <i class="fa fa-close"></i>
           </button>
           <div class="p-5 h-100">
@@ -293,43 +293,59 @@
                       </div>
                       <div class="col-sm-12 my-2" *ngIf="selectedRow.vendorsBroadcasted">
                         <div *ngFor="let item of selectedRow.vendorsBroadcasted">
-                          <div class="d-flex">
-                            <button class="btn-clean b-close ">
-                              <i class=" fa text-danger fa-15x fa-minus-circle"></i>
-                            </button>
-                            <!-- <span class="ml-3">{{item.vendorData.name}} <small>({{item.vendorData.email ||
+                          <div class="d-flex row mx-0">
+                            <div class="col-sm d-flex">
+                              <button class="btn-clean b-close ">
+                                <i class=" fa text-danger fa-15x fa-minus-circle"></i>
+                              </button>
+                              <!-- <span class="ml-3">{{item.vendorData.name}} <small>({{item.vendorData.email ||
                                 item.vendorData.phone}})</small></span> -->
-                            <span class="mr-3 ml-auto text-muted">REQUEST SEND</span>
-                            <a class="btn-clean b-close  ml-auto" [routerLink]="['/messages', item]">
-                              <i class="fa  fa-15x fa-comments-o"></i>
-                            </a>
+                            </div>
+                            <div class="col-sm d-flex">
+                              <span class="mr-3 ml-auto text-muted">REQUEST SEND</span>
+                              <a class="btn-clean b-close  ml-auto" [routerLink]="['/messages', item]">
+                                <i class="fa  fa-15x fa-comments-o"></i>
+                              </a>
+                            </div>
                           </div>
                         </div>
                       </div>
-                      <div class="col-sm-12 my-2" *ngIf="selectedRow.acceptance">
-                        <div class="d-flex">
-                          <button class="btn-clean b-close ">
-                            <i class=" fa text-danger fa-15x fa-minus-circle"></i>
-                          </button>
-                          <!-- <span class="ml-3">{{item.vendorData.name}} <small>({{item.vendorData.email ||
-                              item.vendorData.phone}})</small></span> -->
-                          <span class="mr-3 ml-auto text-success">ACCEPTED JOB</span>
-                          <button class="btn-clean b-close  ml-auto">
-                            <i class="fa  fa-15x fa-comments-o"></i>
-                          </button>
+                      <div class="col-sm-12 my-2" *ngIf="selectedRow.assignedVendors">
+                        <div *ngFor="let item of selectedRow.assignedVendors">
+                          <div class="d-flex row mx-0">
+                            <div class="col-sm d-flex">
+                              <button class="btn-clean b-close ">
+                                <i class=" fa text-danger fa-15x fa-minus-circle"></i>
+                              </button>
+                              <span class="ml-3">{{item.vendorData.name}} <small>({{item.vendorData.email ||
+                                item.vendorData.phone}})</small></span>
+                            </div>
+                            <div class="col-sm d-flex">
+                              <span class="mr-3 ml-auto text-success">ACCEPTED JOB</span>
+                              <a class="btn-clean b-close  ml-auto" [routerLink]="['/messages', item]">
+                                <i class="fa  fa-15x fa-comments-o"></i>
+                              </a>
+                            </div>
+                          </div>
                         </div>
                       </div>
                       <div class="col-sm-12 my-2" *ngIf="selectedRow.rejectedVendors">
-                        <div class="d-flex">
-                          <button class="btn-clean b-close ">
-                            <i class=" fa text-danger fa-15x fa-minus-circle"></i>
-                          </button>
-                          <!-- <span class="ml-3">{{item.vendorData.name}} <small>({{item.vendorData.email ||
+                        <div *ngFor="let item of selectedRow.rejectedVendors">
+                          <div class="d-flex row mx-0">
+                            <div class="col-sm d-flex">
+                              <button class="btn-clean b-close ">
+                                <i class=" fa text-danger fa-15x fa-minus-circle"></i>
+                              </button>
+                              <!-- <span class="ml-3">{{item.vendorData.name}} <small>({{item.vendorData.email ||
                                 item.vendorData.phone}})</small></span> -->
-                          <span class="mr-3 ml-auto text-success">DECLINED JOB</span>
-                          <button class="btn-clean b-close  ml-auto">
-                            <i class="fa  fa-15x fa-comments-o"></i>
-                          </button>
+                            </div>
+                            <div class="col-sm d-flex">
+                              <span class="mr-3 ml-auto text-danger">DECLINED JOB</span>
+                              <a class="btn-clean b-close  ml-auto" [routerLink]="['/messages', item]">
+                                <i class="fa  fa-15x fa-comments-o"></i>
+                              </a>
+                            </div>
+                          </div>
                         </div>
                       </div>
                       <div class="col-sm-12 my-2 w-75">
@@ -354,8 +370,8 @@
                         <div *ngIf="selectedRow.notes?.length > 0">
                           <ul class="list inset">
                             <li class="list-item" *ngFor="let item of selectedRow.notes">
-                              <div class="row m-0">
-                                <div class="col-sm-4">
+                              <div class="row w-100 m-0">
+                                <div class="col-sm-2">
                                   <div>
                                     <span class="w-25 m-auto circle bg-secondary avatar">
                                       <span class="fa text-white fa-user"></span>
@@ -363,7 +379,27 @@
                                     <small class="d-block text-center">{{item.authorName}}</small>
                                   </div>
                                 </div>
-                                <div class="col-sm-8">
+                                <div class="col-sm-10">
+                                  <div class="list-body">
+                                    <div>
+                                      <span>{{item.content}}</span>
+                                    </div>
+                                    <small class="text-muted text-ellipsis">{{item.date | date:'medium'}}</small>
+                                  </div>
+                                </div>
+                              </div>
+                            </li>
+                            <li class="list-item" *ngFor="let item of newNotes">
+                              <div class="row w-100 m-0">
+                                <div class="col-sm-2">
+                                  <div>
+                                    <span class="w-25 m-auto circle bg-secondary avatar">
+                                      <span class="fa text-white fa-user"></span>
+                                    </span>
+                                    <small class="d-block text-center">{{item.authorName}}</small>
+                                  </div>
+                                </div>
+                                <div class="col-sm-10">
                                   <div class="list-body">
                                     <div>
                                       <span>{{item.content}}</span>
@@ -374,11 +410,11 @@
                               </div>
                             </li>
                           </ul>
-                          <textarea name="" placeholder="Add Note" class="form-control" id="" [(ngModel)]="newNote"
-                            cols="30" rows="3"></textarea>
-                          <button class="md-btn md-raised mb-2 mt-2 ml-auto d-flex danger" [disabled]="newNote?.length < 1">Add
+                          <textarea name="" placeholder="Add Note" [ngClass]="{'d-none': newNotes?.length > 0}" class="form-control"
+                            id="" [(ngModel)]="newNote" cols="30" rows="3"></textarea>
+                          <button class="md-btn md-raised mb-2 mt-2 ml-auto danger" [ngClass]="{'d-none': newNotes?.length > 0}"
+                            (click)="addNote()" [disabled]="newNote?.length < 1">Add
                             Note</button>
-
                         </div>
                         <div *ngIf="selectedRow.notes?.length < 1">
                           <textarea name="" placeholder="Include any note relevant to the issue for your team to see it."
@@ -398,7 +434,7 @@
                     </angular2-multiselect>
                   </div>
                   <div class="col-7 px-0">
-                    <div class="input-group ml-2">
+                    <div class="input-group ml-5">
                       <span class="input-group-btn d-flex">
                         <span class="d-flex m-auto"><Strong>Total Cost:</Strong></span>
                       </span>
@@ -409,7 +445,7 @@
                     </div>
                   </div>
                   <div class="col-sm-12 mb-2 px-0">
-                    <button class="d-block md-btn md-flat mt-2 text-primary"><i class="fa fa-trash-o"></i>
+                    <button (click)="openModalDelete()" class="d-block md-btn md-flat mt-2 text-primary"><i class="fa fa-trash-o"></i>
                       Remove Request</button>
                   </div>
                   <div class="col-sm-12-mt-3">
@@ -463,6 +499,18 @@
     </modal-body>
     <modal-footer>
       <button type="button" class="btn btn-primary" (click)="modalmessage.close()">Close</button>
+    </modal-footer>
+  </modal>
+  <modal #modalDelete id="backdrop">
+    <modal-header [show-close]="true">
+      <h4 class="modal-title">{{modalTitle}}</h4>
+    </modal-header>
+    <modal-body>
+      {{modalBody}}
+    </modal-body>
+    <modal-footer>
+      <button type="button" class="btn btn-primary" (click)="modalDelete.close()">No</button>
+      <button type="button" class="btn btn-danger" (click)="removeRequest()">Yes</button>
     </modal-footer>
   </modal>
 </div>

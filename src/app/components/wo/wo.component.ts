@@ -14,6 +14,8 @@ import { ModalComponent } from 'dsg-ng2-bs4-modal';
 export class WoComponent implements OnInit {
   @ViewChild('modalmessage')
   modal: ModalComponent;
+  @ViewChild('modalDelete')
+  modalDelete: ModalComponent;
   public tickets;
   public time;
   public date;
@@ -44,7 +46,14 @@ export class WoComponent implements OnInit {
   public statusSelectedItems = [];
   public statusSettings = {};
   public newAddress: string;
-  public newNote
+  public newNote = "";
+  public newNotes = []
+  public elementNote = {
+    authorName: '',
+    content: '',
+    date: new Date()
+  }
+  updateData = {};
   constructor(
     private spinnerService: Ng4LoadingSpinnerService,
     private ticket: TicketsService,
@@ -57,8 +66,8 @@ export class WoComponent implements OnInit {
       cost: new FormControl(null),
       id: new FormControl(null)
     });
-    this.editForm.controls['status'].setValue(this.defaultStatus, {onlySelf: true})
-    this.editForm.controls['vendor'].setValue(this.defaultVendor, {onlySelf: true})
+    this.editForm.controls['status'].setValue(this.defaultStatus, { onlySelf: true })
+    this.editForm.controls['vendor'].setValue(this.defaultVendor, { onlySelf: true })
     this.vendorSettings = {
       singleSelection: false,
       text: "+ Dispatch to more vendors…",
@@ -98,7 +107,7 @@ export class WoComponent implements OnInit {
         itemName: "Finished"
       }
     ]
-}
+  }
 
   ngOnInit() {
     var waitForPMData = setInterval(() => {
@@ -171,73 +180,110 @@ export class WoComponent implements OnInit {
   onSelect({ selected }) {
     this.selectedRow = selected[0]
     console.log(this.selectedRow)
-    if(this.selectedRow.assignedVendors.length > 0){
+    if (this.selectedRow.assignedVendors.length > 0) {
       this.selectedVendor = this.selectedRow.assignedVendors[0]._id
       this.vendorSelectedItems = []
       this.vendorSelectedItems.push({
         id: this.selectedRow.assignedVendors[0]._id,
         itemName: this.selectedRow.assignedVendors[0].vendorData.name
       })
-      this.ticket.getBitlyLink(this.selectedRow._id,this.selectedVendor).subscribe(resultBitly => {
+      this.ticket.getBitlyLink(this.selectedRow._id, this.selectedVendor).subscribe(resultBitly => {
         this.bitlyURL = resultBitly.url;
         document.getElementById("editRow").click();
       })
     }
-    else{
+    else {
       document.getElementById("editRow").click();
     }
     this.newCost = this.selectedRow.issueData.repairCost || 0
     this.statusSelectedItems = []
-    for(var i in this.statusList){
-      if(this.statusList[i].itemName === this.selectedRow.status){
+    for (var i in this.statusList) {
+      if (this.statusList[i].itemName === this.selectedRow.status) {
         this.statusSelectedItems.push(this.statusList[i])
         break
       }
     }
-    for(var e in this.selectedRow.residents){
+    for (var e in this.selectedRow.residents) {
       this.newAddress = this.selectedRow.residents[e].building.address.replace(/\s+/g, '+') + "+" + this.selectedRow.residents[e].building.city
     }
-    for(var f in this.selectedRow.notes){
+    for (var f in this.selectedRow.notes) {
       this.selectedRow.notes[f].authorName = this.selectedRow.notes[f].authorName.split(/(\s+)/)[0]
-      console.log(this.selectedRow.notes[f].authorName)
     }
-    if(selected[0]._id){
-      this.editForm.controls['id'].setValue(selected[0]._id, {onlySelf: true})
+    if (selected[0]._id) {
+      this.editForm.controls['id'].setValue(selected[0]._id, { onlySelf: true })
     }
-    
+
   }
 
-  onVendorSelect(event){
+  onVendorSelect(event) {
     this.ticket.getBitlyLink(this.selectedRow._id, event.id).subscribe(resultBitly => {
       this.bitlyURL = resultBitly.url
       //document.getElementById("editRow").click();
     })
   }
 
-  cancelEdit(){
+  cancelEdit() {
     this.selected = []
   }
-  saveEdit(){
-    var updateData = {
-      vendor_id: (this.vendorSelectedItems.length)?this.vendorSelectedItems[0].id:"",
-      status: (this.statusSelectedItems.length)?this.statusSelectedItems[0].itemName:"",
-      repair_cost: this.newCost
+  saveEdit() {
+    if (this.newNote.length > 0) {
+      this.updateData = {
+        vendor_id: this.vendorSelectedItems,
+        status: (this.statusSelectedItems.length) ? this.statusSelectedItems[0].itemName : "",
+        repair_cost: this.newCost,
+        newNote: {
+          authorId: this.currentPropertyManager._id,
+          authorName: this.currentPropertyManager.name,
+          content: this.newNote,
+          date: new Date(),
+        }
+      }
+    } else {
+      this.updateData = {
+        vendor_id: this.vendorSelectedItems,
+        status: (this.statusSelectedItems.length) ? this.statusSelectedItems[0].itemName : "",
+        repair_cost: this.newCost
+      }
     }
-    console.log(updateData)
-    // this.ticket.updateSimpleRequest(this.selectedRow._id, this.currentCompany, updateData).subscribe(resultUpdate => {
+
+    console.log(this.updateData)
+    // this.ticket.updateSimpleRequest(this.selectedRow._id, this.currentCompany, this.updateData).subscribe(resultUpdate => {
     //   this.selected = []
     //   this.modalShowMessage("saveTask");
     //   this.loadTasks();
     // })
-    
   }
 
+  addNote() {
+    this.elementNote.authorName = this.currentPropertyManager.name.split(/(\s+)/)[0]
+    this.elementNote.content = this.newNote
+    this.elementNote.date = new Date()
+    this.newNotes.push(this.elementNote)
+  }
+  openModalDelete() {
+    this.modalTitle = "Delete Request";
+    this.modalBody = "Are you sure you want to delete this service request?";
+    this.modalDelete.open()
+  }
+  removeRequest() {
+    // this.ticket.deleteField(this.selectedRow._id, this.currentCompany).subscribe(resultUpdate => {
+    //   this.modalShowMessage("DeleteTask");
+    //   this.loadTasks();
+    // })
+    this.modalDelete.close()
+    this.modalShowMessage("DeleteTask");
+    document.getElementById("cancelEdit").click();
+  }
   public modalShowMessage(messageType) {
     switch (messageType) {
       case "saveTask":
         this.modalTitle = "Request updated!";
         this.modalBody = "Your select request has been updated. However, you need to notify the vendors about the change, if needed.";
-      break;
+        break;
+      case "DeleteTask":
+        this.modalTitle = "Request Deleted!";
+        this.modalBody = "This request has been successfully deleted.";
+        break;
       default: {
         this.modalTitle = 'Oops!';
         this.modalBody = 'Something went wrong on our end. Nothing terrible; however, you will need to enter the request information.';
@@ -256,8 +302,8 @@ export class WoComponent implements OnInit {
       const filteredData = this.tickets.filter(e =>
         e.ticketDescription.toLowerCase().includes(search)
       ).sort((a, b) =>
-          a.ticketDescription.toLowerCase().includes(search) && !b.ticketDescription.toLowerCase().includes(search) ?
-            -1 : b.ticketDescription.toLowerCase().includes(search) && !a.ticketDescription.toLowerCase().includes(search) ? 1 : 0);
+        a.ticketDescription.toLowerCase().includes(search) && !b.ticketDescription.toLowerCase().includes(search) ?
+          -1 : b.ticketDescription.toLowerCase().includes(search) && !a.ticketDescription.toLowerCase().includes(search) ? 1 : 0);
       this.tickets = filteredData;
     }
     this.spinnerService.hide();

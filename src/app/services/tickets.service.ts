@@ -100,20 +100,17 @@ export class TicketsService {
     });
   }
 
-  // public editTicket(ticketInfo,pm_id, company) {
-  //   const headers = new Headers();
-  //   headers.append('property_manager_id', pm_id);
-  //   headers.append('property_manager_company', company);
-  //   const options = new RequestOptions({ 'headers': headers });
-  //   return this.http.post(
-  //     // `${environment.api_domain}/dashboard/tasks/`,
-  //     ticketInfo,
-  //     options
-  //   )
-  //   .catch(error => {
-  //     window.location.reload();
-  //     return Observable.throw(error.message || error);
-  //   });
-  // }
-
+  deleteField(task_id,company){
+    const headers = new Headers();
+    headers.append('property_manager_company', company);
+    const options = new RequestOptions({ 'headers': headers });
+    return this.http.delete(
+      `${environment.api_domain}/dashboard/tasks/${task_id}`,
+      options
+    )
+    .catch(error => {
+      window.location.reload();
+      return Observable.throw(error.message || error);
+    });
+  }
 }
