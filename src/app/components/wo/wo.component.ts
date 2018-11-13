@@ -43,8 +43,8 @@ export class WoComponent implements OnInit {
   public statusList = [];
   public statusSelectedItems = [];
   public statusSettings = {};
-  newAddress: string;
-
+  public newAddress: string;
+  public newNote
   constructor(
     private spinnerService: Ng4LoadingSpinnerService,
     private ticket: TicketsService,
@@ -69,7 +69,8 @@ export class WoComponent implements OnInit {
       singleSelection: true,
       text: "Edit status",
       enableSearchFilter: false,
-      badgeShowLimit: 1
+      badgeShowLimit: 1,
+      position: "top"
     }
     this.statusList = [
       {
@@ -169,7 +170,7 @@ export class WoComponent implements OnInit {
 
   onSelect({ selected }) {
     this.selectedRow = selected[0]
-    console.log(this.selectedRow.issueData.repairCost)
+    console.log(this.selectedRow)
     if(this.selectedRow.assignedVendors.length > 0){
       this.selectedVendor = this.selectedRow.assignedVendors[0]._id
       this.vendorSelectedItems = []
@@ -196,6 +197,10 @@ export class WoComponent implements OnInit {
     for(var e in this.selectedRow.residents){
       this.newAddress = this.selectedRow.residents[e].building.address.replace(/\s+/g, '+') + "+" + this.selectedRow.residents[e].building.city
     }
+    for(var f in this.selectedRow.notes){
+      this.selectedRow.notes[f].authorName = this.selectedRow.notes[f].authorName.split(/(\s+)/)[0]
+      console.log(this.selectedRow.notes[f].authorName)
+    }
     if(selected[0]._id){
       this.editForm.controls['id'].setValue(selected[0]._id, {onlySelf: true})
     }
@@ -218,11 +223,12 @@ export class WoComponent implements OnInit {
       status: (this.statusSelectedItems.length)?this.statusSelectedItems[0].itemName:"",
       repair_cost: this.newCost
     }
-    this.ticket.updateSimpleRequest(this.selectedRow._id, this.currentCompany, updateData).subscribe(resultUpdate => {
-      this.selected = []
-      this.modalShowMessage("saveTask");
-      this.loadTasks();
-    })
+    console.log(updateData)
+    // this.ticket.updateSimpleRequest(this.selectedRow._id, this.currentCompany, updateData).subscribe(resultUpdate => {
+    //   this.selected = []
+    //   this.modalShowMessage("saveTask");
+    //   this.loadTasks();
+    // })
     
   }
 
