@@ -12,7 +12,7 @@ import { ModalComponent } from 'dsg-ng2-bs4-modal';
   styleUrls: ['./wo.component.css']
 })
 export class WoComponent implements OnInit {
-  @ViewChild('modalmessage')
+  @ViewChild("modalmessage")
   modal: ModalComponent;
   public tickets;
   public time;
@@ -27,13 +27,11 @@ export class WoComponent implements OnInit {
   public selectedRow: any = [];
   public selectedVendor: any;
   public selected = [];
-  public editForm: FormGroup;
+  public editForm : FormGroup;
   public defaultStatus: string = 'Edit Status';
   public defaultVendor: string = 'Edit Vendor';
   public modalTitle = "";
   public modalBody = "";
-  public temp = [];
-  public originalData = [];
   public bitlyURL = "";
   public newCost = 0;
 
@@ -102,9 +100,9 @@ export class WoComponent implements OnInit {
   ngOnInit() {
     var waitForPMData = setInterval(() => {
       this.currentPropertyManager = JSON.parse(
-        sessionStorage.getItem('propertyManagerData')
+        sessionStorage.getItem("propertyManagerData")
       );
-      this.currentCompany = sessionStorage.getItem('PMcompany')
+      this.currentCompany = sessionStorage.getItem("PMcompany")
       if (this.currentPropertyManager && this.currentCompany) {
         clearInterval(waitForPMData);
         this.loadTasks();
@@ -128,23 +126,9 @@ export class WoComponent implements OnInit {
           });
       }
     }, 100);
-  }
-
-  private loadTasks() {
-    this.spinnerService.show();
-    this.ticket
-      .getTickets(this.currentPropertyManager['_id'], this.currentCompany)
-      .subscribe(data => {
-        console.log(data);
-        this.spinnerService.hide();
-        this.tickets = data;
-        this.tickets.reverse();
-        this.originalData = this.tickets;
-        for (let i in this.tickets) {
-          this.date = this.tickets[i].creationDate.split("T")[0];
-          this.time = this.tickets[i].creationDate.split(/\.|\T/)[1];
-        }
-      });
+    this.recivedData = this.issues.senddata.subscribe(data =>{
+      this.vendorList = data
+    })
   }
 
   public checkPendientTask(event, task) {
@@ -159,14 +143,28 @@ export class WoComponent implements OnInit {
         this.currentPropertyManager._id
       )
       .subscribe(data => {
-        this.loadTasks();
+        this.loadTasks()
       });
   }
 
+  private loadTasks(){
+    this.spinnerService.show();
+    this.ticket
+    .getTickets(this.currentPropertyManager["_id"], this.currentCompany)
+    .subscribe(data => {
+      console.log(data)
+      this.spinnerService.hide();
+      this.tickets = data;
+      this.tickets.reverse()
+      for (let i in this.tickets) {
+        this.date = this.tickets[i].creationDate.split("T")[0];
+        this.time = this.tickets[i].creationDate.split(/\.|\T/)[1];
+      }
+    });
+  }
   onChange(deviceValue) {
     this.limitRows = deviceValue;
   }
-
   onSelect({ selected }) {
     this.selectedRow = selected[0]
     console.log(this.selectedRow.issueData.repairCost)
@@ -226,6 +224,8 @@ export class WoComponent implements OnInit {
     
   }
 
+
+
   public modalShowMessage(messageType) {
     switch (messageType) {
       case "saveTask":
@@ -233,28 +233,11 @@ export class WoComponent implements OnInit {
         this.modalBody = "Your select request has been updated. However, you need to notify the vendors about the change, if needed.";
       break;
       default: {
-        this.modalTitle = 'Oops!';
-        this.modalBody = 'Something went wrong on our end. Nothing terrible; however, you will need to enter the request information.';
+        this.modalTitle = "Oops!";
+        this.modalBody = "Something went wrong on our end. Nothing terrible; however, you will need to enter the request information.";
         break;
       }
     }
     this.modal.open();
   }
-
-  // filter data and update rows
-  updateFilter(event) {
-    this.spinnerService.show();
-    this.tickets = this.originalData;
-    const search = event.target.value.toLowerCase();
-    if (search.length > 0) {
-      const filteredData = this.tickets.filter(e =>
-        e.ticketDescription.toLowerCase().includes(search)
-      ).sort((a, b) =>
-          a.ticketDescription.toLowerCase().includes(search) && !b.ticketDescription.toLowerCase().includes(search) ?
-            -1 : b.ticketDescription.toLowerCase().includes(search) && !a.ticketDescription.toLowerCase().includes(search) ? 1 : 0);
-      this.tickets = filteredData;
-    }
-    this.spinnerService.hide();
-  }
-
 }
