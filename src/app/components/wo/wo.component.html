@@ -230,7 +230,7 @@
       </div>
     </div>
   </div>
-  <div class="modal fade show" id="modal-edit" *ngIf="selectedRow" data-backdrop="true" data-class="modal-open-aside">
+  <div class="modal fade show" id="modal-edit" *ngIf="editDataRequest" data-backdrop="true" data-class="modal-open-aside">
     <div class="modal-dialog modal-right w-xl white b-l">
       <div class="d-flex flex-column h-100">
         <div class="scrollable scrollable-slider">
@@ -238,52 +238,51 @@
             <i class="fa fa-close"></i>
           </button>
           <div class="p-5 h-100">
-            <h5 *ngFor="let item of selectedRow.relatedIssue" class="text-center">
+            <h5 class="text-center">
               <strong>
-                {{item.issueToken}} Service Request
+                {{editDataRequest.title}}
               </strong>
             </h5>
             <div class="row">
               <div class="col-sm-12">
-                <div *ngFor="let item of selectedRow.history">
-                  <small *ngIf="item.action === 'ticket-created'">
-                    Received on {{item.eventTime | date:'medium'}}
+                <div>
+                  <small>
+                    Received on {{editDataRequest.receivedOn | date:'medium'}}
                   </small>
                 </div>
                 <div class="box row mx-0">
                   <div class="box-body col-sm-7">
-                    <div class="w-100 h-100" *ngFor="let item of selectedRow.residents">
+                    <div class="w-100 h-100">
                       <p>
                         <strong>
-                          <span>{{item.firstName}} {{item.lastName}}</span>
+                          <span>{{editDataRequest.tenantName}} </span>
                         </strong>
-                        <span>({{item.contact.phone}})</span>
+                        <span>({{editDataRequest.tenantContact}})</span>
                       </p>
                       <p>
-                        <span class="d-bloc">{{item.building.address}}, {{item.building.address2}}</span>
-                        <span class="d-bloc">{{item.building.city}}, {{item.building.zip}}</span>
+                        <span class="d-bloc">{{editDataRequest.tenantAddress.address}}, {{editDataRequest.tenantAddress.address2}}</span>
+                        <span class="d-bloc">{{editDataRequest.tenantAddress.city}}, {{editDataRequest.tenantAddress.zip}}</span>
+                      </p>
+                      <p *ngIf="editDataRequest.portfolio?.length > 1">
+                        <strong>Portfolio:</strong> <span>{{editDataRequest.portfolio}}</span>
                       </p>
                       <p>
-                        <strong>Portfolio:</strong> <span>{{item.portfolio}}</span>
+                        <em>{{editDataRequest.taskDescription}}</em>
                       </p>
                       <p>
-                        <em>{{selectedRow.ticketDescription}}</em>
-                      </p>
-                      <p>
-                        <strong>Preferred date dor service visit:</strong><span>??</span>
+                        <strong>Preferred date dor service visit:</strong><span>{{editDataRequest.preferredDate | date:'medium'}}</span>
                       </p>
                     </div>
                   </div>
-                  <div class="col-sm-5 px-0" *ngIf="selectedRow.issueData">
-                    <img class="w-100 h-100" src="https://maps.googleapis.com/maps/api/staticmap?center={{this.newAddress}}&zoom=15&markers=color:red%7Clabel:C%7C{{selectedRow.issueData.location.lng}},{{selectedRow.issueData.location.lat}}&size=300x350&maptype=roadmap&key=AIzaSyALzEI922MxFSWMGPI4Kf5rGqk8C4jAqKI&output=embed"
-                      alt="">
+                  <div class="col-sm-5 px-0" *ngIf="newAddress?.length > 1">
+                    <img class="w-100 h-100" src="https://maps.googleapis.com/maps/api/staticmap?center={{this.newAddress}}&zoom=15&markers=color:red%7Clabel:C%7C{{editDataRequest.location.lng}},{{editDataRequest.location.lat}}&size=300x350&maptype=roadmap&key=AIzaSyALzEI922MxFSWMGPI4Kf5rGqk8C4jAqKI&output=embed" >
                   </div>
                 </div>
               </div>
               <div class="col-sm-12">
-                <div *ngFor="let item of selectedRow.history" class="">
-                  <small *ngIf="item.action === 'ticket-dispatched' " class="text-muted">
-                    Dispatched by ?? on {{item.eventTime | date:'medium'}}</small>
+                <div class="">
+                  <small class="text-muted">
+                    Dispatched by {{editDataRequest.dispatchedBy.managerName}} on {{editDataRequest.dispatchedBy.dispatchedOn | date:'medium'}}</small>
                 </div>
                 <div class="box">
                   <div class="box-body w-100">
@@ -291,57 +290,20 @@
                       <div class="col-sm-12">
                         <span><strong>Providers Dispatched:</strong></span>
                       </div>
-                      <div class="col-sm-12 my-2" *ngIf="selectedRow.vendorsBroadcasted">
-                        <div *ngFor="let item of selectedRow.vendorsBroadcasted">
-                          <div class="d-flex row mx-0">
+                      <div class="col-sm-12 my-2" *ngIf="editDataRequest.providersDispatched">
+                        <div *ngFor="let item of editDataRequest.providersDispatched">
+                          <div *ngIf="item.enabled == true" class="d-flex row mx-0">
                             <div class="col-sm d-flex">
-                              <button class="btn-clean b-close ">
+                              <button class="btn-clean b-close" (click)="deleteVendor(item._id)">
                                 <i class=" fa text-danger fa-15x fa-minus-circle"></i>
                               </button>
-                              <!-- <span class="ml-3">{{item.vendorData.name}} <small>({{item.vendorData.email ||
-                                item.vendorData.phone}})</small></span> -->
+                              <span class="ml-3">{{item.name}} <small>({{item.contact}})</small></span>
                             </div>
                             <div class="col-sm d-flex">
-                              <span class="mr-3 ml-auto text-muted">REQUEST SEND</span>
-                              <a class="btn-clean b-close  ml-auto" [routerLink]="['/messages', item]">
-                                <i class="fa  fa-15x fa-comments-o"></i>
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-sm-12 my-2" *ngIf="selectedRow.assignedVendors">
-                        <div *ngFor="let item of selectedRow.assignedVendors">
-                          <div class="d-flex row mx-0">
-                            <div class="col-sm d-flex">
-                              <button class="btn-clean b-close ">
-                                <i class=" fa text-danger fa-15x fa-minus-circle"></i>
-                              </button>
-                              <span class="ml-3">{{item.vendorData.name}} <small>({{item.vendorData.email ||
-                                item.vendorData.phone}})</small></span>
-                            </div>
-                            <div class="col-sm d-flex">
-                              <span class="mr-3 ml-auto text-success">ACCEPTED JOB</span>
-                              <a class="btn-clean b-close  ml-auto" [routerLink]="['/messages', item]">
-                                <i class="fa  fa-15x fa-comments-o"></i>
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-sm-12 my-2" *ngIf="selectedRow.rejectedVendors">
-                        <div *ngFor="let item of selectedRow.rejectedVendors">
-                          <div class="d-flex row mx-0">
-                            <div class="col-sm d-flex">
-                              <button class="btn-clean b-close ">
-                                <i class=" fa text-danger fa-15x fa-minus-circle"></i>
-                              </button>
-                              <!-- <span class="ml-3">{{item.vendorData.name}} <small>({{item.vendorData.email ||
-                                item.vendorData.phone}})</small></span> -->
-                            </div>
-                            <div class="col-sm d-flex">
-                              <span class="mr-3 ml-auto text-danger">DECLINED JOB</span>
-                              <a class="btn-clean b-close  ml-auto" [routerLink]="['/messages', item]">
+                              <span class="mr-3 ml-auto text-muted" *ngIf="item.requestAccepted == false && item.requestRejected == false">REQUEST SEND</span>
+                              <span class="mr-3 ml-auto text-danger" *ngIf="item.requestRejected == true">DECLINED JOB</span>
+                              <span class="mr-3 ml-auto text-success" *ngIf="item.requestAccepted == true">ACCEPTED JOB</span>
+                              <a class="btn-clean b-close  ml-auto" [routerLink]="['/messages', item._id]">
                                 <i class="fa  fa-15x fa-comments-o"></i>
                               </a>
                             </div>
@@ -354,7 +316,7 @@
                         </angular2-multiselect>
                       </div>
                       <div class="col-sm-12">
-                        <small>Job Link: <strong> {{bitlyURL}}</strong></small><button ngxClipboard class="btn btn-link"
+                        <small>Job Link: <a  target="_blank"  href="{{bitlyURL}}"> {{bitlyURL}}</a></small><button ngxClipboard class="btn btn-link"
                           [cbContent]="bitlyURL">Copy</button>
                       </div>
                     </div>
@@ -367,9 +329,9 @@
                     <span><strong>Notes:</strong></span>
                     <div class="row">
                       <div class="col-sm-12">
-                        <div *ngIf="selectedRow.notes?.length > 0">
+                        <div *ngIf="editDataRequest.notes?.length > 0">
                           <ul class="list inset">
-                            <li class="list-item" *ngFor="let item of selectedRow.notes">
+                            <li class="list-item" *ngFor="let item of editDataRequest.notes">
                               <div class="row w-100 m-0">
                                 <div class="col-sm-2">
                                   <div>

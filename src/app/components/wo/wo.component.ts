@@ -3,7 +3,6 @@ import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { TicketsService } from "../../services/tickets.service";
 import { IssuesService } from "../../services/issues.service";
 import { ContactsService } from "../../services/contacts.service";
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalComponent } from 'dsg-ng2-bs4-modal';
 
 @Component({
@@ -29,7 +28,6 @@ export class WoComponent implements OnInit {
   public selectedRow: any = [];
   public selectedVendor: any;
   public selected = [];
-  public editForm: FormGroup;
   public defaultStatus: string = 'Edit Status';
   public defaultVendor: string = 'Edit Vendor';
   public modalTitle = "";
@@ -45,6 +43,7 @@ export class WoComponent implements OnInit {
   public statusList = [];
   public statusSelectedItems = [];
   public statusSettings = {};
+
   public newAddress: string;
   public newNote = "";
   public newNotes = []
@@ -53,21 +52,18 @@ export class WoComponent implements OnInit {
     content: '',
     date: new Date()
   }
-  updateData = {};
+  public updateData = {};
+
+  public editDataRequest = {
+    "title": "Plumbing Service Request", "receivedOn": "2018-11-08T06:00:53.749Z",
+    "tenantName": "Adrián Gaeta", "tenantContact": "+525534546439", "tenantAddress": { "address": "400 Brickell Ave Apt 3406", "address2": "303", "city": "Miami", "zip": "33131-2587" }, "location": { "lat": -80.190664, "lng": 25.766028 }, "portfolio": "", "taskDescription": "Canceling test", "preferredDate": "2018-10-05T15:30:00.000Z", "dispatchedBy": { "managerName": "Adrián Gaeta", "dispatchedOn": "2018-10-31T19:14:49.821Z" }, "providersDispatched": [{ "_id": "5b7083508ae5ad07c4a51131", "enabled": true, "name": "Adrián Gaeta [Vendor]", "contact": "+525534546439", "requestAccepted": true, "requestRejected": false, "jobLink": "http://bit.ly/2OLnpT2" }, { "_id": "5bbc3c4ac706052b0c9dc973", "enabled": true, "name": "Daniel [Vendor]", "contact": "+525549399647", "requestAccepted": false, "requestRejected": true, "jobLink": "http://bit.ly/2OMmQsl" }], "notes": [{ "authorId": "5b935471b7c7fc1dc417bd00", "authorName": "Daniel Zurita", "content": "Test note", "date": "2018-11-12T18:30:50.000Z" }, { "authorId": "5bbc39eec706052b0c9dc972", "authorName": "Alejandro Rodríguez", "content": "Test note 2", "date": "2018-11-12T20:16:08.000Z" }], "requestStatus": "canceled", "totalCost": 9000
+  }
   constructor(
     private spinnerService: Ng4LoadingSpinnerService,
     private ticket: TicketsService,
     private issues: IssuesService,
     private contacts: ContactsService
   ) {
-    this.editForm = new FormGroup({
-      status: new FormControl(null),
-      vendor: new FormControl(null),
-      cost: new FormControl(null),
-      id: new FormControl(null)
-    });
-    this.editForm.controls['status'].setValue(this.defaultStatus, { onlySelf: true })
-    this.editForm.controls['vendor'].setValue(this.defaultVendor, { onlySelf: true })
     this.vendorSettings = {
       singleSelection: false,
       text: "+ Dispatch to more vendors…",
@@ -83,27 +79,27 @@ export class WoComponent implements OnInit {
     }
     this.statusList = [
       {
-        id: 0,
-        itemName: "Available"
+        id: "available",
+        itemName: "Dispatch"
       },
       {
-        id: 1,
+        id: "checked",
         itemName: "Checked"
       },
       {
-        id: 2,
-        itemName: "Evaluating"
+        id: "evaluating",
+        itemName: "Requires Attention"
       },
       {
-        id: 3,
+        id: "approved",
         itemName: "Approved"
       },
       {
-        id: 4,
+        id: "canceled",
         itemName: "Denied"
       },
       {
-        id: 5,
+        id: "finished",
         itemName: "Finished"
       }
     ]
@@ -179,14 +175,17 @@ export class WoComponent implements OnInit {
 
   onSelect({ selected }) {
     this.selectedRow = selected[0]
-    console.log(this.selectedRow)
-    if (this.selectedRow.assignedVendors.length > 0) {
-      this.selectedVendor = this.selectedRow.assignedVendors[0]._id
-      this.vendorSelectedItems = []
-      this.vendorSelectedItems.push({
-        id: this.selectedRow.assignedVendors[0]._id,
-        itemName: this.selectedRow.assignedVendors[0].vendorData.name
-      })
+    console.log(this.editDataRequest)
+    if (this.editDataRequest.providersDispatched.length > 0) {
+      for (var e in this.editDataRequest.providersDispatched) {
+        if (this.editDataRequest.providersDispatched[e].requestAccepted == true) {
+          this.selectedVendor = this.editDataRequest.providersDispatched[e]._id
+          this.vendorSelectedItems.push({
+            id: this.editDataRequest.providersDispatched[e]._id,
+            itemName: this.editDataRequest.providersDispatched[e].name
+          })
+        }
+      }
       this.ticket.getBitlyLink(this.selectedRow._id, this.selectedVendor).subscribe(resultBitly => {
         this.bitlyURL = resultBitly.url;
         document.getElementById("editRow").click();
@@ -195,22 +194,58 @@ export class WoComponent implements OnInit {
     else {
       document.getElementById("editRow").click();
     }
-    this.newCost = this.selectedRow.issueData.repairCost || 0
+    this.newCost = this.editDataRequest.totalCost || 0
+    this.newAddress = this.editDataRequest.tenantAddress.address.replace(/\s+/g, '+') + "+" + this.editDataRequest.tenantAddress.city
     this.statusSelectedItems = []
+    if (this.editDataRequest.requestStatus === "available") {
+      this.statusList = [
+        {
+          id: "available",
+          itemName: "Dispatch"
+        },
+        {
+          id: "finished",
+          itemName: "Closed"
+        }
+      ]
+    }
+    if (this.editDataRequest.requestStatus === "checked") {
+      this.statusList = [
+        {
+          id: "available",
+          itemName: "Dispatch"
+        },
+        {
+          id: "checked",
+          itemName: "Checked"
+        },
+        {
+          id: "evaluating",
+          itemName: "Requires Attention"
+        },
+        {
+          id: "finished",
+          itemName: "Finished"
+        }
+      ]
+    }
+    if (this.editDataRequest.requestStatus != "available" && this.editDataRequest.requestStatus != "checked") {
+      this.statusSettings = {
+        singleSelection: false,
+        text: "+ Dispatch to more vendors…",
+        enableSearchFilter: true,
+        badgeShowLimit: 1,
+        disabled: true
+      }
+    }
     for (var i in this.statusList) {
-      if (this.statusList[i].itemName === this.selectedRow.status) {
+      if (this.statusList[i].id == this.editDataRequest.requestStatus) {
         this.statusSelectedItems.push(this.statusList[i])
         break
       }
     }
-    for (var e in this.selectedRow.residents) {
-      this.newAddress = this.selectedRow.residents[e].building.address.replace(/\s+/g, '+') + "+" + this.selectedRow.residents[e].building.city
-    }
-    for (var f in this.selectedRow.notes) {
-      this.selectedRow.notes[f].authorName = this.selectedRow.notes[f].authorName.split(/(\s+)/)[0]
-    }
-    if (selected[0]._id) {
-      this.editForm.controls['id'].setValue(selected[0]._id, { onlySelf: true })
+    for (var f in this.editDataRequest.notes) {
+      this.editDataRequest.notes[f].authorName = this.editDataRequest.notes[f].authorName.split(/(\s+)/)[0]
     }
 
   }
@@ -226,10 +261,13 @@ export class WoComponent implements OnInit {
     this.selected = []
   }
   saveEdit() {
+    if (this.newCost == this.editDataRequest.totalCost) {
+      this.newCost = null
+    }
     if (this.newNote.length > 0) {
       this.updateData = {
         vendor_id: this.vendorSelectedItems,
-        status: (this.statusSelectedItems.length) ? this.statusSelectedItems[0].itemName : "",
+        status: (this.statusSelectedItems.length) ? this.statusSelectedItems[0].id : "",
         repair_cost: this.newCost,
         newNote: {
           authorId: this.currentPropertyManager._id,
@@ -241,7 +279,7 @@ export class WoComponent implements OnInit {
     } else {
       this.updateData = {
         vendor_id: this.vendorSelectedItems,
-        status: (this.statusSelectedItems.length) ? this.statusSelectedItems[0].itemName : "",
+        status: (this.statusSelectedItems.length) ? this.statusSelectedItems[0].id : "",
         repair_cost: this.newCost
       }
     }
@@ -253,7 +291,17 @@ export class WoComponent implements OnInit {
     //   this.loadTasks();
     // })
   }
-
+  deleteVendor(vendor_id) {
+    for (var i in this.editDataRequest.providersDispatched) {
+      if (vendor_id == this.editDataRequest.providersDispatched[i]._id) {
+        var index = this.editDataRequest.providersDispatched.indexOf(vendor_id);
+        if (index) {
+          this.vendorSelectedItems = []
+          this.editDataRequest.providersDispatched.splice(index, 1);
+        }
+      }
+    }
+  }
   addNote() {
     this.elementNote.authorName = this.currentPropertyManager.name.split(/(\s+)/)[0]
     this.elementNote.content = this.newNote
