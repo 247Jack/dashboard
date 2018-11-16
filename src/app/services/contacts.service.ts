@@ -51,13 +51,12 @@ export class ContactsService {
       });
   }
 
-  public addContact(pm_id, contactData, type)
-  {
+  public addContact(pm_id, currentCompany, contactData, type) {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('property_manager_id', pm_id);
+    headers.append('property_manager_company', currentCompany);
     const options = new RequestOptions({ 'headers': headers });
-    console.log(contactData)
     return this.http
       .post(
         `${environment.api_domain}/dashboard/contacts?contact_type=${type}`,
@@ -68,7 +67,7 @@ export class ContactsService {
         return res.json();
       })
       .catch(error => {
-        window.location.reload();
+        // window.location.reload();
         return Observable.throw(error.message || error);
       });
   }
