@@ -69,7 +69,7 @@ export class TicketsService {
     this.update.emit(null);
   }
 
-  public updateSimpleRequest(task_id,company,updateData){
+  public editTask(task_id,company,updateData){
     const headers = new Headers();
     headers.append('property_manager_company', company);
     const options = new RequestOptions({ 'headers': headers });
@@ -100,17 +100,22 @@ export class TicketsService {
     });
   }
 
-  deleteField(task_id,company){
+  public getEditTask(pm_id, company, task_id) {
     const headers = new Headers();
+    headers.append('property_manager_id', pm_id);
     headers.append('property_manager_company', company);
     const options = new RequestOptions({ 'headers': headers });
-    return this.http.delete(
-      `${environment.api_domain}/dashboard/tasks/${task_id}`,
-      options
-    )
-    .catch(error => {
-      window.location.reload();
-      return Observable.throw(error.message || error);
-    });
+    return this.http
+      .get(
+        `${environment.api_domain}/dashboard/tasks/${task_id}`,
+        options
+      )
+      .map(res => {
+        return res.json();
+      })
+      .catch(error => {
+        window.location.reload();
+        return Observable.throw(error.message || error);
+      });
   }
 }

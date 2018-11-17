@@ -47,6 +47,7 @@ export class WoComponent implements OnInit {
   public newAddress: string;
   public newNote = "";
   public newNotes = []
+  public editStatus = false
   public elementNote = {
     authorName: '',
     content: '',
@@ -54,10 +55,10 @@ export class WoComponent implements OnInit {
   }
   public updateData = {};
 
-  public editDataRequest = {
-    "title": "Plumbing Service Request", "receivedOn": "2018-11-08T06:00:53.749Z",
-    "tenantName": "Adrián Gaeta", "tenantContact": "+525534546439", "tenantAddress": { "address": "400 Brickell Ave Apt 3406", "address2": "303", "city": "Miami", "zip": "33131-2587" }, "location": { "lat": -80.190664, "lng": 25.766028 }, "portfolio": "", "taskDescription": "Canceling test", "preferredDate": "2018-10-05T15:30:00.000Z", "dispatchedBy": { "managerName": "Adrián Gaeta", "dispatchedOn": "2018-10-31T19:14:49.821Z" }, "providersDispatched": [{ "_id": "5b7083508ae5ad07c4a51131", "enabled": true, "name": "Adrián Gaeta [Vendor]", "contact": "+525534546439", "requestAccepted": true, "requestRejected": false, "jobLink": "http://bit.ly/2OLnpT2" }, { "_id": "5bbc3c4ac706052b0c9dc973", "enabled": true, "name": "Daniel [Vendor]", "contact": "+525549399647", "requestAccepted": false, "requestRejected": true, "jobLink": "http://bit.ly/2OMmQsl" }], "notes": [{ "authorId": "5b935471b7c7fc1dc417bd00", "authorName": "Daniel Zurita", "content": "Test note", "date": "2018-11-12T18:30:50.000Z" }, { "authorId": "5bbc39eec706052b0c9dc972", "authorName": "Alejandro Rodríguez", "content": "Test note 2", "date": "2018-11-12T20:16:08.000Z" }], "requestStatus": "canceled", "totalCost": 9000
-  }
+  public editDataRequest
+  public newprovidersDispatched: any;
+  public deleteVendorStatus: boolean;
+
   constructor(
     private spinnerService: Ng4LoadingSpinnerService,
     private ticket: TicketsService,
@@ -142,7 +143,6 @@ export class WoComponent implements OnInit {
       .getTickets(this.currentPropertyManager['_id'], this.currentCompany)
       .subscribe(data => {
         console.log(data);
-        this.spinnerService.hide();
         this.tickets = data;
         this.tickets.reverse();
         this.originalData = this.tickets;
@@ -150,6 +150,7 @@ export class WoComponent implements OnInit {
           this.date = this.tickets[i].creationDate.split("T")[0];
           this.time = this.tickets[i].creationDate.split(/\.|\T/)[1];
         }
+        this.spinnerService.hide();
       });
   }
 
@@ -174,80 +175,87 @@ export class WoComponent implements OnInit {
   }
 
   onSelect({ selected }) {
+    this.spinnerService.show();
     this.selectedRow = selected[0]
-    console.log(this.editDataRequest)
-    if (this.editDataRequest.providersDispatched.length > 0) {
-      for (var e in this.editDataRequest.providersDispatched) {
-        if (this.editDataRequest.providersDispatched[e].requestAccepted == true) {
-          this.selectedVendor = this.editDataRequest.providersDispatched[e]._id
-          this.vendorSelectedItems.push({
-            id: this.editDataRequest.providersDispatched[e]._id,
-            itemName: this.editDataRequest.providersDispatched[e].name
+    if (this.selectedRow._id) {
+      this.ticket.getEditTask(this.currentPropertyManager['_id'], this.currentCompany, this.selectedRow._id).subscribe(data => {
+        console.log(data);
+        this.editDataRequest = data
+        if (this.editDataRequest.providersDispatched.length > 0) {
+          for (var e in this.editDataRequest.providersDispatched) {
+            this.newprovidersDispatched = this.editDataRequest.providersDispatched
+            if (this.editDataRequest.providersDispatched[e].requestAccepted == true) {
+              this.selectedVendor = this.editDataRequest.providersDispatched[e]._id
+              this.vendorSelectedItems.push({
+                id: this.editDataRequest.providersDispatched[e]._id,
+                itemName: this.editDataRequest.providersDispatched[e].name
+              })
+            }
+          }
+          this.ticket.getBitlyLink(this.selectedRow._id, this.selectedVendor).subscribe(resultBitly => {
+            this.bitlyURL = resultBitly.url;
           })
         }
-      }
-      this.ticket.getBitlyLink(this.selectedRow._id, this.selectedVendor).subscribe(resultBitly => {
-        this.bitlyURL = resultBitly.url;
-        document.getElementById("editRow").click();
+        this.newCost = this.editDataRequest.totalCost || 0
+        this.newAddress = this.editDataRequest.tenantAddress.address.replace(/\s+/g, '+') + "+" + this.editDataRequest.tenantAddress.city
+        this.statusSelectedItems = []
+        if (this.editDataRequest.requestStatus === "available") {
+          this.statusList = [
+            {
+              id: "available",
+              itemName: "Dispatch"
+            },
+            {
+              id: "finished",
+              itemName: "Closed"
+            }
+          ]
+        }
+        if (this.editDataRequest.requestStatus === "checked") {
+          this.statusList = [
+            {
+              id: "available",
+              itemName: "Dispatch"
+            },
+            {
+              id: "checked",
+              itemName: "Checked"
+            },
+            {
+              id: "evaluating",
+              itemName: "Requires Attention"
+            },
+            {
+              id: "finished",
+              itemName: "Finished"
+            }
+          ]
+        }
+        if (this.editDataRequest.requestStatus != "available" && this.editDataRequest.requestStatus != "checked") {
+          this.statusSettings = {
+            singleSelection: false,
+            text: "+ Dispatch to more vendors…",
+            enableSearchFilter: true,
+            badgeShowLimit: 1,
+            disabled: true
+          }
+        }
+        for (var i in this.statusList) {
+          if (this.statusList[i].id == this.editDataRequest.requestStatus) {
+            this.statusSelectedItems.push(this.statusList[i])
+            break
+          }
+        }
+        for (var f in this.editDataRequest.notes) {
+          this.editDataRequest.notes[f].authorName = this.editDataRequest.notes[f].authorName.split(/(\s+)/)[0]
+        }
+        this.spinnerService.hide();
+        this.editStatus = true;
+        if(this.editStatus === true){
+          document.getElementById("editRow").click();
+        }
       })
     }
-    else {
-      document.getElementById("editRow").click();
-    }
-    this.newCost = this.editDataRequest.totalCost || 0
-    this.newAddress = this.editDataRequest.tenantAddress.address.replace(/\s+/g, '+') + "+" + this.editDataRequest.tenantAddress.city
-    this.statusSelectedItems = []
-    if (this.editDataRequest.requestStatus === "available") {
-      this.statusList = [
-        {
-          id: "available",
-          itemName: "Dispatch"
-        },
-        {
-          id: "finished",
-          itemName: "Closed"
-        }
-      ]
-    }
-    if (this.editDataRequest.requestStatus === "checked") {
-      this.statusList = [
-        {
-          id: "available",
-          itemName: "Dispatch"
-        },
-        {
-          id: "checked",
-          itemName: "Checked"
-        },
-        {
-          id: "evaluating",
-          itemName: "Requires Attention"
-        },
-        {
-          id: "finished",
-          itemName: "Finished"
-        }
-      ]
-    }
-    if (this.editDataRequest.requestStatus != "available" && this.editDataRequest.requestStatus != "checked") {
-      this.statusSettings = {
-        singleSelection: false,
-        text: "+ Dispatch to more vendors…",
-        enableSearchFilter: true,
-        badgeShowLimit: 1,
-        disabled: true
-      }
-    }
-    for (var i in this.statusList) {
-      if (this.statusList[i].id == this.editDataRequest.requestStatus) {
-        this.statusSelectedItems.push(this.statusList[i])
-        break
-      }
-    }
-    for (var f in this.editDataRequest.notes) {
-      this.editDataRequest.notes[f].authorName = this.editDataRequest.notes[f].authorName.split(/(\s+)/)[0]
-    }
-
   }
 
   onVendorSelect(event) {
@@ -258,9 +266,11 @@ export class WoComponent implements OnInit {
   }
 
   cancelEdit() {
-    this.selected = []
+    this.editDataRequest = null
+    this.editStatus = false
   }
   saveEdit() {
+    this.spinnerService.show()
     if (this.newCost == this.editDataRequest.totalCost) {
       this.newCost = null
     }
@@ -283,21 +293,31 @@ export class WoComponent implements OnInit {
         repair_cost: this.newCost
       }
     }
-
     console.log(this.updateData)
-    // this.ticket.updateSimpleRequest(this.selectedRow._id, this.currentCompany, this.updateData).subscribe(resultUpdate => {
-    //   this.selected = []
+    this.spinnerService.hide()
+    this.modalShowMessage("saveTask");
+    this.editStatus = false
+    document.getElementById("cancelEdit").click();
+    // this.ticket.editTask(this.selectedRow._id, this.currentCompany, this.updateData).subscribe(resultUpdate => {
     //   this.modalShowMessage("saveTask");
     //   this.loadTasks();
+    //   this.spinnerService.hide()
     // })
   }
   deleteVendor(vendor_id) {
-    for (var i in this.editDataRequest.providersDispatched) {
-      if (vendor_id == this.editDataRequest.providersDispatched[i]._id) {
-        var index = this.editDataRequest.providersDispatched.indexOf(vendor_id);
+    for (var i in this.newprovidersDispatched) {
+      if (vendor_id == this.newprovidersDispatched[i]._id) {
+        var index = this.newprovidersDispatched.indexOf(vendor_id);
         if (index) {
-          this.vendorSelectedItems = []
-          this.editDataRequest.providersDispatched.splice(index, 1);
+          this.newprovidersDispatched.splice(index, 1);
+        }
+      }
+    }
+    for (var e in this.vendorSelectedItems) {
+      if (vendor_id == this.vendorSelectedItems[e]._id) {
+        var sindex = this.vendorSelectedItems.indexOf(vendor_id);
+        if (sindex) {
+          this.vendorSelectedItems.splice(sindex, 1);
         }
       }
     }

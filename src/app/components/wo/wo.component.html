@@ -230,14 +230,14 @@
       </div>
     </div>
   </div>
-  <div class="modal fade show" id="modal-edit" *ngIf="editDataRequest" data-backdrop="true" data-class="modal-open-aside">
+  <div class="modal fade show" id="modal-edit" data-backdrop="false" data-class="modal-open-aside">
     <div class="modal-dialog modal-right w-xl white b-l">
       <div class="d-flex flex-column h-100">
         <div class="scrollable scrollable-slider">
           <button class="position-absolute btn btn-clean mt-3 ml-2 b-close" data-dismiss="modal" id="cancelEdit" (click)="cancelEdit()">
             <i class="fa fa-close"></i>
           </button>
-          <div class="p-5 h-100">
+          <div class="p-5 h-100" *ngIf="editStatus == true">
             <h5 class="text-center">
               <strong>
                 {{editDataRequest.title}}
@@ -290,8 +290,8 @@
                       <div class="col-sm-12">
                         <span><strong>Providers Dispatched:</strong></span>
                       </div>
-                      <div class="col-sm-12 my-2" *ngIf="editDataRequest.providersDispatched">
-                        <div *ngFor="let item of editDataRequest.providersDispatched">
+                      <div class="col-sm-12 my-2" *ngIf="newprovidersDispatched">
+                        <div *ngFor="let item of newprovidersDispatched">
                           <div *ngIf="item.enabled == true" class="d-flex row mx-0">
                             <div class="col-sm d-flex">
                               <button class="btn-clean b-close" (click)="deleteVendor(item._id)">
@@ -312,7 +312,7 @@
                       </div>
                       <div class="col-sm-12 my-2 w-75">
                         <angular2-multiselect class="" [data]="vendorList" [(ngModel)]="vendorSelectedItems" [settings]="vendorSettings"
-                          (onSelect)="onVendorSelect($event)">
+                          (onSelect)="onVendorSelect($event)" >
                         </angular2-multiselect>
                       </div>
                       <div class="col-sm-12">
@@ -411,8 +411,8 @@
                       Remove Request</button>
                   </div>
                   <div class="col-sm-12-mt-3">
-                    <button class="md-btn md-flat mb-2 text-primary" (click)="cancelEdit()">CANCEL </button>
-                    <button class="md-btn md-raised mb-2 blue" (click)="saveEdit()">SAVE CHANGES</button>
+                    <button class="md-btn md-flat mb-2 text-primary" id="cancelE"  data-dismiss="modal"  (click)="cancelEdit()">CANCEL </button>
+                    <button class="md-btn md-raised mb-2 blue"  data-dismiss="modal"  (click)="saveEdit()">SAVE CHANGES</button>
                   </div>
                 </div>
               </div>
