@@ -57,6 +57,7 @@ export class ContactsService {
     headers.append('property_manager_id', pm_id);
     headers.append('property_manager_company', currentCompany);
     const options = new RequestOptions({ 'headers': headers });
+    console.log(contactData);
     return this.http
       .post(
         `${environment.api_domain}/dashboard/contacts?contact_type=${type}`,

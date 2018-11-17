@@ -17,11 +17,12 @@ import { Console } from '@angular/core/src/console';
         animate(1000, style({ opacity: 1 }))
       ]),
       transition(':leave', [
-        animate(1000, style({ opacity: 0 }))
+        animate(300, style({ opacity: 0 }))
       ])
     ])
   ]
 })
+
 export class ContactsComponent implements OnInit {
 
   private getContactsConn;
@@ -34,7 +35,8 @@ export class ContactsComponent implements OnInit {
   public currentPropertyManager: any;
   public currentCompany;
   public filtercontacts = '';
-  public newContactInitials = [];
+  public newTenantInitials = [];
+  public newVendorInitials = [];
   public newContactType = '';
   public dataLoaded = false;
   @ViewChild('modalmessage')
@@ -107,6 +109,8 @@ export class ContactsComponent implements OnInit {
   public newVendorData = {
     jobType: '',
     name: '',
+    vendorFirstName: '',
+    vendorLastName: '',
     phone: '',
     ext: '',
     address: '',
@@ -128,15 +132,25 @@ export class ContactsComponent implements OnInit {
     private contacts: ContactsService,
   ) { }
 
-  // get diagnostic() { return JSON.stringify(this.newResidentData); }
+  // get diagnostic() { return JSON.stringify(this.newVendorData); }
 
   ngOnInit() {
+    this.waitForPMData();
+  }
+
+  ngOnDestroy() {
+    if (this.getContactsConn) {
+      this.getContactsConn.unsubscribe();
+    }
+  }
+
+  waitForPMData() {
     this.spinnerService.show();
-    const waitForPMData = setInterval(() => {
+    const waitPMData = setInterval(() => {
       this.currentPropertyManager = JSON.parse(sessionStorage.getItem('propertyManagerData'));
       this.currentCompany = sessionStorage.getItem('PMcompany');
       if (this.currentPropertyManager && this.currentCompany) {
-        clearInterval(waitForPMData);
+        clearInterval(waitPMData);
         this.currentPropertyManager = JSON.parse(sessionStorage.getItem('propertyManagerData'));
         this.getContactsConn = this.contacts.getContacts(this.currentPropertyManager['_id'], this.currentCompany).subscribe(data => {
           for (let i in data.usersResult) {
@@ -283,13 +297,10 @@ export class ContactsComponent implements OnInit {
     }, 100);
   }
 
-  ngOnDestroy() {
-    if (this.getContactsConn) {
-      this.getContactsConn.unsubscribe();
-    }
-  }
+
 
   saveNewContact() {
+    this.spinnerService.show();
     if (this.newContactType) {
       let contactData;
       switch (this.newContactType) {
@@ -297,6 +308,7 @@ export class ContactsComponent implements OnInit {
           contactData = this.newResidentData;
           break;
         case 'vendor':
+          this.newVendorData.name = this.newVendorData.vendorFirstName + ' ' + this.newVendorData.vendorLastName;
           contactData = this.newVendorData;
           break;
         case 'property_manager':
@@ -309,7 +321,9 @@ export class ContactsComponent implements OnInit {
       this.contacts.addContact(this.currentPropertyManager._id, this.currentCompany, contactData, this.newContactType).subscribe(data => {
         console.log(data);
         this.modalAddContactResult(data.ok);
+        this.waitForPMData();
       });
+      this.spinnerService.hide();
     }
   }
 
@@ -346,28 +360,32 @@ export class ContactsComponent implements OnInit {
   }
 
   /**
-  * Updates the initials of the user avatar
-  * @param event Frontend event handler
-  * @param position First or Last name initial
-  * @returns void
-  */
+   * Updates the initials of the user avatar
+   * @param event Frontend event handler
+   * @param position First or Last name initial
+   * @returns void
+   */
   updateInitials(event, position) {
     const initial = event.target.value.toLowerCase().charAt(0).toUpperCase();
-    this.newContactInitials[position] = initial;
+    if (this.newContactType === 'tenant') {
+      this.newTenantInitials[position] = initial;
+    } else {
+      this.newVendorInitials[position] = initial;
+    }
   }
 
   /**
-  * Set Focus on the first input field of the "Add Contact" form
-  * @param contactType Contact Type
-  * @returns void
-  */
+ * Set Focus on the first input field of the "Add Contact" form
+ * @param contactType Contact Type
+ * @returns void
+ */
   onChange(contactType) {
     switch (contactType) {
       case 'tenant':
         setTimeout(() => document.getElementById('firstName').focus(), 0);
         break;
       case 'vendor':
-        setTimeout(() => document.getElementById('name').focus(), 0);
+        setTimeout(() => document.getElementById('vendorFirstName').focus(), 0);
         break;
       default:
         break;
@@ -381,6 +399,15 @@ export class ContactsComponent implements OnInit {
   */
   onlyNumberKey(event) {
     return (event.charCode === 8 || event.charCode === 0) ? null : event.charCode >= 48 && event.charCode <= 57;
+  }
+
+  /**
+  * Capitalize first and last Name
+  * @param string value to capitalize
+  * @returns capitalized string
+  */
+  capitalize(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
   cancelNewContact() {
