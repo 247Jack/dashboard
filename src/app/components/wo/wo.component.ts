@@ -181,21 +181,12 @@ export class WoComponent implements OnInit {
       this.ticket.getEditTask(this.currentPropertyManager['_id'], this.currentCompany, this.selectedRow._id).subscribe(data => {
         console.log(data);
         this.editDataRequest = data
-        if (this.editDataRequest.providersDispatched.length > 0) {
-          for (var e in this.editDataRequest.providersDispatched) {
-            this.newprovidersDispatched = this.editDataRequest.providersDispatched
-            if (this.editDataRequest.providersDispatched[e].requestAccepted == true) {
-              this.selectedVendor = this.editDataRequest.providersDispatched[e]._id
-              this.vendorSelectedItems.push({
-                id: this.editDataRequest.providersDispatched[e]._id,
-                itemName: this.editDataRequest.providersDispatched[e].name
-              })
-            }
-          }
-          this.ticket.getBitlyLink(this.selectedRow._id, this.selectedVendor).subscribe(resultBitly => {
-            this.bitlyURL = resultBitly.url;
-          })
-        }
+        let ids = this.editDataRequest.providersDispatched.map(v => (v.id).toString())
+        let newVendorList = this.vendorList.filter(v => !(ids.includes((v.id).toString())))
+        this.vendorList = newVendorList
+        this.ticket.getBitlyLink(this.selectedRow._id, this.selectedVendor).subscribe(resultBitly => {
+          this.bitlyURL = resultBitly.url;
+        })
         this.newCost = this.editDataRequest.totalCost || 0
         this.newAddress = this.editDataRequest.tenantAddress.address.replace(/\s+/g, '+') + "+" + this.editDataRequest.tenantAddress.city
         this.statusSelectedItems = []
@@ -234,9 +225,10 @@ export class WoComponent implements OnInit {
         if (this.editDataRequest.requestStatus != "available" && this.editDataRequest.requestStatus != "checked") {
           this.statusSettings = {
             singleSelection: false,
-            text: "+ Dispatch to more vendors…",
-            enableSearchFilter: true,
+            text: this.editDataRequest.requestStatus,
+            enableSearchFilter: false,
             badgeShowLimit: 1,
+            position: "top",
             disabled: true
           }
         }
@@ -251,23 +243,19 @@ export class WoComponent implements OnInit {
         }
         this.spinnerService.hide();
         this.editStatus = true;
-        if(this.editStatus === true){
+        if (this.editStatus === true) {
           document.getElementById("editRow").click();
         }
       })
     }
   }
-
-  onVendorSelect(event) {
-    this.ticket.getBitlyLink(this.selectedRow._id, event.id).subscribe(resultBitly => {
-      this.bitlyURL = resultBitly.url
-      //document.getElementById("editRow").click();
-    })
-  }
-
   cancelEdit() {
     this.editDataRequest = null
     this.editStatus = false
+    this.newNote = "";
+    this.vendorSelectedItems = []
+    this.newNotes = [];
+    document.getElementById("cancelEdit").click();
   }
   saveEdit() {
     this.spinnerService.show()
@@ -297,6 +285,10 @@ export class WoComponent implements OnInit {
     this.spinnerService.hide()
     this.modalShowMessage("saveTask");
     this.editStatus = false
+    this.newNote = "";
+    this.newNotes = [];
+    this.vendorSelectedItems = []
+    this.statusSelectedItems = []
     document.getElementById("cancelEdit").click();
     // this.ticket.editTask(this.selectedRow._id, this.currentCompany, this.updateData).subscribe(resultUpdate => {
     //   this.modalShowMessage("saveTask");
@@ -305,16 +297,8 @@ export class WoComponent implements OnInit {
     // })
   }
   deleteVendor(vendor_id) {
-    for (var i in this.newprovidersDispatched) {
-      if (vendor_id == this.newprovidersDispatched[i]._id) {
-        var index = this.newprovidersDispatched.indexOf(vendor_id);
-        if (index) {
-          this.newprovidersDispatched.splice(index, 1);
-        }
-      }
-    }
     for (var e in this.vendorSelectedItems) {
-      if (vendor_id == this.vendorSelectedItems[e]._id) {
+      if (vendor_id == this.vendorSelectedItems[e].id) {
         var sindex = this.vendorSelectedItems.indexOf(vendor_id);
         if (sindex) {
           this.vendorSelectedItems.splice(sindex, 1);
@@ -327,6 +311,7 @@ export class WoComponent implements OnInit {
     this.elementNote.content = this.newNote
     this.elementNote.date = new Date()
     this.newNotes.push(this.elementNote)
+    console.log(this.newNotes)
   }
   openModalDelete() {
     this.modalTitle = "Delete Request";

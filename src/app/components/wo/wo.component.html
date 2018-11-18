@@ -234,7 +234,8 @@
     <div class="modal-dialog modal-right w-xl white b-l">
       <div class="d-flex flex-column h-100">
         <div class="scrollable scrollable-slider">
-          <button class="position-absolute btn btn-clean mt-3 ml-2 b-close" data-dismiss="modal" id="cancelEdit" (click)="cancelEdit()">
+          <button class="position-absolute btn btn-clean mt-3 ml-2 b-close" data-dismiss="modal" id="cancelEdit"
+            (click)="cancelEdit()">
             <i class="fa fa-close"></i>
           </button>
           <div class="p-5 h-100" *ngIf="editStatus == true">
@@ -260,8 +261,10 @@
                         <span>({{editDataRequest.tenantContact}})</span>
                       </p>
                       <p>
-                        <span class="d-bloc">{{editDataRequest.tenantAddress.address}}, {{editDataRequest.tenantAddress.address2}}</span>
-                        <span class="d-bloc">{{editDataRequest.tenantAddress.city}}, {{editDataRequest.tenantAddress.zip}}</span>
+                        <span class="d-bloc">{{editDataRequest.tenantAddress.address}},
+                          {{editDataRequest.tenantAddress.address2}}</span>
+                        <span class="d-bloc">{{editDataRequest.tenantAddress.city}},
+                          {{editDataRequest.tenantAddress.zip}}</span>
                       </p>
                       <p *ngIf="editDataRequest.portfolio?.length > 1">
                         <strong>Portfolio:</strong> <span>{{editDataRequest.portfolio}}</span>
@@ -270,40 +273,45 @@
                         <em>{{editDataRequest.taskDescription}}</em>
                       </p>
                       <p>
-                        <strong>Preferred date dor service visit:</strong><span>{{editDataRequest.preferredDate | date:'medium'}}</span>
+                        <strong>Preferred date dor service visit:</strong><span>{{editDataRequest.preferredDate |
+                          date:'medium'}}</span>
                       </p>
                     </div>
                   </div>
                   <div class="col-sm-5 px-0" *ngIf="newAddress?.length > 1">
-                    <img class="w-100 h-100" src="https://maps.googleapis.com/maps/api/staticmap?center={{this.newAddress}}&zoom=15&markers=color:red%7Clabel:C%7C{{editDataRequest.location.lng}},{{editDataRequest.location.lat}}&size=300x350&maptype=roadmap&key=AIzaSyALzEI922MxFSWMGPI4Kf5rGqk8C4jAqKI&output=embed" >
+                    <img class="w-100 h-100" src="https://maps.googleapis.com/maps/api/staticmap?center={{this.newAddress}}&zoom=15&markers=color:red%7Clabel:C%7C{{editDataRequest.location.lng}},{{editDataRequest.location.lat}}&size=300x350&maptype=roadmap&key=AIzaSyALzEI922MxFSWMGPI4Kf5rGqk8C4jAqKI&output=embed">
                   </div>
                 </div>
               </div>
               <div class="col-sm-12">
                 <div class="">
                   <small class="text-muted">
-                    Dispatched by {{editDataRequest.dispatchedBy.managerName}} on {{editDataRequest.dispatchedBy.dispatchedOn | date:'medium'}}</small>
+                    Dispatched by {{editDataRequest.dispatchedBy.managerName}} on
+                    {{editDataRequest.dispatchedBy.dispatchedOn | date:'medium'}}</small>
                 </div>
                 <div class="box">
                   <div class="box-body w-100">
                     <div class="row">
-                      <div class="col-sm-12">
+                      <div class="col-sm-12" *ngIf="editDataRequest.providersDispatched">
                         <span><strong>Providers Dispatched:</strong></span>
                       </div>
-                      <div class="col-sm-12 my-2" *ngIf="newprovidersDispatched">
-                        <div *ngFor="let item of newprovidersDispatched">
-                          <div *ngIf="item.enabled == true" class="d-flex row mx-0">
+                      <div class="col-sm-12 my-2" *ngIf="editDataRequest.providersDispatched">
+                        <div *ngFor="let item of editDataRequest.providersDispatched">
+                          <div class="d-flex row mx-0">
                             <div class="col-sm d-flex">
-                              <button class="btn-clean b-close" (click)="deleteVendor(item._id)">
+                              <button class="btn-clean b-close" *ngIf="item.requestAccepted == false && item.requestRejected == false" (click)="deleteVendor(item._id)">
                                 <i class=" fa text-danger fa-15x fa-minus-circle"></i>
                               </button>
-                              <span class="ml-3">{{item.name}} <small>({{item.contact}})</small></span>
+                              <span class="ml-3" *ngIf="item.name">{{item.name}} <small>({{item.contact}})</small></span>
+                              <span class="ml-3" *ngIf="item.itemName">{{item.itemName}}</span>
                             </div>
                             <div class="col-sm d-flex">
-                              <span class="mr-3 ml-auto text-muted" *ngIf="item.requestAccepted == false && item.requestRejected == false">REQUEST SEND</span>
+                              <span class="mr-3 ml-auto text-muted" *ngIf="item.requestAccepted == false && item.requestRejected == false">REQUEST
+                                SEND</span>
+                              <span class="mr-3 ml-auto text-muted" *ngIf="item.itemName">REQUEST SEND</span>
                               <span class="mr-3 ml-auto text-danger" *ngIf="item.requestRejected == true">DECLINED JOB</span>
                               <span class="mr-3 ml-auto text-success" *ngIf="item.requestAccepted == true">ACCEPTED JOB</span>
-                              <a class="btn-clean b-close  ml-auto" [routerLink]="['/messages', item._id]">
+                              <a class="btn-clean b-close  ml-auto" [routerLink]="['/messages', item.id]">
                                 <i class="fa  fa-15x fa-comments-o"></i>
                               </a>
                             </div>
@@ -311,13 +319,35 @@
                         </div>
                       </div>
                       <div class="col-sm-12 my-2 w-75">
-                        <angular2-multiselect class="" [data]="vendorList" [(ngModel)]="vendorSelectedItems" [settings]="vendorSettings"
-                          (onSelect)="onVendorSelect($event)" >
+                        <angular2-multiselect class="" [data]="vendorList" [(ngModel)]="vendorSelectedItems" [settings]="vendorSettings">
                         </angular2-multiselect>
                       </div>
+                      <div class="col-sm-12 my-2" *ngIf="vendorSelectedItems">
+                        <div *ngFor="let item of vendorSelectedItems">
+                          <div class="d-flex row mx-0">
+                            <div class="col-sm d-flex">
+                              <button class="btn-clean b-close" (click)="deleteVendor(item._id)">
+                                <i class=" fa text-danger fa-15x fa-minus-circle"></i>
+                              </button>
+                              <span class="ml-3" *ngIf="item.name">{{item.name}} <small>({{item.contact}})</small></span>
+                              <span class="ml-3" *ngIf="item.itemName">{{item.itemName}}</span>
+                            </div>
+                            <div class="col-sm d-flex">
+                              <span class="mr-3 ml-auto text-muted" *ngIf="item.requestAccepted == false && item.requestRejected == false">REQUEST
+                                SEND</span>
+                              <span class="mr-3 ml-auto text-muted" *ngIf="item.itemName">REQUEST SEND</span>
+                              <span class="mr-3 ml-auto text-danger" *ngIf="item.requestRejected == true">DECLINED JOB</span>
+                              <span class="mr-3 ml-auto text-success" *ngIf="item.requestAccepted == true">ACCEPTED JOB</span>
+                              <a class="btn-clean b-close  ml-auto" [routerLink]="['/messages', item.id]">
+                                <i class="fa  fa-15x fa-comments-o"></i>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                       <div class="col-sm-12">
-                        <small>Job Link: <a  target="_blank"  href="{{bitlyURL}}"> {{bitlyURL}}</a></small><button ngxClipboard class="btn btn-link"
-                          [cbContent]="bitlyURL">Copy</button>
+                        <small>Job Link: <a target="_blank" href="{{bitlyURL}}"> {{bitlyURL}}</a></small><button
+                          ngxClipboard class="btn btn-link" [cbContent]="bitlyURL">Copy</button>
                       </div>
                     </div>
                   </div>
@@ -351,6 +381,15 @@
                                 </div>
                               </div>
                             </li>
+                          </ul>
+                          <textarea name="" placeholder="Add Note" [ngClass]="{'d-none': newNotes?.length > 0}" class="form-control"
+                            id="" [(ngModel)]="newNote" cols="30" rows="3"></textarea>
+                          <button class="md-btn md-raised mb-2 mt-2 ml-auto danger" [ngClass]="{'d-none': newNotes?.length > 0}"
+                            (click)="addNote()" [disabled]="newNote?.length < 1">Add
+                            Note</button>
+                        </div>
+                        <div *ngIf="newNotes?.length > 0">
+                          <ul class="list inset">
                             <li class="list-item" *ngFor="let item of newNotes">
                               <div class="row w-100 m-0">
                                 <div class="col-sm-2">
@@ -372,16 +411,12 @@
                               </div>
                             </li>
                           </ul>
-                          <textarea name="" placeholder="Add Note" [ngClass]="{'d-none': newNotes?.length > 0}" class="form-control"
-                            id="" [(ngModel)]="newNote" cols="30" rows="3"></textarea>
+                        </div>
+                        <div *ngIf="editDataRequest.notes?.length < 1">
+                          <textarea name="" placeholder="Include any note relevant to the issue for your team to see it."
+                            class="form-control" id="" [(ngModel)]="newNote" cols="30" rows="10" [ngClass]="{'d-none': newNotes?.length > 0}"></textarea>
                           <button class="md-btn md-raised mb-2 mt-2 ml-auto danger" [ngClass]="{'d-none': newNotes?.length > 0}"
                             (click)="addNote()" [disabled]="newNote?.length < 1">Add
-                            Note</button>
-                        </div>
-                        <div *ngIf="selectedRow.notes?.length < 1">
-                          <textarea name="" placeholder="Include any note relevant to the issue for your team to see it."
-                            class="form-control" id="" [(ngModel)]="newNote" cols="30" rows="10"></textarea>
-                          <button class="md-btn md-raised mb-2 mt-2 ml-auto d-flex danger" [disabled]="newNote?.length < 1">Add
                             Note</button>
                         </div>
                       </div>
@@ -392,7 +427,8 @@
               <div class="col-sm-12">
                 <div class="row mx-0">
                   <div class="col-5 px-0">
-                    <angular2-multiselect [data]="statusList" [(ngModel)]="statusSelectedItems" [settings]="statusSettings">
+                    <angular2-multiselect [data]="statusList" *ngIf="statusList" [(ngModel)]="statusSelectedItems"
+                      [settings]="statusSettings">
                     </angular2-multiselect>
                   </div>
                   <div class="col-7 px-0">
@@ -411,8 +447,9 @@
                       Remove Request</button>
                   </div>
                   <div class="col-sm-12-mt-3">
-                    <button class="md-btn md-flat mb-2 text-primary" id="cancelE"  data-dismiss="modal"  (click)="cancelEdit()">CANCEL </button>
-                    <button class="md-btn md-raised mb-2 blue"  data-dismiss="modal"  (click)="saveEdit()">SAVE CHANGES</button>
+                    <button class="md-btn md-flat mb-2 text-primary" id="cancelE" data-dismiss="modal" (click)="cancelEdit()">CANCEL
+                    </button>
+                    <button class="md-btn md-raised mb-2 blue" data-dismiss="modal" (click)="saveEdit()">SAVE CHANGES</button>
                   </div>
                 </div>
               </div>
