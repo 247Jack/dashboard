@@ -329,13 +329,12 @@ export class WoComponent implements OnInit {
     this.modalDelete.open()
   }
   public removeRequest() {
-    // this.ticket.deleteField(this.selectedRow._id, this.currentCompany).subscribe(resultUpdate => {
-    //   this.modalShowMessage("DeleteTask");
+    // this.ticket.deleteField(this.selectedRow._id, this.currentPropertyManager["_id"], this.currentCompany).subscribe(resultUpdate => {
     //   this.loadTasks();
+    //   this.modalDelete.close()
+    //   this.modalShowMessage("DeleteTask");
+    //   document.getElementById("cancelEdit").click();
     // })
-    this.modalDelete.close()
-    this.modalShowMessage("DeleteTask");
-    document.getElementById("cancelEdit").click();
   }
   public modalShowMessage(messageType) {
     switch (messageType) {
