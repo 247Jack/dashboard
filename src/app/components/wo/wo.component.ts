@@ -281,15 +281,25 @@ export class WoComponent implements OnInit {
   }
   saveEdit() {
     this.spinnerService.show()
-    this.updateData = {
-      vendorsRemoved: this.vendorsRemoved,
-      newVendorsBroadcasted: this.vendorSelectedItems,
-      status: (this.statusSelectedItems.length) ? this.statusSelectedItems[0].id : "",
-      repair_cost: this.newCost,
-      newNote: {
-        authorId: this.currentPropertyManager._id,
-        authorName: this.currentPropertyManager.name,
-        content: this.newNote,
+    if(this.newNote.length > 0 ){
+      this.updateData = {
+        vendorsRemoved: this.vendorsRemoved,
+        newVendorsBroadcasted: this.vendorSelectedItems,
+        status: (this.statusSelectedItems.length) ? this.statusSelectedItems[0].id : "",
+        repair_cost: this.newCost,
+        newNote: {
+          authorId: this.currentPropertyManager._id,
+          authorName: this.currentPropertyManager.name,
+          content: this.newNote,
+        }
+      }
+    }
+    else{
+      this.updateData = {
+        vendorsRemoved: this.vendorsRemoved,
+        newVendorsBroadcasted: this.vendorSelectedItems,
+        status: (this.statusSelectedItems.length) ? this.statusSelectedItems[0].id : "",
+        repair_cost: this.newCost
       }
     }
     console.log(this.updateData)
