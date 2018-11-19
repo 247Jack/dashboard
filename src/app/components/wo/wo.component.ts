@@ -58,6 +58,7 @@ export class WoComponent implements OnInit {
   public editDataRequest
   public newprovidersDispatched: any;
   public deleteVendorStatus: boolean;
+  public vendorsRemoved = [];
 
   constructor(
     private spinnerService: Ng4LoadingSpinnerService,
@@ -257,28 +258,38 @@ export class WoComponent implements OnInit {
     this.newNotes = [];
     document.getElementById("cancelEdit").click();
   }
+  deleteNewVendor(id) {
+    let selectedVendor = this.vendorSelectedItems.filter(v => !(id.includes((v.id).toString())))
+    this.vendorSelectedItems = selectedVendor 
+  }
+
+  deleteVendor(item) {
+    let deleteVendors = this.editDataRequest.providersDispatched.filter(v => !(item.id.includes((v.id).toString())))
+    this.editDataRequest.providersDispatched = deleteVendors
+    this.vendorList.push({
+      id: item.id,
+      itemName: item.name
+    })
+    this.vendorsRemoved.push(item.id)
+  }
+  addNote() {
+    this.elementNote.authorName = this.currentPropertyManager.name.split(/(\s+)/)[0]
+    this.elementNote.content = this.newNote
+    this.elementNote.date = new Date()
+    this.newNotes.push(this.elementNote)
+    console.log(this.newNotes)
+  }
   saveEdit() {
     this.spinnerService.show()
-    if (this.newCost == this.editDataRequest.totalCost) {
-      this.newCost = null
-    }
-    if (this.newNote.length > 0) {
-      this.updateData = {
-        vendor_id: this.vendorSelectedItems,
-        status: (this.statusSelectedItems.length) ? this.statusSelectedItems[0].id : "",
-        repair_cost: this.newCost,
-        newNote: {
-          authorId: this.currentPropertyManager._id,
-          authorName: this.currentPropertyManager.name,
-          content: this.newNote,
-          date: new Date(),
-        }
-      }
-    } else {
-      this.updateData = {
-        vendor_id: this.vendorSelectedItems,
-        status: (this.statusSelectedItems.length) ? this.statusSelectedItems[0].id : "",
-        repair_cost: this.newCost
+    this.updateData = {
+      vendorsRemoved: this.vendorsRemoved,
+      newVendorsBroadcasted: this.vendorSelectedItems,
+      status: (this.statusSelectedItems.length) ? this.statusSelectedItems[0].id : "",
+      repair_cost: this.newCost,
+      newNote: {
+        authorId: this.currentPropertyManager._id,
+        authorName: this.currentPropertyManager.name,
+        content: this.newNote,
       }
     }
     console.log(this.updateData)
@@ -295,23 +306,6 @@ export class WoComponent implements OnInit {
     //   this.loadTasks();
     //   this.spinnerService.hide()
     // })
-  }
-  deleteVendor(vendor_id) {
-    for (var e in this.vendorSelectedItems) {
-      if (vendor_id == this.vendorSelectedItems[e].id) {
-        var sindex = this.vendorSelectedItems.indexOf(vendor_id);
-        if (sindex) {
-          this.vendorSelectedItems.splice(sindex, 1);
-        }
-      }
-    }
-  }
-  addNote() {
-    this.elementNote.authorName = this.currentPropertyManager.name.split(/(\s+)/)[0]
-    this.elementNote.content = this.newNote
-    this.elementNote.date = new Date()
-    this.newNotes.push(this.elementNote)
-    console.log(this.newNotes)
   }
   openModalDelete() {
     this.modalTitle = "Delete Request";

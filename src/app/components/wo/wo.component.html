@@ -299,7 +299,7 @@
                         <div *ngFor="let item of editDataRequest.providersDispatched">
                           <div class="d-flex row mx-0">
                             <div class="col-sm d-flex">
-                              <button class="btn-clean b-close" *ngIf="item.requestAccepted == false && item.requestRejected == false" (click)="deleteVendor(item._id)">
+                              <button class="btn-clean b-close" (click)="deleteVendor(item)">
                                 <i class=" fa text-danger fa-15x fa-minus-circle"></i>
                               </button>
                               <span class="ml-3" *ngIf="item.name">{{item.name}} <small>({{item.contact}})</small></span>
@@ -326,18 +326,14 @@
                         <div *ngFor="let item of vendorSelectedItems">
                           <div class="d-flex row mx-0">
                             <div class="col-sm d-flex">
-                              <button class="btn-clean b-close" (click)="deleteVendor(item._id)">
+                              <button class="btn-clean b-close" (click)="deleteNewVendor(item.id)">
                                 <i class=" fa text-danger fa-15x fa-minus-circle"></i>
                               </button>
                               <span class="ml-3" *ngIf="item.name">{{item.name}} <small>({{item.contact}})</small></span>
                               <span class="ml-3" *ngIf="item.itemName">{{item.itemName}}</span>
                             </div>
                             <div class="col-sm d-flex">
-                              <span class="mr-3 ml-auto text-muted" *ngIf="item.requestAccepted == false && item.requestRejected == false">REQUEST
-                                SEND</span>
                               <span class="mr-3 ml-auto text-muted" *ngIf="item.itemName">REQUEST SEND</span>
-                              <span class="mr-3 ml-auto text-danger" *ngIf="item.requestRejected == true">DECLINED JOB</span>
-                              <span class="mr-3 ml-auto text-success" *ngIf="item.requestAccepted == true">ACCEPTED JOB</span>
                               <a class="btn-clean b-close  ml-auto" [routerLink]="['/messages', item.id]">
                                 <i class="fa  fa-15x fa-comments-o"></i>
                               </a>
