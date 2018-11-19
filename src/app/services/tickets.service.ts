@@ -11,7 +11,7 @@ export class TicketsService {
 
   @Output() update: EventEmitter<boolean> = new EventEmitter();
 
-  constructor(private http: Http) {}
+  constructor(private http: Http) { }
 
   public getTickets(pm_id, company) {
     const headers = new Headers();
@@ -32,7 +32,7 @@ export class TicketsService {
       });
   }
 
-  public createTicket(ticketInfo,pm_id, company) {
+  public createTicket(ticketInfo, pm_id, company) {
     const headers = new Headers();
     headers.append('property_manager_id', pm_id);
     headers.append('property_manager_company', company);
@@ -42,14 +42,13 @@ export class TicketsService {
       ticketInfo,
       options
     )
-    .catch(error => {
-      window.location.reload();
-      return Observable.throw(error.message || error);
-    });
+      .catch(error => {
+        window.location.reload();
+        return Observable.throw(error.message || error);
+      });
   }
 
-  public evaluateTaskThreshold(task_id,action,pm_id)
-  {
+  public evaluateTaskThreshold(task_id, action, pm_id) {
     /*
     const headers = new Headers();
     headers.append('property_manager_id', pm_id);
@@ -59,45 +58,48 @@ export class TicketsService {
       `${environment.api_domain}/dashboard/tasks/${task_id}/evaluatethreshold?type=${action}`,
       {}
     )
-    .catch(error => {
-      window.location.reload();
-      return Observable.throw(error.message || error);
-    });
+      .catch(error => {
+        window.location.reload();
+        return Observable.throw(error.message || error);
+      });
   }
 
-  public updateDashoboard(){
+  public updateDashoboard() {
     this.update.emit(null);
   }
 
-  public editTask(task_id,company,updateData){
+  public editTask(task_id, pm_id, pm_company, updateData) {
     const headers = new Headers();
-    headers.append('property_manager_company', company);
+    headers.append('property_manager_id', pm_id);
+    headers.append('property_manager_company', pm_company);
     const options = new RequestOptions({ 'headers': headers });
     return this.http.post(
       `${environment.api_domain}/dashboard/tasks/${task_id}`,
       updateData,
       options
-    )
-    .catch(error => {
-      window.location.reload();
-      return Observable.throw(error.message || error);
-    });
+    ).map(res => {
+      return res.json();
+    })
+      .catch(error => {
+        window.location.reload();
+        return Observable.throw(error.message || error);
+      });
   }
 
-  public getBitlyLink(task_id,vendor_id){
+  public getBitlyLink(task_id, vendor_id) {
     return this.http.post(
       `${environment.api_domain}/dashboard/tasks/${task_id}/joblink`,
       {
         "vendor_id": vendor_id
       }
     )
-    .map(res => {
-      return res.json();
-    })
-    .catch(error => {
-      window.location.reload();
-      return Observable.throw(error.message || error);
-    });
+      .map(res => {
+        return res.json();
+      })
+      .catch(error => {
+        window.location.reload();
+        return Observable.throw(error.message || error);
+      });
   }
 
   public getEditTask(pm_id, company, task_id) {
