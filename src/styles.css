@@ -87,12 +87,16 @@ app-home #content-main {
   /* background-color: rgb(114, 230, 143) !important; */
 }
 
-.list-item {
-  background-color: rgb(255, 255, 255);
-  /* moz-transition: all .4s ease-in-out;
-  -o-transition: all .4s ease-in-out;
-  -webkit-transition: all .4s ease-in-out;
-  transition: all .4s ease-in-out; */
+.ngx-datatable.material.single-selection .datatable-body-row.active,
+.ngx-datatable.material.single-selection .datatable-body-row.active .datatable-row-group,
+.ngx-datatable.material.multi-selection .datatable-body-row.active,
+.ngx-datatable.material.multi-selection .datatable-body-row.active .datatable-row-group,
+.ngx-datatable.material.multi-click-selection .datatable-body-row.active,
+.ngx-datatable.material.multi-click-selection .datatable-body-row.active .datatable-row-group .list-item {
+  background-color: rgba(128, 128, 128, 0.171)!important;
+}
+datatable-row-wrapper{
+  cursor: pointer !important;
 }
 
 /* .list-item:hover
@@ -163,17 +167,21 @@ app-home #content-main {
 #modal-edit .box {
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.14), 0 3px 4px 0 rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
 }
-.fa-15x{
+
+.fa-15x {
   font-size: 1.4rem;
 }
+
 #modal-edit small {
   color: #9B9B9B;
   line-height: 23px;
 }
-.w-25{
+
+.w-25 {
   width: 25px !important;
   height: 25px;
 }
+
 .underlieAnimation:after {
   content: "";
   display: block;

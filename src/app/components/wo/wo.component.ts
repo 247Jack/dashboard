@@ -168,10 +168,10 @@ export class WoComponent implements OnInit {
         this.loadTasks();
       });
   }
-  onChange(deviceValue) {
+  public onChange(deviceValue) {
     this.limitRows = deviceValue;
   }
-  onSelect({ selected }) {
+  public onSelect({ selected }) {
     this.spinnerService.show();
     this.selectedRow = selected[0]
     if (this.selectedRow._id) {
@@ -246,7 +246,7 @@ export class WoComponent implements OnInit {
       })
     }
   }
-  cancelEdit() {
+  public cancelEdit() {
     this.editDataRequest = null
     this.editStatus = false
     this.newNote = "";
@@ -254,12 +254,12 @@ export class WoComponent implements OnInit {
     this.newNotes = [];
     document.getElementById("cancelEdit").click();
   }
-  deleteNewVendor(id) {
+  public deleteNewVendor(id) {
     let selectedVendor = this.vendorSelectedItems.filter(v => !(id.includes((v.id).toString())))
     this.vendorSelectedItems = selectedVendor
   }
 
-  deleteVendor(item) {
+  public deleteVendor(item) {
     let deleteVendors = this.editDataRequest.providersDispatched.filter(v => !(item.id.includes((v.id).toString())))
     this.editDataRequest.providersDispatched = deleteVendors
     this.vendorList.push({
@@ -268,14 +268,14 @@ export class WoComponent implements OnInit {
     })
     this.vendorsRemoved.push(item.id)
   }
-  addNote() {
+  public addNote() {
     this.elementNote.authorName = this.currentPropertyManager.name.split(/(\s+)/)[0]
     this.elementNote.content = this.newNote
     this.elementNote.date = new Date()
     this.newNotes.push(this.elementNote)
     console.log(this.newNotes)
   }
-  saveEdit() {
+  public saveEdit() {
     for(var e in this.vendorSelectedItems){
       this.newVendorsBroadcasted.push(this.vendorSelectedItems[e].id)
     }
@@ -285,11 +285,13 @@ export class WoComponent implements OnInit {
       newVendorsBroadcasted: this.newVendorsBroadcasted,
       status: (this.statusSelectedItems.length) ? this.statusSelectedItems[0].id : "",
       newCost: this.newCost,
-      newNotes: {
-        authorId: this.currentPropertyManager._id,
-        authorName: this.currentPropertyManager.name,
-        content: this.newNote,
-      }
+      newNotes: [
+        {
+          authorId: this.currentPropertyManager._id,
+          authorName: this.currentPropertyManager.name,
+          content: this.newNote,
+        }
+      ]
     }
     if (this.vendorsRemoved.length < 1) {
       delete updateData.vendorsRemoved
@@ -321,12 +323,12 @@ export class WoComponent implements OnInit {
       document.getElementById("cancelEdit").click();
     })
   }
-  openModalDelete() {
+  public openModalDelete() {
     this.modalTitle = "Delete Request";
     this.modalBody = "Are you sure you want to delete this service request?";
     this.modalDelete.open()
   }
-  removeRequest() {
+  public removeRequest() {
     // this.ticket.deleteField(this.selectedRow._id, this.currentCompany).subscribe(resultUpdate => {
     //   this.modalShowMessage("DeleteTask");
     //   this.loadTasks();
@@ -354,7 +356,7 @@ export class WoComponent implements OnInit {
     this.modal.open();
   }
   // filter data and update rows
-  updateFilter(event) {
+  public updateFilter(event) {
     this.spinnerService.show();
     this.tickets = this.originalData;
     const search = event.target.value.toLowerCase();
