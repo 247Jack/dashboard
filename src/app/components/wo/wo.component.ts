@@ -59,6 +59,7 @@ export class WoComponent implements OnInit {
   public newprovidersDispatched: any;
   public deleteVendorStatus: boolean;
   public vendorsRemoved = [];
+  public newVendorsBroadcasted = []
 
   constructor(
     private spinnerService: Ng4LoadingSpinnerService,
@@ -137,7 +138,6 @@ export class WoComponent implements OnInit {
       }
     }, 100);
   }
-
   private loadTasks() {
     this.spinnerService.show();
     this.ticket
@@ -154,11 +154,9 @@ export class WoComponent implements OnInit {
         this.spinnerService.hide();
       });
   }
-
   public checkPendientTask(event, task) {
     this.currentTicket = task;
   }
-
   public evaluateTask(response) {
     this.ticket
       .evaluateTaskThreshold(
@@ -170,11 +168,9 @@ export class WoComponent implements OnInit {
         this.loadTasks();
       });
   }
-
   onChange(deviceValue) {
     this.limitRows = deviceValue;
   }
-
   onSelect({ selected }) {
     this.spinnerService.show();
     this.selectedRow = selected[0]
@@ -260,7 +256,7 @@ export class WoComponent implements OnInit {
   }
   deleteNewVendor(id) {
     let selectedVendor = this.vendorSelectedItems.filter(v => !(id.includes((v.id).toString())))
-    this.vendorSelectedItems = selectedVendor 
+    this.vendorSelectedItems = selectedVendor
   }
 
   deleteVendor(item) {
@@ -280,42 +276,50 @@ export class WoComponent implements OnInit {
     console.log(this.newNotes)
   }
   saveEdit() {
+    for(var e in this.vendorSelectedItems){
+      this.newVendorsBroadcasted.push(this.vendorSelectedItems[e].id)
+    }
     this.spinnerService.show()
-    if(this.newNote.length > 0 ){
-      this.updateData = {
-        vendorsRemoved: this.vendorsRemoved,
-        newVendorsBroadcasted: this.vendorSelectedItems,
-        status: (this.statusSelectedItems.length) ? this.statusSelectedItems[0].id : "",
-        repair_cost: this.newCost,
-        newNote: {
-          authorId: this.currentPropertyManager._id,
-          authorName: this.currentPropertyManager.name,
-          content: this.newNote,
-        }
+    let updateData = {
+      vendorsRemoved: this.vendorsRemoved,
+      newVendorsBroadcasted: this.newVendorsBroadcasted,
+      status: (this.statusSelectedItems.length) ? this.statusSelectedItems[0].id : "",
+      newCost: this.newCost,
+      newNotes: {
+        authorId: this.currentPropertyManager._id,
+        authorName: this.currentPropertyManager.name,
+        content: this.newNote,
       }
     }
-    else{
-      this.updateData = {
-        vendorsRemoved: this.vendorsRemoved,
-        newVendorsBroadcasted: this.vendorSelectedItems,
-        status: (this.statusSelectedItems.length) ? this.statusSelectedItems[0].id : "",
-        repair_cost: this.newCost
-      }
+    if (this.vendorsRemoved.length < 1) {
+      delete updateData.vendorsRemoved
     }
-    console.log(this.updateData)
-    this.spinnerService.hide()
-    this.modalShowMessage("saveTask");
-    this.editStatus = false
-    this.newNote = "";
-    this.newNotes = [];
-    this.vendorSelectedItems = []
-    this.statusSelectedItems = []
-    document.getElementById("cancelEdit").click();
-    // this.ticket.editTask(this.selectedRow._id, this.currentCompany, this.updateData).subscribe(resultUpdate => {
-    //   this.modalShowMessage("saveTask");
-    //   this.loadTasks();
-    //   this.spinnerService.hide()
-    // })
+    if (this.vendorSelectedItems.length < 1) {
+      delete updateData.newVendorsBroadcasted
+    }
+    if (this.newNote.length < 1) {
+      delete updateData.newNotes
+    }
+    if (this.newCost == this.editDataRequest.totalCost) {
+      delete updateData.newCost
+    }
+    this.updateData = updateData
+    this.ticket.editTask(this.selectedRow._id, this.currentPropertyManager["_id"], this.currentCompany, this.updateData).subscribe(resultUpdate => {
+      console.log(resultUpdate)
+      console.log(this.updateData)
+      this.ticket.update.subscribe(updating => {
+        this.loadTasks();
+      });
+      this.spinnerService.hide()
+      this.modalShowMessage("saveTask");
+      this.editStatus = false
+      this.newNote = "";
+      this.newNotes = [];
+      this.vendorSelectedItems = []
+      this.statusSelectedItems = []
+      this.updateData = {}
+      document.getElementById("cancelEdit").click();
+    })
   }
   openModalDelete() {
     this.modalTitle = "Delete Request";
@@ -349,7 +353,6 @@ export class WoComponent implements OnInit {
     }
     this.modal.open();
   }
-
   // filter data and update rows
   updateFilter(event) {
     this.spinnerService.show();

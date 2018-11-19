@@ -115,8 +115,8 @@
                       <i class="fa fa-times"></i> Cancel
                     </a-->
                 </div>
-                <div *ngSwitchCase="'denied'">
-                  <button class="badge btn-clean grey" type="button">Canceled</button>
+                <div *ngSwitchCase="'canceled'">
+                  <button class="badge btn-clean red" type="button">Canceled</button>
                 </div>
                 <div *ngSwitchCase="'finished'">
                   <button class="badge btn-clean green" type="button">Completed</button>
@@ -273,7 +273,7 @@
                         <em>{{editDataRequest.taskDescription}}</em>
                       </p>
                       <p>
-                        <strong>Preferred date dor service visit:</strong><span>{{editDataRequest.preferredDate |
+                        <strong>Preferred date for service visit:</strong><span>{{editDataRequest.preferredDate |
                           date:'medium'}}</span>
                       </p>
                     </div>
