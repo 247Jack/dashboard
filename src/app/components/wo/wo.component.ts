@@ -3,7 +3,6 @@ import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { TicketsService } from "../../services/tickets.service";
 import { IssuesService } from "../../services/issues.service";
 import { ContactsService } from "../../services/contacts.service";
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalComponent } from 'dsg-ng2-bs4-modal';
 
 @Component({
@@ -14,6 +13,8 @@ import { ModalComponent } from 'dsg-ng2-bs4-modal';
 export class WoComponent implements OnInit {
   @ViewChild('modalmessage')
   modal: ModalComponent;
+  @ViewChild('modalDelete')
+  modalDelete: ModalComponent;
   public tickets;
   public time;
   public date;
@@ -27,7 +28,6 @@ export class WoComponent implements OnInit {
   public selectedRow: any = [];
   public selectedVendor: any;
   public selected = [];
-  public editForm: FormGroup;
   public defaultStatus: string = 'Edit Status';
   public defaultVendor: string = 'Edit Vendor';
   public modalTitle = "";
@@ -43,7 +43,22 @@ export class WoComponent implements OnInit {
   public statusList = [];
   public statusSelectedItems = [];
   public statusSettings = {};
-  newAddress: string;
+
+  public newAddress: string;
+  public newNote = "";
+  public newNotes = []
+  public editStatus = false
+  public elementNote = {
+    authorName: '',
+    content: '',
+    date: new Date()
+  }
+  public updateData = {};
+
+  public editDataRequest
+  public newprovidersDispatched: any;
+  public deleteVendorStatus: boolean;
+  public vendorsRemoved = [];
 
   constructor(
     private spinnerService: Ng4LoadingSpinnerService,
@@ -51,14 +66,6 @@ export class WoComponent implements OnInit {
     private issues: IssuesService,
     private contacts: ContactsService
   ) {
-    this.editForm = new FormGroup({
-      status: new FormControl(null),
-      vendor: new FormControl(null),
-      cost: new FormControl(null),
-      id: new FormControl(null)
-    });
-    this.editForm.controls['status'].setValue(this.defaultStatus, {onlySelf: true})
-    this.editForm.controls['vendor'].setValue(this.defaultVendor, {onlySelf: true})
     this.vendorSettings = {
       singleSelection: false,
       text: "+ Dispatch to more vendors…",
@@ -69,35 +76,36 @@ export class WoComponent implements OnInit {
       singleSelection: true,
       text: "Edit status",
       enableSearchFilter: false,
-      badgeShowLimit: 1
+      badgeShowLimit: 1,
+      position: "top"
     }
     this.statusList = [
       {
-        id: 0,
-        itemName: "Available"
+        id: "available",
+        itemName: "Dispatch"
       },
       {
-        id: 1,
+        id: "checked",
         itemName: "Checked"
       },
       {
-        id: 2,
-        itemName: "Evaluating"
+        id: "evaluating",
+        itemName: "Requires Attention"
       },
       {
-        id: 3,
+        id: "approved",
         itemName: "Approved"
       },
       {
-        id: 4,
+        id: "canceled",
         itemName: "Denied"
       },
       {
-        id: 5,
+        id: "finished",
         itemName: "Finished"
       }
     ]
-}
+  }
 
   ngOnInit() {
     var waitForPMData = setInterval(() => {
@@ -136,7 +144,6 @@ export class WoComponent implements OnInit {
       .getTickets(this.currentPropertyManager['_id'], this.currentCompany)
       .subscribe(data => {
         console.log(data);
-        this.spinnerService.hide();
         this.tickets = data;
         this.tickets.reverse();
         this.originalData = this.tickets;
@@ -144,6 +151,7 @@ export class WoComponent implements OnInit {
           this.date = this.tickets[i].creationDate.split("T")[0];
           this.time = this.tickets[i].creationDate.split(/\.|\T/)[1];
         }
+        this.spinnerService.hide();
       });
   }
 
@@ -168,70 +176,171 @@ export class WoComponent implements OnInit {
   }
 
   onSelect({ selected }) {
+    this.spinnerService.show();
     this.selectedRow = selected[0]
-    console.log(this.selectedRow.issueData.repairCost)
-    if(this.selectedRow.assignedVendors.length > 0){
-      this.selectedVendor = this.selectedRow.assignedVendors[0]._id
-      this.vendorSelectedItems = []
-      this.vendorSelectedItems.push({
-        id: this.selectedRow.assignedVendors[0]._id,
-        itemName: this.selectedRow.assignedVendors[0].vendorData.name
-      })
-      this.ticket.getBitlyLink(this.selectedRow._id,this.selectedVendor).subscribe(resultBitly => {
-        this.bitlyURL = resultBitly.url;
-        document.getElementById("editRow").click();
+    if (this.selectedRow._id) {
+      this.ticket.getEditTask(this.currentPropertyManager['_id'], this.currentCompany, this.selectedRow._id).subscribe(data => {
+        console.log(data);
+        this.editDataRequest = data
+        let ids = this.editDataRequest.providersDispatched.map(v => (v.id).toString())
+        let newVendorList = this.vendorList.filter(v => !(ids.includes((v.id).toString())))
+        this.vendorList = newVendorList
+        this.ticket.getBitlyLink(this.selectedRow._id, this.selectedVendor).subscribe(resultBitly => {
+          this.bitlyURL = resultBitly.url;
+        })
+        this.newCost = this.editDataRequest.totalCost || 0
+        this.newAddress = this.editDataRequest.tenantAddress.address.replace(/\s+/g, '+') + "+" + this.editDataRequest.tenantAddress.city
+        this.statusSelectedItems = []
+        if (this.editDataRequest.requestStatus === "available") {
+          this.statusList = [
+            {
+              id: "available",
+              itemName: "Dispatch"
+            },
+            {
+              id: "finished",
+              itemName: "Closed"
+            }
+          ]
+        }
+        if (this.editDataRequest.requestStatus === "checked") {
+          this.statusList = [
+            {
+              id: "available",
+              itemName: "Dispatch"
+            },
+            {
+              id: "checked",
+              itemName: "Checked"
+            },
+            {
+              id: "evaluating",
+              itemName: "Requires Attention"
+            },
+            {
+              id: "finished",
+              itemName: "Finished"
+            }
+          ]
+        }
+        if (this.editDataRequest.requestStatus != "available" && this.editDataRequest.requestStatus != "checked") {
+          this.statusSettings = {
+            singleSelection: false,
+            text: this.editDataRequest.requestStatus,
+            enableSearchFilter: false,
+            badgeShowLimit: 1,
+            position: "top",
+            disabled: true
+          }
+        }
+        for (var i in this.statusList) {
+          if (this.statusList[i].id == this.editDataRequest.requestStatus) {
+            this.statusSelectedItems.push(this.statusList[i])
+            break
+          }
+        }
+        for (var f in this.editDataRequest.notes) {
+          this.editDataRequest.notes[f].authorName = this.editDataRequest.notes[f].authorName.split(/(\s+)/)[0]
+        }
+        this.spinnerService.hide();
+        this.editStatus = true;
+        if (this.editStatus === true) {
+          document.getElementById("editRow").click();
+        }
       })
     }
-    else{
-      document.getElementById("editRow").click();
-    }
-    this.newCost = this.selectedRow.issueData.repairCost || 0
-    this.statusSelectedItems = []
-    for(var i in this.statusList){
-      if(this.statusList[i].itemName === this.selectedRow.status){
-        this.statusSelectedItems.push(this.statusList[i])
-        break
+  }
+  cancelEdit() {
+    this.editDataRequest = null
+    this.editStatus = false
+    this.newNote = "";
+    this.vendorSelectedItems = []
+    this.newNotes = [];
+    document.getElementById("cancelEdit").click();
+  }
+  deleteNewVendor(id) {
+    let selectedVendor = this.vendorSelectedItems.filter(v => !(id.includes((v.id).toString())))
+    this.vendorSelectedItems = selectedVendor 
+  }
+
+  deleteVendor(item) {
+    let deleteVendors = this.editDataRequest.providersDispatched.filter(v => !(item.id.includes((v.id).toString())))
+    this.editDataRequest.providersDispatched = deleteVendors
+    this.vendorList.push({
+      id: item.id,
+      itemName: item.name
+    })
+    this.vendorsRemoved.push(item.id)
+  }
+  addNote() {
+    this.elementNote.authorName = this.currentPropertyManager.name.split(/(\s+)/)[0]
+    this.elementNote.content = this.newNote
+    this.elementNote.date = new Date()
+    this.newNotes.push(this.elementNote)
+    console.log(this.newNotes)
+  }
+  saveEdit() {
+    this.spinnerService.show()
+    if(this.newNote.length > 0 ){
+      this.updateData = {
+        vendorsRemoved: this.vendorsRemoved,
+        newVendorsBroadcasted: this.vendorSelectedItems,
+        status: (this.statusSelectedItems.length) ? this.statusSelectedItems[0].id : "",
+        repair_cost: this.newCost,
+        newNote: {
+          authorId: this.currentPropertyManager._id,
+          authorName: this.currentPropertyManager.name,
+          content: this.newNote,
+        }
       }
     }
-    for(var e in this.selectedRow.residents){
-      this.newAddress = this.selectedRow.residents[e].building.address.replace(/\s+/g, '+') + "+" + this.selectedRow.residents[e].building.city
+    else{
+      this.updateData = {
+        vendorsRemoved: this.vendorsRemoved,
+        newVendorsBroadcasted: this.vendorSelectedItems,
+        status: (this.statusSelectedItems.length) ? this.statusSelectedItems[0].id : "",
+        repair_cost: this.newCost
+      }
     }
-    if(selected[0]._id){
-      this.editForm.controls['id'].setValue(selected[0]._id, {onlySelf: true})
-    }
-    
+    console.log(this.updateData)
+    this.spinnerService.hide()
+    this.modalShowMessage("saveTask");
+    this.editStatus = false
+    this.newNote = "";
+    this.newNotes = [];
+    this.vendorSelectedItems = []
+    this.statusSelectedItems = []
+    document.getElementById("cancelEdit").click();
+    // this.ticket.editTask(this.selectedRow._id, this.currentCompany, this.updateData).subscribe(resultUpdate => {
+    //   this.modalShowMessage("saveTask");
+    //   this.loadTasks();
+    //   this.spinnerService.hide()
+    // })
   }
-
-  onVendorSelect(event){
-    this.ticket.getBitlyLink(this.selectedRow._id, event.id).subscribe(resultBitly => {
-      this.bitlyURL = resultBitly.url
-      //document.getElementById("editRow").click();
-    })
+  openModalDelete() {
+    this.modalTitle = "Delete Request";
+    this.modalBody = "Are you sure you want to delete this service request?";
+    this.modalDelete.open()
   }
-
-  cancelEdit(){
-    this.selected = []
+  removeRequest() {
+    // this.ticket.deleteField(this.selectedRow._id, this.currentCompany).subscribe(resultUpdate => {
+    //   this.modalShowMessage("DeleteTask");
+    //   this.loadTasks();
+    // })
+    this.modalDelete.close()
+    this.modalShowMessage("DeleteTask");
+    document.getElementById("cancelEdit").click();
   }
-  saveEdit(){
-    var updateData = {
-      vendor_id: (this.vendorSelectedItems.length)?this.vendorSelectedItems[0].id:"",
-      status: (this.statusSelectedItems.length)?this.statusSelectedItems[0].itemName:"",
-      repair_cost: this.newCost
-    }
-    this.ticket.updateSimpleRequest(this.selectedRow._id, this.currentCompany, updateData).subscribe(resultUpdate => {
-      this.selected = []
-      this.modalShowMessage("saveTask");
-      this.loadTasks();
-    })
-    
-  }
-
   public modalShowMessage(messageType) {
     switch (messageType) {
       case "saveTask":
         this.modalTitle = "Request updated!";
         this.modalBody = "Your select request has been updated. However, you need to notify the vendors about the change, if needed.";
-      break;
+        break;
+      case "DeleteTask":
+        this.modalTitle = "Request Deleted!";
+        this.modalBody = "This request has been successfully deleted.";
+        break;
       default: {
         this.modalTitle = 'Oops!';
         this.modalBody = 'Something went wrong on our end. Nothing terrible; however, you will need to enter the request information.';
@@ -250,8 +359,8 @@ export class WoComponent implements OnInit {
       const filteredData = this.tickets.filter(e =>
         e.ticketDescription.toLowerCase().includes(search)
       ).sort((a, b) =>
-          a.ticketDescription.toLowerCase().includes(search) && !b.ticketDescription.toLowerCase().includes(search) ?
-            -1 : b.ticketDescription.toLowerCase().includes(search) && !a.ticketDescription.toLowerCase().includes(search) ? 1 : 0);
+        a.ticketDescription.toLowerCase().includes(search) && !b.ticketDescription.toLowerCase().includes(search) ?
+          -1 : b.ticketDescription.toLowerCase().includes(search) && !a.ticketDescription.toLowerCase().includes(search) ? 1 : 0);
       this.tickets = filteredData;
     }
     this.spinnerService.hide();
