@@ -321,6 +321,7 @@ export class WoComponent implements OnInit {
       this.statusSelectedItems = []
       this.updateData = {}
       document.getElementById("cancelEdit").click();
+      this.loadTasks();
     })
   }
   public openModalDelete() {
