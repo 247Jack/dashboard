@@ -11,45 +11,45 @@ import { BroadcastComponent } from "./components/broadcast/broadcast.component";
 
 const app_routes: Routes = [
   { path: "login", component: LoginComponent },
-  { path: "implicit/callback", component: OktaCallbackComponent },
-  { path: "home", component: HomeComponent, canActivate: [OktaAuthGuard] },
-  { path: "work-orders", component: WoComponent, canActivate: [OktaAuthGuard] },
-  {
-    path: "messages",
-    component: MessagesComponent,
-    canActivate: [OktaAuthGuard]
-  },
-  {
-    path: "messages/:userId",
-    component: MessagesComponent,
-    canActivate: [OktaAuthGuard]
-  },
-  {
-    path: "automations",
-    component: AutomationsComponent,
-    canActivate: [OktaAuthGuard]
-  },
-  {
-    path: "contacts",
-    component: ContactsComponent,
-    canActivate: [OktaAuthGuard]
-  },
-  {
-    path: "contacts/:contactId",
-    component: ContactsComponent,
-    canActivate: [OktaAuthGuard]
-  },
-  {
-    path: "broadcast/:contactType",
-    component: BroadcastComponent,
-    canActivate: [OktaAuthGuard]
-  },
-  {
-    path: "company",
-    component: CompanyComponent,
-    canActivate: [OktaAuthGuard]
-  },
-  { path: "**", pathMatch: "full", redirectTo: "home" }
+  // { path: "implicit/callback", component: OktaCallbackComponent },
+  // { path: "home", component: HomeComponent, canActivate: [OktaAuthGuard] },
+  // { path: "work-orders", component: WoComponent, canActivate: [OktaAuthGuard] },
+  // {
+  //   path: "messages",
+  //   component: MessagesComponent,
+  //   canActivate: [OktaAuthGuard]
+  // },
+  // {
+  //   path: "messages/:userId",
+  //   component: MessagesComponent,
+  //   canActivate: [OktaAuthGuard]
+  // },
+  // {
+  //   path: "automations",
+  //   component: AutomationsComponent,
+  //   canActivate: [OktaAuthGuard]
+  // },
+  // {
+  //   path: "contacts",
+  //   component: ContactsComponent,
+  //   canActivate: [OktaAuthGuard]
+  // },
+  // {
+  //   path: "contacts/:contactId",
+  //   component: ContactsComponent,
+  //   canActivate: [OktaAuthGuard]
+  // },
+  // {
+  //   path: "broadcast/:contactType",
+  //   component: BroadcastComponent,
+  //   canActivate: [OktaAuthGuard]
+  // },
+  // {
+  //   path: "company",
+  //   component: CompanyComponent,
+  //   canActivate: [OktaAuthGuard]
+  // },
+  { path: "**", pathMatch: "full", redirectTo: "/login" }
 ];
 
 export const AppRouting = RouterModule.forRoot(app_routes, { useHash: true });

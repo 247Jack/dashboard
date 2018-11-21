@@ -31,6 +31,7 @@ import { ContactsComponent } from "./components/contacts/contacts.component";
 import { CompanyComponent } from "./components/company/company.component";
 import { BroadcastComponent } from './components/broadcast/broadcast.component';
 
+import { Okta } from './services/okta.service';
 import { ChatService } from "./services/chat.service";
 import { TicketsService } from "./services/tickets.service";
 import { environment } from "../environments/environment";
@@ -118,7 +119,7 @@ export class RollbarErrorHandler implements ErrorHandler {
     HttpModule,
     DropzoneModule,
     BrowserAnimationsModule,
-    OktaAuthModule.initAuth(oktaConfig),
+    // OktaAuthModule.initAuth(oktaConfig),
     // SimpleNotificationsModule.forRoot(),
     // PushNotificationsModule,
     AngularDateTimePickerModule,
@@ -132,6 +133,7 @@ export class RollbarErrorHandler implements ErrorHandler {
     ClipboardModule
   ],
   providers: [
+    Okta,
     ContactsService,
     ChatService,
     AccountService,

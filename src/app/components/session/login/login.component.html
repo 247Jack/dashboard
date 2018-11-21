@@ -56,3 +56,12 @@
     </div>
   </div>
 </div>
+
+
+<div *ngIf="!user" id="okta-login-container"></div>
+
+<div *ngIf="user">
+  Hello {{user}}
+
+  <button (click)="logout()">Logout</button>
+</div>
