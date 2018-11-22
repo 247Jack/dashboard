@@ -8,7 +8,7 @@ import { environment } from "../../environments/environment";
 
 @Injectable()
 export class ContactsService {
-  constructor(private http: Http) {}
+  constructor(private http: Http) { }
 
   public getContacts(pm_id, company, type?) {
     const headers = new Headers();
@@ -31,8 +31,7 @@ export class ContactsService {
       });
   }
 
-  public getSingleContact(pm_id, company, contactId)
-  {
+  public getSingleContact(pm_id, company, contactId) {
     const headers = new Headers();
     headers.append('property_manager_id', pm_id);
     headers.append('property_manager_company', company);
@@ -73,8 +72,41 @@ export class ContactsService {
       });
   }
 
-  public editContact(pm_id, contactData, type)
-  {
+  public getAddressSuggestion(address, city, zip) {
+    const data = { 'address': address, 'city': city, 'zip': zip };
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    const options = new RequestOptions({ 'headers': headers });
+    console.log(options);
+    return this.http
+      .post("https://15kcv4z18f.execute-api.us-east-1.amazonaws.com/dev/dashboard/utils/address", data, options)
+      .map(res => {
+        console.log(res.json());
+        return res.json();
+      })
+      .catch(error => {
+        return Observable.throw(error.message || error);
+      });
+  }
+
+  public getPhoneSuggestion(phone) {
+    const data = { 'phone': phone };
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    const options = new RequestOptions({ 'headers': headers });
+    console.log(options);
+    return this.http
+      .post("https://15kcv4z18f.execute-api.us-east-1.amazonaws.com/dev/dashboard/utils/phone", data, options)
+      .map(res => {
+        console.log(res.json());
+        return res.json();
+      })
+      .catch(error => {
+        return Observable.throw(error.message || error);
+      });
+  }
+
+  public editContact(pm_id, contactData, type) {
 
   }
 

@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { ContactsService } from '../../services/contacts.service';
 import { ModalComponent } from 'dsg-ng2-bs4-modal/ng2-bs4-modal';
+import { AsyncPhoneValidator } from './phoneValidation';
 import * as _ from 'lodash';
 import { Console } from '@angular/core/src/console';
 @Component({
@@ -43,6 +44,14 @@ export class ContactsComponent implements OnInit {
   modal: ModalComponent;
   public modalTitle = '';
   public modalBody = '';
+  public addressSuggestion = false;
+  public invalidAddress = false;
+  public addressComparisonHtml = [];
+  public suggestedAddress = {
+    address: '',
+    city: '',
+    zip: ''
+  };
 
   public editResidentData = {
     initials: '',
@@ -129,7 +138,7 @@ export class ContactsComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private spinnerService: Ng4LoadingSpinnerService,
-    private contacts: ContactsService,
+    private contacts: ContactsService
   ) { }
 
   // get diagnostic() { return JSON.stringify(this.newVendorData); }
@@ -298,13 +307,24 @@ export class ContactsComponent implements OnInit {
   }
 
 
-
+  /**
+ * Stores new contact on the database via HTTP POST by contacts.service
+ * @param none
+ * @returns void
+ */
   saveNewContact() {
     this.spinnerService.show();
     if (this.newContactType) {
       let contactData;
       switch (this.newContactType) {
         case 'tenant':
+          if (this.newResidentData.workPhone.length > 0) {
+            this.newResidentData.workPhone = '+1' + this.newResidentData.workPhone;
+          }
+          if (this.newResidentData.workPhone.length > 0) {
+            this.newResidentData.sms = '+1' + this.newResidentData.sms;
+          }
+          this.newResidentData.phone = '+1' + this.newResidentData.phone;
           contactData = this.newResidentData;
           break;
         case 'vendor':
@@ -319,9 +339,8 @@ export class ContactsComponent implements OnInit {
           break;
       }
       this.contacts.addContact(this.currentPropertyManager._id, this.currentCompany, contactData, this.newContactType).subscribe(data => {
-        console.log(data);
         this.modalAddContactResult(data.ok);
-        this.waitForPMData();
+        console.log(data);
       });
       this.spinnerService.hide();
     }
@@ -334,13 +353,67 @@ export class ContactsComponent implements OnInit {
  */
   onSubmit(form) {
     if (form.valid) {
-      console.log(this.newResidentData);
-      this.saveNewContact();
+      if (this.newContactType === 'tenant') {
+        this.addressSuggestion = true;
+        this.formatAddress();
+      }
     } else {
-      this.modalTitle = 'Missing required fields';
-      this.modalBody = 'Please fill all the fields marked as required';
-      this.modal.open();
+      this.modalShowMessage('MissingFields');
     }
+  }
+
+  /**
+  * Process the user decision about taking the address suggested byt the Smarty Streets API
+  * @param none
+  * @returns void
+  */
+  formatAddress() {
+    this.spinnerService.show();
+    this.contacts.getAddressSuggestion(
+      this.newResidentData.address,
+      this.newResidentData.city,
+      this.newResidentData.zip
+    ).subscribe(data => {
+      this.addressComparisonHtml = [];
+      if (data.length > 0) {
+        this.suggestedAddress = {
+          address: data[0].deliveryLine1,
+          city: data[0].components.cityName,
+          zip: data[0].components.zipCode
+        };
+        this.addressComparisonHtml.push(
+          '<strong>Address entered:</strong><br>',
+          this.newResidentData.address, ' ', this.newResidentData.city, ' ', this.newResidentData.zip,
+          '<hr><strong>Suggested:</strong><br>',
+          data[0].deliveryLine1, ' ', data[0].components.cityName, ' ', data[0].components.zipCode,
+        );
+        console.log(this.suggestedAddress);
+        console.log(this.addressComparisonHtml);
+        this.invalidAddress = false;
+      } else {
+        this.invalidAddress = true;
+      }
+      this.spinnerService.hide();
+      this.modalShowMessage('CorrectAddress');
+    });
+  }
+
+  /**
+  * Process the user decision about taking the address suggested byt the Smarty Streets API
+  * @param boolean false if the suggestion is declined, true if user accepts suggestion
+  * @returns void
+  */
+  processSuggestion(suggestionAccepted) {
+    if (suggestionAccepted) {
+      this.newResidentData.address = this.suggestedAddress.address;
+      this.newResidentData.city = this.suggestedAddress.city;
+      this.newResidentData.zip = this.suggestedAddress.zip;
+    }
+    console.log(this.newResidentData);
+    this.addressComparisonHtml = [];
+    this.modal.close();
+    this.saveNewContact();
+    this.addressSuggestion = false;
   }
 
   /**
@@ -349,14 +422,12 @@ export class ContactsComponent implements OnInit {
   * @returns void
   */
   modalAddContactResult(serviceResult) {
-    if (serviceResult) {
-      this.modalTitle = 'Contact Added';
-      this.modalBody = 'The contact information has been successfully stored.';
+    if (serviceResult === 1) {
+      this.modalShowMessage('ContactAdded');
     } else {
-      this.modalTitle = 'System Error';
-      this.modalBody = 'Oops! It looks like something went wrong on our side. Please try again. If the issue remains, send us a note at support@247jack.com';
+      this.modalShowMessage('SystemError');
     }
-    this.modal.open();
+    this.waitForPMData();
   }
 
   /**
@@ -410,19 +481,63 @@ export class ContactsComponent implements OnInit {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
+
+  /**
+  * Shows specific modal message from a given option
+  * @param string modal message to throw
+  * @returns void
+  */
+  modalShowMessage(messageType) {
+    switch (messageType) {
+      case 'ContactAdded': {
+        this.modalTitle = 'Contact Added';
+        this.modalBody = 'The contact information has been successfully stored.';
+        break;
+      }
+      case 'SystemError': {
+        this.modalTitle = 'System Error';
+        this.modalBody = "Oops! It looks like something went wrong on our side. Please try again. If the issue remains, send us a note at support@247jack.com";
+        break;
+      }
+      case 'ContactUpdated': {
+        this.modalTitle = 'Contact Updated';
+        this.modalBody = 'The contact information has been successfully stored.';
+        break;
+      }
+      case 'CorrectAddress': {
+        this.modalTitle = 'Correct Address';
+        this.modalBody = '';
+        // this.modalBody = this.addressComparisonHtml.join('');
+        break;
+      }
+      case 'MissingFields': {
+        this.modalTitle = 'Missing required fields';
+        this.modalBody = 'Oops! It looks like we missing some important information in the contact.';
+        break;
+      }
+      default: {
+        this.modalTitle = 'Oops!';
+        this.modalBody = 'Something went wrong on our end. Nothing terrible; however, you will need to enter the request information.';
+        break;
+      }
+    }
+    this.modal.open();
+  }
+
+
   cancelNewContact() {
     switch (this.newContactType) {
-      case "tenant":
+      case 'tenant':
         for (var key in this.newResidentData) {
           this.newResidentData[key] = '';
         }
         break;
-      case "vendor":
+      case 'vendor':
         for (var key in this.newVendorData) {
           this.newVendorData[key] = '';
         }
         break;
-      case "property_manager":
+      case 'property_manager':
         for (var key in this.newPMData) {
           this.newPMData[key] = '';
         }
@@ -431,17 +546,7 @@ export class ContactsComponent implements OnInit {
   }
 
   updateContact() {
-    this.modalTitle = 'Contact Updated';
-    this.modalBody = 'The contact information has been successfully stored.';
-    this.modal.open();
-    // Empty fields
-    // this.modalTitle = "Empty field"
-    // this.modalBody = "Oops! It looks like we missing some important information in the contact card"
-    // this.modal.open()
-    // System error
-    // this.modalTitle = "System Error"
-    // this.modalBody = "Oops! It looks like something went wrong on our side. Please try again. If the issue remains, send us a note at support@247jack.com"
-    // this.modal.open()
+    this.modalShowMessage('ContactUpdated');
   }
 
   cancelEditContact() {
@@ -464,9 +569,7 @@ export class ContactsComponent implements OnInit {
     }
   }
 
-  afterHidden(e) {
-    // console.log(e);
-  }
+  afterHidden(e) { }
 
   onUploadError(e) { }
 
