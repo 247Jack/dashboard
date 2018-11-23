@@ -325,17 +325,17 @@ export class WoComponent implements OnInit {
     })
   }
   public openModalDelete() {
-    this.modalTitle = "Delete Request";
-    this.modalBody = "Are you sure you want to delete this service request?";
+    this.modalTitle = "Cancel Request";
+    this.modalBody = "Are you sure you want to cancel this service request? (This action cannot be undone)";
     this.modalDelete.open()
   }
   public removeRequest() {
-    // this.ticket.deleteField(this.selectedRow._id, this.currentPropertyManager["_id"], this.currentCompany).subscribe(resultUpdate => {
-    //   this.loadTasks();
-    //   this.modalDelete.close()
-    //   this.modalShowMessage("DeleteTask");
-    //   document.getElementById("cancelEdit").click();
-    // })
+     this.ticket.deleteField(this.selectedRow._id, this.currentPropertyManager["_id"], this.currentCompany).subscribe(resultUpdate => {
+       this.loadTasks();
+       this.modalDelete.close()
+       this.modalShowMessage("DeleteTask");
+       document.getElementById("cancelEdit").click();
+     })
   }
   public modalShowMessage(messageType) {
     switch (messageType) {
@@ -344,8 +344,8 @@ export class WoComponent implements OnInit {
         this.modalBody = "Your select request has been updated. However, you need to notify the vendors about the change, if needed.";
         break;
       case "DeleteTask":
-        this.modalTitle = "Request Deleted!";
-        this.modalBody = "This request has been successfully deleted.";
+        this.modalTitle = "Request canceled!";
+        this.modalBody = "This request has been successfully canceled.";
         break;
       default: {
         this.modalTitle = 'Oops!';
