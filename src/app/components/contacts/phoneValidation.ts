@@ -36,6 +36,7 @@ export class AsyncPhoneValidator implements Validator {
                     console.log('invalid');
                 }
                 console.log(data);
+                this.contacts.setphoneSuggested(data.formattedPhone);
                 observer.complete();
             });
         });

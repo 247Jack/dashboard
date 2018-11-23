@@ -304,7 +304,6 @@ export class ContactsComponent implements OnInit {
     }, 100);
   }
 
-
   /**
  * Stores new contact on the database via HTTP POST by contacts.service
  * @param none
@@ -316,9 +315,12 @@ export class ContactsComponent implements OnInit {
       let contactData;
       switch (this.newContactType) {
         case 'tenant':
+          this.newResidentData.sms = this.contacts.getPhoneReturned();
+          this.newResidentData.phone = this.contacts.getPhoneReturned();
           contactData = this.newResidentData;
           break;
         case 'vendor':
+          this.newVendorData.phone = this.contacts.getPhoneReturned();
           this.newVendorData.name = this.newVendorData.vendorFirstName + ' ' + this.newVendorData.vendorLastName;
           contactData = this.newVendorData;
           break;
@@ -445,15 +447,7 @@ export class ContactsComponent implements OnInit {
     this.addressComparisonHtml = [];
     this.modal.close();
     this.addressSuggestion = false;
-    this.contacts.getPhoneSuggestion(this.newResidentData.phone).subscribe(data => {
-      if (data.errorMessage !== 'The given number is not valid') {
-        if (data.formattedPhone) {
-          this.newResidentData.phone = data.formattedPhone;
-          this.newResidentData.sms = data.formattedPhone;
-        }
-      }
-      this.saveNewContact();
-    });
+    this.saveNewContact();
   }
 
   /**

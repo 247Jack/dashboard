@@ -9,6 +9,7 @@ import { environment } from '../../environments/environment';
 @Injectable()
 export class ContactsService {
   constructor(private http: Http) { }
+  public phoneSuggested = '';
 
   public getContacts(pm_id, company, type?) {
     const headers = new Headers();
@@ -105,6 +106,9 @@ export class ContactsService {
         return Observable.throw(error.message || error);
       });
   }
+  
+  public getPhoneReturned() { return this.phoneSuggested; }
+  public setphoneSuggested(phoneSuggested) { this.phoneSuggested = phoneSuggested; }
 
   public editContact(pm_id, contactData, type) {
 
