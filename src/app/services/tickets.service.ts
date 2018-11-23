@@ -120,22 +120,23 @@ export class TicketsService {
         return Observable.throw(error.message || error);
       });
   }
-//   public deleteField(task_id , pm_id, company ) {
-//     const headers = new Headers();
-//     headers.append('property_manager_id', pm_id);
-//     headers.append('property_manager_company', company);
-//     const options = new RequestOptions({ 'headers': headers });
-//     return this.http
-//       .delete(
-//         `${environment.api_domain}/dashboard/tasks/${task_id}`,
-//         options
-//       )
-//       .map(res => {
-//         return res.json();
-//       })
-//       .catch(error => {
-//         window.location.reload();
-//         return Observable.throw(error.message || error);
-//       });
-//   }
+  public deleteField(task_id , pm_id, company ) {
+    const headers = new Headers();
+    headers.append('property_manager_id', pm_id);
+    headers.append('property_manager_company', company);
+    const options = new RequestOptions({ 'headers': headers });
+    return this.http
+      .patch(
+        `${environment.api_domain}/dashboard/tasks/${task_id}`,
+        {},
+        options
+      )
+      .map(res => {
+        return res.json();
+      })
+      .catch(error => {
+        window.location.reload();
+        return Observable.throw(error.message || error);
+      });
+  }
 }
