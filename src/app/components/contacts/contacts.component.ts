@@ -98,13 +98,11 @@ export class ContactsComponent implements OnInit {
     firstName: '',
     lastName: '',
     portfolio: '',
-    // unit_abbr_name: '', suspended
     service_threshold: '',
     address: '',
     address2: '',
     city: '',
     zip: '',
-    // endDate: '', suspended
     phone: '',
     homePhone: '',
     workPhone: '',
@@ -318,13 +316,6 @@ export class ContactsComponent implements OnInit {
       let contactData;
       switch (this.newContactType) {
         case 'tenant':
-          if (this.newResidentData.workPhone.length > 0) {
-            this.newResidentData.workPhone = '+1' + this.newResidentData.workPhone;
-          }
-          if (this.newResidentData.workPhone.length > 0) {
-            this.newResidentData.sms = '+1' + this.newResidentData.sms;
-          }
-          this.newResidentData.phone = '+1' + this.newResidentData.phone;
           contactData = this.newResidentData;
           break;
         case 'vendor':
@@ -339,10 +330,50 @@ export class ContactsComponent implements OnInit {
           break;
       }
       this.contacts.addContact(this.currentPropertyManager._id, this.currentCompany, contactData, this.newContactType).subscribe(data => {
+        this.resetContactData(this.newContactType);
         this.modalAddContactResult(data.ok);
-        console.log(data);
       });
       this.spinnerService.hide();
+    }
+  }
+
+  /**
+* After store new contact on DB thus method reset the new contact data
+* @param contactType contact data to reset
+* @returns void
+*/
+  resetContactData(contactType) {
+    if (contactType === 'tenant') {
+      this.newResidentData = {
+        firstName: '',
+        lastName: '',
+        portfolio: '',
+        service_threshold: '',
+        address: '',
+        address2: '',
+        city: '',
+        zip: '',
+        phone: '',
+        homePhone: '',
+        workPhone: '',
+        email: '',
+        alexa: '',
+        fb: '',
+        sms: '',
+        ghome: ''
+      };
+    } else if (contactType === 'vendor') {
+      this.newVendorData = {
+        jobType: '',
+        name: '',
+        vendorFirstName: '',
+        vendorLastName: '',
+        phone: '',
+        ext: '',
+        address: '',
+        email: '',
+        comments: ''
+      };
     }
   }
 
@@ -356,6 +387,8 @@ export class ContactsComponent implements OnInit {
       if (this.newContactType === 'tenant') {
         this.addressSuggestion = true;
         this.formatAddress();
+      } else if (this.newContactType === 'vendor') {
+        this.saveNewContact();
       }
     } else {
       this.modalShowMessage('MissingFields');
@@ -409,11 +442,18 @@ export class ContactsComponent implements OnInit {
       this.newResidentData.city = this.suggestedAddress.city;
       this.newResidentData.zip = this.suggestedAddress.zip;
     }
-    console.log(this.newResidentData);
     this.addressComparisonHtml = [];
     this.modal.close();
-    this.saveNewContact();
     this.addressSuggestion = false;
+    this.contacts.getPhoneSuggestion(this.newResidentData.phone).subscribe(data => {
+      if (data.errorMessage !== 'The given number is not valid') {
+        if (data.formattedPhone) {
+          this.newResidentData.phone = data.formattedPhone;
+          this.newResidentData.sms = data.formattedPhone;
+        }
+      }
+      this.saveNewContact();
+    });
   }
 
   /**
@@ -480,7 +520,6 @@ export class ContactsComponent implements OnInit {
   capitalize(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
-
 
   /**
   * Shows specific modal message from a given option

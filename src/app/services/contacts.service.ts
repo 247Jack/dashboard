@@ -1,10 +1,10 @@
-import { Injectable } from "@angular/core";
-import { Http, Headers, RequestOptions } from "@angular/http";
-import { Subject } from "rxjs/Subject";
-import { Observable } from "rxjs/Observable";
-import "rxjs/add/operator/map";
-import "rxjs/add/operator/catch";
-import { environment } from "../../environments/environment";
+import { Injectable } from '@angular/core';
+import { Http, Headers, RequestOptions } from '@angular/http';
+import { Subject } from 'rxjs/Subject';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class ContactsService {
@@ -16,7 +16,7 @@ export class ContactsService {
     headers.append('property_manager_company', company);
     const options = new RequestOptions({ 'headers': headers });
 
-    var selected_type = type ? `?type=${type}` : '';
+    const selected_type = type ? `?type=${type}` : '';
     return this.http
       .get(
         `${environment.api_domain}/dashboard/contacts${selected_type}`,
@@ -79,7 +79,7 @@ export class ContactsService {
     const options = new RequestOptions({ 'headers': headers });
     console.log(options);
     return this.http
-      .post("https://15kcv4z18f.execute-api.us-east-1.amazonaws.com/dev/dashboard/utils/address", data, options)
+      .post('https://15kcv4z18f.execute-api.us-east-1.amazonaws.com/dev/dashboard/utils/address', data, options)
       .map(res => {
         console.log(res.json());
         return res.json();
@@ -96,7 +96,7 @@ export class ContactsService {
     const options = new RequestOptions({ 'headers': headers });
     console.log(options);
     return this.http
-      .post("https://15kcv4z18f.execute-api.us-east-1.amazonaws.com/dev/dashboard/utils/phone", data, options)
+      .post('https://15kcv4z18f.execute-api.us-east-1.amazonaws.com/dev/dashboard/utils/phone', data, options)
       .map(res => {
         console.log(res.json());
         return res.json();

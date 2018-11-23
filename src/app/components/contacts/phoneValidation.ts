@@ -15,7 +15,7 @@ import { ContactsService } from '../../services/contacts.service';
 export class AsyncPhoneValidator implements Validator {
     constructor(private contacts: ContactsService) { }
 
-    validate(c: AbstractControl): Observable<{ [key: number]: any }> {
+    validate(c: AbstractControl): Observable<{ [key: string]: any }> {
         return this.validatePhoneObservable(c.value);
     }
 
@@ -23,13 +23,8 @@ export class AsyncPhoneValidator implements Validator {
         return new Observable(observer => {
             console.log(phone);
             this.contacts.getPhoneSuggestion(phone).subscribe(data => {
-                // console.log(data);
-                // console.log(data.formattedPhone);
-                // console.log(data.formattedPhone.includes(phone));
-
-                // observer.next(data.formattedPhone.includes(phone) ? null : { asyncInvalid: true });
                 if (data.errorMessage !== 'The given number is not valid') {
-                    if (data.formattedPhone.includes(phone)) {
+                    if (data.formattedPhone) {
                         observer.next(null);
                         console.log('valid');
                     } else {
@@ -43,9 +38,6 @@ export class AsyncPhoneValidator implements Validator {
                 console.log(data);
                 observer.complete();
             });
-
-            // observer.next(phone === 123 ? null : { asyncInvalid: true });
-         
         });
     }
 }
