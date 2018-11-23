@@ -389,7 +389,7 @@
                           <input type="text" class="form-control capitalized" id="firstName" name="firstName"
                             #firstName="ngModel" [(ngModel)]="newResidentData.firstName" (keyup)="updateInitials($event, 0)"
                             (change)="newResidentData.firstName=capitalize(newResidentData.firstName);" maxlength="100"
-                            required pattern="^[a-zA-Z]+$">
+                            required pattern="^[a-zA-Z ]*$">
                           <!-- <div *ngIf="formSubmited && (firstName.valid || name.pristine)" class="alert alert-danger">
                               Field Required
                             </div> -->
@@ -398,7 +398,7 @@
                           <label for="lastName">Last Name</label>
                           <input type="text" class="form-control capitalized" id="lastName" name="lastName" #lastName="ngModel"
                             [(ngModel)]="newResidentData.lastName" (keyup)='updateInitials($event, 1)' (change)="newResidentData.lastName=capitalize(newResidentData.lastName);"
-                            maxlength="100" required pattern="^[a-zA-Z]+$">
+                            maxlength="100" required pattern="^[a-zA-Z ]*$">
                         </div>
                         <div class="col-sm-12 form-group">
                           <label for="portfolio">Portfolio</label>
@@ -413,7 +413,7 @@
                           <label for="service_threshold">Service threshold</label>
                           <input type="number" class="form-control" id="service_threshold" name="service_threshold"
                             [(ngModel)]="newResidentData.service_threshold" #service_threshold="ngModel" required
-                            maxlength="100">
+                            maxlength="100" pattern="^[0-9\.]*$">
                         </div>
                         <div class="col-sm-12 form-group">
                           <label for="address">Address</label>
@@ -433,28 +433,37 @@
                         <div class="col-sm-6 form-group">
                           <label for="zip">ZIP</label>
                           <input type="text" class="form-control" id="zip" name="zip" [(ngModel)]="newResidentData.zip"
-                            #zip="ngModel" required (keypress)="onlyNumberKey($event)" maxlength="10">
+                            #zip="ngModel" required (keypress)="onlyNumberKey($event)" maxlength="10" mimlength="3"
+                            pattern="^[0-9]*$">
                         </div>
-                        <div class="col-sm-6 form-group">
+                        <!-- <div class="col-sm-6 form-group">
                           <label for="phone">Phone</label>
                           <input type="text" class="form-control" id="phone" name="phone" [(ngModel)]="newResidentData.phone"
-                            #phone="ngModel" required (keypress)="onlyNumberKey($event)" maxlength="11">
+                            #phone="ngModel" required (keypress)="onlyNumberKey($event)" maxlength="11"minlength="10">
+                        </div> -->
+                        <div class="col-sm-6 form-group">
+                          <label for="phone">SMS Phone Number</label>
+                          <input type="text" class="form-control" id="phone" name="phone" [(ngModel)]="newResidentData.phone"
+                            #phone="ngModel" pattern="^[0-9 \(\)\-\+]*$" maxlength="25" minlength="10" required
+                            asyncValidator>
+                          <!-- {{ json }}
+                          {{ phone.control.errors | json }} -->
                         </div>
                         <div class="col-sm-6 form-group">
                           <label for="workPhone">Work Phone</label>
                           <input type="text" class="form-control" id="workPhone" name="workPhone" [(ngModel)]="newResidentData.workPhone"
-                            #workPhone="ngModel" maxlength="20">
+                            #workPhone="ngModel" (keypress)="onlyNumberKey($event)" maxlength="10" minlength="10">
                         </div>
                         <div class="col-sm-12 form-group">
                           <label for="email">Email</label>
                           <input type="email" class="form-control" id="email" name="email" [(ngModel)]="newResidentData.email"
                             #email="ngModel" required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" maxlength="100">
                         </div>
-                        <div class="col-sm-12 form-group">
+                        <!-- <div class="col-sm-12 form-group">
                           <label for="sms">SMS number</label>
                           <input type="text" class="form-control" id="sms" name="sms" [(ngModel)]="newResidentData.sms"
-                            #sms="ngModel" (keypress)="onlyNumberKey($event)" maxlength="11">
-                        </div>
+                            #sms="ngModel" (keypress)="onlyNumberKey($event)" maxlength="10" minlength="10">
+                        </div> -->
                         <div class="col-sm-6 form-group">
                           <label for="alexa">Alexa ID</label>
                           <input type="text" class="form-control" id="alexa" name="alexa" [(ngModel)]="newResidentData.alexa"
@@ -477,17 +486,17 @@
                           <input type="text" class="form-control capitalized" id="vendorFirstName" name="vendorFirstName"
                             required [(ngModel)]="newVendorData.vendorFirstName" (change)="newVendorData.vendorFirstName=capitalize(newVendorData.vendorFirstName);"
                             #vendorFirstName="ngModel" (keyup)="updateInitials($event, 0)" maxlength="100" required
-                            pattern="^[a-zA-Z]+$">
+                            pattern="^[a-zA-Z ]*$">
                         </div>
                         <div class="col-sm-6 form-group">
                           <label for="vendorLastName">Last Name</label>
                           <input type="text" class="form-control capitalized" id="vendorLastName" name="vendorLastName"
                             (change)="newVendorData.vendorLastName=capitalize(newVendorData.vendorLastName);"
                             [(ngModel)]="newVendorData.vendorLastName" #vendorLastName="ngModel" (keyup)="updateInitials($event, 1)"
-                            maxlength="100" required pattern="^[a-zA-Z]+$">
+                            maxlength="100" required pattern="^[a-zA-Z ]*$">
                         </div>
                         <div class="col-sm-12 form-group">
-                          <label for="jobType">Job type</label>
+                          <label for="jobType">Service Description</label>
                           <input type="text" class="form-control capitalized" id="jobType" name="jobType" [(ngModel)]="newVendorData.jobType"
                             #jobType="ngModel" maxlength="100" required>
                         </div>
@@ -499,12 +508,13 @@
                         <div class="col-sm-6 form-group">
                           <label for="phone">Phone</label>
                           <input type="text" class="form-control" id="phone" name="phone" [(ngModel)]="newVendorData.phone"
-                            #phone="ngModel" required (keypress)="onlyNumberKey($event)" maxlength="11">
+                            #phone="ngModel" required pattern="^[0-9 \(\)\-\+]*$" maxlength="25" minlength="10"
+                            required asyncValidator>
                         </div>
                         <div class="col-sm-6 form-group">
                           <label for="ext">Ext</label>
-                          <input type="text" class="form-control" id="ext" name="ext" [(ngModel)]="newVendorData.ext" (keypress)="onlyNumberKey($event)"
-                            #ext="ngModel" maxlength="5">
+                          <input type="text" class="form-control" id="ext" name="ext" [(ngModel)]="newVendorData.ext"
+                            (keypress)="onlyNumberKey($event)" #ext="ngModel" maxlength="5">
                         </div>
                         <div class="col-sm-12 form-group">
                           <label for="email">Email</label>
@@ -543,7 +553,7 @@
                         Please select a contact type
                       </div>
                     </div>
-                    <div id="buttons">
+                    <div id="buttons" [@fadeInOut] *ngIf="newContactType.length > 0">
                       <button class="md-btn md-flat mb-2 text-primary" data-dismiss="modal" (click)="cancelNewContact()">CLOSE</button>
                       <button [disabled]="newResidentForm.form.invalid" class="md-btn md-raised mb-2 blue" type="submit">SAVE
                         CONTACT</button>
@@ -581,7 +591,6 @@
                       </div>
                     </div>
                   </div>
-
                 </div>
               </div>
             </div>
@@ -594,9 +603,15 @@
         </modal-header>
         <modal-body>
           {{modalBody}}
+          <div [innerHTML]="addressComparisonHtml.join('')"></div>
+          <span *ngIf="invalidAddress">Please provide a valid address</span>
         </modal-body>
         <modal-footer>
-          <button type="button" class="btn btn-primary" (click)="modal.close()">Close</button>
+          <button *ngIf="!addressSuggestion || invalidAddress" type="button" class="btn btn-primary" (click)="modal.close()">Close</button>
+          <button *ngIf="addressSuggestion && !invalidAddress" class="md-btn md-flat mb-2 text-primary" data-dismiss="modal"
+            (click)="modal.close()">Decline</button>
+          <button *ngIf="addressSuggestion && !invalidAddress" class="md-btn md-raised mb-2 blue" data-dismiss="modal"
+            (click)="processSuggestion(true)">Accept</button>
         </modal-footer>
       </modal>
     </div>

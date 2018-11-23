@@ -8,6 +8,7 @@ import { AngularMultiSelectModule } from "angular2-multiselect-dropdown/angular2
 import { NgxDatatableModule } from "@swimlane/ngx-datatable";
 import { Ng2SearchPipeModule } from "ng2-search-filter";
 
+import { AsyncPhoneValidator } from './components/contacts/phoneValidation';
 import { OktaAuthModule } from "@okta/okta-angular";
 import { DropzoneModule, DROPZONE_CONFIG, DropzoneConfigInterface } from "ngx-dropzone-wrapper";
 import { LocationStrategy, PathLocationStrategy } from "@angular/common";
@@ -110,6 +111,7 @@ export class RollbarErrorHandler implements ErrorHandler {
     CompanyComponent,
     BroadcastComponent,
     WoComponent,
+    AsyncPhoneValidator,
     ReadMoreDirective
   ],
   imports: [
