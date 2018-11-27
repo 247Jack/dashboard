@@ -4,7 +4,7 @@ import { AppRouting } from "./app.routes";
 import { HttpModule } from "@angular/http";
 import { ReactiveFormsModule } from "@angular/forms";
 import { AngularDateTimePickerModule } from "angular2-datetimepicker";
-import { AngularMultiSelectModule } from "angular2-multiselect-dropdown/angular2-multiselect-dropdown";
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
 import { NgxDatatableModule } from "@swimlane/ngx-datatable";
 import { Ng2SearchPipeModule } from "ng2-search-filter";
 
