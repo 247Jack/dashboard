@@ -234,10 +234,11 @@
     <div class="modal-dialog modal-right w-xl white b-l">
       <div class="d-flex flex-column h-100">
         <div class="scrollable scrollable-slider">
-          <button class="float-left btn btn-clean mt-3 ml-2 b-close" data-dismiss="modal" id="cancelEdit"
-            (click)="cancelEdit()">
+          <button class="float-left btn btn-clean mt-3 ml-2 b-close" data-dismiss="modal" id="cancelEdit" (click)="cancelEdit()">
             <i class="fa fa-close"></i>
           </button>
+          <button (click)="openModalDelete()" class="float-right md-btn md-flat mt-2 mr-2 text-danger"><i class="fa fa-trash-o"></i>
+            Remove Request</button>
           <div class="p-5 h-100" *ngIf="editStatus == true">
             <h5 class="text-center">
               <strong>
@@ -258,7 +259,9 @@
                         <strong>
                           <span>{{editDataRequest.tenantName}} </span>
                         </strong>
-                        <span>({{editDataRequest.tenantContact}})</span>
+                      </p>
+                      <p>
+                        <span>{{editDataRequest.tenantContact}}</span>
                       </p>
                       <p>
                         <span class="d-bloc">{{editDataRequest.tenantAddress.address}},
@@ -270,16 +273,23 @@
                         <strong>Portfolio:</strong> <span>{{editDataRequest.portfolio}}</span>
                       </p>
                       <p>
-                        <em>{{editDataRequest.taskDescription}}</em>
+                        <em #textContent class="content-issue" id="{{editDataRequest.tenantName}}">{{editDataRequest.taskDescription}}</em>
+                        <br>
+                        <a readMore [readMore-length]="144" [readMore-element]="textContent">
+                          <span class="less text-blue">View Less <i class="fa fa-angle-right" aria-hidden="true"></i></span>
+                          <span class="more text-blue">View More <i class="fa fa-angle-right" aria-hidden="true"></i></span>
+                        </a>
                       </p>
                       <p>
-                        <strong>Preferred date for service visit:</strong><span>{{editDataRequest.preferredDate |
-                          date:'medium'}}</span>
+                        <strong>Preferred date for service visit:</strong>
+                      </p>
+                      <p>
+                        <span>{{editDataRequest.preferredDate | date}}</span>
                       </p>
                     </div>
                   </div>
                   <div class="col-sm-5 px-0" *ngIf="newAddress?.length > 1">
-                    <img class="w-100 h-100" src="https://maps.googleapis.com/maps/api/staticmap?center={{this.newAddress}}&zoom=15&markers=color:red%7Clabel:C%7C{{editDataRequest.location.lng}},{{editDataRequest.location.lat}}&size=300x350&maptype=roadmap&key=AIzaSyALzEI922MxFSWMGPI4Kf5rGqk8C4jAqKI&output=embed">
+                    <img class="w-100 h-100" src="https://maps.googleapis.com/maps/api/staticmap?center={{this.newAddress}}&zoom=15&markers=color:red%7Clabel:C%7C{{editDataRequest.location.lng}},{{editDataRequest.location.lat}}&size=300x450&maptype=roadmap&key=AIzaSyALzEI922MxFSWMGPI4Kf5rGqk8C4jAqKI&output=embed">
                   </div>
                 </div>
               </div>
@@ -307,8 +317,8 @@
                             </div>
                             <div class="col-sm d-flex">
                               <span class="mr-3 ml-auto text-muted" *ngIf="item.requestAccepted == false && item.requestRejected == false">REQUEST
-                                SEND</span>
-                              <span class="mr-3 ml-auto text-muted" *ngIf="item.itemName">REQUEST SEND</span>
+                                SENT</span>
+                              <span class="mr-3 ml-auto text-muted" *ngIf="item.itemName">REQUEST SENT</span>
                               <span class="mr-3 ml-auto text-danger" *ngIf="item.requestRejected == true">DECLINED JOB</span>
                               <span class="mr-3 ml-auto text-success" *ngIf="item.requestAccepted == true">ACCEPTED JOB</span>
                               <a class="btn-clean b-close  ml-auto" [routerLink]="['/messages', item.id]">
@@ -317,10 +327,6 @@
                             </div>
                           </div>
                         </div>
-                      </div>
-                      <div class="col-sm-12 my-2 w-75">
-                        <angular2-multiselect class="" [data]="vendorList" [(ngModel)]="vendorSelectedItems" [settings]="vendorSettings">
-                        </angular2-multiselect>
                       </div>
                       <div class="col-sm-12 my-2" *ngIf="vendorSelectedItems">
                         <div *ngFor="let item of vendorSelectedItems">
@@ -333,7 +339,7 @@
                               <span class="ml-3" *ngIf="item.itemName">{{item.itemName}}</span>
                             </div>
                             <div class="col-sm d-flex">
-                              <span class="mr-3 ml-auto text-muted" *ngIf="item.itemName">REQUEST SEND</span>
+                              <span class="mr-3 ml-auto text-muted" *ngIf="item.itemName">REQUEST SENT</span>
                               <a class="btn-clean b-close  ml-auto" [routerLink]="['/messages', item.id]">
                                 <i class="fa  fa-15x fa-comments-o"></i>
                               </a>
@@ -342,7 +348,7 @@
                         </div>
                       </div>
                       <div class="col-sm-12">
-                        <small>Job Link: <a target="_blank" href="{{bitlyURL}}"> {{bitlyURL}}</a></small><button
+                        <small>Job Link: <a target="_blank" href="{{bitlyURL}}"> <u class="text-primary">{{bitlyURL}}</u></a></small><button
                           ngxClipboard class="btn btn-link" [cbContent]="bitlyURL">Copy</button>
                       </div>
                     </div>
@@ -422,13 +428,19 @@
               </div>
               <div class="col-sm-12">
                 <div class="row mx-0">
-                  <div class="col-5 px-0">
+                  <div class="col-7 my-3 px-0">
+                    <strong class="mb-2 d-flex">Status</strong>
                     <angular2-multiselect [data]="statusList" *ngIf="statusList" [(ngModel)]="statusSelectedItems"
                       [settings]="statusSettings">
                     </angular2-multiselect>
                   </div>
-                  <div class="col-7 px-0">
-                    <div class="input-group ml-5">
+                  <div class="col-7 my-3 px-0">
+                    <strong class="mb-2 d-flex">Vendor</strong>
+                    <angular2-multiselect class="" [data]="vendorList" [(ngModel)]="vendorSelectedItems" [settings]="vendorSettings">
+                    </angular2-multiselect>
+                  </div>
+                  <div class="col-7 my-3 px-0">
+                    <div class="input-group pr-5">
                       <span class="input-group-btn d-flex">
                         <span class="d-flex m-auto"><Strong>Total Cost:</Strong></span>
                       </span>
@@ -438,14 +450,9 @@
                       <button class="btn btn-link" (click)="status=!status">Change</button>
                     </div>
                   </div>
-                  <div class="col-sm-12 mb-2 px-0">
-                    <button (click)="openModalDelete()" class="d-block md-btn md-flat mt-2 text-primary"><i class="fa fa-trash-o"></i>
-                      Remove Request</button>
-                  </div>
-                  <div class="col-sm-12-mt-3">
-                    <button class="md-btn md-flat mb-2 text-primary" id="cancelE" data-dismiss="modal" (click)="cancelEdit()">CANCEL
-                    </button>
+                  <div class="col-sm-12 px-0 mt-3">
                     <button class="md-btn md-raised mb-2 blue" data-dismiss="modal" (click)="saveEdit()">SAVE CHANGES</button>
+                    <button class="md-btn md-flat mb-2 text-primary" id="cancelE" data-dismiss="modal" (click)="cancelEdit()">CANCEL</button>
                   </div>
                 </div>
               </div>

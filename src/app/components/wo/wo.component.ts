@@ -69,13 +69,14 @@ export class WoComponent implements OnInit {
   ) {
     this.vendorSettings = {
       singleSelection: false,
-      text: "+ Dispatch to more vendors…",
+      text: "Select",
       enableSearchFilter: true,
-      badgeShowLimit: 1
+      badgeShowLimit: 1,
+      position: "top"
     }
     this.statusSettings = {
       singleSelection: true,
-      text: "Edit status",
+      text: "Status",
       enableSearchFilter: false,
       badgeShowLimit: 1,
       position: "top"
@@ -83,15 +84,15 @@ export class WoComponent implements OnInit {
     this.statusList = [
       {
         id: "available",
-        itemName: "Dispatch"
+        itemName: "Dispatched"
       },
       {
         id: "checked",
-        itemName: "Checked"
+        itemName: "Assigned to vendor"
       },
       {
         id: "evaluating",
-        itemName: "Requires Attention"
+        itemName: "Requires attention"
       },
       {
         id: "approved",
@@ -99,11 +100,11 @@ export class WoComponent implements OnInit {
       },
       {
         id: "canceled",
-        itemName: "Denied"
+        itemName: "Declined"
       },
       {
         id: "finished",
-        itemName: "Finished"
+        itemName: "Completed"
       }
     ]
   }
@@ -191,11 +192,11 @@ export class WoComponent implements OnInit {
           this.statusList = [
             {
               id: "available",
-              itemName: "Dispatch"
+              itemName: "Dispatched"
             },
             {
               id: "finished",
-              itemName: "Closed"
+              itemName: "Completed"
             }
           ]
         }
@@ -203,11 +204,11 @@ export class WoComponent implements OnInit {
           this.statusList = [
             {
               id: "available",
-              itemName: "Dispatch"
+              itemName: "Dispatched"
             },
             {
               id: "checked",
-              itemName: "Checked"
+              itemName: "Assigned to vendor"
             },
             {
               id: "evaluating",
@@ -215,24 +216,24 @@ export class WoComponent implements OnInit {
             },
             {
               id: "finished",
-              itemName: "Finished"
+              itemName: "Completed"
             }
           ]
-        }
-        if (this.editDataRequest.requestStatus != "available" && this.editDataRequest.requestStatus != "checked") {
-          this.statusSettings = {
-            singleSelection: false,
-            text: this.editDataRequest.requestStatus,
-            enableSearchFilter: false,
-            badgeShowLimit: 1,
-            position: "top",
-            disabled: true
-          }
         }
         for (var i in this.statusList) {
           if (this.statusList[i].id == this.editDataRequest.requestStatus) {
             this.statusSelectedItems.push(this.statusList[i])
             break
+          }
+        }
+        if (this.editDataRequest.requestStatus != "available" && this.editDataRequest.requestStatus != "checked") {
+          this.statusSettings = {
+            singleSelection: true,
+            text: this.editDataRequest.requestStatus,
+            enableSearchFilter: false,
+            badgeShowLimit: 1,
+            position: "top",
+            disabled: true
           }
         }
         for (var f in this.editDataRequest.notes) {
@@ -252,6 +253,32 @@ export class WoComponent implements OnInit {
     this.newNote = "";
     this.vendorSelectedItems = []
     this.newNotes = [];
+    this.statusList = [
+      {
+        id: "available",
+        itemName: "Dispatched"
+      },
+      {
+        id: "checked",
+        itemName: "Assigned to vendor"
+      },
+      {
+        id: "evaluating",
+        itemName: "Requires attention"
+      },
+      {
+        id: "approved",
+        itemName: "Approved"
+      },
+      {
+        id: "canceled",
+        itemName: "Declined"
+      },
+      {
+        id: "finished",
+        itemName: "Completed"
+      }
+    ]
     document.getElementById("cancelEdit").click();
   }
   public deleteNewVendor(id) {
@@ -320,6 +347,32 @@ export class WoComponent implements OnInit {
       this.vendorSelectedItems = []
       this.statusSelectedItems = []
       this.updateData = {}
+      this.statusList = [
+        {
+          id: "available",
+          itemName: "Dispatched"
+        },
+        {
+          id: "checked",
+          itemName: "Assigned to vendor"
+        },
+        {
+          id: "evaluating",
+          itemName: "Requires attention"
+        },
+        {
+          id: "approved",
+          itemName: "Approved"
+        },
+        {
+          id: "canceled",
+          itemName: "Declined"
+        },
+        {
+          id: "finished",
+          itemName: "Completed"
+        }
+      ]
       document.getElementById("cancelEdit").click();
       this.loadTasks();
     })
