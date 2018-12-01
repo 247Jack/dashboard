@@ -5,8 +5,11 @@ import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { ContactsService } from '../../services/contacts.service';
 import { ModalComponent } from 'dsg-ng2-bs4-modal/ng2-bs4-modal';
 import { Tenant, Vendor, PropertyManager } from './contact-interfaces';
+import { IssuesService } from '../../services/issues.service';
 // import { AsyncPhoneValidator } from './phoneValidation';
 import * as _ from 'lodash';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+// import { timingSafeEqual } from 'crypto';
 // import { Console } from '@angular/core/src/console';
 @Component({
   selector: 'app-contacts',
@@ -59,6 +62,12 @@ export class ContactsComponent implements OnInit, OnDestroy {
   public enableEditFields = false;
   public originalContact = null;
 
+  // Variables to setup the services dropdown
+  public issuelist = [];
+  public issuesSelectedItems = [];
+  public issuesettings = {};
+  public getIssuesConn;
+
   // Variables for the Address Validation requiremnt
   public addressSuggestion = false;
   public invalidAddress = false;
@@ -83,6 +92,8 @@ export class ContactsComponent implements OnInit, OnDestroy {
   public modalBody = '';
 
   // 'Edit Contact' feature objects
+  public updateStoreProcessFinished = false;
+
   // public editResidentData: Tenant; // TODO
   public editResidentData = {
     initials: '',
@@ -91,6 +102,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
     portfolio: '',
     unit_abbr_name: '',
     service_threshold: '',
+    originalAddress: '',
     address: '',
     address2: '',
     city: '',
@@ -135,6 +147,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
     lastName: '',
     portfolio: '',
     service_threshold: '',
+    originalAddress: '',
     address: '',
     address2: '',
     city: '',
@@ -176,6 +189,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private spinnerService: Ng4LoadingSpinnerService,
     private contacts: ContactsService,
+    private issues: IssuesService,
     private router: Router
   ) { }
 
@@ -243,8 +257,52 @@ export class ContactsComponent implements OnInit, OnDestroy {
               });
           }
         });
+        this.setIssuesDropdown();
       }
     }, 100);
+  }
+
+  /**
+   * Get the selected items from the new vendor services and assign those to the this.editVendorData object
+   * @param none
+   * @returns arrayServices[]
+   */
+  setNewVendortServices() {
+    const arrayServices = [];
+    for (const i in this.issuesSelectedItems) {
+      if (this.issuesSelectedItems) {
+        arrayServices.push(this.issuesSelectedItems[i]);
+      }
+    }
+    return arrayServices;
+    // this.editVendorData.services = arrayServices;
+    // console.log(this.editVendorData.services);
+    // console.log(arrayServices);
+  }
+
+  /**
+   * This function maps the issues retrieved from db to dropdown
+   * @param none
+   * @returns void
+   */
+  setIssuesDropdown() {
+    this.issuesSelectedItems = this.editVendorData.services;
+    console.log(this.issuesSelectedItems);
+    this.bindIssuesSettings();
+    this.getIssuesConn = this.issues
+      .getIssues(this.currentPropertyManager['_id'])
+      .subscribe(listIssues => {
+        const issueListNav = [];
+        for (const i in listIssues) {
+          if (listIssues) {
+            issueListNav.push({
+              id: listIssues[i]._id,
+              itemName: listIssues[i].issueToken
+            });
+          }
+        }
+        this.issuelist = issueListNav;
+      });
   }
 
   /**
@@ -314,8 +372,8 @@ export class ContactsComponent implements OnInit, OnDestroy {
     this.currentContacts = this.currentContacts.concat(this.contactsTenants, this.contactsVendors, this.contactsPropertyManagers);
     this.dataLoaded = true;
     this.spinnerService.hide();
-    console.log('mapContactsObjectsByTypes: currentContacts');
-    console.log(this.currentContacts);
+    // console.log('mapContactsObjectsByTypes: currentContacts');
+    // console.log(this.currentContacts);
   }
 
   /**
@@ -356,6 +414,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
         this.editVendorData.phone = contactData.contactResult.vendorData.phone;
         this.editVendorData.email = contactData.contactResult.vendorData.email;
         this.editVendorData.comments = contactData.contactResult.vendorData.comments;
+        this.editVendorData.services = contactData.contactResult.vendorData.services;
         break;
       case 'property manager':
         this.editPMData.initials = contactData.contactResult.name[0] + contactData.contactResult.surname[0];
@@ -378,6 +437,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
    */
   setupContactForm(enableFields) {
     this.enableEditFields = enableFields;
+    this.setIssuesDropdown();
   }
 
   /**
@@ -395,6 +455,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
           newContactData = this.newResidentData;
           break;
         case 'vendor':
+          this.newVendorData.services = this.setNewVendortServices();
           this.contacts.currentPhoneSuggested.subscribe(phone => this.newVendorData.phone = phone);
           this.newVendorData.name = this.newVendorData.vendorFirstName + ' ' + this.newVendorData.vendorLastName;
           newContactData = this.newVendorData;
@@ -408,6 +469,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
       }
       this.contacts.addContact(this.currentPropertyManager._id, this.currentCompany, newContactData, this.newContactType).subscribe(data => {
         this.resetContactData(this.newContactType);
+        this.updateStoreProcessFinished = true;
         this.modalAddContactResult(data.ok);
         this.spinnerService.hide();
       });
@@ -426,6 +488,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
         lastName: '',
         portfolio: '',
         service_threshold: '',
+        originalAddress: '',
         address: '',
         address2: '',
         city: '',
@@ -468,7 +531,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
         this.addressSuggestion = true;
         this.formatAddress('edit');
       } else if (this.currentContactType === 'vendor') {
-        this.saveNewContact();
+        this.updateContact();
       }
     } else {
       this.modalShowMessage('MissingFields');
@@ -534,8 +597,8 @@ export class ContactsComponent implements OnInit, OnDestroy {
           '<hr><strong>Suggested:</strong><br>',
           data[0].deliveryLine1, ' ', data[0].components.cityName, ' ', data[0].components.zipCode,
         );
-        console.log(this.suggestedAddress);
-        console.log(this.addressComparisonHtml);
+        // console.log(this.suggestedAddress);
+        // console.log(this.addressComparisonHtml);
         this.invalidAddress = false;
       } else {
         this.invalidAddress = true;
@@ -554,10 +617,14 @@ export class ContactsComponent implements OnInit, OnDestroy {
     this.spinnerService.show();
     if (suggestionAccepted) {
       if (this.enableEditFields) {
+        this.editResidentData.originalAddress =
+          `${this.editResidentData.address} ${this.editResidentData.address2} ${this.editResidentData.city} ${this.editResidentData.zip}`;
         this.editResidentData.address = this.suggestedAddress.address;
         this.editResidentData.city = this.suggestedAddress.city;
         this.editResidentData.zip = this.suggestedAddress.zip;
       } else {
+        this.newResidentData.originalAddress =
+          `${this.newResidentData.address} ${this.newResidentData.address2} ${this.newResidentData.city} ${this.newResidentData.zip}`;
         this.newResidentData.address = this.suggestedAddress.address;
         this.newResidentData.city = this.suggestedAddress.city;
         this.newResidentData.zip = this.suggestedAddress.zip;
@@ -631,6 +698,8 @@ export class ContactsComponent implements OnInit, OnDestroy {
         setTimeout(() => document.getElementById('firstName').focus(), 0);
         break;
       case 'vendor':
+        this.enableEditFields = true;
+        this.bindIssuesSettings();
         setTimeout(() => document.getElementById('vendorFirstName').focus(), 0);
         break;
       default:
@@ -739,6 +808,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
           editContactData = this.editResidentData;
           break;
         case 'vendor':
+          this.newVendorData.services =  this.setNewVendortServices();
           this.contacts.currentPhoneSuggested.subscribe(phone => this.editVendorData.phone = phone);
           editContactData = this.editVendorData;
           break;
@@ -749,7 +819,8 @@ export class ContactsComponent implements OnInit, OnDestroy {
           editContactData = {};
           break;
       }
-      console.log(editContactData);
+      console.log('editContactData.services');
+      console.log(editContactData.services);
       this.contacts.editContact(
         editContactData,
         this.currentPropertyManager._id,
@@ -758,10 +829,10 @@ export class ContactsComponent implements OnInit, OnDestroy {
         this.currentContactType
       ).subscribe(data => {
         console.log(data);
+        this.updateStoreProcessFinished = true;
         this.modalUpdateContactResult(data.ok);
-        // this.resetContactData(this.newContactType);
+        this.spinnerService.hide();
       });
-      this.spinnerService.hide();
     }
   }
 
@@ -772,9 +843,27 @@ export class ContactsComponent implements OnInit, OnDestroy {
     */
   cancelEditContact() {
     this.enableEditFields = false;
-    // this.router.navigate(['/contacts']);
+    this.issuesSelectedItems = [];
+    this.bindIssuesSettings();
+    this.router.navigate(['/contacts'], { queryParamsHandling: 'merge' });
   }
 
+  /**
+    * Setup the properties for the multiselect
+    * @param none
+    * @returns void
+    */
+  bindIssuesSettings() {
+    this.issuesettings = {
+      singleSelection: false,
+      text: 'Select',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      enableSearchFilter: true,
+      badgeShowLimit: 20,
+      disabled: !this.enableEditFields
+    };
+  }
   afterHidden(e) { }
 
   onUploadError(e) { }

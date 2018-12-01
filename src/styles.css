@@ -673,7 +673,7 @@ app-contacts .d-flex {
 
 .new-contact-scroll {
   min-height: 420px;
-  max-height: 425px;
+  /* max-height: 425px; */
   overflow-y: auto;
   overflow-x: hidden;
 }

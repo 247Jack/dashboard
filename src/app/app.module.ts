@@ -2,9 +2,9 @@ import { BrowserModule } from "@angular/platform-browser";
 import { Injectable, Injector, InjectionToken, ErrorHandler, NgModule } from "@angular/core";
 import { AppRouting } from "./app.routes";
 import { HttpModule } from "@angular/http";
-import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { AngularDateTimePickerModule } from "angular2-datetimepicker";
 import { AngularMultiSelectModule } from "angular2-multiselect-dropdown/angular2-multiselect-dropdown";
+import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { NgxDatatableModule } from "@swimlane/ngx-datatable";
 import { Ng2SearchPipeModule } from "ng2-search-filter";
 
