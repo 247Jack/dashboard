@@ -1,12 +1,13 @@
-import { style, state, animate, transition, trigger } from '@angular/animations';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { style, animate, transition, trigger } from '@angular/animations';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { ContactsService } from '../../services/contacts.service';
 import { ModalComponent } from 'dsg-ng2-bs4-modal/ng2-bs4-modal';
-import { AsyncPhoneValidator } from './phoneValidation';
+import { Tenant, Vendor, PropertyManager } from './contact-interfaces';
+// import { AsyncPhoneValidator } from './phoneValidation';
 import * as _ from 'lodash';
-import { Console } from '@angular/core/src/console';
+// import { Console } from '@angular/core/src/console';
 @Component({
   selector: 'app-contacts',
   templateUrl: './contacts.component.html',
@@ -24,35 +25,65 @@ import { Console } from '@angular/core/src/console';
   ]
 })
 
-export class ContactsComponent implements OnInit {
+export class ContactsComponent implements OnInit, OnDestroy {
 
-  private getContactsConn;
-  public contactsUsers = [];
-  public contactsProviders = [];
+  // Session storage data: user data
+  public currentCompany;
+  public currentPropertyManager: any;
+
+  // Data from db: Users list
+  private getContactsConnection;
+  public contactsTenants = [];
+  public contactsVendors = [];
   public contactsPropertyManagers = [];
+
+  // The contacts inside this array are those displayed into the UI
   public currentContacts = [];
+
+  // Flag to watch when contacts data from db has been fully loaded on the above objects
+  public dataLoaded = false;
+
+  // Holds the data retrieved from getSingleContact() service for current contact selected
   public currentContact: any;
   public currentContactType = '';
-  public currentPropertyManager: any;
-  public currentCompany;
+
+  // Input from search contact textbox
   public filtercontacts = '';
+
+  // Variables for 'Add Contact' feature
   public newTenantInitials = [];
   public newVendorInitials = [];
   public newContactType = '';
-  public dataLoaded = false;
-  @ViewChild('modalmessage')
-  modal: ModalComponent;
-  public modalTitle = '';
-  public modalBody = '';
+
+  // Variables for 'Edit Contact' feature
+  public enableEditFields = false;
+  public originalContact = null;
+
+  // Variables for the Address Validation requiremnt
   public addressSuggestion = false;
   public invalidAddress = false;
   public addressComparisonHtml = [];
+
+  public addressToValidate = {
+    address: '',
+    city: '',
+    zip: ''
+  };
+
   public suggestedAddress = {
     address: '',
     city: '',
     zip: ''
   };
 
+  // Modal Variables
+  @ViewChild('modalmessage')
+  modal: ModalComponent;
+  public modalTitle = '';
+  public modalBody = '';
+
+  // 'Edit Contact' feature objects
+  // public editResidentData: Tenant; // TODO
   public editResidentData = {
     initials: '',
     firstName: '',
@@ -74,9 +105,11 @@ export class ContactsComponent implements OnInit {
     sms: ''
   };
 
+  // public editVendorData: Vendor; // TODO
   public editVendorData = {
     initials: '',
     jobType: '',
+    services: [],
     name: '',
     phone: '',
     ext: '',
@@ -85,6 +118,7 @@ export class ContactsComponent implements OnInit {
     comments: ''
   };
 
+  // public editPMData: PropertyManager; // TODO
   public editPMData = {
     initials: '',
     email: '',
@@ -94,6 +128,8 @@ export class ContactsComponent implements OnInit {
     address: ''
   };
 
+  // 'Add Contact' feature object
+  // public newResidentData: Tenant; // TODO
   public newResidentData = {
     firstName: '',
     lastName: '',
@@ -113,8 +149,10 @@ export class ContactsComponent implements OnInit {
     ghome: ''
   };
 
+  // public newVendorData: Vendor; // TODO
   public newVendorData = {
     jobType: '',
+    services: [],
     name: '',
     vendorFirstName: '',
     vendorLastName: '',
@@ -125,6 +163,7 @@ export class ContactsComponent implements OnInit {
     comments: ''
   };
 
+  // public newPMData: PropertyManager; // TODO
   public newPMData = {
     email: '',
     name: '',
@@ -136,7 +175,8 @@ export class ContactsComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private spinnerService: Ng4LoadingSpinnerService,
-    private contacts: ContactsService
+    private contacts: ContactsService,
+    private router: Router
   ) { }
 
   // get diagnostic() { return JSON.stringify(this.newVendorData); }
@@ -146,8 +186,8 @@ export class ContactsComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    if (this.getContactsConn) {
-      this.getContactsConn.unsubscribe();
+    if (this.getContactsConnection) {
+      this.getContactsConnection.unsubscribe();
     }
   }
 
@@ -159,63 +199,8 @@ export class ContactsComponent implements OnInit {
       if (this.currentPropertyManager && this.currentCompany) {
         clearInterval(waitPMData);
         this.currentPropertyManager = JSON.parse(sessionStorage.getItem('propertyManagerData'));
-        this.getContactsConn = this.contacts.getContacts(this.currentPropertyManager['_id'], this.currentCompany).subscribe(data => {
-          for (let i in data.usersResult) {
-            let userData = {
-              id: data.usersResult[i]._id,
-              contact_type: "user",
-              color: "tenant-color",
-              name: `${data.usersResult[i].firstName} ${
-                data.usersResult[i].lastName
-                }`,
-              initials: `${data.usersResult[i].firstName[0]}${
-                data.usersResult[i].lastName[0]
-                }`,
-              email: data.usersResult[i].contact.email,
-              mobile: data.usersResult[i].contact.email,
-              originalData: data.usersResult[i]
-            };
-            this.contactsUsers.push(userData);
-          }
-          for (let i in data.vendorsResult) {
-            let userData = {
-              id: data.vendorsResult[i]._id,
-              contact_type: "provider",
-              color: "vendor-color",
-              name: data.vendorsResult[i].vendorData.name,
-              initials:
-                (data.vendorsResult[i].vendorData.name && data.vendorsResult[i].vendorData.name.split(" ").length > 1)
-                  ? `${data.vendorsResult[i].vendorData.name.split(" ")[0][0]}${
-                  data.vendorsResult[i].vendorData.name.split(" ")[1][0]
-                  }`
-                  : '',
-              email: data.vendorsResult[i].vendorData.email,
-              mobile: data.vendorsResult[i].vendorData.mobile || '',
-              originalData: data.vendorsResult[i]
-            };
-            this.contactsProviders.push(userData);
-          }
-          for (let i in data.pManagersResult) {
-            let userData = {
-              id: data.pManagersResult[i]._id,
-              contact_type: "property manager",
-              color: "pms-color",
-              name: `${data.pManagersResult[i].name} ${
-                data.pManagersResult[i].surname
-                }`,
-              initials: `${data.pManagersResult[i].name[0]}${
-                data.pManagersResult[i].surname[0]
-                }`,
-              email: data.pManagersResult[i].email,
-              mobile: data.pManagersResult[i].contact.mobile,
-              originalData: data.pManagersResult[i]
-            };
-            this.contactsPropertyManagers.push(userData);
-          }
-          this.currentContacts = this.currentContacts.concat(this.contactsUsers, this.contactsProviders, this.contactsPropertyManagers);
-          this.dataLoaded = true;
-          this.spinnerService.hide();
-          // console.log(this.currentContacts);
+        this.getContactsConnection = this.contacts.getContacts(this.currentPropertyManager['_id'], this.currentCompany).subscribe(data => {
+          this.mapContactsObjectsByTypes(data);
         });
         this.activatedRoute.queryParams.subscribe(queryparams => {
           const waitForContacts = setInterval(() => {
@@ -223,11 +208,11 @@ export class ContactsComponent implements OnInit {
               this.currentContacts = [];
               switch (queryparams['typecontact']) {
                 case 'tenants':
-                  this.currentContacts = this.contactsUsers;
+                  this.currentContacts = this.contactsTenants;
                   // console.log(this.currentContacts);
                   break;
                 case 'providers':
-                  this.currentContacts = this.contactsProviders;
+                  this.currentContacts = this.contactsVendors;
                   // console.log(this.currentContacts);
                   break;
                 case 'managers':
@@ -235,11 +220,11 @@ export class ContactsComponent implements OnInit {
                   // console.log(this.currentContacts);
                   break;
                 case 'all':
-                  this.currentContacts = this.currentContacts.concat(this.contactsUsers, this.contactsProviders, this.contactsPropertyManagers);
+                  this.currentContacts = this.currentContacts.concat(this.contactsTenants, this.contactsVendors, this.contactsPropertyManagers);
                   // console.log(this.currentContacts);
                   break;
                 default:
-                  this.currentContacts = this.currentContacts.concat(this.contactsUsers, this.contactsProviders, this.contactsPropertyManagers);
+                  this.currentContacts = this.currentContacts.concat(this.contactsTenants, this.contactsVendors, this.contactsPropertyManagers);
                   break;
               }
               clearInterval(waitForContacts);
@@ -251,52 +236,10 @@ export class ContactsComponent implements OnInit {
           if (params.contactId) {
             document.getElementById('openModalButton').click();
             this.contacts.getSingleContact(this.currentPropertyManager._id, this.currentCompany, params.contactId)
-              .subscribe(contactData => {
-                // console.log(contactData.contactResult);
-                switch (contactData.contactType) {
-                  case 'tenant':
-                    this.editResidentData.initials = contactData.contactResult.firstName[0] + contactData.contactResult.lastName[0];
-                    this.editResidentData.firstName = contactData.contactResult.firstName;
-                    this.editResidentData.lastName = contactData.contactResult.lastName;
-                    this.editResidentData.portfolio = contactData.contactResult.portfolio;
-                    this.editResidentData.unit_abbr_name = contactData.contactResult.unit_abbr_name;
-                    this.editResidentData.service_threshold = contactData.contactResult.service_threshold;
-                    this.editResidentData.address = contactData.contactResult.building.address;
-                    this.editResidentData.address2 = contactData.contactResult.building.address2;
-                    this.editResidentData.city = contactData.contactResult.building.city;
-                    this.editResidentData.zip = contactData.contactResult.building.zip;
-                    this.editResidentData.phone = contactData.contactResult.contact.phone;
-                    this.editResidentData.workPhone = contactData.contactResult.contact.workPhone;
-                    this.editResidentData.email = contactData.contactResult.contact.email;
-                    this.editResidentData.alexa = contactData.contactResult.app.alexa;
-                    this.editResidentData.fb = contactData.contactResult.app.fb;
-                    this.editResidentData.sms = contactData.contactResult.app.sms;
-                    break;
-                  case 'vendor':
-                    this.editVendorData.initials =
-                      (contactData.contactResult.vendorData.name && contactData.contactResult.vendorData.name.split(' ').length > 1)
-                        ? `${contactData.contactResult.vendorData.name.split(' ')[0][0]}` +
-                        `${contactData.contactResult.vendorData.name.split(' ')[1][0]}`
-                        : '';
-                    this.editVendorData.name = contactData.contactResult.vendorData.name;
-                    this.editVendorData.address = contactData.contactResult.vendorData.address;
-                    this.editVendorData.jobType = contactData.contactResult.vendorData.jobType;
-                    this.editVendorData.phone = contactData.contactResult.vendorData.phone;
-                    this.editVendorData.email = contactData.contactResult.vendorData.email;
-                    this.editVendorData.comments = contactData.contactResult.vendorData.comments;
-                    break;
-                  case 'property manager':
-                    this.editPMData.initials = contactData.contactResult.name[0] + contactData.contactResult.surname[0];
-                    this.editPMData.name = contactData.contactResult.name;
-                    this.editPMData.surname = contactData.contactResult.surname;
-                    this.editPMData.email = contactData.contactResult.email;
-                    this.editPMData.phone = contactData.contactResult.phone;
-                    this.editPMData.address = contactData.contactResult.address;
-                    break;
-                  default:
-                }
-                this.currentContactType = contactData.contactType;
-                this.currentContact = contactData.contactResult;
+              .subscribe(contactDataFromDatabase => {
+                this.mapContactData(contactDataFromDatabase);
+                this.currentContactType = contactDataFromDatabase.contactType;
+                this.currentContact = contactDataFromDatabase.contactResult;
               });
           }
         });
@@ -305,45 +248,177 @@ export class ContactsComponent implements OnInit {
   }
 
   /**
- * Stores new contact on the database via HTTP POST by contacts.service
- * @param none
- * @returns void
- */
+   * This function maps the current contacts data to the corresponding arrays by contacts types
+   * @param contactData:any this is the contact data retrieved from db
+   * @returns void
+   */
+  mapContactsObjectsByTypes(data) {
+    for (const i in data.usersResult) {
+      if (data.usersResult) {
+        const userData = {
+          id: data.usersResult[i]._id,
+          contact_type: 'user',
+          color: 'tenant-color',
+          name: `${data.usersResult[i].firstName} ${
+            data.usersResult[i].lastName
+            }`,
+          initials: `${data.usersResult[i].firstName[0]}${
+            data.usersResult[i].lastName[0]
+            }`,
+          email: data.usersResult[i].contact.email,
+          mobile: data.usersResult[i].contact.email,
+          originalData: data.usersResult[i]
+        };
+        this.contactsTenants.push(userData);
+      }
+    }
+    for (const i in data.vendorsResult) {
+      if (data.vendorsResult) {
+        const userData = {
+          id: data.vendorsResult[i]._id,
+          contact_type: 'provider',
+          color: 'vendor-color',
+          name: data.vendorsResult[i].vendorData.name,
+          initials:
+            (data.vendorsResult[i].vendorData.name && data.vendorsResult[i].vendorData.name.split(' ').length > 1)
+              ? `${data.vendorsResult[i].vendorData.name.split(' ')[0][0]}${
+              data.vendorsResult[i].vendorData.name.split(' ')[1][0]
+              }`
+              : '',
+          email: data.vendorsResult[i].vendorData.email,
+          mobile: data.vendorsResult[i].vendorData.mobile || '',
+          originalData: data.vendorsResult[i]
+        };
+        this.contactsVendors.push(userData);
+      }
+    }
+    for (const i in data.pManagersResult) {
+      if (data.pManagersResult) {
+        const userData = {
+          id: data.pManagersResult[i]._id,
+          contact_type: 'property manager',
+          color: 'pms-color',
+          name: `${data.pManagersResult[i].name} ${
+            data.pManagersResult[i].surname
+            }`,
+          initials: `${data.pManagersResult[i].name[0]}${
+            data.pManagersResult[i].surname[0]
+            }`,
+          email: data.pManagersResult[i].email,
+          mobile: data.pManagersResult[i].contact.mobile,
+          originalData: data.pManagersResult[i]
+        };
+        this.contactsPropertyManagers.push(userData);
+      }
+    }
+    this.currentContacts = this.currentContacts.concat(this.contactsTenants, this.contactsVendors, this.contactsPropertyManagers);
+    this.dataLoaded = true;
+    this.spinnerService.hide();
+    console.log('mapContactsObjectsByTypes: currentContacts');
+    console.log(this.currentContacts);
+  }
+
+  /**
+   * This function map the current contact data with the properties of the db
+   * @param contactData:any this is the contact data retrieved from db
+   * @returns void
+   */
+  mapContactData(contactData) {
+    // console.log(contactData.contactResult);
+    switch (contactData.contactType) {
+      case 'tenant':
+        this.editResidentData.initials = contactData.contactResult.firstName[0] + contactData.contactResult.lastName[0];
+        this.editResidentData.firstName = contactData.contactResult.firstName;
+        this.editResidentData.lastName = contactData.contactResult.lastName;
+        this.editResidentData.portfolio = contactData.contactResult.portfolio;
+        this.editResidentData.unit_abbr_name = contactData.contactResult.unit_abbr_name;
+        this.editResidentData.service_threshold = contactData.contactResult.service_threshold;
+        this.editResidentData.address = contactData.contactResult.building.address;
+        this.editResidentData.address2 = contactData.contactResult.building.address2;
+        this.editResidentData.city = contactData.contactResult.building.city;
+        this.editResidentData.zip = contactData.contactResult.building.zip;
+        this.editResidentData.phone = contactData.contactResult.contact.phone;
+        this.editResidentData.workPhone = contactData.contactResult.contact.workPhone;
+        this.editResidentData.email = contactData.contactResult.contact.email;
+        this.editResidentData.alexa = contactData.contactResult.app.alexa;
+        this.editResidentData.fb = contactData.contactResult.app.fb;
+        this.editResidentData.sms = contactData.contactResult.app.sms;
+        break;
+      case 'vendor':
+        this.editVendorData.initials =
+          (contactData.contactResult.vendorData.name && contactData.contactResult.vendorData.name.split(' ').length > 1)
+            ? `${contactData.contactResult.vendorData.name.split(' ')[0][0]}` +
+            `${contactData.contactResult.vendorData.name.split(' ')[1][0]}`
+            : '';
+        this.editVendorData.name = contactData.contactResult.vendorData.name;
+        this.editVendorData.address = contactData.contactResult.vendorData.address;
+        this.editVendorData.jobType = contactData.contactResult.vendorData.jobType;
+        this.editVendorData.phone = contactData.contactResult.vendorData.phone;
+        this.editVendorData.email = contactData.contactResult.vendorData.email;
+        this.editVendorData.comments = contactData.contactResult.vendorData.comments;
+        break;
+      case 'property manager':
+        this.editPMData.initials = contactData.contactResult.name[0] + contactData.contactResult.surname[0];
+        this.editPMData.name = contactData.contactResult.name;
+        this.editPMData.surname = contactData.contactResult.surname;
+        this.editPMData.email = contactData.contactResult.email;
+        this.editPMData.phone = contactData.contactResult.phone;
+        this.editPMData.address = contactData.contactResult.address;
+        break;
+      default:
+    }
+    // console.log('currentContact:');
+    // console.log(this.currentContact);
+  }
+
+  /**
+   * Setup form to start editing user data
+   * @param enableFields:bool enable or disable form fields
+   * @returns void
+   */
+  setupContactForm(enableFields) {
+    this.enableEditFields = enableFields;
+  }
+
+  /**
+   * Stores new contact on the database via HTTP POST by contacts.service
+   * @param none
+   * @returns void
+   */
   saveNewContact() {
-    this.spinnerService.show();
     if (this.newContactType) {
-      let contactData;
+      let newContactData;
       switch (this.newContactType) {
         case 'tenant':
-          this.newResidentData.sms = this.contacts.getPhoneReturned();
-          this.newResidentData.phone = this.contacts.getPhoneReturned();
-          contactData = this.newResidentData;
+          this.contacts.currentPhoneSuggested.subscribe(phone => this.newResidentData.phone = phone);
+          this.newResidentData.sms = this.newResidentData.phone;
+          newContactData = this.newResidentData;
           break;
         case 'vendor':
-          this.newVendorData.phone = this.contacts.getPhoneReturned();
+          this.contacts.currentPhoneSuggested.subscribe(phone => this.newVendorData.phone = phone);
           this.newVendorData.name = this.newVendorData.vendorFirstName + ' ' + this.newVendorData.vendorLastName;
-          contactData = this.newVendorData;
+          newContactData = this.newVendorData;
           break;
         case 'property_manager':
-          contactData = this.newPMData;
+          newContactData = this.newPMData;
           break;
         default:
-          contactData = {};
+          newContactData = {};
           break;
       }
-      this.contacts.addContact(this.currentPropertyManager._id, this.currentCompany, contactData, this.newContactType).subscribe(data => {
+      this.contacts.addContact(this.currentPropertyManager._id, this.currentCompany, newContactData, this.newContactType).subscribe(data => {
         this.resetContactData(this.newContactType);
         this.modalAddContactResult(data.ok);
+        this.spinnerService.hide();
       });
-      this.spinnerService.hide();
     }
   }
 
   /**
-* After store new contact on DB thus method reset the new contact data
-* @param contactType contact data to reset
-* @returns void
-*/
+  * After store new contact on DB thus method reset the new contact data
+  * @param contactType contact data to reset
+  * @returns void
+  */
   resetContactData(contactType) {
     if (contactType === 'tenant') {
       this.newResidentData = {
@@ -364,9 +439,11 @@ export class ContactsComponent implements OnInit {
         sms: '',
         ghome: ''
       };
+      this.newTenantInitials = [];
     } else if (contactType === 'vendor') {
       this.newVendorData = {
         jobType: '',
+        services: [],
         name: '',
         vendorFirstName: '',
         vendorLastName: '',
@@ -376,20 +453,21 @@ export class ContactsComponent implements OnInit {
         email: '',
         comments: ''
       };
+      this.newVendorInitials = [];
     }
   }
 
   /**
- * This event handles the "Add Contact" form submit event
- * @param form Frontend Form object
- * @returns void
- */
-  onSubmit(form) {
+  * This event handles the "Edit Contact" form submit event
+  * @param form Frontend Form object
+  * @returns void
+  */
+  onSubmitEdit(form) {
     if (form.valid) {
-      if (this.newContactType === 'tenant') {
+      if (this.currentContactType === 'tenant') {
         this.addressSuggestion = true;
-        this.formatAddress();
-      } else if (this.newContactType === 'vendor') {
+        this.formatAddress('edit');
+      } else if (this.currentContactType === 'vendor') {
         this.saveNewContact();
       }
     } else {
@@ -398,17 +476,51 @@ export class ContactsComponent implements OnInit {
   }
 
   /**
-  * Process the user decision about taking the address suggested byt the Smarty Streets API
-  * @param none
-  * @returns void
-  */
-  formatAddress() {
+   * This event handles the "Add Contact" form submit event
+   * @param form Frontend Form object
+   * @returns void
+   */
+  onSubmit(form) {
+    if (form.valid) {
+      if (this.newContactType === 'tenant') {
+        this.addressSuggestion = true;
+        this.formatAddress('add');
+      } else if (this.newContactType === 'vendor') {
+        this.saveNewContact();
+      } else {
+        this.modalShowMessage('MissingFields');
+      }
+    } else {
+      this.modalShowMessage('MissingFields');
+    }
+  }
+
+  /**
+    * Process the user decision about taking the address suggested byt the Smarty Streets API
+    * @param processType:string type of process: add, edit, remove
+    * @returns void
+    */
+  formatAddress(processType) {
     this.spinnerService.show();
-    this.contacts.getAddressSuggestion(
-      this.newResidentData.address,
-      this.newResidentData.city,
-      this.newResidentData.zip
-    ).subscribe(data => {
+    switch (processType) {
+      case 'add':
+        this.addressToValidate = {
+          address: this.newResidentData.address,
+          city: this.newResidentData.city,
+          zip: this.newResidentData.zip
+        };
+        break;
+      case 'edit':
+        this.addressToValidate = {
+          address: this.editResidentData.address,
+          city: this.editResidentData.city,
+          zip: this.editResidentData.zip
+        };
+        break;
+      default:
+        break;
+    }
+    this.contacts.getAddressSuggestion(this.addressToValidate).subscribe(data => {
       this.addressComparisonHtml = [];
       if (data.length > 0) {
         this.suggestedAddress = {
@@ -418,7 +530,7 @@ export class ContactsComponent implements OnInit {
         };
         this.addressComparisonHtml.push(
           '<strong>Address entered:</strong><br>',
-          this.newResidentData.address, ' ', this.newResidentData.city, ' ', this.newResidentData.zip,
+          this.addressToValidate.address, ' ', this.addressToValidate.city, ' ', this.addressToValidate.zip,
           '<hr><strong>Suggested:</strong><br>',
           data[0].deliveryLine1, ' ', data[0].components.cityName, ' ', data[0].components.zipCode,
         );
@@ -434,42 +546,71 @@ export class ContactsComponent implements OnInit {
   }
 
   /**
-  * Process the user decision about taking the address suggested byt the Smarty Streets API
-  * @param boolean false if the suggestion is declined, true if user accepts suggestion
-  * @returns void
-  */
+    * Process the user decision about taking the address suggested byt the Smarty Streets API
+    * @param boolean false if the suggestion is declined, true if user accepts suggestion
+    * @returns void
+    */
   processSuggestion(suggestionAccepted) {
+    this.spinnerService.show();
     if (suggestionAccepted) {
-      this.newResidentData.address = this.suggestedAddress.address;
-      this.newResidentData.city = this.suggestedAddress.city;
-      this.newResidentData.zip = this.suggestedAddress.zip;
+      if (this.enableEditFields) {
+        this.editResidentData.address = this.suggestedAddress.address;
+        this.editResidentData.city = this.suggestedAddress.city;
+        this.editResidentData.zip = this.suggestedAddress.zip;
+      } else {
+        this.newResidentData.address = this.suggestedAddress.address;
+        this.newResidentData.city = this.suggestedAddress.city;
+        this.newResidentData.zip = this.suggestedAddress.zip;
+      }
     }
     this.addressComparisonHtml = [];
     this.modal.close();
     this.addressSuggestion = false;
-    this.saveNewContact();
+    this.enableEditFields ? this.updateContact() : this.saveNewContact();
   }
 
   /**
-  * Show success or error message if contact is added properly
-  * @param serviceResult This is the result of the "Ok" value of the Contacte Service
-  * @returns void
-  */
+    * Show success or error message if contact is added properly
+    * @param serviceResult This is the result of the "Ok" value of the Contacte Service
+    * @returns void
+    */
   modalAddContactResult(serviceResult) {
     if (serviceResult === 1) {
       this.modalShowMessage('ContactAdded');
     } else {
       this.modalShowMessage('SystemError');
     }
+    this.contactsTenants = [];
+    this.contactsVendors = [];
+    this.contactsPropertyManagers = [];
+    this.currentContacts = [];
     this.waitForPMData();
   }
 
   /**
-   * Updates the initials of the user avatar
-   * @param event Frontend event handler
-   * @param position First or Last name initial
-   * @returns void
-   */
+  * Show success or error message if contact is updated properly
+  * @param serviceResult This is the result of the "Ok" value of the Contacte Service
+  * @returns void
+  */
+  modalUpdateContactResult(serviceResult) {
+    if (serviceResult === 1) {
+      this.modalShowMessage('ContactUpdated');
+    } else {
+      this.modalShowMessage('SystemError');
+    }
+    this.contactsTenants = [];
+    this.contactsVendors = [];
+    this.contactsPropertyManagers = [];
+    this.currentContacts = [];
+    this.waitForPMData();
+  }
+
+  /**
+     * Updates the initials of the user avatar
+     * @param event Frontend event handler
+     * @param position First or Last name initial
+     * @returns void
+     */
   updateInitials(event, position) {
     const initial = event.target.value.toLowerCase().charAt(0).toUpperCase();
     if (this.newContactType === 'tenant') {
@@ -480,10 +621,10 @@ export class ContactsComponent implements OnInit {
   }
 
   /**
- * Set Focus on the first input field of the "Add Contact" form
- * @param contactType Contact Type
- * @returns void
- */
+   * Set Focus on the first input field of the "Add Contact" form
+   * @param contactType Contact Type
+   * @returns void
+   */
   onChange(contactType) {
     switch (contactType) {
       case 'tenant':
@@ -498,28 +639,28 @@ export class ContactsComponent implements OnInit {
   }
 
   /**
-  * Prevent non numeric chars on input field
-  * @param event Input KeyPress event object
-  * @returns void
-  */
+    * Prevent non numeric chars on input field
+    * @param event Input KeyPress event object
+    * @returns void
+    */
   onlyNumberKey(event) {
     return (event.charCode === 8 || event.charCode === 0) ? null : event.charCode >= 48 && event.charCode <= 57;
   }
 
   /**
-  * Capitalize first and last Name
-  * @param string value to capitalize
-  * @returns capitalized string
-  */
+    * Capitalize first and last Name
+    * @param string value to capitalize
+    * @returns capitalized string
+    */
   capitalize(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
   /**
-  * Shows specific modal message from a given option
-  * @param string modal message to throw
-  * @returns void
-  */
+    * Shows specific modal message from a given option
+    * @param string modal message to throw
+    * @returns void
+    */
   modalShowMessage(messageType) {
     switch (messageType) {
       case 'ContactAdded': {
@@ -557,7 +698,11 @@ export class ContactsComponent implements OnInit {
     this.modal.open();
   }
 
-
+  /**
+      * Cancel ad close the new contact form
+      * @param none
+      * @returns void
+      */
   cancelNewContact() {
     switch (this.newContactType) {
       case 'tenant':
@@ -578,28 +723,56 @@ export class ContactsComponent implements OnInit {
     }
   }
 
+  /**
+    * Cancel ad close the edit contact form
+    * @param none
+    * @returns void
+    */
   updateContact() {
-    this.modalShowMessage('ContactUpdated');
+    this.spinnerService.show();
+    if (this.currentContact) {
+      let editContactData;
+      switch (this.currentContactType) {
+        case 'tenant':
+          this.contacts.currentPhoneSuggested.subscribe(phone => this.editResidentData.phone = phone);
+          this.editResidentData.sms = this.editResidentData.phone;
+          editContactData = this.editResidentData;
+          break;
+        case 'vendor':
+          this.contacts.currentPhoneSuggested.subscribe(phone => this.editVendorData.phone = phone);
+          editContactData = this.editVendorData;
+          break;
+        case 'property_manager':
+          editContactData = this.editPMData;
+          break;
+        default:
+          editContactData = {};
+          break;
+      }
+      console.log(editContactData);
+      this.contacts.editContact(
+        editContactData,
+        this.currentPropertyManager._id,
+        this.currentCompany,
+        this.currentContact._id,
+        this.currentContactType
+      ).subscribe(data => {
+        console.log(data);
+        this.modalUpdateContactResult(data.ok);
+        // this.resetContactData(this.newContactType);
+      });
+      this.spinnerService.hide();
+    }
   }
 
+  /**
+    * Cancel ad close the edit contact form
+    * @param none
+    * @returns void
+    */
   cancelEditContact() {
-    switch (this.currentContactType) {
-      case 'tenant':
-        for (var key in this.editResidentData) {
-          this.editResidentData[key] = '';
-        }
-        break;
-      case 'vendor':
-        for (var key in this.editVendorData) {
-          this.editVendorData[key] = '';
-        }
-        break;
-      case 'property manager':
-        for (var key in this.editPMData) {
-          this.editPMData[key] = '';
-        }
-        break;
-    }
+    this.enableEditFields = false;
+    // this.router.navigate(['/contacts']);
   }
 
   afterHidden(e) { }
@@ -610,3 +783,5 @@ export class ContactsComponent implements OnInit {
 
 
 }
+
+

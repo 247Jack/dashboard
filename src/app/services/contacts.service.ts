@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import { environment } from '../../environments/environment';
@@ -9,7 +10,21 @@ import { environment } from '../../environments/environment';
 @Injectable()
 export class ContactsService {
   constructor(private http: Http) { }
-  public phoneSuggested = '';
+  public originalContactData = null;
+  public phoneSuggested = new BehaviorSubject<string>('');
+
+  // Phone E.164 standardizeD returnEd by the 'phone API'  GLobal Variable
+  currentPhoneSuggested = this.phoneSuggested.asObservable();
+  changePhone(phone: string) {
+    this.phoneSuggested.next(phone);
+  }
+
+  // GLobal Current Contact Data
+  public getCurrentContactData() { return this.originalContactData; }
+  public setCurrentContactData(originalContactData) {
+    this.originalContactData = null;
+    this.originalContactData = originalContactData;
+  }
 
   public getContacts(pm_id, company, type?) {
     const headers = new Headers();
@@ -24,6 +39,7 @@ export class ContactsService {
         options
       )
       .map(res => {
+        console.log(res.json());
         return res.json();
       })
       .catch(error => {
@@ -73,8 +89,8 @@ export class ContactsService {
       });
   }
 
-  public getAddressSuggestion(address, city, zip) {
-    const data = { 'address': address, 'city': city, 'zip': zip };
+  public getAddressSuggestion(addressToValidate) {
+    const data = { 'address': addressToValidate.address, 'city': addressToValidate.city, 'zip': addressToValidate.zip };
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     const options = new RequestOptions({ 'headers': headers });
@@ -106,12 +122,67 @@ export class ContactsService {
         return Observable.throw(error.message || error);
       });
   }
-  
-  public getPhoneReturned() { return this.phoneSuggested; }
-  public setphoneSuggested(phoneSuggested) { this.phoneSuggested = phoneSuggested; }
 
-  public editContact(pm_id, contactData, type) {
-
+  /**
+  * POST the updated data of a specific contact
+  * @param enableFields:bool enable or disable form fields
+  * @returns void
+  */
+  public editContact(contactData, pm_id, currentCompany, contactId, type): Observable<any> {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('property_manager_id', pm_id);
+    headers.append('property_manager_company', currentCompany);
+    const options = new RequestOptions({ 'headers': headers });
+    console.log(contactData);
+    return this.http
+      .post(
+        `${environment.api_domain}/dashboard/contacts/${contactId}?user_type=${type}`,
+        contactData,
+        options
+      )
+      .map(res => {
+        console.log('response');
+        console.log(res.json());
+        return res.json();
+      })
+      .catch(error => {
+        console.log(error);
+        return Observable.throw(error.message || error);
+      });
   }
-
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // contactData = {
+    //   firstName: 'Jorge',
+    //   lastName: 'Negrete',
+    //   address: 'nowhere 12312',
+    //   address2: '#1213',
+    //   city: 'Somewhere',
+    //   zip: '48752',
+    //   phone: '559876543214',
+    //   homePhone: '1234567891',
+    //   workPhone: '1234567891',
+    //   email: 'asdqqwd@hotmasdfsd.com'
+    // };
+    // pm_id = '5b75efd93a75a83b702db61a';
+    // currentCompany = 'Grand Residences Demo';
+    // contactId = '5bac9c82ac701e2ac012d540';
+    // type = 'tenant';

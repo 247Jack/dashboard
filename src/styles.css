@@ -77,6 +77,17 @@ app-home #content-main {
   line-height: 1.625;
 }
 
+.stack-right {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.text-centered {
+  align-content: center;
+  text-align: center;
+  align-items: center;
+}
+
 /* .scrollable.hover, .scrollable.hover, .scrollable.hover:hover {
   overflow-y: scroll;
 } */
