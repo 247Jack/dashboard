@@ -82,6 +82,17 @@ app-home #content-main {
   line-height: 1.625;
 }
 
+.stack-right {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.text-centered {
+  align-content: center;
+  text-align: center;
+  align-items: center;
+}
+
 /* .scrollable.hover, .scrollable.hover, .scrollable.hover:hover {
   overflow-y: scroll;
 } */
@@ -667,7 +678,7 @@ app-contacts .d-flex {
 
 .new-contact-scroll {
   min-height: 420px;
-  max-height: 425px;
+  /* max-height: 425px; */
   overflow-y: auto;
   overflow-x: hidden;
 }
