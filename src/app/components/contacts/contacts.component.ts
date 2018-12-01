@@ -633,6 +633,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
     this.addressComparisonHtml = [];
     this.modal.close();
     this.addressSuggestion = false;
+    this.updateStoreProcessFinished = false;
     this.enableEditFields ? this.updateContact() : this.saveNewContact();
   }
 
@@ -808,7 +809,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
           editContactData = this.editResidentData;
           break;
         case 'vendor':
-          this.newVendorData.services =  this.setNewVendortServices();
+          this.editVendorData.services =  this.setNewVendortServices();
           this.contacts.currentPhoneSuggested.subscribe(phone => this.editVendorData.phone = phone);
           editContactData = this.editVendorData;
           break;
