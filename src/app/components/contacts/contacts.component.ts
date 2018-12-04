@@ -325,7 +325,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
             data.usersResult[i].lastName[0]
             }`,
           email: data.usersResult[i].contact.email,
-          mobile: data.usersResult[i].contact.email,
+          mobile: data.usersResult[i].app.sms,
           originalData: data.usersResult[i]
         };
         this.contactsTenants.push(userData);
@@ -345,7 +345,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
               }`
               : '',
           email: data.vendorsResult[i].vendorData.email,
-          mobile: data.vendorsResult[i].vendorData.mobile || '',
+          mobile: data.vendorsResult[i].vendorData.phone || data.vendorsResult[i].vendorData.mobile,
           originalData: data.vendorsResult[i]
         };
         this.contactsVendors.push(userData);
