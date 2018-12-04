@@ -114,6 +114,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
     email: '',
     alexa: '',
     fb: '',
+    ghome: '',
     sms: ''
   };
 
@@ -399,6 +400,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
         this.editResidentData.workPhone = contactData.contactResult.contact.workPhone;
         this.editResidentData.email = contactData.contactResult.contact.email;
         this.editResidentData.alexa = contactData.contactResult.app.alexa;
+        this.editResidentData.ghome = contactData.contactResult.app.ghome;
         this.editResidentData.fb = contactData.contactResult.app.fb;
         this.editResidentData.sms = contactData.contactResult.app.sms;
         break;
