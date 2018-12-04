@@ -23,17 +23,22 @@ export class AsyncPhoneValidator implements Validator {
         return new Observable(observer => {
             console.log(phone);
             this.contacts.getPhoneSuggestion(phone).subscribe(data => {
-                if (data.errorMessage !== 'The given number is not valid') {
-                    if (data.formattedPhone) {
-                        observer.next(null);
-                        console.log('valid');
+                if (phone.length !== 0) {
+                    if (data.errorMessage !== 'The given number is not valid') {
+                        if (data.formattedPhone) {
+                            observer.next(null);
+                            console.log('valid');
+                        } else {
+                            observer.next({ asyncInvalid: true });
+                            console.log('invalid');
+                        }
                     } else {
                         observer.next({ asyncInvalid: true });
                         console.log('invalid');
                     }
                 } else {
-                    observer.next({ asyncInvalid: true });
-                    console.log('invalid');
+                    observer.next(null);
+                    console.log('valid');
                 }
                 console.log(data);
                 this.contacts.changePhone(data.formattedPhone);

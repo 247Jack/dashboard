@@ -445,20 +445,24 @@ export class ContactsComponent implements OnInit, OnDestroy {
    * @param none
    * @returns void
    */
-  saveNewContact() {
+  async saveNewContact() {
     if (this.newContactType) {
       let newContactData;
       switch (this.newContactType) {
         case 'tenant':
-          this.contacts.currentPhoneSuggested.subscribe(phone => this.newResidentData.phone = phone);
-          this.newResidentData.sms = this.newResidentData.phone;
+        await this.contacts.currentPhoneSuggested.subscribe(phone => {
+          this.newResidentData.phone = phone;
+          this.newResidentData.sms = phone;
           newContactData = this.newResidentData;
+        });
           break;
         case 'vendor':
           this.newVendorData.services = this.setNewVendortServices();
-          this.contacts.currentPhoneSuggested.subscribe(phone => this.newVendorData.phone = phone);
           this.newVendorData.name = this.newVendorData.vendorFirstName + ' ' + this.newVendorData.vendorLastName;
-          newContactData = this.newVendorData;
+          await this.contacts.currentPhoneSuggested.subscribe(phone => {
+            this.newVendorData.phone = phone;
+            newContactData = this.newVendorData;
+          });
           break;
         case 'property_manager':
           newContactData = this.newPMData;
@@ -798,20 +802,24 @@ export class ContactsComponent implements OnInit, OnDestroy {
     * @param none
     * @returns void
     */
-  updateContact() {
+  async updateContact() {
     this.spinnerService.show();
     if (this.currentContact) {
       let editContactData;
       switch (this.currentContactType) {
         case 'tenant':
-          this.contacts.currentPhoneSuggested.subscribe(phone => this.editResidentData.phone = phone);
-          this.editResidentData.sms = this.editResidentData.phone;
-          editContactData = this.editResidentData;
+          await this.contacts.currentPhoneSuggested.subscribe(phone => {
+            this.editResidentData.phone = phone;
+            this.editResidentData.sms = phone;
+            editContactData = this.editResidentData;
+          });
           break;
         case 'vendor':
-          this.editVendorData.services =  this.setNewVendortServices();
-          this.contacts.currentPhoneSuggested.subscribe(phone => this.editVendorData.phone = phone);
-          editContactData = this.editVendorData;
+          this.editVendorData.services = this.setNewVendortServices();
+          await this.contacts.currentPhoneSuggested.subscribe(phone => {
+            this.editVendorData.phone = phone;
+            editContactData = this.editVendorData;
+          });
           break;
         case 'property_manager':
           editContactData = this.editPMData;
