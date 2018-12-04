@@ -274,9 +274,15 @@
                         <!-- <div class="col-sm-6 form-group">
                           <label for="phone">Phone</label>
                           <input type="text" class="form-control" id="phone" name="phone" [(ngModel)]="editResidentData.phone"
-                            #phone="ngModel" required (keypress)="onlyNumberKey($event)" maxlength="11"minlength="10">
+                            #phone="ngModel" required (keypress)="onlyyNumberKey($event)" maxlength="11"minlength="10">
                         </div> -->
-                        <div class="col-sm-6 form-group">
+                        <div class="col-sm-12 form-group">
+                          <label for="email">Email</label>
+                          <input [(ngModel)]="editResidentData.email" #email="ngModel" id="email" name="email" type="email"
+                            class="form-control" maxlength="100" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                            [disabled]="!enableEditFields">
+                        </div>
+                        <div class="col-sm-12 form-group">
                           <label for="phone">SMS Phone Number</label>
                           <input [(ngModel)]="editResidentData.phone" #phone="ngModel" id="phone" name="phone" type="text"
                             class="form-control" maxlength="25" minlength="10" required pattern="^[0-9 \(\)\-\+]*$"
@@ -284,17 +290,11 @@
                           <!-- {{ json }}
                           {{ phone.control.errors | json }} -->
                         </div>
-                        <div class="col-sm-6 form-group">
+                        <div class="col-sm-12 form-group">
                           <label for="workPhone">Work Phone</label>
                           <input [(ngModel)]="editResidentData.workPhone" #workPhone="ngModel" id="workPhone" name="workPhone"
                             type="text" class="form-control" (keypress)="onlyNumberKey($event)" maxlength="10"
                             minlength="10" [disabled]="!enableEditFields">
-                        </div>
-                        <div class="col-sm-12 form-group">
-                          <label for="email">Email</label>
-                          <input [(ngModel)]="editResidentData.email" #email="ngModel" id="email" name="email" type="email"
-                            class="form-control" required maxlength="100" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
-                            [disabled]="!enableEditFields">
                         </div>
                         <!-- <div class="col-sm-12 form-group">
                           <label for="sms">SMS number</label>
@@ -339,11 +339,11 @@
                             [(ngModel)]="editVendorData.vendorLastName" #vendorLastName="ngModel" (keyup)="updateInitials($event, 1)"
                             maxlength="100" required pattern="^[a-zA-Z ]*$" [disabled]="!enableEditFields">
                         </div> -->
-                        <div class="col-sm-12 form-group">
-                          <label for="jobType">Service Description</label>
+                        <!-- <div class="col-sm-12 form-group">
+                          <label for="jobType">Company Name</label>
                           <input type="text" class="form-control capitalized" id="jobType" name="jobType" [(ngModel)]="editVendorData.jobType"
                             #jobType="ngModel" maxlength="100" required [disabled]="!enableEditFields">
-                        </div>
+                        </div> -->
                         <div class="col-sm-12 form-group">
                           <label for="services">Services</label>
                           <angular2-multiselect name="services" id="services" [data]="issuelist" [(ngModel)]="issuesSelectedItems"
@@ -356,21 +356,21 @@
                           <input type="text" class="form-control" id="Address" name="Address" [(ngModel)]="editVendorData.address"
                             #address="ngModel" maxlength="500" [disabled]="!enableEditFields">
                         </div>
-                        <div class="col-sm-6 form-group">
-                          <label for="phone">Phone</label>
+                        <div class="col-sm-12 form-group">
+                          <label for="phone">Mobile</label>
                           <input type="text" class="form-control" id="phone" name="phone" [(ngModel)]="editVendorData.phone"
-                            #phone="ngModel" required pattern="^[0-9 \(\)\-\+]*$" maxlength="25" minlength="10"
-                            required asyncValidator [disabled]="!enableEditFields">
+                            #phone="ngModel" pattern="^[0-9 \(\)\-\+]*$" maxlength="25" minlength="10"
+                            asyncValidator [disabled]="!enableEditFields" [required]='!editVendorData.email' >
                         </div>
-                        <div class="col-sm-6 form-group">
+                        <!-- <div class="col-sm-6 form-group">
                           <label for="ext">Ext</label>
                           <input type="text" class="form-control" id="ext" name="ext" [(ngModel)]="editVendorData.ext"
                             (keypress)="onlyNumberKey($event)" #ext="ngModel" maxlength="5" [disabled]="!enableEditFields">
-                        </div>
+                        </div> -->
                         <div class="col-sm-12 form-group">
                           <label for="email">Email</label>
                           <input type="email" class="form-control" id="email" name="email" [(ngModel)]="editVendorData.email"
-                            #email="ngModel" required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" maxlength="100"
+                            #email="ngModel"  [required]='!editVendorData.phone' pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" maxlength="100"
                             [disabled]="!enableEditFields">
                         </div>
                         <div class="col-sm-12 form-group">
@@ -537,24 +537,23 @@
                           <input type="text" class="form-control" id="phone" name="phone" [(ngModel)]="newResidentData.phone"
                             #phone="ngModel" required (keypress)="onlyNumberKey($event)" maxlength="11"minlength="10">
                         </div> -->
-                          <div class="col-sm-6 form-group">
+                        <div class="col-sm-12 form-group">
+                          <label for="email">Email</label>
+                          <input type="email" class="form-control" id="email" name="email" [(ngModel)]="newResidentData.email"
+                            #email="ngModel" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                            maxlength="100" >
+                        </div>
+                          <div class="col-sm-12 form-group">
                             <label for="phone">SMS Phone Number</label>
                             <input type="text" class="form-control" id="phone" name="phone" [(ngModel)]="newResidentData.phone"
                               #phone="ngModel" pattern="^[0-9 \(\)\-\+]*$" maxlength="25" minlength="10" required
                               asyncValidator>
-                            <!-- {{ json }}
-                          {{ phone.control.errors | json }} -->
+                            <!-- {{ json }} {{ phone.control.errors | json }} -->
                           </div>
-                          <div class="col-sm-6 form-group">
+                          <div class="col-sm-12 form-group">
                             <label for="workPhone">Work Phone</label>
                             <input type="text" class="form-control" id="workPhone" name="workPhone" [(ngModel)]="newResidentData.workPhone"
                               #workPhone="ngModel" (keypress)="onlyNumberKey($event)" maxlength="10" minlength="10">
-                          </div>
-                          <div class="col-sm-12 form-group">
-                            <label for="email">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" [(ngModel)]="newResidentData.email"
-                              #email="ngModel" required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
-                              maxlength="100">
                           </div>
                           <!-- <div class="col-sm-12 form-group">
                           <label for="sms">SMS number</label>
@@ -592,11 +591,11 @@
                               [(ngModel)]="newVendorData.vendorLastName" #vendorLastName="ngModel" (keyup)="updateInitials($event, 1)"
                               maxlength="100" required pattern="^[a-zA-Z ]*$">
                           </div>
-                          <div class="col-sm-12 form-group">
-                            <label for="jobType">Service Description</label>
+                          <!-- <div class="col-sm-12 form-group">
+                            <label for="jobType">Company Name</label>
                             <input type="text" class="form-control capitalized" id="jobType" name="jobType" [(ngModel)]="newVendorData.jobType"
                               #jobType="ngModel" maxlength="100" required>
-                          </div>
+                          </div> -->
                           <div class="col-sm-12 form-group">
                               <label for="services">Services</label>
                               <angular2-multiselect name="services" id="services" [data]="issuelist" [(ngModel)]="issuesSelectedItems"
@@ -609,22 +608,22 @@
                             <input type="text" class="form-control" id="Address" name="Address" [(ngModel)]="newVendorData.address"
                               #address="ngModel" maxlength="500">
                           </div>
-                          <div class="col-sm-6 form-group">
-                            <label for="phone">Phone</label>
+                          <div class="col-sm-12 form-group">
+                            <label for="phone">Mobile</label>
                             <input type="text" class="form-control" id="phone" name="phone" [(ngModel)]="newVendorData.phone"
-                              #phone="ngModel" required pattern="^[0-9 \(\)\-\+]*$" maxlength="25" minlength="10"
-                              required asyncValidator>
+                              #phone="ngModel" pattern="^[0-9 \(\)\-\+]*$" maxlength="25" minlength="10"
+                              asyncValidator  [required]='!newVendorData.email'>
                           </div>
-                          <div class="col-sm-6 form-group">
+                          <!-- <div class="col-sm-6 form-group">
                             <label for="ext">Ext</label>
                             <input type="text" class="form-control" id="ext" name="ext" [(ngModel)]="newVendorData.ext"
                               (keypress)="onlyNumberKey($event)" #ext="ngModel" maxlength="5">
-                          </div>
+                          </div> -->
                           <div class="col-sm-12 form-group">
                             <label for="email">Email</label>
                             <input type="email" class="form-control" id="email" name="email" [(ngModel)]="newVendorData.email"
-                              #email="ngModel" required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
-                              maxlength="100">
+                              #email="ngModel" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                              maxlength="100" [required]='!newVendorData.phone'>
                           </div>
                           <div class="col-sm-12 form-group">
                             <label for="comments">Comments</label>
