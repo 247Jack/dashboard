@@ -48,16 +48,17 @@ export class TicketsService {
     });
   }
 
-  public evaluateTaskThreshold(task_id,action,pm_id)
+  public evaluateTaskThreshold(task_id,action,pm_id,company)
   {
-    /*
+    
     const headers = new Headers();
     headers.append('property_manager_id', pm_id);
+    headers.append('property_manager_company', company);
     const options = new RequestOptions({ 'headers': headers });
-    */
+    
     return this.http.get(
       `${environment.api_domain}/dashboard/tasks/${task_id}/evaluatethreshold?type=${action}`,
-      {}
+      options
     )
     .catch(error => {
       window.location.reload();

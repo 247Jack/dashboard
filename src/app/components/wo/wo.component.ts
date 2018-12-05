@@ -140,7 +140,8 @@ export class WoComponent implements OnInit {
       .evaluateTaskThreshold(
         this.currentTicket._id,
         response,
-        this.currentPropertyManager._id
+        this.currentPropertyManager._id,
+        this.currentCompany
       )
       .subscribe(data => {
         this.loadTasks()
