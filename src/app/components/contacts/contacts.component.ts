@@ -462,7 +462,11 @@ export class ContactsComponent implements OnInit, OnDestroy {
           this.newVendorData.services = this.setNewVendortServices();
           this.newVendorData.name = this.newVendorData.vendorFirstName + ' ' + this.newVendorData.vendorLastName;
           await this.contacts.currentPhoneSuggested.subscribe(phone => {
-            this.newVendorData.phone = phone;
+            if (phone) {
+              this.newVendorData.phone = phone;
+            } else {
+              this.newVendorData.phone = ' ';
+            }
             newContactData = this.newVendorData;
           });
           break;
@@ -819,7 +823,11 @@ export class ContactsComponent implements OnInit, OnDestroy {
         case 'vendor':
           this.editVendorData.services = this.setNewVendortServices();
           await this.contacts.currentPhoneSuggested.subscribe(phone => {
-            this.editVendorData.phone = phone;
+            if (phone) {
+              this.editVendorData.phone = phone;
+            } else {
+              this.editVendorData.phone = '';
+            }
             editContactData = this.editVendorData;
           });
           break;
