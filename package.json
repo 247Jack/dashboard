@@ -22,6 +22,7 @@
     "@angular/platform-browser-dynamic": "^5.2.0",
     "@angular/router": "^5.2.0",
     "@okta/okta-angular": "^1.0.1",
+    "@okta/okta-signin-widget": "^2.14.0",
     "@stomp/ng2-stompjs": "^4.0.0",
     "@swimlane/ngx-datatable": "^11.3.2",
     "@types/lodash": "^4.14.109",
