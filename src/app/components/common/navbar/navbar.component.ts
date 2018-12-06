@@ -27,6 +27,7 @@ export class NavbarComponent implements OnInit {
   private getTenatsConn;
   private getIssuesConn;
   private autoPopulateConn;
+  private unreadConn;
   public validTask = false;
 
   public currentPropertyManager: any = {};
@@ -134,6 +135,7 @@ export class NavbarComponent implements OnInit {
                         })`
                     });
                   this.vendorlist = vendorsList;
+                  this.issues.sendData(this.vendorlist)
                 });
               this.getTenatsConn = this.contacts
                 .getContacts(this.currentPropertyManager["_id"], this.currentCompany, "users")
@@ -162,6 +164,7 @@ export class NavbarComponent implements OnInit {
                     });
                   this.issuelist = issueListNav;
                 });
+              
               /*
               Subscribes to socket.io server
             */
@@ -184,6 +187,7 @@ export class NavbarComponent implements OnInit {
                         }
                       });
                       setTimeout(() => {
+                        this.unread_messages++;
                         document.getElementById("invisibletriggerbuttonNav").click();
                       }, 25)
                     }
@@ -282,6 +286,9 @@ export class NavbarComponent implements OnInit {
       }
       this.currentDispatchMessage = serviceData.messageId
     });
+    this.unreadConn = this.chat.changeUnread.subscribe(newUnread => {
+      this.unread_messages = newUnread
+    })
   }
 
   /*
@@ -313,6 +320,7 @@ export class NavbarComponent implements OnInit {
     if (this.getTenatsConn) this.getTenatsConn.unsubscribe();
     if (this.getIssuesConn) this.getIssuesConn.unsubscribe();
     if (this.autoPopulateConn) this.autoPopulateConn.unsubscribe();
+    if(this.unreadConn) this.unreadConn.unsubscribe();
   }
 
   public broadcastNewTask() {

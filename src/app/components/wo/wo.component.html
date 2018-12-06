@@ -12,46 +12,12 @@
   </div>
   <div class="content-main d-flex flex" id="content-main">
     <div class="padding">
-      <!-- <div class="row">
-          <div class="col mb-2">
-            <div class="col">
-              <div class="row">
-                <select class="form-control input-c col-sm-2">
-                  <option value="" disabled selected>Today</option>
-                  <option>Yesterday</option>
-                  <option>Last 7 Days</option>
-                  <option>Last 30 Days</option>
-                  <option>This Month</option>
-                  <option>Last Month</option>
-                </select>
-                <select class="form-control input-c col-sm-2">
-                  <option value="" disabled selected>All Request</option>
-                  <option>Complete</option>
-                  <option>In Progress</option>
-                  <option>Dispatched</option>
-                  <option>Needs Approval</option>
-                  <option>Awaiting Reply</option>
-                </select>
-                <select class="form-control input-c col-sm-2">
-                  <option value="" disabled selected>My Team</option>
-                  <option>Jennifer</option>
-                  <option>Emma</option>
-                  <option>Oliva</option>
-                  <option></option>
-                </select>
-                <div class="col no-padding">
-                  <button class="btn btn-fw white ml-auto-1 btn-export">
-                    <span>Export</span>
-                    <i class="fa fa-download"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div> -->
+      <button id="editRow" class="invisible position-absolute" data-dismiss="modal" data-toggle="modal" data-target="#modal-edit">
+      </button>
       <div class="box mb-0 height-table">
         <ngx-datatable #myTable class="material" [rows]="tickets" [columnMode]="'force'" [headerHeight]="50"
-          [footerHeight]="50" [rowHeight]="'auto'" [limit]="limitRows" [scrollbarH]="true">
+          [footerHeight]="50" [rowHeight]="'auto'" [limit]="limitRows" [scrollbarH]="true" [selected]="selected"
+          [selectionType]="'single'" (select)='onSelect($event)'>
           <ngx-datatable-column name="Name" [sortable]="false" [width]="90" prop="firstName">
             <ng-template ngx-datatable-cell-template let-row="row">
               <span *ngFor="let resident of row.residents">{{resident.firstName}} {{resident.lastName}}</span>
@@ -258,96 +224,7 @@
       </div>
     </div>
   </div>
-  <div class="modal fade show" id="messages-slider" data-backdrop="true" data-class="modal-open-aside">
-    <div class="modal-dialog modal-right w-xl white b-l">
-      <div class="d-flex flex-column h-100">
-        <div class="scrollable hover scrollable-slider">
-          <div class="p-3">
-            <div class="chat-list">
-              <div class="chat-item" data-class>
-                <a href="#" class="avatar w-40">
-                  <span class="w-40 avatar circle pms-color">
-                    <i class="on b-white avatar-right"></i>
-                    TN
-                  </span>
-                </a>
-                <div class="chat-body">
-                  <div class="chat-content rounded msg">
-                    Hi Jack..
-                  </div>
-                  <div class="chat-content rounded msg">
-                    I have a problem!
-                  </div>
-                  <div class="chat-date date">
-                    2 mins ago
-                  </div>
-                </div>
-              </div>
-              <div class="chat-item" data-class="alt">
-                <a href="#" class="avatar w-40">
-                  <span class="w-40 avatar circle jack-color">
-                    <i class="on b-white avatar-right"></i>
-                    Jack
-                  </span>
-                </a>
-                <div class="chat-body">
-                  <div class="chat-content rounded msg">
-                    Hi Tiger, what's the issue?
-                  </div>
-                  <div class="chat-date date">
-                    1 min ago
-                  </div>
-                </div>
-              </div>
-              <div class="chat-item" data-class>
-                <a href="#" class="avatar w-40">
-                  <span class="w-40 avatar circle pms-color">
-                    <i class="on b-white avatar-right"></i>
-                    TN
-                  </span>
-                </a>
-                <div class="chat-body">
-                  <div class="chat-content rounded msg">
-                    My kitchen sink is clogged again
-                  </div>
-                  <div class="chat-date date">
-                    Rigth now
-                  </div>
-                </div>
-              </div>
-              <div class="chat-item" data-class="alt">
-                <a href="#" class="avatar w-40">
-                  <span class="w-40 avatar circle jack-color">
-                    <i class="on b-white avatar-right"></i>
-                    Jack
-                  </span>
-                </a>
-                <div class="chat-body">
-                  <div class="chat-content rounded msg">
-                    Looks like a new request for
-                    <span style="display: inline;">
-                      <i>plumbing</i>
-                    </span>. Do you want to
-                    <span style="display: inline;">
-                      <b>auto-dispatch</b>
-                    </span> to vendors?
-                  </div>
-                  <div class="chat-content rounded msg">
-                    <button class="btn-sm btn-rounded primary b-2x" data-dismiss="modal">Select vendors</button>&nbsp;
-                    <button class="btn-sm btn-rounded primary b-2x" data-toggle="modal" data-target="#m-a-f">Vendors
-                      pool</button>
-                  </div>
-                  <div class="chat-date date">
-                    Rigth now (only visible for you)
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+
   <div class="modal fade" id="modal-status" tabindex="-1" role="dialog" aria-labelledby="modal-status" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content" *ngIf="currentTicket">
@@ -378,4 +255,15 @@
       </div>
     </div>
   </div>
+  <modal #modalmessage id="backdrop">
+    <modal-header [show-close]="true">
+      <h4 class="modal-title">{{modalTitle}}</h4>
+    </modal-header>
+    <modal-body>
+      {{modalBody}}
+    </modal-body>
+    <modal-footer>
+      <button type="button" class="btn btn-primary" (click)="modalmessage.close()">Close</button>
+    </modal-footer>
+  </modal>
 </div>

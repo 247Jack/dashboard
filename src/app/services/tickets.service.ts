@@ -70,5 +70,51 @@ export class TicketsService {
     this.update.emit(null);
   }
 
+  public updateSimpleRequest(task_id,company,updateData){
+    const headers = new Headers();
+    headers.append('property_manager_company', company);
+    const options = new RequestOptions({ 'headers': headers });
+    return this.http.post(
+      `${environment.api_domain}/dashboard/tasks/${task_id}`,
+      updateData,
+      options
+    )
+    .catch(error => {
+      window.location.reload();
+      return Observable.throw(error.message || error);
+    });
+  }
+
+  public getBitlyLink(task_id,vendor_id){
+    return this.http.post(
+      `${environment.api_domain}/dashboard/tasks/${task_id}/joblink`,
+      {
+        "vendor_id": vendor_id
+      }
+    )
+    .map(res => {
+      return res.json();
+    })
+    .catch(error => {
+      window.location.reload();
+      return Observable.throw(error.message || error);
+    });
+  }
+
+  // public editTicket(ticketInfo,pm_id, company) {
+  //   const headers = new Headers();
+  //   headers.append('property_manager_id', pm_id);
+  //   headers.append('property_manager_company', company);
+  //   const options = new RequestOptions({ 'headers': headers });
+  //   return this.http.post(
+  //     // `${environment.api_domain}/dashboard/tasks/`,
+  //     ticketInfo,
+  //     options
+  //   )
+  //   .catch(error => {
+  //     window.location.reload();
+  //     return Observable.throw(error.message || error);
+  //   });
+  // }
 
 }
