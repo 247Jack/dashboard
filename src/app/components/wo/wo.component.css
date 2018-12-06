@@ -118,7 +118,7 @@
 }
 
 #content-main {
-    overflow: auto;
+    overflow-y: scroll;
 }
 
 .height-table {
