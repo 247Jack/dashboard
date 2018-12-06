@@ -5,12 +5,9 @@ import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/catch";
 import { environment } from "../../environments/environment";
-import { EventEmitter, Output } from '@angular/core';
 
 @Injectable()
 export class IssuesService {
-
-  @Output() senddata: EventEmitter<any> = new EventEmitter();
 
   constructor(private http: Http) { }
 
@@ -30,10 +27,6 @@ export class IssuesService {
         window.location.reload();
         return Observable.throw(error.message || error);
       });
-  }
-
-  public sendData(data) {
-    this.senddata.emit(data);
   }
 
 }

@@ -1,10 +1,5 @@
 import { BrowserModule } from "@angular/platform-browser";
-import { 
-  Injectable, 
-  Injector, 
-  InjectionToken, 
-  ErrorHandler,
-  NgModule } from "@angular/core";
+import { NgModule } from "@angular/core";
 import { AppRouting } from "./app.routes";
 import { HttpModule } from "@angular/http";
 import { ReactiveFormsModule } from "@angular/forms";
@@ -24,7 +19,6 @@ import { LocationStrategy, PathLocationStrategy } from "@angular/common";
 //import { PushNotificationsModule } from "ng-push";
 import { ModalModule } from "dsg-ng2-bs4-modal/ng2-bs4-modal";
 import { Ng4LoadingSpinnerModule } from "ng4-loading-spinner";
-import * as Rollbar from 'rollbar';
 
 //import { StompService, StompConfig } from "@stomp/ng2-stompjs";
 
@@ -53,7 +47,7 @@ import { AutopopulateService } from "./services/autopopulate.service";
 import { StatsService } from "./services/stats.service";
 import { WoComponent } from './components/wo/wo.component';
 import { ReadMoreDirective } from './directives/read-more.directive';
-import { ClipboardModule } from 'ngx-clipboard';
+
 const oktaConfig = {
   issuer: "https://dev-825764.oktapreview.com/oauth2/default",
   redirectUri: `${environment.self_host}/implicit/callback`,
@@ -65,18 +59,6 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
   maxFilesize: 50,
   acceptedFiles: ".csv"
 };
-
-const rollbarConfig = {
-  accessToken: 'f6f77b1967c34c4aa5e6aace1abcd556',
-  captureUncaught: true,
-  captureUnhandledRejections: true,
-};
-
-export function rollbarFactory() {
-  return new Rollbar(rollbarConfig);
-}
-
-export const RollbarService = new InjectionToken<Rollbar>('rollbar');
 
 //const SocketConfig: SocketIoConfig = { url: environment.socket_host, options: {secure:environment.secureSocket} };
 
@@ -93,16 +75,6 @@ const stompConfig: StompConfig = {
   debug: false
 };
 */
-
-@Injectable()
-export class RollbarErrorHandler implements ErrorHandler {
-  constructor(private injector: Injector) {}
-
-  handleError(err:any) : void {
-    var rollbar = this.injector.get(RollbarService);
-    rollbar.error(err.originalError || err);
-  }
-}
 
 @NgModule({
   declarations: [
@@ -135,8 +107,7 @@ export class RollbarErrorHandler implements ErrorHandler {
     Ng4LoadingSpinnerModule.forRoot(),
     ModalModule,
     NgxDatatableModule,
-    Ng2SearchPipeModule,
-    ClipboardModule
+    Ng2SearchPipeModule
   ],
   providers: [
     ContactsService,
@@ -156,9 +127,7 @@ export class RollbarErrorHandler implements ErrorHandler {
     },
     */
     { provide: LocationStrategy, useClass: PathLocationStrategy },
-    { provide: DROPZONE_CONFIG, useValue: DEFAULT_DROPZONE_CONFIG },
-    { provide: ErrorHandler, useClass: RollbarErrorHandler },
-    { provide: RollbarService, useFactory: rollbarFactory }
+    { provide: DROPZONE_CONFIG, useValue: DEFAULT_DROPZONE_CONFIG }
   ],
   bootstrap: [AppComponent]
 })

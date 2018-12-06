@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
 import { Http, Headers, RequestOptions } from "@angular/http";
-import { EventEmitter, Output } from '@angular/core';
 import { Subject } from "rxjs/Subject";
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/map";
@@ -15,7 +14,6 @@ import { environment } from "../../environments/environment";
 export class ChatService {
   public new_messages = 0;
   private socket;
-  @Output() changeUnread: EventEmitter<any> = new EventEmitter();
 
   constructor(
     //private socket: Socket,
@@ -171,9 +169,4 @@ export class ChatService {
       return Observable.throw(error.message || error);
     });
   }
-
-  public updateUnreadNavbar (NewAmount) {
-    this.changeUnread.emit(NewAmount);
-  }
-
 }

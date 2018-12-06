@@ -39,7 +39,6 @@ export class MessagesComponent
   public teammatesettings = {};
   public currentPropertyManager: any;
   public currentCompany: String = ""
-  public currentUnread = 0
   public humanTakeover: Boolean = false;
   public userListLoaded:Boolean = false;
   public newAddress;
@@ -124,11 +123,7 @@ export class MessagesComponent
               data[i].initials = (names.length > 1) ? `${names[0][0]}${names[1][0]}`: names[0][0]
               data[i]._id = data[i].composedKey.split(":")[0];
               this.users.push(data[i]);
-              if(data[i].unread){
-                this.currentUnread ++;
-              }
             }
-            this.chat.updateUnreadNavbar(this.currentUnread)
           });
           this.activatedRoute.params.subscribe(params => {
             this.activatedRoute.queryParams.subscribe(queryparams => {
@@ -180,11 +175,9 @@ export class MessagesComponent
                             var currentUserIndex = _.findIndex(this.users, o => {
                               return (o['composedKey'] === `${this.userId}:${this.service}`)
                             });
-                            if(currentUserIndex >= 0 && this.users[currentUserIndex].unread)
+                            if(currentUserIndex >= 0)
                             {
                               this.users[currentUserIndex].unread = false;
-                              this.currentUnread--;
-                              this.chat.updateUnreadNavbar(this.currentUnread)
                             }
                           }
                         }, 100);
