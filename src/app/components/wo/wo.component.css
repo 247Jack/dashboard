@@ -124,7 +124,3 @@
 .height-table {
     overflow: unset !important;
 }
-
-ngx-datatable {
-    overflow-y: scroll !important;
-}
