@@ -429,11 +429,28 @@
               <div class="col-sm-12">
                 <div class="row mx-0">
                   <div class="col-7 my-3 px-0">
+                    <strong class="mb-2 d-flex">Portfolio</strong>
+                    <input type="text" class="form-control" [(ngModel)]="newPortfolio">
+                  </div>
+                  <div class="col-7 my-3 px-0">
+                    <strong class="mb-2 d-flex">Issue</strong>
+                    <angular2-multiselect [data]="issuesList" *ngIf="issuesList" [(ngModel)]="issuesSelectedItems"
+                      [settings]="issuesSettings" >
+                    </angular2-multiselect>
+                  </div>
+                  <div class="col-7 my-3 px-0">
+                    <strong class="mb-2 d-flex">Status: {{currentStatus}}</strong>
+                    <label class="container" *ngIf="!isCompleted">Mark request status as completed
+                      <input type="checkbox" [(ngModel)]="setCompleted" [ngModelOptions]="{standalone: true}"/>
+                      <span class="checkmark"></span>
+                    </label>
+                  </div>
+                  <!--div class="col-7 my-3 px-0">
                     <strong class="mb-2 d-flex">Status</strong>
                     <angular2-multiselect [data]="statusList" *ngIf="statusList" [(ngModel)]="statusSelectedItems"
                       [settings]="statusSettings">
                     </angular2-multiselect>
-                  </div>
+                  </div-->
                   <div class="col-7 my-3 px-0">
                     <strong class="mb-2 d-flex">Vendor</strong>
                     <angular2-multiselect class="" [data]="vendorList" [(ngModel)]="vendorSelectedItems" [settings]="vendorSettings">
