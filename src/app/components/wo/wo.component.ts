@@ -36,6 +36,7 @@ export class WoComponent implements OnInit {
   public originalData = [];
   public bitlyURL = "";
   public newCost = 0;
+  public newPortfolio = "";
 
   public vendorList = [];
   public vendorSelectedItems = [];
@@ -43,6 +44,9 @@ export class WoComponent implements OnInit {
   public statusList = [];
   public statusSelectedItems = [];
   public statusSettings = {};
+  public issuesList = [];
+  public issuesSelectedItems = [];
+  public issuesSettings = {};
 
   public newAddress: string;
   public newNote = "";
@@ -78,6 +82,13 @@ export class WoComponent implements OnInit {
       singleSelection: true,
       text: "Status",
       enableSearchFilter: false,
+      badgeShowLimit: 1,
+      position: "top"
+    }
+    this.issuesSettings = {
+      singleSelection: true,
+      text: "Issue",
+      enableSearchFilter: true,
       badgeShowLimit: 1,
       position: "top"
     }
@@ -136,6 +147,15 @@ export class WoComponent implements OnInit {
               });
             this.vendorList = vendorsList;
           });
+        this.issues.getIssues(this.currentPropertyManager._id).subscribe(listIssues => {
+          for (var i in listIssues)
+          {
+            this.issuesList.push({
+              id: listIssues[i]._id,
+              itemName: listIssues[i].issueToken
+            });
+          }
+        })
       }
     }, 100);
   }
@@ -187,6 +207,12 @@ export class WoComponent implements OnInit {
         })
         this.newCost = this.editDataRequest.totalCost || 0
         this.newAddress = this.editDataRequest.tenantAddress.address.replace(/\s+/g, '+') + "+" + this.editDataRequest.tenantAddress.city
+        this.newPortfolio = this.editDataRequest.portfolio
+        this.issuesSelectedItems = []
+        this.issuesSelectedItems.push({
+          id: this.editDataRequest.issue._id,
+          itemName: this.editDataRequest.issue.issueToken
+        })
         this.statusSelectedItems = []
         if (this.editDataRequest.requestStatus === "available") {
           this.statusList = [
@@ -300,7 +326,6 @@ export class WoComponent implements OnInit {
     this.elementNote.content = this.newNote
     this.elementNote.date = new Date()
     this.newNotes.push(this.elementNote)
-    console.log(this.newNotes)
   }
   public saveEdit() {
     for(var e in this.vendorSelectedItems){
@@ -312,6 +337,8 @@ export class WoComponent implements OnInit {
       newVendorsBroadcasted: this.newVendorsBroadcasted,
       status: (this.statusSelectedItems.length) ? this.statusSelectedItems[0].id : "",
       newCost: this.newCost,
+      newPortfolio: this.newPortfolio,
+      newIssue: (this.issuesSelectedItems.length) ? this.issuesSelectedItems[0].id : "",
       newNotes: [
         {
           authorId: this.currentPropertyManager._id,
@@ -334,11 +361,6 @@ export class WoComponent implements OnInit {
     }
     this.updateData = updateData
     this.ticket.editTask(this.selectedRow._id, this.currentPropertyManager["_id"], this.currentCompany, this.updateData).subscribe(resultUpdate => {
-      console.log(resultUpdate)
-      console.log(this.updateData)
-      this.ticket.update.subscribe(updating => {
-        this.loadTasks();
-      });
       this.spinnerService.hide()
       this.modalShowMessage("saveTask");
       this.editStatus = false
@@ -374,6 +396,7 @@ export class WoComponent implements OnInit {
         }
       ]
       document.getElementById("cancelEdit").click();
+      this.loadTasks();
     })
   }
   public openModalDelete() {
