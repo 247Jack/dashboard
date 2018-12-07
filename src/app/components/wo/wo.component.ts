@@ -37,6 +37,9 @@ export class WoComponent implements OnInit {
   public bitlyURL = "";
   public newCost = 0;
   public newPortfolio = "";
+  public currentStatus = "";
+  public setCompleted = false;
+  public isCompleted = false;
 
   public vendorList = [];
   public vendorSelectedItems = [];
@@ -189,6 +192,22 @@ export class WoComponent implements OnInit {
         this.loadTasks();
       });
   }
+  public getNameStatus(status){
+    switch(status){
+      case "available":
+        return "Dispatched";
+      case "finished":
+        return "Completed";
+      case "checked":
+        return "Assigned to vendor";
+      case "evaluating":
+        return "Requires Attention";
+      case "canceled":
+        return "Canceled";
+      case "approved":
+        return "Approved";
+    }
+  }
   public onChange(deviceValue) {
     this.limitRows = deviceValue;
   }
@@ -207,7 +226,10 @@ export class WoComponent implements OnInit {
         })
         this.newCost = this.editDataRequest.totalCost || 0
         this.newAddress = this.editDataRequest.tenantAddress.address.replace(/\s+/g, '+') + "+" + this.editDataRequest.tenantAddress.city
+        this.currentStatus = this.getNameStatus(this.editDataRequest.requestStatus);
         this.newPortfolio = this.editDataRequest.portfolio
+        this.isCompleted = (this.editDataRequest.requestStatus === "finished")
+        /*
         this.issuesSelectedItems = []
         this.issuesSelectedItems.push({
           id: this.editDataRequest.issue._id,
@@ -262,6 +284,7 @@ export class WoComponent implements OnInit {
             disabled: true
           }
         }
+        */
         for (var f in this.editDataRequest.notes) {
           this.editDataRequest.notes[f].authorName = this.editDataRequest.notes[f].authorName.split(/(\s+)/)[0]
         }
@@ -335,7 +358,8 @@ export class WoComponent implements OnInit {
     let updateData = {
       vendorsRemoved: this.vendorsRemoved,
       newVendorsBroadcasted: this.newVendorsBroadcasted,
-      status: (this.statusSelectedItems.length) ? this.statusSelectedItems[0].id : "",
+      //status: (this.statusSelectedItems.length) ? this.statusSelectedItems[0].id : "",
+      newState: (!this.isCompleted && this.setCompleted)? "finished" : this.currentStatus,
       newCost: this.newCost,
       newPortfolio: this.newPortfolio,
       newIssue: (this.issuesSelectedItems.length) ? this.issuesSelectedItems[0].id : "",
@@ -358,6 +382,15 @@ export class WoComponent implements OnInit {
     }
     if (this.newCost == this.editDataRequest.totalCost) {
       delete updateData.newCost
+    }
+    if (this.currentStatus === updateData.newState) {
+      delete updateData.newState
+    }
+    if(!updateData.newIssue){
+      delete updateData.newIssue
+    }
+    if(updateData.newPortfolio === this.editDataRequest.portfolio){
+      delete updateData.newPortfolio
     }
     this.updateData = updateData
     this.ticket.editTask(this.selectedRow._id, this.currentPropertyManager["_id"], this.currentCompany, this.updateData).subscribe(resultUpdate => {
