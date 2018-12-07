@@ -216,7 +216,6 @@ export class WoComponent implements OnInit {
     this.selectedRow = selected[0]
     if (this.selectedRow._id) {
       this.ticket.getEditTask(this.currentPropertyManager['_id'], this.currentCompany, this.selectedRow._id).subscribe(data => {
-        console.log(data);
         this.editDataRequest = data
         let ids = this.editDataRequest.providersDispatched.map(v => (v.id).toString())
         let newVendorList = this.vendorList.filter(v => !(ids.includes((v.id).toString())))

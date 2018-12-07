@@ -321,8 +321,11 @@
                               <span class="mr-3 ml-auto text-muted" *ngIf="item.itemName">REQUEST SENT</span>
                               <span class="mr-3 ml-auto text-danger" *ngIf="item.requestRejected == true">DECLINED JOB</span>
                               <span class="mr-3 ml-auto text-success" *ngIf="item.requestAccepted == true">ACCEPTED JOB</span>
-                              <a class="btn-clean b-close  ml-auto" [routerLink]="['/messages', item.id]">
-                                <i class="fa  fa-15x fa-comments-o"></i>
+                              <a *ngIf="item.contactType == 'sms'" class="btn-clean b-close  ml-auto" [routerLink]="['/messages', item.id]">
+                                <i class="fa fa-15x fa-comments-o"></i>
+                              </a>
+                              <a *ngIf="item.contactType == 'email'" class="btn-clean b-close  ml-auto" [href]="'mailto:'+item.contact">
+                                <i class="fa fa-15x fa-envelope-o"></i>
                               </a>
                             </div>
                           </div>
