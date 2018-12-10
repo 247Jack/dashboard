@@ -269,11 +269,23 @@
                         <span class="d-bloc">{{editDataRequest.tenantAddress.city}},
                           {{editDataRequest.tenantAddress.zip}}</span>
                       </p>
-                      <p>
-                        <strong>Portfolio:</strong> <span>{{editDataRequest.portfolio}}</span>
+                      <p class="sub">
+                        <strong>Portfolio:</strong>
                       </p>
                       <p>
-                        <strong>Issue:</strong> <span>{{editDataRequest.issue.issueToken}}</span>
+                        <span>{{editDataRequest.portfolio}}</span>
+                      </p>
+                      <p class="sub">
+                        <strong>Service:</strong>
+                      </p>
+                      <p>
+                        <span>{{editDataRequest.issue.issueToken}}</span>
+                      </p>
+                      <p class="sub">
+                        <strong>Issue:</strong>
+                      </p>
+                      <p>
+                        <span>{{editDataRequest.description}}</span>
                       </p>
                       <p>
                         <em #textContent class="content-issue" id="{{editDataRequest.tenantName}}">{{editDataRequest.taskDescription}}</em>
@@ -434,13 +446,6 @@
               </div>
               <div class="col-sm-12">
                 <div class="row mx-0">
-                  <div class="col-7 my-3 px-0">
-                    <strong class="mb-2 d-flex">Status: {{currentStatus}}</strong>
-                    <label class="container" *ngIf="!isCompleted">Mark request status as completed
-                      <input type="checkbox" [(ngModel)]="setCompleted" [ngModelOptions]="{standalone: true}"/>
-                      <span class="checkmark"></span>
-                    </label>
-                  </div>
                   <!--div class="col-7 my-3 px-0">
                     <strong class="mb-2 d-flex">Status</strong>
                     <angular2-multiselect [data]="statusList" *ngIf="statusList" [(ngModel)]="statusSelectedItems"
@@ -448,7 +453,7 @@
                     </angular2-multiselect>
                   </div-->
                   <div class="col-7 my-3 px-0">
-                    <strong class="mb-2 d-flex">Change Vendor</strong>
+                    <strong class="mb-2 d-flex">Edit Vendor</strong>
                     <angular2-multiselect class="" [data]="vendorList" [(ngModel)]="vendorSelectedItems" [settings]="vendorSettings">
                     </angular2-multiselect>
                   </div>
@@ -463,7 +468,14 @@
                       <button class="btn btn-link" (click)="status=!status">Change</button>
                     </div>
                   </div>
-                  <div class="col-sm-12 px-0 mt-3">
+                  <div class="col-7 my-3 px-0" *ngIf="!isCompleted">
+                    <!--strong class="mb-2 d-flex">Status: {{currentStatus}}</strong-->
+                    <label class="container">Mark request status as completed
+                      <input type="checkbox" [(ngModel)]="setCompleted" [ngModelOptions]="{standalone: true}"/>
+                      <span class="checkmark"></span>
+                    </label>
+                  </div>
+                  <div class="col-sm-12 px-0 mt-3 whitespace">
                     <button class="md-btn md-raised mb-2 blue" data-dismiss="modal" (click)="saveEdit()">SAVE CHANGES</button>
                     <button class="md-btn md-flat mb-2 text-primary" id="cancelE" data-dismiss="modal" (click)="cancelEdit()">CANCEL</button>
                   </div>

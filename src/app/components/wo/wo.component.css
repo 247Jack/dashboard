@@ -124,6 +124,14 @@
 .height-table {
     overflow: unset !important;
 }
+.box p{
+    margin-bottom: 0;
+}
+
+.box p.sub{
+    margin-top: 1em;
+}
+
 /* Customize the label (the container) */
 .container {
     display: block;
@@ -131,7 +139,7 @@
     padding-left: 30px;
     margin-bottom: 10px;
     cursor: pointer;
-    font-size: 12px;
+    font-size: 14px;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -190,4 +198,8 @@
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
+  }
+
+  .whitespace{
+      padding-bottom: 3.5em;
   }
