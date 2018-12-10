@@ -299,6 +299,7 @@ export class WoComponent implements OnInit {
     this.newNote = "";
     this.vendorSelectedItems = []
     this.newNotes = [];
+    this.setCompleted = false;
     this.statusList = [
       {
         id: "available",
@@ -421,8 +422,9 @@ export class WoComponent implements OnInit {
           itemName: "Completed"
         }
       ]
-      document.getElementById("cancelEdit").click();
       this.loadTasks();
+      this.setCompleted = false;
+      document.getElementById("cancelEdit").click();
     })
   }
   public openModalDelete() {
@@ -435,6 +437,7 @@ export class WoComponent implements OnInit {
        this.loadTasks();
        this.modalDelete.close()
        this.modalShowMessage("DeleteTask");
+       this.setCompleted = false;
        document.getElementById("cancelEdit").click();
      })
   }
