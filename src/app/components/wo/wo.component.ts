@@ -46,9 +46,6 @@ export class WoComponent implements OnInit {
   public statusList = [];
   public statusSelectedItems = [];
   public statusSettings = {};
-  public issuesList = [];
-  public issuesSelectedItems = [];
-  public issuesSettings = {};
 
   public newAddress: string;
   public newNote = "";
@@ -84,13 +81,6 @@ export class WoComponent implements OnInit {
       singleSelection: true,
       text: "Status",
       enableSearchFilter: false,
-      badgeShowLimit: 1,
-      position: "top"
-    }
-    this.issuesSettings = {
-      singleSelection: true,
-      text: "Issue",
-      enableSearchFilter: true,
       badgeShowLimit: 1,
       position: "top"
     }
@@ -149,15 +139,6 @@ export class WoComponent implements OnInit {
               });
             this.vendorList = vendorsList;
           });
-        this.issues.getIssues(this.currentPropertyManager._id).subscribe(listIssues => {
-          for (var i in listIssues)
-          {
-            this.issuesList.push({
-              id: listIssues[i]._id,
-              itemName: listIssues[i].issueToken
-            });
-          }
-        })
       }
     }, 100);
   }
@@ -359,7 +340,6 @@ export class WoComponent implements OnInit {
       //status: (this.statusSelectedItems.length) ? this.statusSelectedItems[0].id : "",
       newState: (!this.isCompleted && this.setCompleted)? "finished" : this.currentStatus,
       newCost: this.newCost,
-      newIssue: (this.issuesSelectedItems.length) ? this.issuesSelectedItems[0].id : "",
       newNotes: [
         {
           authorId: this.currentPropertyManager._id,
@@ -382,9 +362,6 @@ export class WoComponent implements OnInit {
     }
     if (this.currentStatus === updateData.newState) {
       delete updateData.newState
-    }
-    if(!updateData.newIssue){
-      delete updateData.newIssue
     }
     this.updateData = updateData
     this.ticket.editTask(this.selectedRow._id, this.currentPropertyManager["_id"], this.currentCompany, this.updateData).subscribe(resultUpdate => {
