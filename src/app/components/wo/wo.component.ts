@@ -40,6 +40,7 @@ export class WoComponent implements OnInit {
   public setCompleted = false;
   public isCompleted = false;
 
+  public staticVendorList = [];
   public vendorList = [];
   public vendorSelectedItems = [];
   public vendorSettings = {};
@@ -138,6 +139,7 @@ export class WoComponent implements OnInit {
                   })`
               });
             this.vendorList = vendorsList;
+            this.staticVendorList = vendorsList;
           });
       }
     }, 100);
@@ -196,6 +198,7 @@ export class WoComponent implements OnInit {
     if (this.selectedRow._id) {
       this.ticket.getEditTask(this.currentPropertyManager['_id'], this.currentCompany, this.selectedRow._id).subscribe(data => {
         this.editDataRequest = data
+        this.vendorList = this.staticVendorList;
         let ids = this.editDataRequest.providersDispatched.map(v => (v.id).toString())
         let newVendorList = this.vendorList.filter(v => !(ids.includes((v.id).toString())))
         this.vendorList = newVendorList
