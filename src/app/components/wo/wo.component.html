@@ -289,12 +289,14 @@
                           <span class="more text-blue">View More <i class="fa fa-angle-right" aria-hidden="true"></i></span>
                         </a>
                       </p>
-                      <p>
-                        <strong>Preferred date for service visit:</strong>
-                      </p>
-                      <p>
-                        <span>{{editDataRequest.preferredDate | date}}</span>
-                      </p>
+                      <div class="text-to-bottom">
+                        <p>
+                          <strong>Date requested:</strong>
+                        </p>
+                        <p>
+                          <span>{{editDataRequest.preferredDate | date}}</span>
+                        </p>
+                      </div>
                     </div>
                   </div>
                   <div class="col-sm-5 px-0" *ngIf="newAddress?.length > 1">
