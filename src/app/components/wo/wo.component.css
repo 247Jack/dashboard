@@ -204,12 +204,6 @@
     transform: rotate(45deg);
   }
 
-  .text-to-bottom{
-    position: absolute;
-    bottom: 1.5em;
-    left: 1.5em;
-  }
-
   .whitespace{
       padding-bottom: 3.5em;
   }
