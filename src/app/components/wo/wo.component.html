@@ -276,12 +276,6 @@
                         <span>{{editDataRequest.portfolio}}</span>
                       </p>
                       <p class="sub">
-                        <strong>Service:</strong>
-                      </p>
-                      <p>
-                        <span>{{editDataRequest.issue.issueToken}}</span>
-                      </p>
-                      <p class="sub">
                         <strong>Issue:</strong>
                       </p>
                       <p>
@@ -350,9 +344,9 @@
                         <div *ngFor="let item of vendorSelectedItems">
                           <div class="d-flex row mx-0">
                             <div class="col-sm d-flex">
-                              <button class="btn-clean b-close" (click)="deleteNewVendor(item.id)">
+                              <!--button class="btn-clean b-close" (click)="deleteNewVendor(item.id)">
                                 <i class=" fa text-danger fa-15x fa-minus-circle"></i>
-                              </button>
+                              </button--->
                               <span class="ml-3" *ngIf="item.name">{{item.name}} <small>({{item.contact}})</small></span>
                               <span class="ml-3" *ngIf="item.itemName">{{item.itemName}}</span>
                             </div>
