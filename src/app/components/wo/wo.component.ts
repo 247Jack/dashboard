@@ -424,7 +424,7 @@ export class WoComponent implements OnInit {
     switch (messageType) {
       case "saveTask":
         this.modalTitle = "Request updated!";
-        this.modalBody = "Your select request has been updated. However, you need to notify the vendors about the change, if needed.";
+        this.modalBody = "The service request has been updated successfully. By manually editing the request, it is assumed that actions have been executed offline. Please notify the involved parties if needed.";
         break;
       case "DeleteTask":
         this.modalTitle = "Request canceled!";
