@@ -122,6 +122,10 @@
     color: #93a2ad;
 }
 
+.box{
+    position: relative;
+}
+
 .box p{
     margin-bottom: 0;
 }
@@ -196,6 +200,12 @@
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
+  }
+
+  .text-to-bottom{
+    position: absolute;
+    bottom: 1.5em;
+    left: 1.5em;
   }
 
   .whitespace{
