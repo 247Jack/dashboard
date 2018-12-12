@@ -116,9 +116,9 @@ export class WoComponent implements OnInit {
   ngOnInit() {
     var waitForPMData = setInterval(() => {
       this.currentPropertyManager = JSON.parse(
-        sessionStorage.getItem("propertyManagerData")
+        sessionStorage.getItem('propertyManagerData')
       );
-      this.currentCompany = sessionStorage.getItem("PMcompany")
+      this.currentCompany = sessionStorage.getItem('PMcompany')
       if (this.currentPropertyManager && this.currentCompany) {
         clearInterval(waitForPMData);
         this.loadTasks();
@@ -431,11 +431,13 @@ export class WoComponent implements OnInit {
         this.modalTitle = "Request canceled!";
         this.modalBody = "This request has been successfully canceled.";
         break;
-      default: 
+      default: {
         this.modalTitle = 'Oops!';
         this.modalBody = 'Something went wrong on our end. Nothing terrible; however, you will need to enter the request information.';
         break;
+      }
     }
+    this.modal.open();
   }
   // filter data and update rows
   public updateFilter(event) {

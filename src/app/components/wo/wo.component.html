@@ -12,46 +12,18 @@
   </div>
   <div class="content-main d-flex flex" id="content-main">
     <div class="padding">
-      <!-- <div class="row">
-          <div class="col mb-2">
-            <div class="col">
-              <div class="row">
-                <select class="form-control input-c col-sm-2">
-                  <option value="" disabled selected>Today</option>
-                  <option>Yesterday</option>
-                  <option>Last 7 Days</option>
-                  <option>Last 30 Days</option>
-                  <option>This Month</option>
-                  <option>Last Month</option>
-                </select>
-                <select class="form-control input-c col-sm-2">
-                  <option value="" disabled selected>All Request</option>
-                  <option>Complete</option>
-                  <option>In Progress</option>
-                  <option>Dispatched</option>
-                  <option>Needs Approval</option>
-                  <option>Awaiting Reply</option>
-                </select>
-                <select class="form-control input-c col-sm-2">
-                  <option value="" disabled selected>My Team</option>
-                  <option>Jennifer</option>
-                  <option>Emma</option>
-                  <option>Oliva</option>
-                  <option></option>
-                </select>
-                <div class="col no-padding">
-                  <button class="btn btn-fw white ml-auto-1 btn-export">
-                    <span>Export</span>
-                    <i class="fa fa-download"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div> -->
+      <button id="editRow" class="invisible position-absolute" data-dismiss="modal" data-toggle="modal" data-target="#modal-edit">
+      </button>
+      <div class="boxsearch">
+        <div class="search-container">
+          <span class="icon"><i class="fa fa-search"></i></span>
+          <input type="text" id="search" placeholder="Search by issue description..." (keyup)='updateFilter($event)' />
+        </div>
+      </div>
       <div class="box mb-0 height-table">
         <ngx-datatable #myTable class="material" [rows]="tickets" [columnMode]="'force'" [headerHeight]="50"
-          [footerHeight]="50" [rowHeight]="'auto'" [limit]="limitRows" [scrollbarH]="true">
+          [footerHeight]="50" [rowHeight]="'auto'" [limit]="limitRows" [scrollbarH]="true" [selected]="selected"
+          [selectionType]="'single'" (select)='onSelect($event)'>
           <ngx-datatable-column name="Name" [sortable]="false" [width]="90" prop="firstName">
             <ng-template ngx-datatable-cell-template let-row="row">
               <span *ngFor="let resident of row.residents">{{resident.firstName}} {{resident.lastName}}</span>
