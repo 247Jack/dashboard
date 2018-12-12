@@ -16,6 +16,7 @@ import { LocationStrategy, PathLocationStrategy } from "@angular/common";
 // import { PushNotificationsModule } from "ng-push";
 import { ModalModule } from "dsg-ng2-bs4-modal/ng2-bs4-modal";
 import { Ng4LoadingSpinnerModule } from "ng4-loading-spinner";
+import * as Rollbar from 'rollbar';
 
 // import { StompService, StompConfig } from "@stomp/ng2-stompjs";
 
@@ -129,7 +130,8 @@ export class RollbarErrorHandler implements ErrorHandler {
     Ng4LoadingSpinnerModule.forRoot(),
     ModalModule,
     NgxDatatableModule,
-    Ng2SearchPipeModule
+    Ng2SearchPipeModule,
+    ClipboardModule
   ],
   providers: [
     ContactsService,
@@ -149,7 +151,9 @@ export class RollbarErrorHandler implements ErrorHandler {
     },
     */
     { provide: LocationStrategy, useClass: PathLocationStrategy },
-    { provide: DROPZONE_CONFIG, useValue: DEFAULT_DROPZONE_CONFIG }
+    { provide: DROPZONE_CONFIG, useValue: DEFAULT_DROPZONE_CONFIG },
+    { provide: ErrorHandler, useClass: RollbarErrorHandler },
+    { provide: RollbarService, useFactory: rollbarFactory }
   ],
   bootstrap: [AppComponent]
 })
