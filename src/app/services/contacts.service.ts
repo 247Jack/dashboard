@@ -39,7 +39,6 @@ export class ContactsService {
         options
       )
       .map(res => {
-        console.log(res.json());
         return res.json();
       })
       .catch(error => {
@@ -73,7 +72,6 @@ export class ContactsService {
     headers.append('property_manager_id', pm_id);
     headers.append('property_manager_company', currentCompany);
     const options = new RequestOptions({ 'headers': headers });
-    console.log(contactData);
     return this.http
       .post(
         `${environment.api_domain}/dashboard/contacts?contact_type=${type}`,
@@ -94,11 +92,9 @@ export class ContactsService {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     const options = new RequestOptions({ 'headers': headers });
-    console.log(options);
     return this.http
       .post('https://15kcv4z18f.execute-api.us-east-1.amazonaws.com/dev/dashboard/utils/address', data, options)
       .map(res => {
-        console.log(res.json());
         return res.json();
       })
       .catch(error => {
@@ -111,11 +107,9 @@ export class ContactsService {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     const options = new RequestOptions({ 'headers': headers });
-    console.log(options);
     return this.http
       .post('https://15kcv4z18f.execute-api.us-east-1.amazonaws.com/dev/dashboard/utils/phone', data, options)
       .map(res => {
-        console.log(res.json());
         return res.json();
       })
       .catch(error => {
@@ -134,7 +128,6 @@ export class ContactsService {
     headers.append('property_manager_id', pm_id);
     headers.append('property_manager_company', currentCompany);
     const options = new RequestOptions({ 'headers': headers });
-    console.log(contactData);
     return this.http
       .post(
         `${environment.api_domain}/dashboard/contacts/${contactId}?user_type=${type}`,
@@ -142,47 +135,10 @@ export class ContactsService {
         options
       )
       .map(res => {
-        console.log('response');
-        console.log(res.json());
         return res.json();
       })
       .catch(error => {
-        console.log(error);
         return Observable.throw(error.message || error);
       });
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // contactData = {
-    //   firstName: 'Jorge',
-    //   lastName: 'Negrete',
-    //   address: 'nowhere 12312',
-    //   address2: '#1213',
-    //   city: 'Somewhere',
-    //   zip: '48752',
-    //   phone: '559876543214',
-    //   homePhone: '1234567891',
-    //   workPhone: '1234567891',
-    //   email: 'asdqqwd@hotmasdfsd.com'
-    // };
-    // pm_id = '5b75efd93a75a83b702db61a';
-    // currentCompany = 'Grand Residences Demo';
-    // contactId = '5bac9c82ac701e2ac012d540';
-    // type = 'tenant';

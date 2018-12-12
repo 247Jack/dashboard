@@ -168,8 +168,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
     jobType: '',
     services: [],
     name: '',
-    vendorFirstName: '',
-    vendorLastName: '',
+    vendorName: '',
     phone: '',
     ext: '',
     address: '',
@@ -460,7 +459,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
           break;
         case 'vendor':
           this.newVendorData.services = this.setNewVendortServices();
-          this.newVendorData.name = this.newVendorData.vendorFirstName + ' ' + this.newVendorData.vendorLastName;
+          this.newVendorData.name = this.newVendorData.vendorName;
           await this.contacts.currentPhoneSuggested.subscribe(phone => {
             if (phone) {
               this.newVendorData.phone = phone;
@@ -518,8 +517,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
         jobType: '',
         services: [],
         name: '',
-        vendorFirstName: '',
-        vendorLastName: '',
+        vendorName: '',
         phone: '',
         ext: '',
         address: '',
@@ -711,7 +709,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
       case 'vendor':
         this.enableEditFields = true;
         this.bindIssuesSettings();
-        setTimeout(() => document.getElementById('vendorFirstName').focus(), 0);
+        setTimeout(() => document.getElementById('vendorName').focus(), 0);
         break;
       default:
         break;

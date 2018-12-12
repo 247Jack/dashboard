@@ -327,7 +327,7 @@
                           </div>
                         </div>
                         <div class="col-sm-12 form-group">
-                          <label for="vendorFirstName">Name</label>
+                          <label for="vendorName">Name / Company</label>
                           <input type="text" class="form-control capitalized" id="name" name="name" required
                             [(ngModel)]="editVendorData.name" (change)="editVendorData.name=capitalize(editVendorData.name);"
                             #name="ngModel" (keyup)="updateInitials($event, 0)" maxlength="100" required pattern="^[a-zA-Z ]*$"
@@ -482,7 +482,7 @@
                         <!-- {{diagnostic}} -->
                         <div *ngSwitchCase="'tenant'" class="row scroll-y">
                           <div class="col-sm-6 form-group">
-                            <label for="firstName">First Name</label>
+                            <label for="firstName">Name / Company</label>
                             <input type="text" class="form-control capitalized" id="firstName" name="firstName"
                               #firstName="ngModel" [(ngModel)]="newResidentData.firstName" (keyup)="updateInitials($event, 0)"
                               (change)="newResidentData.firstName=capitalize(newResidentData.firstName);" maxlength="100"
@@ -491,12 +491,12 @@
                               Field Required
                             </div> -->
                           </div>
-                          <div class="col-sm-6 form-group">
+                          <!--div class="col-sm-6 form-group">
                             <label for="lastName">Last Name</label>
                             <input type="text" class="form-control capitalized" id="lastName" name="lastName" #lastName="ngModel"
                               [(ngModel)]="newResidentData.lastName" (keyup)='updateInitials($event, 1)' (change)="newResidentData.lastName=capitalize(newResidentData.lastName);"
                               maxlength="100" required pattern="^[a-zA-Z ]*$">
-                          </div>
+                          </div-->
                           <div class="col-sm-12 form-group">
                             <label for="portfolio">Portfolio</label>
                             <input type="text" class="form-control" id="portfolio" name="portfolio" [(ngModel)]="newResidentData.portfolio"
@@ -578,20 +578,20 @@
                           </div>
                         </div>
                         <div *ngSwitchCase="'vendor'" class="row scroll-y">
-                          <div class="col-sm-6 form-group">
-                            <label for="vendorFirstName">First Name</label>
-                            <input type="text" class="form-control capitalized" id="vendorFirstName" name="vendorFirstName"
-                              required [(ngModel)]="newVendorData.vendorFirstName" (change)="newVendorData.vendorFirstName=capitalize(newVendorData.vendorFirstName);"
-                              #vendorFirstName="ngModel" (keyup)="updateInitials($event, 0)" maxlength="100" required
+                          <div class="col-sm-12 form-group">
+                            <label for="vendorName">Name / Company</label>
+                            <input type="text" class="form-control capitalized" id="vendorName" name="vendorName"
+                              required [(ngModel)]="newVendorData.vendorName" (change)="newVendorData.vendorName=capitalize(newVendorData.vendorName);"
+                              #vendorName="ngModel" (keyup)="updateInitials($event, 0)" maxlength="100" required
                               pattern="^[a-zA-Z ]*$">
                           </div>
-                          <div class="col-sm-6 form-group">
+                          <!--div class="col-sm-6 form-group">
                             <label for="vendorLastName">Last Name</label>
                             <input type="text" class="form-control capitalized" id="vendorLastName" name="vendorLastName"
                               (change)="newVendorData.vendorLastName=capitalize(newVendorData.vendorLastName);"
                               [(ngModel)]="newVendorData.vendorLastName" #vendorLastName="ngModel" (keyup)="updateInitials($event, 1)"
                               maxlength="100" required pattern="^[a-zA-Z ]*$">
-                          </div>
+                          </div-->
                           <!-- <div class="col-sm-12 form-group">
                             <label for="jobType">Company Name</label>
                             <input type="text" class="form-control capitalized" id="jobType" name="jobType" [(ngModel)]="newVendorData.jobType"
