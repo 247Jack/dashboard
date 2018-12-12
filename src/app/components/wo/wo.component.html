@@ -143,8 +143,8 @@
                       <i class="fa fa-times"></i> Cancel
                     </a-->
                 </div>
-                <div *ngSwitchCase="'denied'">
-                  <button class="badge btn-clean grey" type="button">Canceled</button>
+                <div *ngSwitchCase="'canceled'">
+                  <button class="badge btn-clean red" type="button">Canceled</button>
                 </div>
                 <div *ngSwitchCase="'finished'">
                   <button class="badge btn-clean green" type="button">Completed</button>
@@ -258,87 +258,250 @@
       </div>
     </div>
   </div>
-  <div class="modal fade show" id="messages-slider" data-backdrop="true" data-class="modal-open-aside">
+  <div class="modal fade show" id="modal-edit" data-backdrop="false" data-class="modal-open-aside">
     <div class="modal-dialog modal-right w-xl white b-l">
       <div class="d-flex flex-column h-100">
-        <div class="scrollable hover scrollable-slider">
-          <div class="p-3">
-            <div class="chat-list">
-              <div class="chat-item" data-class>
-                <a href="#" class="avatar w-40">
-                  <span class="w-40 avatar circle pms-color">
-                    <i class="on b-white avatar-right"></i>
-                    TN
-                  </span>
-                </a>
-                <div class="chat-body">
-                  <div class="chat-content rounded msg">
-                    Hi Jack..
+        <div class="scrollable scrollable-slider">
+          <button class="float-left btn btn-clean mt-3 ml-2 b-close" data-dismiss="modal" id="cancelEdit" (click)="cancelEdit()">
+            <i class="fa fa-close"></i>
+          </button>
+          <button (click)="openModalDelete()" class="float-right md-btn md-flat mt-2 mr-2 text-danger"><i class="fa fa-trash-o"></i>
+            Remove Request</button>
+          <div class="p-5 h-100" *ngIf="editStatus == true">
+            <h5 class="text-center">
+              <strong>
+                {{editDataRequest.title}}
+              </strong>
+            </h5>
+            <div class="row">
+              <div class="col-sm-12">
+                <div>
+                  <small>
+                    Received on {{editDataRequest.receivedOn | date:'medium'}}
+                  </small>
+                </div>
+                <div class="box row mx-0">
+                  <div class="box-body col-sm-7">
+                    <div class="w-100 h-100">
+                      <p>
+                        <strong>
+                          <span>{{editDataRequest.tenantName}} </span>
+                        </strong>
+                      </p>
+                      <p>
+                        <span>{{editDataRequest.tenantContact}}</span>
+                      </p>
+                      <p>
+                        <span class="d-bloc">{{editDataRequest.tenantAddress.address}},
+                          {{editDataRequest.tenantAddress.address2}}</span>
+                        <span class="d-bloc">{{editDataRequest.tenantAddress.city}},
+                          {{editDataRequest.tenantAddress.zip}}</span>
+                      </p>
+                      <p class="sub">
+                        <strong>Portfolio:</strong>
+                      </p>
+                      <p>
+                        <span>{{editDataRequest.portfolio}}</span>
+                      </p>
+                      <p class="sub">
+                        <strong>Issue:</strong>
+                      </p>
+                      <p>
+                        <span>{{editDataRequest.description}}</span>
+                      </p>
+                      <p>
+                        <em #textContent class="content-issue" id="{{editDataRequest.tenantName}}">{{editDataRequest.taskDescription}}</em>
+                        <br>
+                        <a readMore [readMore-length]="144" [readMore-element]="textContent">
+                          <span class="less text-blue">View Less <i class="fa fa-angle-right" aria-hidden="true"></i></span>
+                          <span class="more text-blue">View More <i class="fa fa-angle-right" aria-hidden="true"></i></span>
+                        </a>
+                      </p>
+                      <div>
+                        <p>
+                          <strong>Date requested:</strong>
+                        </p>
+                        <p>
+                          <span>{{editDataRequest.preferredDate | date}}</span>
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                  <div class="chat-content rounded msg">
-                    I have a problem!
-                  </div>
-                  <div class="chat-date date">
-                    2 mins ago
+                  <div class="col-sm-5 px-0" *ngIf="newAddress?.length > 1">
+                    <img class="w-100 h-100" src="https://maps.googleapis.com/maps/api/staticmap?center={{this.newAddress}}&zoom=15&markers=color:red%7Clabel:C%7C{{editDataRequest.location.lng}},{{editDataRequest.location.lat}}&size=300x300&maptype=roadmap&key=AIzaSyALzEI922MxFSWMGPI4Kf5rGqk8C4jAqKI&output=embed">
                   </div>
                 </div>
               </div>
-              <div class="chat-item" data-class="alt">
-                <a href="#" class="avatar w-40">
-                  <span class="w-40 avatar circle jack-color">
-                    <i class="on b-white avatar-right"></i>
-                    Jack
-                  </span>
-                </a>
-                <div class="chat-body">
-                  <div class="chat-content rounded msg">
-                    Hi Tiger, what's the issue?
-                  </div>
-                  <div class="chat-date date">
-                    1 min ago
+              <div class="col-sm-12">
+                <div class="">
+                  <small class="text-muted">
+                    Dispatched by {{editDataRequest.dispatchedBy.managerName}} on
+                    {{editDataRequest.dispatchedBy.dispatchedOn | date:'medium'}}</small>
+                </div>
+                <div class="box">
+                  <div class="box-body w-100">
+                    <div class="row">
+                      <div class="col-sm-12" *ngIf="editDataRequest.providersDispatched">
+                        <span><strong>Providers Dispatched:</strong></span>
+                      </div>
+                      <div class="col-sm-12 my-2" *ngIf="editDataRequest.providersDispatched">
+                        <div *ngFor="let item of editDataRequest.providersDispatched">
+                          <div class="d-flex row mx-0">
+                            <div class="col-sm d-flex">
+                              <!--button class="btn-clean b-close" (click)="deleteVendor(item)">
+                                <i class=" fa text-danger fa-15x fa-minus-circle"></i>
+                              </button-->
+                              <span class="ml-3" *ngIf="item.name">{{item.name}} <small>({{item.contact}})</small></span>
+                              <span class="ml-3" *ngIf="item.itemName">{{item.itemName}}</span>
+                            </div>
+                            <div class="col-sm d-flex">
+                              <span class="mr-3 ml-auto text-muted" *ngIf="item.requestAccepted == false && item.requestRejected == false">REQUEST
+                                SENT</span>
+                              <span class="mr-3 ml-auto text-muted" *ngIf="item.itemName">REQUEST SENT</span>
+                              <span class="mr-3 ml-auto text-danger" *ngIf="item.requestRejected == true">DECLINED JOB</span>
+                              <span class="mr-3 ml-auto text-success" *ngIf="item.requestAccepted == true">ACCEPTED JOB</span>
+                              <a *ngIf="item.contactType == 'sms'" class="btn-clean b-close  ml-auto" [routerLink]="['/messages', item.id]">
+                                <i class="fa fa-15x fa-comments-o"></i>
+                              </a>
+                              <a *ngIf="item.contactType == 'email'" class="btn-clean b-close  ml-auto" [href]="'mailto:'+item.contact">
+                                <i class="fa fa-15x fa-envelope-o"></i>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-12 my-2" *ngIf="vendorSelectedItems">
+                        <div *ngFor="let item of vendorSelectedItems">
+                          <div class="d-flex row mx-0">
+                            <div class="col-sm d-flex">
+                              <!--button class="btn-clean b-close" (click)="deleteNewVendor(item.id)">
+                                <i class=" fa text-danger fa-15x fa-minus-circle"></i>
+                              </button--->
+                              <span class="ml-3" *ngIf="item.name">{{item.name}} <small>({{item.contact}})</small></span>
+                              <span class="ml-3" *ngIf="item.itemName">{{item.itemName}}</span>
+                            </div>
+                            <div class="col-sm d-flex">
+                              <span class="mr-3 ml-auto text-muted" *ngIf="item.itemName">REQUEST SENT</span>
+                              <a class="btn-clean b-close  ml-auto" [routerLink]="['/messages', item.id]">
+                                <i class="fa  fa-15x fa-comments-o"></i>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-12">
+                        <small>Job Link: <a target="_blank" href="{{bitlyURL}}"> <u class="text-primary">{{bitlyURL}}</u></a></small><button
+                          ngxClipboard class="btn btn-link" [cbContent]="bitlyURL">Copy</button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div class="chat-item" data-class>
-                <a href="#" class="avatar w-40">
-                  <span class="w-40 avatar circle pms-color">
-                    <i class="on b-white avatar-right"></i>
-                    TN
-                  </span>
-                </a>
-                <div class="chat-body">
-                  <div class="chat-content rounded msg">
-                    My kitchen sink is clogged again
-                  </div>
-                  <div class="chat-date date">
-                    Rigth now
+              <div class="col-sm-12">
+                <div class="box">
+                  <div class="box-body w-100">
+                    <span><strong>Notes:</strong></span>
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <div *ngIf="editDataRequest.notes?.length > 0">
+                          <ul class="list inset">
+                            <li class="list-item" *ngFor="let item of editDataRequest.notes">
+                              <div class="row w-100 m-0">
+                                <div class="col-sm-2">
+                                  <div>
+                                    <span class="w-25 m-auto circle bg-secondary avatar">
+                                      <span class="fa text-white fa-user"></span>
+                                    </span>
+                                    <small class="d-block text-center">{{item.authorName}}</small>
+                                  </div>
+                                </div>
+                                <div class="col-sm-10">
+                                  <div class="list-body">
+                                    <div>
+                                      <span>{{item.content}}</span>
+                                    </div>
+                                    <small class="text-muted text-ellipsis">{{item.date | date:'medium'}}</small>
+                                  </div>
+                                </div>
+                              </div>
+                            </li>
+                          </ul>
+                          <textarea name="" placeholder="Add Note" [ngClass]="{'d-none': newNotes?.length > 0}" class="form-control"
+                            id="" [(ngModel)]="newNote" cols="30" rows="3"></textarea>
+                          <button class="md-btn md-raised mb-2 mt-2 ml-auto danger" [ngClass]="{'d-none': newNotes?.length > 0}"
+                            (click)="addNote()" [disabled]="newNote?.length < 1">Add
+                            Note</button>
+                        </div>
+                        <div *ngIf="newNotes?.length > 0">
+                          <ul class="list inset">
+                            <li class="list-item" *ngFor="let item of newNotes">
+                              <div class="row w-100 m-0">
+                                <div class="col-sm-2">
+                                  <div>
+                                    <span class="w-25 m-auto circle bg-secondary avatar">
+                                      <span class="fa text-white fa-user"></span>
+                                    </span>
+                                    <small class="d-block text-center">{{item.authorName}}</small>
+                                  </div>
+                                </div>
+                                <div class="col-sm-10">
+                                  <div class="list-body">
+                                    <div>
+                                      <span>{{item.content}}</span>
+                                    </div>
+                                    <small class="text-muted text-ellipsis">{{item.date | date:'medium'}}</small>
+                                  </div>
+                                </div>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                        <div *ngIf="editDataRequest.notes?.length < 1">
+                          <textarea name="" placeholder="Include any note relevant to the issue for your team to see it."
+                            class="form-control" id="" [(ngModel)]="newNote" cols="30" rows="10" [ngClass]="{'d-none': newNotes?.length > 0}"></textarea>
+                          <button class="md-btn md-raised mb-2 mt-2 ml-auto danger" [ngClass]="{'d-none': newNotes?.length > 0}"
+                            (click)="addNote()" [disabled]="newNote?.length < 1">Add
+                            Note</button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div class="chat-item" data-class="alt">
-                <a href="#" class="avatar w-40">
-                  <span class="w-40 avatar circle jack-color">
-                    <i class="on b-white avatar-right"></i>
-                    Jack
-                  </span>
-                </a>
-                <div class="chat-body">
-                  <div class="chat-content rounded msg">
-                    Looks like a new request for
-                    <span style="display: inline;">
-                      <i>plumbing</i>
-                    </span>. Do you want to
-                    <span style="display: inline;">
-                      <b>auto-dispatch</b>
-                    </span> to vendors?
+              <div class="col-sm-12">
+                <div class="row mx-0">
+                  <!--div class="col-7 my-3 px-0">
+                    <strong class="mb-2 d-flex">Status</strong>
+                    <angular2-multiselect [data]="statusList" *ngIf="statusList" [(ngModel)]="statusSelectedItems"
+                      [settings]="statusSettings">
+                    </angular2-multiselect>
+                  </div-->
+                  <div class="col-7 my-3 px-0">
+                    <strong class="mb-2 d-flex">Edit Vendor</strong>
+                    <angular2-multiselect class="" [data]="vendorList" [(ngModel)]="vendorSelectedItems" [settings]="vendorSettings">
+                    </angular2-multiselect>
                   </div>
-                  <div class="chat-content rounded msg">
-                    <button class="btn-sm btn-rounded primary b-2x" data-dismiss="modal">Select vendors</button>&nbsp;
-                    <button class="btn-sm btn-rounded primary b-2x" data-toggle="modal" data-target="#m-a-f">Vendors
-                      pool</button>
+                  <div class="col-7 my-3 px-0">
+                    <div class="input-group pr-5">
+                      <span class="input-group-btn d-flex">
+                        <span class="d-flex m-auto"><Strong>Total Cost:</Strong></span>
+                      </span>
+                      <input type="number" class="form-control ml-2" [ngClass]="status ? 'd-block' : 'd-none'"
+                        [(ngModel)]="newCost">
+                      <h5 class="mb-0" [ngClass]="status ? 'd-none' : 'd-flex'"> <span class="m-auto d-flex">${{newCost}}</span></h5>
+                      <button class="btn btn-link" (click)="status=!status">Change</button>
+                    </div>
                   </div>
-                  <div class="chat-date date">
-                    Rigth now (only visible for you)
+                  <div class="col-7 my-3 px-0" *ngIf="!isCompleted">
+                    <!--strong class="mb-2 d-flex">Status: {{currentStatus}}</strong-->
+                    <label class="container">Mark request status as completed
+                      <input type="checkbox" [(ngModel)]="setCompleted" [ngModelOptions]="{standalone: true}"/>
+                      <span class="checkmark"></span>
+                    </label>
+                  </div>
+                  <div class="col-sm-12 px-0 mt-3 whitespace">
+                    <button class="md-btn md-raised mb-2 blue" data-dismiss="modal" (click)="saveEdit()">SAVE CHANGES</button>
+                    <button class="md-btn md-flat mb-2 text-primary" id="cancelE" data-dismiss="modal" (click)="cancelEdit()">CANCEL</button>
                   </div>
                 </div>
               </div>
@@ -378,4 +541,27 @@
       </div>
     </div>
   </div>
+  <modal #modalmessage id="backdrop">
+    <modal-header [show-close]="true">
+      <h4 class="modal-title">{{modalTitle}}</h4>
+    </modal-header>
+    <modal-body>
+      {{modalBody}}
+    </modal-body>
+    <modal-footer>
+      <button type="button" class="btn btn-primary" (click)="modalmessage.close()">Close</button>
+    </modal-footer>
+  </modal>
+  <modal #modalDelete id="backdrop">
+    <modal-header [show-close]="true">
+      <h4 class="modal-title">{{modalTitle}}</h4>
+    </modal-header>
+    <modal-body>
+      {{modalBody}}
+    </modal-body>
+    <modal-footer>
+      <button type="button" class="btn btn-primary" (click)="modalDelete.close()">No</button>
+      <button type="button" class="btn btn-danger" (click)="removeRequest()">Yes</button>
+    </modal-footer>
+  </modal>
 </div>

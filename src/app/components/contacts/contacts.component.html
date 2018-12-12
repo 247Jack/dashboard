@@ -1,24 +1,23 @@
-  <ng4-loading-spinner> </ng4-loading-spinner>
-  <div id="content" class="app-content box-shadow-0" role="main">
-    <div class="content-header white  box-shadow-1" id="content-header">
-      <div class="navbar navbar-expand-lg">
-        <!-- btn to toggle sidenav on small screen -->
-        <a class="d-lg-none mx-2" data-toggle="modal" data-target="#aside">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512">
-            <path d="M80 304h352v16H80zM80 248h352v16H80zM80 192h352v16H80z" />
-          </svg>
-        </a>
-        <!-- Page title -->
-        <div class="navbar-text nav-title flex" id="pageTitle">Contacts</div>
-
-      </div>
+<ng4-loading-spinner> </ng4-loading-spinner>
+<div id="content" class="app-content box-shadow-0" role="main">
+  <div class="content-header white  box-shadow-1" id="content-header">
+    <div class="navbar navbar-expand-lg">
+      <!-- btn to toggle sidenav on small screen -->
+      <a class="d-lg-none mx-2" data-toggle="modal" data-target="#aside">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512">
+          <path d="M80 304h352v16H80zM80 248h352v16H80zM80 192h352v16H80z" />
+        </svg>
+      </a>
+      <!-- Page title -->
+      <div class="navbar-text nav-title flex" id="pageTitle">Contacts</div>
     </div>
-    <div class="content-main d-flex flex" id="content-main">
-      <div class="d-flex flex" data-plugin="user">
-        <div class="fade aside aside-sm b-r height-contacs" id="content-aside">
-          <div class="modal-dialog d-flex flex-column w-md light lt" id="user-nav">
-            <div class="navbar white no-radius box-shadow pos-rlt">
-              <!--button class="white btn-border" id="arrow-new-contact" data-target="#upload-contacts" data-toggle="modal" data-toggle-class="fade-right"
+  </div>
+  <div class="content-main d-flex flex" id="content-main">
+    <div class="d-flex flex" data-plugin="user">
+      <div class="fade aside aside-sm b-r height-contacs" id="content-aside">
+        <div class="modal-dialog d-flex flex-column w-md light lt" id="user-nav">
+          <div class="navbar white no-radius box-shadow pos-rlt">
+            <!-- <button class="white btn-border" id="arrow-new-contact" data-target="#upload-contacts" data-toggle="modal" data-toggle-class="fade-right"
                 data-toggle-class-target="#animate">
                 <span>
                   <div class="box-color text-color pos-rlt arrow-contact">
@@ -27,87 +26,100 @@
                   </div>
                   <i class="fa fa-upload"></i>
                 </span>
-              </button-->
-              <!--button class="white btn-border" id="arrow-new-user" data-target="#new-contact" data-toggle="modal" data-toggle-class="fade-right"
-                data-toggle-class-target="#animate">
-                <span>
-                  <div class="box-color text-color pos-rlt arrow-user">
-                    <span class="arrow top pull-left b-white"></span>
-                    <div class="box-body">Add new contacts to the platform</div>
-                  </div>
-                  <i class="fa fa-plus-square"></i>
-                </span>
-              </button-->
-            </div>
-            <div class="scrollable hover">
-              <div class="sidenav mt-2">
-                <nav class="nav-border b-primary" data-nav>
-                  <ul class="nav">
-                    <li>
-                      <a class="item-class" [routerLink]="['/contacts']" queryParamsHandling="merge" [queryParams]="{ typecontact: 'managers' }">
-                        <span class="nav-badge">
-                          <b class="badge badge-sm badge-pill primary">{{contactsPropertyManagers.length}}</b>
-                        </span>
-                        <span class="nav-text">Property managers</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="item-class" [routerLink]="['/contacts']" queryParamsHandling="merge" [queryParams]="{ typecontact: 'users' }">
-                        <span class="nav-badge">
-                          <b class="badge badge-sm badge-pill primary">{{contactsUsers.length}}</b>
-                        </span>
-                        <span class="nav-text">Tenants</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="item-class" [routerLink]="['/contacts']" queryParamsHandling="merge" [queryParams]="{ typecontact: 'providers' }">
-                        <span class="nav-badge">
-                          <b class="badge badge-sm badge-pill primary">{{contactsProviders.length}}</b>
-                        </span>
-                        <span class="nav-text">Providers</span>
-                      </a>
-                    </li>
-                  </ul>
-                </nav>
-              </div>
-            </div>
-            <!-- / -->
-          </div>
-        </div>
-        <div class="d-flex flex" id="content-body">
-          <div class="d-flex flex-column flex" id="user-list">
-            <div class="navbar white no-radius box-shadow pos-rlt">
-                <div class="input-group">
-                  <input type="text" class="form-control form-control-sm search" placeholder="Search" [(ngModel)]="filtercontacts" id="input-contact">
-                  <span class="input-group-btn">
-                    <button class="btn btn-default btn-sm no-shadow" type="button">
-                      <i class="fa fa-search"></i>
-                    </button>
-                  </span>
+              </button> -->
+            <button class="white btn-border" id="arrow-new-user" data-target="#new-contact" data-toggle="modal"
+              data-toggle-class="fade-right" data-toggle-class-target="#animate">
+              <!-- <button class="md-btn md-raised mb-2 blue" (click)="saveNewContact()">SAVE CONTACT</button> -->
+              <span>
+                <div class="box-color text-color pos-rlt arrow-user">
+                  <span class="arrow top pull-right b-white"></span>
+                  <div class="box-body">Add new contacts to the platform</div>
                 </div>
-            </div>
-            <div class="d-flex flex scroll-y">
-              <div class="d-flex flex-column flex white lt">
-                <div class="scroll-y">
-                  <div class="list animate fadeIn">
-                    <div class="list-item " *ngFor="let item of currentContacts | filter:filtercontacts">
-                      <span class="w-40 avatar circle {{item.color}}">
-                        {{item.initials}}
+                <i class="fa fa-plus-square"></i>
+              </span>
+              Add Contact
+            </button>
+          </div>
+          <div class="scrollable hover">
+            <div class="sidenav mt-2">
+              <nav class="nav-border b-primary" data-nav>
+                <ul class="nav">
+                  <li>
+                    <a class="item-class" [routerLink]="['/contacts']" queryParamsHandling="merge" [queryParams]="{ typecontact: 'all' }">
+                      <span class="nav-badge">
+                        <b class="badge badge-sm badge-pill primary">{{contactsPropertyManagers.length +
+                          contactsTenants.length + contactsTenants.length}}</b>
                       </span>
-                      <div class="list-body">
-                        <a [routerLink]="['/contacts', item.id]" queryParamsHandling="merge">
-                          <!--span class="item-title _500" data-target="#user" data-toggle="modal" data-toggle-class="fade-right" data-toggle-class-target="#animate"-->
-                          <span class="item-title _500">
-                            {{item.name}}
-                          </span>
-                        </a>
-                        <a class="float-right" [routerLink]="['/messages', item.id]" queryParamsHandling="merge" *ngIf="item.contact_type === 'user' || item.contact_type === 'provider'" >
-                          <i class="fa fa-comment"></i>
-                        </a>
-                        <div class="item-except text-sm text-muted h-1x">
-                        </div>
+                      <span class="nav-text">All Contacts</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="item-class" [routerLink]="['/contacts']" queryParamsHandling="merge" [queryParams]="{ typecontact: 'managers' }">
+                      <span class="nav-badge">
+                        <b class="badge badge-sm badge-pill primary">{{contactsPropertyManagers.length}}</b>
+                      </span>
+                      <span class="nav-text">Property managers</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="item-class" [routerLink]="['/contacts']" queryParamsHandling="merge" [queryParams]="{ typecontact: 'tenants' }">
+                      <span class="nav-badge">
+                        <b class="badge badge-sm badge-pill primary">{{contactsTenants.length}}</b>
+                      </span>
+                      <span class="nav-text">Tenants</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="item-class" [routerLink]="['/contacts']" queryParamsHandling="merge" [queryParams]="{ typecontact: 'providers' }">
+                      <span class="nav-badge">
+                        <b class="badge badge-sm badge-pill primary">{{contactsTenants.length}}</b>
+                      </span>
+                      <span class="nav-text">Providers</span>
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+          <!-- / -->
+        </div>
+      </div>
+      <div class="d-flex flex" id="content-body">
+        <div class="d-flex flex-column flex" id="user-list">
+          <div class="navbar white no-radius box-shadow pos-rlt">
+            <div class="input-group">
+              <input type="text" class="form-control form-control-sm search" placeholder="Search" [(ngModel)]="filtercontacts"
+                id="input-contact">
+              <span class="input-group-btn">
+                <button class="btn btn-default btn-sm no-shadow" type="button">
+                  <i class="fa fa-search"></i>
+                </button>
+              </span>
+            </div>
+          </div>
+          <div class="d-flex flex scroll-y">
+            <div class="d-flex flex-column flex white lt">
+              <div class="scroll-y">
+                <div class="list animate fadeIn">
+                  <div class="list-item " *ngFor="let item of currentContacts | filter:filtercontacts">
+                    <span class="w-40 avatar circle {{item.color}}">
+                      {{item.initials}}
+                    </span>
+                    <div class="list-body">
+                      <a [routerLink]="['/contacts', item.id]" queryParamsHandling="merge">
+                        <!--span class="item-title _500" data-target="#user" data-toggle="modal" data-toggle-class="fade-right" data-toggle-class-target="#animate"-->
+                        <span class="item-title _500">
+                          {{item.name}}
+                        </span>
+                      </a>
+                      <a class="float-right" [routerLink]="['/messages', item.id]" queryParamsHandling="merge" *ngIf="item.mobile &&
+                      (item.contact_type === 'user' || item.contact_type === 'provider')">
+                        <i class="fa fa-comment"></i>
+                      </a>
+                      <div class="item-except text-sm text-muted h-1x">
                       </div>
-                      <!--div>
+                    </div>
+                    <!--div>
                         <div class="item-action dropdown">
                           <a href="#" data-toggle="dropdown" class="text-muted">
                             <i class="fa fa-fw fa-ellipsis-v"></i>
@@ -123,24 +135,24 @@
                           </div>
                         </div>
                       </div-->
-                    </div>
-                  </div>
-                  <div class="no-result hide">
-                    <div class="p-4 text-center">
-                      No Results
-                    </div>
                   </div>
                 </div>
-                <div class="p-3 b-t mt-auto">
-                  <div class="d-flex align-items-center">
-                    <div class="flex">
-                      <div class="pagination pagination-xs">
-                      </div>
+                <div class="no-result hide">
+                  <div class="p-4 text-center">
+                    No Results
+                  </div>
+                </div>
+              </div>
+              <div class="p-3 b-t mt-auto">
+                <div class="d-flex align-items-center">
+                  <div class="flex">
+                    <div class="pagination pagination-xs">
                     </div>
                   </div>
                 </div>
               </div>
-              <!-- <div class="d-flex flex-column b-l" style="width: 50px">
+            </div>
+            <!-- <div class="d-flex flex-column b-l" style="width: 50px">
                 <div class="scrollable hover">
                   <div class="text-center text-sm py-3 d-flex flex-column" id="filter">
                     <a href="contacts#">A</a>
@@ -172,269 +184,452 @@
                   </div>
                 </div>
               </div> -->
-            </div>
           </div>
         </div>
-        <button id="openModalButton" [hidden]="true" data-target="#user" data-toggle="modal" data-toggle-class="fade-right" data-toggle-class-target="#animate">Open Modal</button>
-        <div class="modal fade show" id="user" data-backdrop="true" data-class="modal-open-aside">
-          <div class=" modal-right w-xl w-ssd white b-l">
-            <div class="d-flex flex-column h-100">
-              <div class="d-flex flex" id="profile">
-                <div class="modal-dialog modal-right w-auto-sm white dk b-l">
-                  <div class="d-flex flex-column h-100 w-100 white b-r">
-                    <div class="scroll-y" id="border">
-                      <div class="px-4 ml-4" [ngSwitch]="currentContactType" id="user-edit">
-                        <div *ngSwitchCase="'tenant'" class="row">
-                          <div class="col-sm-12">
-                            <div class=" pb-0 p-4  mt-3 d-flex flex-column align-items-center">
-                              <span class="w-40 avatar circle tenant-color">
-                                {{editResidentData.initials}}
-                              </span>
-                            </div>
-                          </div>
-                          <div class="col-sm-6">
-                            <label for="">First Name</label>
-                            <input type="text" class="form-control" [(ngModel)]="editResidentData.firstName" disabled="disabled">
-                          </div>
-                          <div class="col-sm-6">
-                            <label for="">Last Name</label>
-                            <input type="text" class="form-control" [(ngModel)]="editResidentData.lastName" disabled="disabled">
-                          </div>
-                          <div class="col-sm-12">
-                            <label for="">Portfolio</label>
-                            <input type="text" class="form-control" [(ngModel)]="editResidentData.portfolio" disabled="disabled">
-                          </div>
-                          <!--div class="col-sm-6">
-                            <label for="">Unit abbr name</label>
-                            <input type="text" class="form-control" [(ngModel)]="editResidentData.unit_abbr_name" disabled="disabled">
-                          </div-->
-                          <div class="col-sm-12">
-                            <label for="">Address</label>
-                            <input type="text" class="form-control" [(ngModel)]="editResidentData.address" disabled="disabled">
-                          </div>
-                          <div class="col-sm-6">
-                            <label for="">Address 2</label>
-                            <input type="text" class="form-control" [(ngModel)]="editResidentData.address2" disabled="disabled">
-                          </div>
-                          <div class="col-sm-6">
-                            <label for="">Service threshold</label>
-                            <input type="number" class="form-control" [(ngModel)]="editResidentData.service_threshold" disabled="disabled">
-                          </div>
-                          <div class="col-sm-6">
-                            <label for="">City</label>
-                            <input type="text" class="form-control" [(ngModel)]="editResidentData.city" disabled="disabled">
-                          </div>
-                          <div class="col-sm-6">
-                            <label for="">ZIP</label>
-                            <input type="text" class="form-control" [(ngModel)]="editResidentData.zip" disabled="disabled">
-                          </div>
-                          <div class="col-sm-6">
-                            <label for="">Phone</label>
-                            <input type="text" class="form-control" [(ngModel)]="editResidentData.phone" disabled="disabled">
-                          </div>
-                          <div class="col-sm-6">
-                            <label for="">Work phone</label>
-                            <input type="text" class="form-control" [(ngModel)]="editResidentData.workPhone" disabled="disabled">
-                          </div>
-                          <div class="col-sm-12">
-                            <label for="">Email</label>
-                            <input type="email" class="form-control" [(ngModel)]="editResidentData.email" disabled="disabled">
-                          </div>
-                          <div class="col-sm-4">
-                            <label for="">Alexa ID</label>
-                            <input type="text" class="form-control" [(ngModel)]="editResidentData.alexa" disabled="disabled">
-                          </div>
-                          <div class="col-sm-4">
-                            <label for="">FB ID</label>
-                            <input type="text" class="form-control" [(ngModel)]="editResidentData.fb" disabled="disabled">
-                          </div>
-                          <div class="col-sm-4">
-                            <label for="">SMS number</label>
-                            <input type="text" class="form-control" [(ngModel)]="editResidentData.sms" disabled="disabled">
+      </div>
+      <button id="openModalButton" [hidden]="true" data-target="#user" data-toggle="modal" data-toggle-class="fade-right"
+        data-toggle-class-target="#animate">Open Modal</button>
+      <div class="modal fade show" id="user" data-backdrop="true" data-backdrop="static" data-class="modal-open-aside">
+        <div class="modal-right w-xl w-ssd white b-l">
+          <div class="d-flex flex-column h-100">
+            <div class="d-flex flex" id="profile">
+              <div class="modal-dialog modal-right w-auto-sm white dk b-l">
+                <div class="d-flex flex-column h-100 w-100 white b-r">
+                  <div class="scroll-y" id="border">
+                    <button class="float-left btn btn-clean mt-3 ml-2 b-close" data-dismiss="modal" id="cancelEdit"
+                      (click)="cancelEditContact()">
+                      <i class="fa fa-close"></i>
+                    </button>
+                    <button (click)="setupContactForm(true)" class="d-block md-btn md-flat mt-2 text-primary stack-right"
+                      [disabled]="enableEditFields" *ngIf="currentContactType != 'property manager'">
+                      <i class="fa fa-edit"></i>
+                      Edit
+                    </button>
+
+                    <form #editContactForm="ngForm" [ngSwitch]="currentContactType" id="user-edit" class="px-4 ml-4"
+                      validate (ngSubmit)="onSubmitEdit(editContactForm)">
+                      <!-- <div class="row">
+                        <button (click)="openModalDelete()" class="d-block md-btn md-flat mt-2 text-primary">
+                          <i class="fa fa-trash-o"></i>
+                          Remove Request
+                        </button>
+                      </div> -->
+                      <div *ngSwitchCase="'tenant'" class="row">
+                        <div class="col-sm-12">
+                          <div class="pt-0 pb-4 mt-3 d-flex flex-column align-items-center">
+                            <span class="w-40 avatar circle tenant-color">
+                              {{editResidentData.initials}}
+                            </span>
                           </div>
                         </div>
-                        <div *ngSwitchCase="'vendor'" class="row">
-                          <div class="col-sm-12">
-                            <div class=" pb-0 p-4  mt-3 d-flex flex-column align-items-center">
-                              <span class="w-40 avatar circle vendor-color">
-                                {{editVendorData.initials}}
-                              </span>
-                            </div>
-                          </div>
-                          <div class="col-sm-12">
-                            <label for="">Name</label>
-                            <input type="text" class="form-control" [(ngModel)]="editVendorData.name" disabled="disabled">
-                          </div>
-                          <div class="col-sm-12">
-                            <label for="">Job type</label>
-                            <input type="text" class="form-control" [(ngModel)]="editVendorData.jobType" disabled="disabled">
-                          </div>
-                          <div class="col-sm-12">
-                            <label for="">Phone</label>
-                            <input type="text" class="form-control" [(ngModel)]="editVendorData.phone" disabled="disabled">
-                          </div>
-                          <div class="col-sm-12">
-                            <label for="">Address</label>
-                            <input type="text" class="form-control" [(ngModel)]="editVendorData.address" disabled="disabled">
-                          </div>
-                          <div class="col-sm-12">
-                            <label for="">Email</label>
-                            <input type="email" class="form-control" [(ngModel)]="editVendorData.email" disabled="disabled">
-                          </div>
-                          <div class="col-sm-12">
-                            <label for="">Conmments</label>
-                            <input type="text" class="form-control" [(ngModel)]="editVendorData.coments" disabled="disabled">
-                          </div>
+                        <div class="col-sm-6 form-group">
+                          <label for="firstName">First Name</label>
+                          <input [(ngModel)]="editResidentData.firstName" #firstName="ngModel" id="firstName" name="firstName"
+                            type="text" class="form-control capitalized" maxlength="100" pattern="^[a-zA-Z ]*$"
+                            required (keyup)="updateInitials($event, 0)" (change)="editResidentData.firstName=capitalize(editResidentData.firstName);"
+                            [disabled]="!enableEditFields">
                         </div>
-                        <div *ngSwitchCase="'property manager'" class="row">
-                          <div class="col-sm-12">
-                            <div class=" pb-0 p-4  mt-3 d-flex flex-column align-items-center">
-                              <span class="w-40 avatar circle pms-color">
-                                {{editPMData.initials}}
-                              </span>
-                            </div>
-                          </div>
-                          <div class="col-sm-6">
-                            <label for="">First Name</label>
-                            <input type="text" class="form-control" [(ngModel)]="editPMData.name" disabled="disabled">
-                          </div>
-                          <div class="col-sm-6">
-                            <label for="">Last Name</label>
-                            <input type="text" class="form-control" [(ngModel)]="editPMData.surname" disabled="disabled">
-                          </div>
-                          <div class="col-sm-12">
-                            <label for="">Email</label>
-                            <input type="email" class="form-control" [(ngModel)]="editPMData.email" disabled="disabled">
-                          </div>
-                          <div class="col-sm-6">
-                            <label for="">Phone</label>
-                            <input type="text" class="form-control" [(ngModel)]="editPMData.phone" disabled="disabled">
-                          </div>
-                          <div class="col-sm-12">
-                            <label for="">Address</label>
-                            <input type="text" class="form-control" [(ngModel)]="editPMData.address" disabled="disabled">
-                          </div>
+                        <div class="col-sm-6 form-group">
+                          <label for="lastName">Last Name</label>
+                          <input [(ngModel)]="editResidentData.lastName" #lastName="ngModel" id="lastName" name="lastName"
+                            type="text" class="form-control capitalized" maxlength="100" pattern="^[a-zA-Z ]*$"
+                            required (keyup)='updateInitials($event, 1)' (change)="editResidentData.lastName=capitalize(editResidentData.lastName);"
+                            [disabled]="!enableEditFields">
+                        </div>
+                        <div class="col-sm-12 form-group">
+                          <label for="portfolio">Portfolio</label>
+                          <input [(ngModel)]="editResidentData.portfolio" #portfolio="ngModel" id="portfolio" name="portfolio"
+                            type="text" class="form-control" maxlength="500" [disabled]="!enableEditFields">
+                        </div>
+                        <!-- <div class="col-sm-6">
+                              <label for="">Unit abbr name</label>
+                              <input [(ngModel)]="editResidentData.unit_abbr_name" type="text" class="form-control" required>
+                            </div> -->
+                        <div class="col-sm-12 form-group">
+                          <label for="service_threshold">Service threshold</label>
+                          <input [(ngModel)]="editResidentData.service_threshold" #service_threshold="ngModel" id="service_threshold"
+                            name="service_threshold" type="number" class="form-control" required maxlength="100"
+                            pattern="^[0-9\.]*$" [disabled]="!enableEditFields">
+                        </div>
+                        <div class="col-sm-12 form-group">
+                          <label for="address">Address</label>
+                          <input [(ngModel)]="editResidentData.address" #address="ngModel" id="address" name="address"
+                            type="text" class="form-control" required maxlength="500" [disabled]="!enableEditFields">
+                        </div>
+                        <div class="col-sm-12 form-group">
+                          <label for="address2">Address 2</label>
+                          <input [(ngModel)]="editResidentData.address2" #address2="ngModel" id="address2" name="address2"
+                            type="text" class="form-control" maxlength="500" [disabled]="!enableEditFields">
+                        </div>
+                        <div class="col-sm-6 form-group">
+                          <label for="city">City</label>
+                          <input [(ngModel)]="editResidentData.city" #city="ngModel" id="city" name="city" type="text"
+                            class="form-control" required maxlength="100" [disabled]="!enableEditFields">
+                        </div>
+                        <div class="col-sm-6 form-group">
+                          <label for="zip">ZIP</label>
+                          <input [(ngModel)]="editResidentData.zip" #zip="ngModel" id="zip" name="zip" type="text"
+                            class="form-control" required (keypress)="onlyNumberKey($event)" mimlength="3" pattern="^[0-9]*$"
+                            [disabled]="!enableEditFields">
+                        </div>
+                        <!-- <div class="col-sm-6 form-group">
+                          <label for="phone">Phone</label>
+                          <input type="text" class="form-control" id="phone" name="phone" [(ngModel)]="editResidentData.phone"
+                            #phone="ngModel" required (keypress)="onlyyNumberKey($event)" maxlength="11"minlength="10">
+                        </div> -->
+                        <div class="col-sm-12 form-group">
+                          <label for="email">Email</label>
+                          <input [(ngModel)]="editResidentData.email" #email="ngModel" id="email" name="email" type="email"
+                            class="form-control" maxlength="100" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                            [disabled]="!enableEditFields">
+                        </div>
+                        <div class="col-sm-12 form-group">
+                          <label for="phone">SMS Phone Number</label>
+                          <input [(ngModel)]="editResidentData.phone" #phone="ngModel" id="phone" name="phone" type="text"
+                            class="form-control" maxlength="25" minlength="10" required pattern="^[0-9 \(\)\-\+]*$"
+                            asyncValidator [disabled]="!enableEditFields">
+                          <!-- {{ json }}
+                          {{ phone.control.errors | json }} -->
+                        </div>
+                        <div class="col-sm-12 form-group">
+                          <label for="workPhone">Work Phone</label>
+                          <input [(ngModel)]="editResidentData.workPhone" #workPhone="ngModel" id="workPhone" name="workPhone"
+                            type="text" class="form-control" (keypress)="onlyNumberKey($event)" maxlength="10"
+                            minlength="10" [disabled]="!enableEditFields">
+                        </div>
+                        <!-- <div class="col-sm-12 form-group">
+                          <label for="sms">SMS number</label>
+                          <input [(ngModel)]="editResidentData.sms" #sms="ngModel" id="sms" name="sms"
+                             type="text" class="form-control" (keypress)="onlyNumberKey($event)" maxlength="10" minlength="10">
+                        </div> -->
+                        <div class="col-sm-6 form-group">
+                          <label for="alexa">Alexa ID</label>
+                          <input [(ngModel)]="editResidentData.alexa" #alexa="ngModel" id="alexa" name="alexa" type="text"
+                            class="form-control" [disabled]="!enableEditFields">
+                        </div>
+                        <div class="col-sm-6 form-group">
+                          <label for="ghome">Google Home ID</label>
+                          <input [(ngModel)]="editResidentData.ghome" #ghome="ngModel" id="ghome" name="ghome" type="text"
+                            class="form-control" [disabled]="!enableEditFields">
+                        </div>
+                        <div class="col-sm-12 form-group">
+                          <label for="fb">FB ID</label>
+                          <input [(ngModel)]="editResidentData.fb" #fb="ngModel" id="fb" name="fb" type="text" class="form-control"
+                            [disabled]="!enableEditFields">
                         </div>
                       </div>
-                      <div id="buttons" class="my-3">
-                        <!--button class="btn btn-outline btn-rounded text-success btn-cancel" (click)="updateContact()"
-                          aria-expanded="false">Update</button>
-                        <button class="btn btn-outline btn-rounded text-success btn-cancel" id="collapse-inputs" (click)="cancelEditContact()" data-dismiss="modal">Cancel</button-->
+                      <div *ngSwitchCase="'vendor'" class="row">
+                        <div class="col-sm-12">
+                          <div class=" pb-0 p-4  mt-3 d-flex flex-column align-items-center">
+                            <span class="w-40 avatar circle vendor-color">
+                              {{editVendorData.initials}}
+                            </span>
+                          </div>
+                        </div>
+                        <div class="col-sm-12 form-group">
+                          <label for="vendorFirstName">Name</label>
+                          <input type="text" class="form-control capitalized" id="name" name="name" required
+                            [(ngModel)]="editVendorData.name" (change)="editVendorData.name=capitalize(editVendorData.name);"
+                            #name="ngModel" (keyup)="updateInitials($event, 0)" maxlength="100" required pattern="^[a-zA-Z ]*$"
+                            [disabled]="!enableEditFields">
+                        </div>
+                        <!-- <div class="col-sm-6 form-group">
+                          <label for="vendorLastName">Last Name</label>
+                          <input type="text" class="form-control capitalized" id="vendorLastName" name="vendorLastName"
+                            (change)="editVendorData.vendorLastName=capitalize(editVendorData.vendorLastName);"
+                            [(ngModel)]="editVendorData.vendorLastName" #vendorLastName="ngModel" (keyup)="updateInitials($event, 1)"
+                            maxlength="100" required pattern="^[a-zA-Z ]*$" [disabled]="!enableEditFields">
+                        </div> -->
+                        <!-- <div class="col-sm-12 form-group">
+                          <label for="jobType">Company Name</label>
+                          <input type="text" class="form-control capitalized" id="jobType" name="jobType" [(ngModel)]="editVendorData.jobType"
+                            #jobType="ngModel" maxlength="100" required [disabled]="!enableEditFields">
+                        </div> -->
+                        <div class="col-sm-12 form-group">
+                          <label for="services">Services</label>
+                          <angular2-multiselect name="services" id="services" [data]="issuelist" [(ngModel)]="issuesSelectedItems"
+                            [settings]="issuesettings" [disabled]="!enableEditFields"
+                            (onSelect)="onItemSelect($event)">
+                          </angular2-multiselect>
+                        </div>
+                        <div class="col-sm-12 form-group">
+                          <label for="Address">Address</label>
+                          <input type="text" class="form-control" id="Address" name="Address" [(ngModel)]="editVendorData.address"
+                            #address="ngModel" maxlength="500" [disabled]="!enableEditFields">
+                        </div>
+                        <div class="col-sm-12 form-group">
+                          <label for="phone">Mobile</label>
+                          <input type="text" class="form-control" id="phone" name="phone" [(ngModel)]="editVendorData.phone"
+                            #phone="ngModel" pattern="^[0-9 \(\)\-\+]*$" maxlength="25" minlength="10"
+                            asyncValidator [disabled]="!enableEditFields" [required]='!editVendorData.email' >
+                        </div>
+                        <!-- <div class="col-sm-6 form-group">
+                          <label for="ext">Ext</label>
+                          <input type="text" class="form-control" id="ext" name="ext" [(ngModel)]="editVendorData.ext"
+                            (keypress)="onlyNumberKey($event)" #ext="ngModel" maxlength="5" [disabled]="!enableEditFields">
+                        </div> -->
+                        <div class="col-sm-12 form-group">
+                          <label for="email">Email</label>
+                          <input type="email" class="form-control" id="email" name="email" [(ngModel)]="editVendorData.email"
+                            #email="ngModel"  [required]='!editVendorData.phone' pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" maxlength="100"
+                            [disabled]="!enableEditFields">
+                        </div>
+                        <div class="col-sm-12 form-group">
+                          <label for="comments">Comments</label>
+                          <input type="text" class="form-control" id="comments" name="comments" [(ngModel)]="editVendorData.comments"
+                            #comments="ngModel" maxlength="500" [disabled]="!enableEditFields">
+                        </div>
                       </div>
-                    </div>
+                      <div *ngSwitchCase="'property manager'" class="row">
+                        <div class="col-sm-12">
+                          <div class=" pb-0 p-4  mt-3 d-flex flex-column align-items-center">
+                            <span class="w-40 avatar circle pms-color">
+                              {{editPMData.initials}}
+                            </span>
+                          </div>
+                        </div>
+                        <div class="col-sm-6 form-group">
+                          <label for="name">First Name</label>
+                          <input type="text" class="form-control capitalized" id="name" name="name" required
+                            [(ngModel)]="editPMData.name" (change)="editPMData.name=capitalize(editPMData.name);" #name="ngModel"
+                            (keyup)="updateInitials($event, 0)" maxlength="100" required pattern="^[a-zA-Z ]*$"
+                            [disabled]="!enableEditFields">
+                        </div>
+                        <div class="col-sm-6 form-group">
+                          <label for="surname">Last Name</label>
+                          <input type="text" class="form-control capitalized" id="surname" name="surname" (change)="editPMData.surname=capitalize(editPMData.surname);"
+                            [(ngModel)]="editPMData.surname" #surname="ngModel" (keyup)="updateInitials($event, 1)"
+                            maxlength="100" required pattern="^[a-zA-Z ]*$" [disabled]="!enableEditFields">
+                        </div>
+                        <div class="col-sm-6 form-group">
+                          <label for="email">Email</label>
+                          <input type="email" class="form-control" id="email" name="email" [(ngModel)]="editPMData.email"
+                            #email="ngModel" required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" maxlength="100"
+                            [disabled]="!enableEditFields">
+                        </div>
+                        <div class="col-sm-6 form-group">
+                          <label for="phone">Phone</label>
+                          <input type="text" class="form-control" id="phone" name="phone" [(ngModel)]="editPMData.phone"
+                            #phone="ngModel" required pattern="^[0-9 \(\)\-\+]*$" maxlength="25" minlength="10"
+                            required asyncValidator [disabled]="!enableEditFields">
+                        </div>
+                        <div class="col-sm-12 form-group">
+                          <label for="Address">Address</label>
+                          <input type="text" class="form-control" id="Address" name="Address" [(ngModel)]="editPMData.address"
+                            #address="ngModel" maxlength="500" [disabled]="!enableEditFields">
+                        </div>
+                      </div>
+                      <div id="buttons" *ngIf="enableEditFields">
+                        <button class="md-btn md-raised mb-2 blue" type="submit" [disabled]="editContactForm.form.invalid || !enableEditFields">
+                          Update Contact
+                        </button>
+                        <button class="md-btn md-flat mb-2 text-primary" data-dismiss="modal" id="cancelEdit" (click)="cancelEditContact()">Cancel</button>
+                        <!-- <button class="md-btn md-flat mb-2 text-primary" data-dismiss="modal" oncl>Cancel</button> -->
+                      </div>
+                    </form>
+                    <!-- <button class="md-btn md-flat mb-2 text-primary" (click)="setNewTenantServices()">Cancel</button> -->
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="modal fade show" id="new-contact" data-backdrop="true" data-class="modal-open-aside">
-          <div class="modal-dialog modal-right w-xl white b-l new-contact-slider">
-            <div class="d-flex flex-column h-100">
-              <div class="d-flex flex" id="profile">
-                <div class="modal-dialog modal-right white dk b-l">
-                  <div class="d-flex flex-column h-100 w-100 white b-r">
-                    <div class="new-contact-title">
-                      <span>New Contact</span>
-                    </div>
-                    <div id="new-contact-select">
-                      <div class="col-sm-10 input-sm single-select">
-                        <select class="custom-select" [(ngModel)]="newContactType">
-                          <option value="" disabled selected>Add to group</option>
-                          <option value="user">Resident</option>
-                          <option value="vendor">Service provider</option>
-                          <option value="property_manager">Teammate</option>
-                        </select>
+      </div>
+      <div class="modal fade show" id="new-contact" data-backdrop="static" data-class="modal-open-aside">
+        <div class="modal-dialog modal-right w-xl white b-l new-contact-slider">
+          <div class="d-flex flex-column h-100">
+            <div class="d-flex flex" id="profile">
+              <div class="modal-dialog modal-right white dk b-l">
+                <div class="d-flex flex-column h-100 w-100 white b-r ">
+                  <div class="scroll-y" id="border">
+                    <button class="float-left btn btn-clean mt-3 ml-2 b-close" data-dismiss="modal" (click)="cancelNewContact()">
+                      <i class="fa fa-close"></i>
+                    </button>
+                    <div [ngSwitch]="newContactType" class="px-4 ml-4 text-centered">
+                      <div *ngSwitchCase="'tenant'">
+                        <div class="p-4 pb-0 d-flex flex-column align-items-center bp-0" [@fadeInOut] *ngIf="newTenantInitials.length > 0">
+                          <span class="w-40 avatar circle tenant-color">
+                            {{newTenantInitials.join('')}}
+                          </span>
+                        </div>
+                      </div>
+                      <div *ngSwitchCase="'vendor'">
+                        <div class="p-4 pb-0  d-flex flex-column align-items-center bp-0" [@fadeInOut] *ngIf="newVendorInitials.length > 0">
+                          <span class="w-40 avatar circle vendor-color">
+                            {{newVendorInitials.join('')}}
+                          </span>
+                        </div>
                       </div>
                     </div>
-                    <div class="col-sm-12 input-sm">
+                    <div class="col-xs-1">
+                      <div class="new-contact-title left">
+                        <span>New Contact</span>
+                      </div>
+                      <div id="new-contact-select">
+                        <div class=" input-sm single-select left">
+                          <select class="custom-select" [(ngModel)]="newContactType" (change)="onChange($event.target.value)">
+                            <option value="" disabled selected hidden>Add to group</option>
+                            <option value="tenant">Tenant</option>
+                            <option value="vendor">Service provider</option>
+                            <!-- <option value="property_manager">Teammate</option> -->
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <form #newResidentForm="ngForm" class="col-sm-12" (ngSubmit)="onSubmit(newResidentForm)"
+                      validate>
                       <div [ngSwitch]="newContactType" class="new-contact-scroll">
-                        <div *ngSwitchCase="'user'" class="row">
-                          <div class="col-sm-6">
-                            <label for="">First Name</label>
-                            <input type="text" class="form-control" [(ngModel)]="newResidentData.firstName">
+                        <!-- {{diagnostic}} -->
+                        <div *ngSwitchCase="'tenant'" class="row scroll-y">
+                          <div class="col-sm-6 form-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" class="form-control capitalized" id="firstName" name="firstName"
+                              #firstName="ngModel" [(ngModel)]="newResidentData.firstName" (keyup)="updateInitials($event, 0)"
+                              (change)="newResidentData.firstName=capitalize(newResidentData.firstName);" maxlength="100"
+                              required pattern="^[a-zA-Z ]*$">
+                            <!-- <div *ngIf="formSubmited && (firstName.valid || name.pristine)" class="alert alert-danger">
+                              Field Required
+                            </div> -->
                           </div>
-                          <div class="col-sm-6">
-                            <label for="">Last Name</label>
-                            <input type="text" class="form-control" [(ngModel)]="newResidentData.lastName">
+                          <div class="col-sm-6 form-group">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" class="form-control capitalized" id="lastName" name="lastName" #lastName="ngModel"
+                              [(ngModel)]="newResidentData.lastName" (keyup)='updateInitials($event, 1)' (change)="newResidentData.lastName=capitalize(newResidentData.lastName);"
+                              maxlength="100" required pattern="^[a-zA-Z ]*$">
                           </div>
-                          <div class="col-sm-12">
-                            <label for="">Portfolio</label>
-                            <input type="text" class="form-control" [(ngModel)]="newResidentData.portfolio">
+                          <div class="col-sm-12 form-group">
+                            <label for="portfolio">Portfolio</label>
+                            <input type="text" class="form-control" id="portfolio" name="portfolio" [(ngModel)]="newResidentData.portfolio"
+                              #portfolio="ngModel" maxlength="500">
                           </div>
-                          <div class="col-sm-6">
-                            <label for="">Unit abbr name</label>
-                            <input type="text" class="form-control" [(ngModel)]="newResidentData.unit_abbr_name">
+                          <!-- <div class="col-sm-6">
+                              <label for="">Unit abbr name</label>
+                              <input type="text" class="form-control" [(ngModel)]="newResidentData.unit_abbr_name" required>
+                            </div> -->
+                          <div class="col-sm-12 form-group">
+                            <label for="service_threshold">Service threshold</label>
+                            <input type="number" class="form-control" id="service_threshold" name="service_threshold"
+                              [(ngModel)]="newResidentData.service_threshold" #service_threshold="ngModel" required
+                              maxlength="100" pattern="^[0-9\.]*$">
                           </div>
-                          <div class="col-sm-6">
-                            <label for="">Service threshold</label>
-                            <input type="number" class="form-control" [(ngModel)]="newResidentData.service_threshold">
+                          <div class="col-sm-12 form-group">
+                            <label for="address">Address</label>
+                            <input type="text" class="form-control" id="address" name="address" [(ngModel)]="newResidentData.address"
+                              #address="ngModel" required maxlength="500">
                           </div>
-                          <div class="col-sm-12">
-                            <label for="">Address</label>
-                            <input type="text" class="form-control" [(ngModel)]="newResidentData.address">
+                          <div class="col-sm-12 form-group">
+                            <label for="address2">Address 2</label>
+                            <input type="text" class="form-control" id="address2" name="address2" [(ngModel)]="newResidentData.address2"
+                              #address2="ngModel" maxlength="500">
                           </div>
-                          <div class="col-sm-12">
-                            <label for="">Address 2</label>
-                            <input type="text" class="form-control" [(ngModel)]="newResidentData.address2">
+                          <div class="col-sm-6 form-group">
+                            <label for="city">City</label>
+                            <input type="text" class="form-control" id="city" name="city" [(ngModel)]="newResidentData.city"
+                              #city="ngModel" required maxlength="100">
                           </div>
-                          <div class="col-sm-6">
-                            <label for="">City</label>
-                            <input type="text" class="form-control" [(ngModel)]="newResidentData.city">
+                          <div class="col-sm-6 form-group">
+                            <label for="zip">ZIP</label>
+                            <input type="text" class="form-control" id="zip" name="zip" [(ngModel)]="newResidentData.zip"
+                              #zip="ngModel" required (keypress)="onlyNumberKey($event)" maxlength="25" mimlength="3"
+                              pattern="^[0-9]*$">
                           </div>
-                          <div class="col-sm-6">
-                            <label for="">ZIP</label>
-                            <input type="text" class="form-control" [(ngModel)]="newResidentData.zip">
+                          <!-- <div class="col-sm-6 form-group">
+                          <label for="phone">Phone</label>
+                          <input type="text" class="form-control" id="phone" name="phone" [(ngModel)]="newResidentData.phone"
+                            #phone="ngModel" required (keypress)="onlyNumberKey($event)" maxlength="11"minlength="10">
+                        </div> -->
+                        <div class="col-sm-12 form-group">
+                          <label for="email">Email</label>
+                          <input type="email" class="form-control" id="email" name="email" [(ngModel)]="newResidentData.email"
+                            #email="ngModel" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                            maxlength="100" >
+                        </div>
+                          <div class="col-sm-12 form-group">
+                            <label for="phone">SMS Phone Number</label>
+                            <input type="text" class="form-control" id="phone" name="phone" [(ngModel)]="newResidentData.phone"
+                              #phone="ngModel" pattern="^[0-9 \(\)\-\+]*$" maxlength="25" minlength="10" required
+                              asyncValidator>
+                            <!-- {{ json }} {{ phone.control.errors | json }} -->
                           </div>
-                          <div class="col-sm-6">
-                            <label for="">Phone</label>
-                            <input type="text" class="form-control" [(ngModel)]="newResidentData.phone">
+                          <div class="col-sm-12 form-group">
+                            <label for="workPhone">Work Phone</label>
+                            <input type="text" class="form-control" id="workPhone" name="workPhone" [(ngModel)]="newResidentData.workPhone"
+                              #workPhone="ngModel" (keypress)="onlyNumberKey($event)" maxlength="10" minlength="10">
                           </div>
-                          <div class="col-sm-6">
-                            <label for="">Work phone</label>
-                            <input type="text" class="form-control" [(ngModel)]="newResidentData.workPhone">
+                          <!-- <div class="col-sm-12 form-group">
+                          <label for="sms">SMS number</label>
+                          <input type="text" class="form-control" id="sms" name="sms" [(ngModel)]="newResidentData.sms"
+                            #sms="ngModel" (keypress)="onlyNumberKey($event)" maxlength="10" minlength="10">
+                        </div> -->
+                          <div class="col-sm-6 form-group">
+                            <label for="alexa">Alexa ID</label>
+                            <input type="text" class="form-control" id="alexa" name="alexa" [(ngModel)]="newResidentData.alexa"
+                              #alexa="ngModel" disabled="disabled">
                           </div>
-                          <div class="col-sm-12">
-                            <label for="">Email</label>
-                            <input type="email" class="form-control" [(ngModel)]="newResidentData.email">
+                          <div class="col-sm-6 form-group">
+                            <label for="ghome">Google Home ID</label>
+                            <input type="text" class="form-control" id="ghome" name="ghome" [(ngModel)]="newResidentData.ghome"
+                              #ghome="ngModel" disabled="disabled">
                           </div>
-                          <div class="col-sm-4">
-                            <label for="">Alexa ID</label>
-                            <input type="text" class="form-control" [(ngModel)]="newResidentData.alexa">
-                          </div>
-                          <div class="col-sm-4">
-                            <label for="">FB ID</label>
-                            <input type="text" class="form-control" [(ngModel)]="newResidentData.fb">
-                          </div>
-                          <div class="col-sm-4">
-                            <label for="">SMS number</label>
-                            <input type="text" class="form-control" [(ngModel)]="newResidentData.sms">
+                          <div class="col-sm-12 form-group">
+                            <label for="fb">FB ID</label>
+                            <input type="text" class="form-control" id="fb" name="fb" [(ngModel)]="newResidentData.fb"
+                              #fb="ngModel" disabled="disabled">
                           </div>
                         </div>
                         <div *ngSwitchCase="'vendor'" class="row scroll-y">
-                          <div class="col-sm-12">
-                            <label for="">Name</label>
-                            <input type="text" class="form-control" [(ngModel)]="newVendorData.name">
+                          <div class="col-sm-6 form-group">
+                            <label for="vendorFirstName">First Name</label>
+                            <input type="text" class="form-control capitalized" id="vendorFirstName" name="vendorFirstName"
+                              required [(ngModel)]="newVendorData.vendorFirstName" (change)="newVendorData.vendorFirstName=capitalize(newVendorData.vendorFirstName);"
+                              #vendorFirstName="ngModel" (keyup)="updateInitials($event, 0)" maxlength="100" required
+                              pattern="^[a-zA-Z ]*$">
                           </div>
-                          <div class="col-sm-12">
-                            <label for="">Job type</label>
-                            <input type="text" class="form-control" [(ngModel)]="newVendorData.jobType">
+                          <div class="col-sm-6 form-group">
+                            <label for="vendorLastName">Last Name</label>
+                            <input type="text" class="form-control capitalized" id="vendorLastName" name="vendorLastName"
+                              (change)="newVendorData.vendorLastName=capitalize(newVendorData.vendorLastName);"
+                              [(ngModel)]="newVendorData.vendorLastName" #vendorLastName="ngModel" (keyup)="updateInitials($event, 1)"
+                              maxlength="100" required pattern="^[a-zA-Z ]*$">
                           </div>
-                          <div class="col-sm-12">
-                            <label for="">Phone</label>
-                            <input type="text" class="form-control" [(ngModel)]="newVendorData.phone">
+                          <!-- <div class="col-sm-12 form-group">
+                            <label for="jobType">Company Name</label>
+                            <input type="text" class="form-control capitalized" id="jobType" name="jobType" [(ngModel)]="newVendorData.jobType"
+                              #jobType="ngModel" maxlength="100" required>
+                          </div> -->
+                          <div class="col-sm-12 form-group">
+                              <label for="services">Services</label>
+                              <angular2-multiselect name="services" id="services" [data]="issuelist" [(ngModel)]="issuesSelectedItems"
+                                [settings]="issuesettings" [disabled]="!enableEditFields"
+                                (onSelect)="onItemSelect($event)">
+                              </angular2-multiselect>
+                            </div>
+                          <div class="col-sm-12 form-group">
+                            <label for="Address">Address</label>
+                            <input type="text" class="form-control" id="Address" name="Address" [(ngModel)]="newVendorData.address"
+                              #address="ngModel" maxlength="500">
                           </div>
-                          <div class="col-sm-12">
-                            <label for="">Address</label>
-                            <input type="text" class="form-control" [(ngModel)]="newVendorData.address">
+                          <div class="col-sm-12 form-group">
+                            <label for="phone">Mobile</label>
+                            <input type="text" class="form-control" id="phone" name="phone" [(ngModel)]="newVendorData.phone"
+                              #phone="ngModel" pattern="^[0-9 \(\)\-\+]*$" maxlength="25" minlength="10"
+                              asyncValidator  [required]='!newVendorData.email'>
                           </div>
-                          <div class="col-sm-12">
-                            <label for="">Email</label>
-                            <input type="email" class="form-control" [(ngModel)]="newVendorData.email">
+                          <!-- <div class="col-sm-6 form-group">
+                            <label for="ext">Ext</label>
+                            <input type="text" class="form-control" id="ext" name="ext" [(ngModel)]="newVendorData.ext"
+                              (keypress)="onlyNumberKey($event)" #ext="ngModel" maxlength="5">
+                          </div> -->
+                          <div class="col-sm-12 form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" [(ngModel)]="newVendorData.email"
+                              #email="ngModel" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                              maxlength="100" [required]='!newVendorData.phone'>
                           </div>
-                          <div class="col-sm-12">
-                            <label for="">Conmments</label>
-                            <input type="text" class="form-control" [(ngModel)]="newVendorData.coments">
+                          <div class="col-sm-12 form-group">
+                            <label for="comments">Comments</label>
+                            <input type="text" class="form-control" id="comments" name="comments" [(ngModel)]="newVendorData.comments"
+                              #comments="ngModel" maxlength="500">
                           </div>
                         </div>
                         <div *ngSwitchCase="'property_manager'" class="row scroll-y">
@@ -464,61 +659,67 @@
                         </div>
                       </div>
                       <div id="buttons">
-                        <button class="btn btn-outline btn-rounded text-success btn-cancel" data-dismiss="modal" (click)="cancelNewContact()">Cancel</button>
-                        <button class="btn btn-rounded b-success success btn-save" (click)="saveNewContact()">Save</button>
+                        <button class="md-btn md-raised mb-2 blue" type="submit" [disabled]="newResidentForm.form.invalid || newContactType.length == 0">
+                          SAVE CONTACT
+                        </button>
+                        <button class="md-btn md-flat mb-2 text-primary" data-dismiss="modal" (click)="cancelNewContact()">CLOSE</button>
                       </div>
-                    </div>
-
+                    </form>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="modal fade show" id="upload-contacts" data-backdrop="true" data-class="modal-open-aside">
-          <div class="modal-dialog modal-right w-xl white b-l new-upload-contacts">
-            <div class="d-flex flex-column h-100">
-              <div class="d-flex flex" id="profile">
-                <div class="modal-dialog modal-right w-auto-sm white dk b-l">
-                  <div class="d-flex flex-column h-100 w-100 white b-r">
-                    <div class="new-contact-title">
-                      <h2>Add new contacts for the platform</h2>
-                    </div>
-                    <div class="row mt-5">
-                      <div class="col-sm-12 mx-auto">
-                        <div class="form-group">
-                          <label class="h5" for="exampleFormControlSelect1">Select the type of contact</label>
-                          <select class="form-control" id="exampleFormControlSelect1">
-                            <option>User</option>
-                            <option>Property Manager</option>
-                            <option>Provider</option>
-                          </select>
+          <div class="modal fade show" id="upload-contacts" data-backdrop="true" data-class="modal-open-aside">
+            <div class="modal-dialog modal-right w-xl white b-l new-upload-contacts">
+              <div class="d-flex flex-column h-100">
+                <div class="d-flex flex" id="profile">
+                  <div class="modal-dialog modal-right w-auto-sm white dk b-l">
+                    <div class="d-flex flex-column h-100 w-100 white b-r">
+                      <div class="new-contact-title">
+                        <h2>Add new contacts for the platform</h2>
+                      </div>
+                      <div class="row mt-5">
+                        <div class="col-sm-12 mx-auto">
+                          <div class="form-group">
+                            <label class="h5" for="exampleFormControlSelect1">Select the type of contact</label>
+                            <select class="form-control" id="exampleFormControlSelect1">
+                              <option>User</option>
+                              <option>Property Manager</option>
+                              <option>Provider</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-sm-12  mx-auto input-sm">
+                          <div class="mx-auto">
+                            <dropzone (error)="onUploadError($event)" (success)="onUploadSuccess($event)"></dropzone>
+                          </div>
                         </div>
                       </div>
-                      <div class="col-sm-12  mx-auto input-sm">
-                        <div class="mx-auto">
-                          <dropzone (error)="onUploadError($event)" (success)="onUploadSuccess($event)"></dropzone>
-                        </div>
-                      </div>
                     </div>
-
                   </div>
                 </div>
               </div>
             </div>
           </div>
+          <modal #modalmessage id="backdrop">
+            <modal-header [show-close]="true">
+              <h4 class="modal-title">{{modalTitle}}</h4>
+            </modal-header>
+            <modal-body>
+              {{modalBody}}
+              <div [innerHTML]="addressComparisonHtml.join('')"></div>
+              <span *ngIf="invalidAddress">Please provide a valid address</span>
+            </modal-body>
+            <modal-footer>
+              <button *ngIf="updateStoreProcessFinished" type="button" class="btn btn-primary" data-dismiss="modal" (click)="cancelEditContact()">Close</button>
+              <button *ngIf="(!addressSuggestion || invalidAddress) && !updateStoreProcessFinished" data-dismiss="modal" type="button" class="btn btn-primary" (click)="modal.close()">Close</button>
+              <button *ngIf="addressSuggestion && !invalidAddress" class="md-btn md-raised mb-2 blue" data-dismiss="modal"
+                (click)="processSuggestion(true)">Use suggested address</button>
+              <button *ngIf="addressSuggestion && !invalidAddress" class="md-btn md-flat mb-2 text-primary"
+                data-dismiss="modal" (click)="modal.close()">Edit Address</button>
+            </modal-footer>
+          </modal>
         </div>
-        <modal #modalmessage class="mt-10">
-          <modal-header [show-close]="true">
-            <h4 class="modal-title">{{modalTitle}}</h4>
-          </modal-header>
-          <modal-body>
-            {{modalBody}}
-          </modal-body>
-          <modal-footer>
-            <button type="button" class="btn btn-primary" (click)="modal.close()">Close</button>
-          </modal-footer>
-        </modal>
       </div>
     </div>
-  </div>

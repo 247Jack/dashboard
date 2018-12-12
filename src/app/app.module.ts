@@ -1,26 +1,23 @@
 import { BrowserModule } from "@angular/platform-browser";
-import { NgModule } from "@angular/core";
+import { Injectable, Injector, InjectionToken, ErrorHandler, NgModule } from "@angular/core";
 import { AppRouting } from "./app.routes";
 import { HttpModule } from "@angular/http";
-import { ReactiveFormsModule } from "@angular/forms";
 import { AngularDateTimePickerModule } from "angular2-datetimepicker";
 import { AngularMultiSelectModule } from "angular2-multiselect-dropdown/angular2-multiselect-dropdown";
+import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { NgxDatatableModule } from "@swimlane/ngx-datatable";
 import { Ng2SearchPipeModule } from "ng2-search-filter";
 
+import { AsyncPhoneValidator } from './components/contacts/phoneValidation';
 import { OktaAuthModule } from "@okta/okta-angular";
-import {
-  DropzoneModule,
-  DROPZONE_CONFIG,
-  DropzoneConfigInterface
-} from "ngx-dropzone-wrapper";
+import { DropzoneModule, DROPZONE_CONFIG, DropzoneConfigInterface } from "ngx-dropzone-wrapper";
 import { LocationStrategy, PathLocationStrategy } from "@angular/common";
-//import { SimpleNotificationsModule } from "angular2-notifications";
-//import { PushNotificationsModule } from "ng-push";
+// import { SimpleNotificationsModule } from "angular2-notifications";
+// import { PushNotificationsModule } from "ng-push";
 import { ModalModule } from "dsg-ng2-bs4-modal/ng2-bs4-modal";
 import { Ng4LoadingSpinnerModule } from "ng4-loading-spinner";
 
-//import { StompService, StompConfig } from "@stomp/ng2-stompjs";
+// import { StompService, StompConfig } from "@stomp/ng2-stompjs";
 
 import { AppComponent } from "./app.component";
 import { NavbarComponent } from "./components/common/navbar/navbar.component";
@@ -47,6 +44,7 @@ import { AutopopulateService } from "./services/autopopulate.service";
 import { StatsService } from "./services/stats.service";
 import { WoComponent } from './components/wo/wo.component';
 import { ReadMoreDirective } from './directives/read-more.directive';
+import { ClipboardModule } from 'ngx-clipboard';
 
 const oktaConfig = {
   issuer: "https://dev-825764.oktapreview.com/oauth2/default",
@@ -60,7 +58,19 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
   acceptedFiles: ".csv"
 };
 
-//const SocketConfig: SocketIoConfig = { url: environment.socket_host, options: {secure:environment.secureSocket} };
+const rollbarConfig = {
+  accessToken: 'f6f77b1967c34c4aa5e6aace1abcd556',
+  captureUncaught: true,
+  captureUnhandledRejections: true,
+};
+
+export function rollbarFactory() {
+  return new Rollbar(rollbarConfig);
+}
+
+export const RollbarService = new InjectionToken<Rollbar>('rollbar');
+
+// const SocketConfig: SocketIoConfig = { url: environment.socket_host, options: {secure:environment.secureSocket} };
 
 /*
 const stompConfig: StompConfig = {
@@ -76,6 +86,16 @@ const stompConfig: StompConfig = {
 };
 */
 
+@Injectable()
+export class RollbarErrorHandler implements ErrorHandler {
+  constructor(private injector: Injector) { }
+
+  handleError(err: any): void {
+    var rollbar = this.injector.get(RollbarService);
+    rollbar.error(err.originalError || err);
+  }
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -90,6 +110,7 @@ const stompConfig: StompConfig = {
     CompanyComponent,
     BroadcastComponent,
     WoComponent,
+    AsyncPhoneValidator,
     ReadMoreDirective
   ],
   imports: [
@@ -99,11 +120,12 @@ const stompConfig: StompConfig = {
     DropzoneModule,
     BrowserAnimationsModule,
     OktaAuthModule.initAuth(oktaConfig),
-    //SimpleNotificationsModule.forRoot(),
-    //PushNotificationsModule,
+    // SimpleNotificationsModule.forRoot(),
+    // PushNotificationsModule,
     AngularDateTimePickerModule,
     AngularMultiSelectModule,
     ReactiveFormsModule,
+    FormsModule,
     Ng4LoadingSpinnerModule.forRoot(),
     ModalModule,
     NgxDatatableModule,
@@ -131,4 +153,4 @@ const stompConfig: StompConfig = {
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

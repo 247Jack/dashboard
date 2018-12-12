@@ -124,15 +124,21 @@ export class NavbarComponent implements OnInit {
                 .getContacts(this.currentPropertyManager["_id"], this.currentCompany, "vendors")
                 .subscribe(listVendors => {
                   var vendorsList = [];
-                  for (var v in listVendors["vendorsResult"])
+                  for (var v in listVendors["vendorsResult"]){
+                    var services = listVendors["vendorsResult"][v]["vendorData"]["services"]
+                    var servicesStr = []
+                    for(var s in services){
+                      servicesStr.push(services[s].itemName)
+                    }
                     vendorsList.push({
                       id: listVendors["vendorsResult"][v]._id,
                       itemName: `${
                         listVendors["vendorsResult"][v]["vendorData"]["name"]
                         } (${
-                        listVendors["vendorsResult"][v]["vendorData"]["jobType"]
+                          servicesStr.join(", ")
                         })`
                     });
+                  }
                   this.vendorlist = vendorsList;
                 });
               this.getTenatsConn = this.contacts
