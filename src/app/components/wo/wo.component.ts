@@ -64,6 +64,7 @@ export class WoComponent implements OnInit {
   public deleteVendorStatus: boolean;
   public vendorsRemoved = [];
   public newVendorsBroadcasted = []
+  public newVendorAssigned: any;
 
   constructor(
     private spinnerService: Ng4LoadingSpinnerService,
@@ -72,7 +73,7 @@ export class WoComponent implements OnInit {
     private contacts: ContactsService
   ) {
     this.vendorSettings = {
-      singleSelection: false,
+      singleSelection: true,
       text: "Select",
       enableSearchFilter: true,
       badgeShowLimit: 1,
@@ -196,13 +197,14 @@ export class WoComponent implements OnInit {
   public onSelect({ selected }) {
     this.spinnerService.show();
     this.selectedRow = selected[0]
+    this.newVendorsBroadcasted = []
     if (this.selectedRow._id) {
       this.ticket.getEditTask(this.currentPropertyManager['_id'], this.currentCompany, this.selectedRow._id).subscribe(data => {
         this.editDataRequest = data
-        this.vendorList = this.staticVendorList;
-        let ids = this.editDataRequest.providersDispatched.map(v => (v.id).toString())
-        let newVendorList = this.vendorList.filter(v => !(ids.includes((v.id).toString())))
-        this.vendorList = newVendorList
+        //this.vendorList = this.staticVendorList;
+        //let ids = this.editDataRequest.providersDispatched.map(v => (v.id).toString())
+        //let newVendorList = this.vendorList.filter(v => !(ids.includes((v.id).toString())))
+        //this.vendorList = newVendorList
         this.ticket.getBitlyLink(this.selectedRow._id, this.selectedVendor).subscribe(resultBitly => {
           this.bitlyURL = resultBitly.url;
         })
@@ -282,6 +284,7 @@ export class WoComponent implements OnInit {
     this.editStatus = false
     this.newNote = "";
     this.vendorSelectedItems = []
+    this.newVendorAssigned = "";
     this.newNotes = [];
     this.setCompleted = false;
     this.statusList = [
@@ -320,10 +323,12 @@ export class WoComponent implements OnInit {
   public deleteVendor(item) {
     let deleteVendors = this.editDataRequest.providersDispatched.filter(v => !(item.id.includes((v.id).toString())))
     this.editDataRequest.providersDispatched = deleteVendors
+    /*
     this.vendorList.push({
       id: item.id,
       itemName: item.name
     })
+    */
     this.vendorsRemoved.push(item.id)
   }
   public addNote() {
@@ -333,13 +338,15 @@ export class WoComponent implements OnInit {
     this.newNotes.push(this.elementNote)
   }
   public saveEdit() {
+    this.newVendorAssigned = this.vendorSelectedItems.length ? this.vendorSelectedItems[0].id : ""
     for(var e in this.vendorSelectedItems){
       this.newVendorsBroadcasted.push(this.vendorSelectedItems[e].id)
     }
     this.spinnerService.show()
     let updateData = {
       vendorsRemoved: this.vendorsRemoved,
-      newVendorsBroadcasted: this.newVendorsBroadcasted,
+      //newVendorsBroadcasted: this.newVendorsBroadcasted,
+      newVendorAssigned: this.newVendorAssigned,
       //status: (this.statusSelectedItems.length) ? this.statusSelectedItems[0].id : "",
       newState: (!this.isCompleted && this.setCompleted)? "finished" : this.currentStatus,
       newCost: this.newCost,
@@ -354,9 +361,11 @@ export class WoComponent implements OnInit {
     if (this.vendorsRemoved.length < 1) {
       delete updateData.vendorsRemoved
     }
+    /*
     if (this.vendorSelectedItems.length < 1) {
       delete updateData.newVendorsBroadcasted
     }
+    */
     if (this.newNote.length < 1) {
       delete updateData.newNotes
     }
@@ -374,6 +383,7 @@ export class WoComponent implements OnInit {
       this.newNote = "";
       this.newNotes = [];
       this.vendorSelectedItems = []
+      this.newVendorAssigned = "";
       this.statusSelectedItems = []
       this.updateData = {}
       this.statusList = [
@@ -414,11 +424,13 @@ export class WoComponent implements OnInit {
   }
   public removeRequest() {
      this.ticket.deleteField(this.selectedRow._id, this.currentPropertyManager["_id"], this.currentCompany).subscribe(resultUpdate => {
-       this.loadTasks();
-       this.modalDelete.close()
-       this.modalShowMessage("DeleteTask");
-       this.setCompleted = false;
-       document.getElementById("cancelEdit").click();
+      this.loadTasks();
+      this.modalDelete.close()
+      this.modalShowMessage("DeleteTask");
+      this.setCompleted = false;
+      this.vendorSelectedItems = []
+      this.newVendorAssigned = "";
+      document.getElementById("cancelEdit").click();
      })
   }
   public modalShowMessage(messageType) {

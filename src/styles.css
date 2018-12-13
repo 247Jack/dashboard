@@ -78,6 +78,7 @@ app-home #content-main {
 }
 
 .stack-right {
+  float: left;
   margin-left: auto;
   margin-right: 0;
 }

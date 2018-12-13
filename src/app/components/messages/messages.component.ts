@@ -120,7 +120,7 @@ export class MessagesComponent
             this.users = [];
             for (var i in data) {
               var names = data[i].name.split(" ")
-              data[i].initials = (names.length > 1) ? `${names[0][0]}${names[1][0]}`: names[0][0]
+              data[i].initials = (data.rank === "jack") ? '' : (names.length > 1) ? `${names[0][0]}${names[1][0]}`: names[0][0]
               data[i]._id = data[i].composedKey.split(":")[0];
               this.users.push(data[i]);
             }
@@ -227,7 +227,7 @@ export class MessagesComponent
 
   sendMessage(e) {
     if (!!e.value.trim()) {
-      var initialsPM = `${this.currentPropertyManager.name[0]}${this.currentPropertyManager.surname[0]}`
+      var initialsPM = (this.currentPropertyManager.rank === "jack") ? '' : `${this.currentPropertyManager.name[0]}${this.currentPropertyManager.surname[0]}`
       var messageData = {
         platform: (this.service === "alexa") ? "sms": this.service,
         content: e.value,

@@ -342,13 +342,10 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-sm-12 my-2" *ngIf="vendorSelectedItems">
+                      <!--div class="col-sm-12 my-2" *ngIf="vendorSelectedItems">
                         <div *ngFor="let item of vendorSelectedItems">
                           <div class="d-flex row mx-0">
                             <div class="col-sm d-flex">
-                              <!--button class="btn-clean b-close" (click)="deleteNewVendor(item.id)">
-                                <i class=" fa text-danger fa-15x fa-minus-circle"></i>
-                              </button--->
                               <span class="ml-3" *ngIf="item.name">{{item.name}} <small>({{item.contact}})</small></span>
                               <span class="ml-3" *ngIf="item.itemName">{{item.itemName}}</span>
                             </div>
@@ -360,11 +357,11 @@
                             </div>
                           </div>
                         </div>
-                      </div>
-                      <div class="col-sm-12">
+                      </div-->
+                      <!--div class="col-sm-12">
                         <small>Job Link: <a target="_blank" href="{{bitlyURL}}"> <u class="text-primary">{{bitlyURL}}</u></a></small><button
                           ngxClipboard class="btn btn-link" [cbContent]="bitlyURL">Copy</button>
-                      </div>
+                      </div-->
                     </div>
                   </div>
                 </div>
@@ -450,7 +447,7 @@
                   </div-->
                   <div class="col-7 my-3 px-0">
                     <strong class="mb-2 d-flex">Edit Vendor</strong>
-                    <angular2-multiselect class="" [data]="vendorList" [(ngModel)]="vendorSelectedItems" [settings]="vendorSettings">
+                    <angular2-multiselect class="" [data]="vendorList" [(ngModel)]="vendorSelectedItems" [settings]="vendorSettings" >
                     </angular2-multiselect>
                   </div>
                   <div class="col-7 my-3 px-0">

@@ -85,11 +85,18 @@ export class ContactsComponent implements OnInit, OnDestroy {
     zip: ''
   };
 
+  // Variable for delete contact feature
+  public deleteUnconfirmed = true;
+  public deleteFinished = false;
+
   // Modal Variables
   @ViewChild('modalmessage')
   modal: ModalComponent;
   public modalTitle = '';
   public modalBody = '';
+
+  @ViewChild('header')
+  modalDelete: ModalComponent;
 
   // 'Edit Contact' feature objects
   public updateStoreProcessFinished = false;
@@ -168,8 +175,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
     jobType: '',
     services: [],
     name: '',
-    vendorFirstName: '',
-    vendorLastName: '',
+    vendorName: '',
     phone: '',
     ext: '',
     address: '',
@@ -452,15 +458,15 @@ export class ContactsComponent implements OnInit, OnDestroy {
       let newContactData;
       switch (this.newContactType) {
         case 'tenant':
-        await this.contacts.currentPhoneSuggested.subscribe(phone => {
-          this.newResidentData.phone = phone;
-          this.newResidentData.sms = phone;
-          newContactData = this.newResidentData;
-        });
+          await this.contacts.currentPhoneSuggested.subscribe(phone => {
+            this.newResidentData.phone = phone;
+            this.newResidentData.sms = phone;
+            newContactData = this.newResidentData;
+          });
           break;
         case 'vendor':
           this.newVendorData.services = this.setNewVendortServices();
-          this.newVendorData.name = this.newVendorData.vendorFirstName + ' ' + this.newVendorData.vendorLastName;
+          this.newVendorData.name = this.newVendorData.vendorName;
           await this.contacts.currentPhoneSuggested.subscribe(phone => {
             if (phone) {
               this.newVendorData.phone = phone;
@@ -518,8 +524,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
         jobType: '',
         services: [],
         name: '',
-        vendorFirstName: '',
-        vendorLastName: '',
+        vendorName: '',
         phone: '',
         ext: '',
         address: '',
@@ -684,11 +689,11 @@ export class ContactsComponent implements OnInit, OnDestroy {
   }
 
   /**
-     * Updates the initials of the user avatar
-     * @param event Frontend event handler
-     * @param position First or Last name initial
-     * @returns void
-     */
+   * Updates the initials of the user avatar
+   * @param event Frontend event handler
+   * @param position First or Last name initial
+   * @returns void
+   */
   updateInitials(event, position) {
     const initial = event.target.value.toLowerCase().charAt(0).toUpperCase();
     if (this.newContactType === 'tenant') {
@@ -699,10 +704,10 @@ export class ContactsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Set Focus on the first input field of the "Add Contact" form
-   * @param contactType Contact Type
-   * @returns void
-   */
+ * Set Focus on the first input field of the "Add Contact" form
+ * @param contactType Contact Type
+ * @returns void
+ */
   onChange(contactType) {
     switch (contactType) {
       case 'tenant':
@@ -711,7 +716,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
       case 'vendor':
         this.enableEditFields = true;
         this.bindIssuesSettings();
-        setTimeout(() => document.getElementById('vendorFirstName').focus(), 0);
+        setTimeout(() => document.getElementById('vendorName').focus(), 0);
         break;
       default:
         break;
@@ -719,28 +724,28 @@ export class ContactsComponent implements OnInit, OnDestroy {
   }
 
   /**
-    * Prevent non numeric chars on input field
-    * @param event Input KeyPress event object
-    * @returns void
-    */
+  * Prevent non numeric chars on input field
+  * @param event Input KeyPress event object
+  * @returns void
+  */
   onlyNumberKey(event) {
     return (event.charCode === 8 || event.charCode === 0) ? null : event.charCode >= 48 && event.charCode <= 57;
   }
 
   /**
-    * Capitalize first and last Name
-    * @param string value to capitalize
-    * @returns capitalized string
-    */
+  * Capitalize first and last Name
+  * @param string value to capitalize
+  * @returns capitalized string
+  */
   capitalize(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
   /**
-    * Shows specific modal message from a given option
-    * @param string modal message to throw
-    * @returns void
-    */
+  * Shows specific modal message from a given option
+  * @param string modal message to throw
+  * @returns void
+  */
   modalShowMessage(messageType) {
     switch (messageType) {
       case 'ContactAdded': {
@@ -764,6 +769,17 @@ export class ContactsComponent implements OnInit, OnDestroy {
         // this.modalBody = this.addressComparisonHtml.join('');
         break;
       }
+      case 'ContactDeleted': {
+        this.modalTitle = 'Contact Deleted';
+        this.modalBody = 'Contact has been deleted successfully';
+        // this.modalBody = this.addressComparisonHtml.join('');
+        break;
+      }
+      case 'ConfirmDelete': {
+        this.modalTitle = 'Confirm Delete';
+        this.modalBody = 'Are you sure you want to delete the selected user?';
+        break;
+      }
       case 'MissingFields': {
         this.modalTitle = 'Missing required fields';
         this.modalBody = 'Oops! It looks like we missing some important information in the contact.';
@@ -779,10 +795,10 @@ export class ContactsComponent implements OnInit, OnDestroy {
   }
 
   /**
-      * Cancel ad close the new contact form
-      * @param none
-      * @returns void
-      */
+  * Cancel ad close the new contact form
+  * @param none
+  * @returns void
+  */
   cancelNewContact() {
     switch (this.newContactType) {
       case 'tenant':
@@ -804,10 +820,10 @@ export class ContactsComponent implements OnInit, OnDestroy {
   }
 
   /**
-    * Cancel ad close the edit contact form
-    * @param none
-    * @returns void
-    */
+  * Cancel ad close the edit contact form
+  * @param none
+  * @returns void
+  */
   async updateContact() {
     this.spinnerService.show();
     if (this.currentContact) {
@@ -856,10 +872,10 @@ export class ContactsComponent implements OnInit, OnDestroy {
   }
 
   /**
-    * Cancel ad close the edit contact form
-    * @param none
-    * @returns void
-    */
+  * Cancel ad close the edit contact form
+  * @param none
+  * @returns void
+  */
   cancelEditContact() {
     this.enableEditFields = false;
     this.issuesSelectedItems = [];
@@ -868,10 +884,10 @@ export class ContactsComponent implements OnInit, OnDestroy {
   }
 
   /**
-    * Setup the properties for the multiselect
-    * @param none
-    * @returns void
-    */
+  * Setup the properties for the multiselect
+  * @param none
+  * @returns void
+  */
   bindIssuesSettings() {
     this.issuesettings = {
       singleSelection: false,
@@ -883,6 +899,64 @@ export class ContactsComponent implements OnInit, OnDestroy {
       disabled: !this.enableEditFields
     };
   }
+
+  /**
+  * This function handle the click event for "Delete" Contact  button
+  * @param none
+  * @returns void
+  */
+  deleteContact() {
+    this.modal.close();
+    this.deleteUnconfirmed = false;
+    this.spinnerService.show();
+    this.contacts.deleteContact(
+      this.currentPropertyManager._id,
+      this.currentCompany,
+      this.currentContact._id,
+      this.currentContactType
+    ).subscribe(data => {
+      this.deleteFinished = true;
+      this.modalDeleteContactResult(data.ok, data.nModified);
+      this.spinnerService.hide();
+    }, (err) => {
+      console.log(err);
+      this.spinnerService.hide();
+      this.modalShowMessage('SystemError');
+    });
+  }
+
+  /**
+  * This function confirms the delete contact process
+  * @param none
+  * @returns void
+  */
+  confirmDelete() {
+    this.deleteUnconfirmed = true;
+    this.modalShowMessage('ConfirmDelete');
+  }
+
+  /**
+  * Show success or error message if contact is deleted properly
+  * @param serviceResult This is the result of the "Ok" value of the Contacte Service
+  * @returns void
+  */
+  modalDeleteContactResult(serviceResult, nModified) {
+    try {
+      if (serviceResult === 1 && nModified === 1) {
+        this.modalShowMessage('ContactDeleted');
+      } else {
+        this.modalShowMessage('SystemError');
+      }
+    } catch (error) {
+      this.modalShowMessage('SystemError');
+    }
+    this.contactsTenants = [];
+    this.contactsVendors = [];
+    this.contactsPropertyManagers = [];
+    this.currentContacts = [];
+    this.waitForPMData();
+  }
+
   afterHidden(e) { }
 
   onUploadError(e) { }

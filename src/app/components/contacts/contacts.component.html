@@ -196,17 +196,48 @@
               <div class="modal-dialog modal-right w-auto-sm white dk b-l">
                 <div class="d-flex flex-column h-100 w-100 white b-r">
                   <div class="scroll-y" id="border">
-                    <button class="float-left btn btn-clean mt-3 ml-2 b-close" data-dismiss="modal" id="cancelEdit"
-                      (click)="cancelEditContact()">
-                      <i class="fa fa-close"></i>
-                    </button>
-                    <button (click)="setupContactForm(true)" class="d-block md-btn md-flat mt-2 text-primary stack-right"
-                      [disabled]="enableEditFields" *ngIf="currentContactType != 'property manager'">
-                      <i class="fa fa-edit"></i>
-                      Edit
-                    </button>
-
-                    <form #editContactForm="ngForm" [ngSwitch]="currentContactType" id="user-edit" class="px-4 ml-4"
+                    <div class="row drawer-menu">
+                      <button class="float-left btn btn-clean b-close" data-dismiss="modal" id="cancelEdit" (click)="cancelEditContact()">
+                        <i class="fa fa-close"></i>
+                      </button>
+                      <div class="d-block stack-right">
+                        <ul class="contact-drawer-options">
+                          <!-- <li class="md-btn blue" (click)="setupContactForm(true)" *ngIf="currentContactType != 'property manager'" [disabled]="enableEditFields" >
+                            <i class="fa fa-edit"></i>
+                            Edit
+                          </li>
+                          <li class="md-btn red" (click)="deleteContact()" *ngIf="currentContactType != 'property manager'" [disabled]="!enableEditFields">
+                            <i class="fa fa-trash"></i>
+                            Delete
+                          </li> -->
+                          <li>
+                            <button (click)="setupContactForm(true)" class="md-btn blue btn-reduced" [disabled]="enableEditFields"
+                              *ngIf="currentContactType != 'property manager'">
+                              <i class="fa fa-edit"></i>
+                              Edit
+                            </button>
+                          </li>
+                          <li>
+                            <button (click)="confirmDelete()" class="md-btn red btn-reduced" [disabled]="enableEditFields"
+                              *ngIf="currentContactType != 'property manager'">
+                              <i class="fa fa-trash"></i>
+                              Delete
+                            </button>
+                          </li>
+                        </ul>
+                        <!-- <button (click)="setupContactForm(true)" class="d-block md-btn md-flat mt-2 text-primary"
+                          [disabled]="enableEditFields" *ngIf="currentContactType != 'property manager'">
+                          <i class="fa fa-edit"></i>
+                          Edit
+                        </button>
+                        <button (click)="setupContactForm(true)" class="d-block md-btn md-flat mt-2 text-warm"
+                          [disabled]="enableEditFields" *ngIf="currentContactType != 'property manager'">
+                          <i class="fa fa-edit"></i>
+                          Delete
+                        </button> -->
+                      </div>
+                    </div>
+                    <form #editContactForm="ngForm" [ngSwitch]="currentContactType" id="user-edit" class="ml-4"
                       validate (ngSubmit)="onSubmitEdit(editContactForm)">
                       <!-- <div class="row">
                         <button (click)="openModalDelete()" class="d-block md-btn md-flat mt-2 text-primary">
@@ -327,7 +358,7 @@
                           </div>
                         </div>
                         <div class="col-sm-12 form-group">
-                          <label for="vendorFirstName">Name</label>
+                          <label for="vendorName">Name / Company</label>
                           <input type="text" class="form-control capitalized" id="name" name="name" required
                             [(ngModel)]="editVendorData.name" (change)="editVendorData.name=capitalize(editVendorData.name);"
                             #name="ngModel" (keyup)="updateInitials($event, 0)" maxlength="100" required pattern="^[a-zA-Z ]*$"
@@ -348,8 +379,7 @@
                         <div class="col-sm-12 form-group">
                           <label for="services">Services</label>
                           <angular2-multiselect name="services" id="services" [data]="issuelist" [(ngModel)]="issuesSelectedItems"
-                            [settings]="issuesettings" [disabled]="!enableEditFields"
-                            (onSelect)="onItemSelect($event)">
+                            [settings]="issuesettings" [disabled]="!enableEditFields" (onSelect)="onItemSelect($event)">
                           </angular2-multiselect>
                         </div>
                         <div class="col-sm-12 form-group">
@@ -360,8 +390,8 @@
                         <div class="col-sm-12 form-group">
                           <label for="phone">Mobile</label>
                           <input type="text" class="form-control" id="phone" name="phone" [(ngModel)]="editVendorData.phone"
-                            #phone="ngModel" pattern="^[0-9 \(\)\-\+]*$" maxlength="25" minlength="10"
-                            asyncValidator [disabled]="!enableEditFields" [required]='!editVendorData.email' >
+                            #phone="ngModel" pattern="^[0-9 \(\)\-\+]*$" maxlength="25" minlength="10" asyncValidator
+                            [disabled]="!enableEditFields" [required]='!editVendorData.email'>
                         </div>
                         <!-- <div class="col-sm-6 form-group">
                           <label for="ext">Ext</label>
@@ -371,8 +401,8 @@
                         <div class="col-sm-12 form-group">
                           <label for="email">Email</label>
                           <input type="email" class="form-control" id="email" name="email" [(ngModel)]="editVendorData.email"
-                            #email="ngModel"  [required]='!editVendorData.phone' pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" maxlength="100"
-                            [disabled]="!enableEditFields">
+                            #email="ngModel" [required]='!editVendorData.phone' pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                            maxlength="100" [disabled]="!enableEditFields">
                         </div>
                         <div class="col-sm-12 form-group">
                           <label for="comments">Comments</label>
@@ -476,8 +506,7 @@
                         </div>
                       </div>
                     </div>
-                    <form #newResidentForm="ngForm" class="col-sm-12" (ngSubmit)="onSubmit(newResidentForm)"
-                      validate>
+                    <form #newResidentForm="ngForm" class="col-sm-12" (ngSubmit)="onSubmit(newResidentForm)" validate>
                       <div [ngSwitch]="newContactType" class="new-contact-scroll">
                         <!-- {{diagnostic}} -->
                         <div *ngSwitchCase="'tenant'" class="row scroll-y">
@@ -538,12 +567,11 @@
                           <input type="text" class="form-control" id="phone" name="phone" [(ngModel)]="newResidentData.phone"
                             #phone="ngModel" required (keypress)="onlyNumberKey($event)" maxlength="11"minlength="10">
                         </div> -->
-                        <div class="col-sm-12 form-group">
-                          <label for="email">Email</label>
-                          <input type="email" class="form-control" id="email" name="email" [(ngModel)]="newResidentData.email"
-                            #email="ngModel" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
-                            maxlength="100" >
-                        </div>
+                          <div class="col-sm-12 form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" [(ngModel)]="newResidentData.email"
+                              #email="ngModel" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" maxlength="100">
+                          </div>
                           <div class="col-sm-12 form-group">
                             <label for="phone">SMS Phone Number</label>
                             <input type="text" class="form-control" id="phone" name="phone" [(ngModel)]="newResidentData.phone"
@@ -578,32 +606,31 @@
                           </div>
                         </div>
                         <div *ngSwitchCase="'vendor'" class="row scroll-y">
-                          <div class="col-sm-6 form-group">
-                            <label for="vendorFirstName">First Name</label>
-                            <input type="text" class="form-control capitalized" id="vendorFirstName" name="vendorFirstName"
-                              required [(ngModel)]="newVendorData.vendorFirstName" (change)="newVendorData.vendorFirstName=capitalize(newVendorData.vendorFirstName);"
-                              #vendorFirstName="ngModel" (keyup)="updateInitials($event, 0)" maxlength="100" required
+                          <div class="col-sm-12 form-group">
+                            <label for="vendorName">Name / Company</label>
+                            <input type="text" class="form-control capitalized" id="vendorName" name="vendorName"
+                              required [(ngModel)]="newVendorData.vendorName" (change)="newVendorData.vendorName=capitalize(newVendorData.vendorName);"
+                              #vendorName="ngModel" (keyup)="updateInitials($event, 0)" maxlength="100" required
                               pattern="^[a-zA-Z ]*$">
                           </div>
-                          <div class="col-sm-6 form-group">
+                          <!--div class="col-sm-6 form-group">
                             <label for="vendorLastName">Last Name</label>
                             <input type="text" class="form-control capitalized" id="vendorLastName" name="vendorLastName"
                               (change)="newVendorData.vendorLastName=capitalize(newVendorData.vendorLastName);"
                               [(ngModel)]="newVendorData.vendorLastName" #vendorLastName="ngModel" (keyup)="updateInitials($event, 1)"
                               maxlength="100" required pattern="^[a-zA-Z ]*$">
-                          </div>
+                          </div-->
                           <!-- <div class="col-sm-12 form-group">
                             <label for="jobType">Company Name</label>
                             <input type="text" class="form-control capitalized" id="jobType" name="jobType" [(ngModel)]="newVendorData.jobType"
                               #jobType="ngModel" maxlength="100" required>
                           </div> -->
                           <div class="col-sm-12 form-group">
-                              <label for="services">Services</label>
-                              <angular2-multiselect name="services" id="services" [data]="issuelist" [(ngModel)]="issuesSelectedItems"
-                                [settings]="issuesettings" [disabled]="!enableEditFields"
-                                (onSelect)="onItemSelect($event)">
-                              </angular2-multiselect>
-                            </div>
+                            <label for="services">Services</label>
+                            <angular2-multiselect name="services" id="services" [data]="issuelist" [(ngModel)]="issuesSelectedItems"
+                              [settings]="issuesettings" [disabled]="!enableEditFields" (onSelect)="onItemSelect($event)">
+                            </angular2-multiselect>
+                          </div>
                           <div class="col-sm-12 form-group">
                             <label for="Address">Address</label>
                             <input type="text" class="form-control" id="Address" name="Address" [(ngModel)]="newVendorData.address"
@@ -612,8 +639,8 @@
                           <div class="col-sm-12 form-group">
                             <label for="phone">Mobile</label>
                             <input type="text" class="form-control" id="phone" name="phone" [(ngModel)]="newVendorData.phone"
-                              #phone="ngModel" pattern="^[0-9 \(\)\-\+]*$" maxlength="25" minlength="10"
-                              asyncValidator  [required]='!newVendorData.email'>
+                              #phone="ngModel" pattern="^[0-9 \(\)\-\+]*$" maxlength="25" minlength="10" asyncValidator
+                              [required]='!newVendorData.email'>
                           </div>
                           <!-- <div class="col-sm-6 form-group">
                             <label for="ext">Ext</label>
@@ -623,8 +650,8 @@
                           <div class="col-sm-12 form-group">
                             <label for="email">Email</label>
                             <input type="email" class="form-control" id="email" name="email" [(ngModel)]="newVendorData.email"
-                              #email="ngModel" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
-                              maxlength="100" [required]='!newVendorData.phone'>
+                              #email="ngModel" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" maxlength="100"
+                              [required]='!newVendorData.phone'>
                           </div>
                           <div class="col-sm-12 form-group">
                             <label for="comments">Comments</label>
@@ -712,12 +739,19 @@
               <span *ngIf="invalidAddress">Please provide a valid address</span>
             </modal-body>
             <modal-footer>
-              <button *ngIf="updateStoreProcessFinished" type="button" class="btn btn-primary" data-dismiss="modal" (click)="cancelEditContact()">Close</button>
-              <button *ngIf="(!addressSuggestion || invalidAddress) && !updateStoreProcessFinished" data-dismiss="modal" type="button" class="btn btn-primary" (click)="modal.close()">Close</button>
+              <button *ngIf="updateStoreProcessFinished" type="button" class="btn btn-primary" data-dismiss="modal"
+                (click)="cancelEditContact()">Close</button>
+              <button *ngIf="(!addressSuggestion || invalidAddress) && !updateStoreProcessFinished && (!deleteUnconfirmed && deleteFinished)" data-dismiss="modal"
+                type="button" class="btn btn-primary" (click)="modal.close()">Close</button>
               <button *ngIf="addressSuggestion && !invalidAddress" class="md-btn md-raised mb-2 blue" data-dismiss="modal"
                 (click)="processSuggestion(true)">Use suggested address</button>
               <button *ngIf="addressSuggestion && !invalidAddress" class="md-btn md-flat mb-2 text-primary"
                 data-dismiss="modal" (click)="modal.close()">Edit Address</button>
+                <!-- DELETE CONTACT BUTTONS -->
+              <button *ngIf="deleteUnconfirmed" class="md-btn md-raised mb-2 blue" data-dismiss="modal"
+                (click)="deleteContact()">Continue</button>
+              <button *ngIf="deleteUnconfirmed" class="md-btn md-flat mb-2 text-primary"
+                data-dismiss="modal" (click)="modal.close()">Cancel</button>
             </modal-footer>
           </modal>
         </div>
