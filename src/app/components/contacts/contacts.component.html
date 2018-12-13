@@ -729,7 +729,7 @@
               </div>
             </div>
           </div>
-          <modal #modalmessage id="backdrop">
+          <modal #modalmessage id="backdrop" onClose="cleanModal()">
             <modal-header [show-close]="true">
               <h4 class="modal-title">{{modalTitle}}</h4>
             </modal-header>

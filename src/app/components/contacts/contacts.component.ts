@@ -963,6 +963,12 @@ export class ContactsComponent implements OnInit, OnDestroy {
 
   onUploadSuccess(e) { }
 
+  cleanModal(){
+    this.updateStoreProcessFinished = false;
+    this.addressSuggestion = false;
+    this.invalidAddress = false;
+    this.deleteUnconfirmed = false;
+  }
 
 }
 
