@@ -151,6 +151,36 @@ export class ContactsService {
         return Observable.throw(error.message || error);
       });
   }
+
+  /**
+  * Set to false the "enabled" property for a db contact
+  * @param pm_id:string
+  * @param currentCompany:string
+  * @param contactId:string
+  * @param user_type:string
+  * @returns void
+  */
+  public deleteContact(pm_id, currentCompany, contactId, user_type): Observable<any> {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('property_manager_id', pm_id);
+    headers.append('property_manager_company', currentCompany);
+    const options = new RequestOptions({ 'headers': headers });
+    return this.http
+      .delete(
+        `${environment.api_domain}/dashboard/contacts/${contactId}?user_type=${user_type}`,
+        options
+      )
+      .map(res => {
+        console.log('delete response');
+        console.log(res.json());
+        return res.json();
+      })
+      .catch(error => {
+        console.log(error);
+        return Observable.throw(error.message || error);
+      });
+  }
 }
 
 
