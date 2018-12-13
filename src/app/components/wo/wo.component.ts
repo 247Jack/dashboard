@@ -361,9 +361,11 @@ export class WoComponent implements OnInit {
     if (this.vendorsRemoved.length < 1) {
       delete updateData.vendorsRemoved
     }
+    /*
     if (this.vendorSelectedItems.length < 1) {
       delete updateData.newVendorsBroadcasted
     }
+    */
     if (this.newNote.length < 1) {
       delete updateData.newNotes
     }
