@@ -286,6 +286,7 @@ export class WoComponent implements OnInit {
     this.vendorSelectedItems = []
     this.newNotes = [];
     this.setCompleted = false;
+    this.newVendorAssigned = "";
     this.statusList = [
       {
         id: "available",
@@ -379,6 +380,7 @@ export class WoComponent implements OnInit {
       this.newNotes = [];
       this.vendorSelectedItems = []
       this.statusSelectedItems = []
+      this.newVendorAssigned = "";
       this.updateData = {}
       this.statusList = [
         {
@@ -422,6 +424,7 @@ export class WoComponent implements OnInit {
        this.modalDelete.close()
        this.modalShowMessage("DeleteTask");
        this.setCompleted = false;
+       this.newVendorAssigned = "";
        document.getElementById("cancelEdit").click();
      })
   }
