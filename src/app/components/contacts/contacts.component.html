@@ -482,7 +482,7 @@
                         <!-- {{diagnostic}} -->
                         <div *ngSwitchCase="'tenant'" class="row scroll-y">
                           <div class="col-sm-6 form-group">
-                            <label for="firstName">Name / Company</label>
+                            <label for="firstName">First Name</label>
                             <input type="text" class="form-control capitalized" id="firstName" name="firstName"
                               #firstName="ngModel" [(ngModel)]="newResidentData.firstName" (keyup)="updateInitials($event, 0)"
                               (change)="newResidentData.firstName=capitalize(newResidentData.firstName);" maxlength="100"
@@ -491,12 +491,12 @@
                               Field Required
                             </div> -->
                           </div>
-                          <!--div class="col-sm-6 form-group">
+                          <div class="col-sm-6 form-group">
                             <label for="lastName">Last Name</label>
                             <input type="text" class="form-control capitalized" id="lastName" name="lastName" #lastName="ngModel"
                               [(ngModel)]="newResidentData.lastName" (keyup)='updateInitials($event, 1)' (change)="newResidentData.lastName=capitalize(newResidentData.lastName);"
                               maxlength="100" required pattern="^[a-zA-Z ]*$">
-                          </div-->
+                          </div>
                           <div class="col-sm-12 form-group">
                             <label for="portfolio">Portfolio</label>
                             <input type="text" class="form-control" id="portfolio" name="portfolio" [(ngModel)]="newResidentData.portfolio"
