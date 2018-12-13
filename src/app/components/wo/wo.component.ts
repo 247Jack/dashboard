@@ -201,7 +201,7 @@ export class WoComponent implements OnInit {
     if (this.selectedRow._id) {
       this.ticket.getEditTask(this.currentPropertyManager['_id'], this.currentCompany, this.selectedRow._id).subscribe(data => {
         this.editDataRequest = data
-        this.vendorList = this.staticVendorList;
+        //this.vendorList = this.staticVendorList;
         //let ids = this.editDataRequest.providersDispatched.map(v => (v.id).toString())
         //let newVendorList = this.vendorList.filter(v => !(ids.includes((v.id).toString())))
         //this.vendorList = newVendorList
@@ -284,9 +284,9 @@ export class WoComponent implements OnInit {
     this.editStatus = false
     this.newNote = "";
     this.vendorSelectedItems = []
+    this.newVendorAssigned = "";
     this.newNotes = [];
     this.setCompleted = false;
-    this.newVendorAssigned = "";
     this.statusList = [
       {
         id: "available",
@@ -323,10 +323,12 @@ export class WoComponent implements OnInit {
   public deleteVendor(item) {
     let deleteVendors = this.editDataRequest.providersDispatched.filter(v => !(item.id.includes((v.id).toString())))
     this.editDataRequest.providersDispatched = deleteVendors
+    /*
     this.vendorList.push({
       id: item.id,
       itemName: item.name
     })
+    */
     this.vendorsRemoved.push(item.id)
   }
   public addNote() {
@@ -343,7 +345,7 @@ export class WoComponent implements OnInit {
     this.spinnerService.show()
     let updateData = {
       vendorsRemoved: this.vendorsRemoved,
-      newVendorsBroadcasted: this.newVendorsBroadcasted,
+      //newVendorsBroadcasted: this.newVendorsBroadcasted,
       newVendorAssigned: this.newVendorAssigned,
       //status: (this.statusSelectedItems.length) ? this.statusSelectedItems[0].id : "",
       newState: (!this.isCompleted && this.setCompleted)? "finished" : this.currentStatus,
@@ -379,8 +381,8 @@ export class WoComponent implements OnInit {
       this.newNote = "";
       this.newNotes = [];
       this.vendorSelectedItems = []
-      this.statusSelectedItems = []
       this.newVendorAssigned = "";
+      this.statusSelectedItems = []
       this.updateData = {}
       this.statusList = [
         {
@@ -420,12 +422,13 @@ export class WoComponent implements OnInit {
   }
   public removeRequest() {
      this.ticket.deleteField(this.selectedRow._id, this.currentPropertyManager["_id"], this.currentCompany).subscribe(resultUpdate => {
-       this.loadTasks();
-       this.modalDelete.close()
-       this.modalShowMessage("DeleteTask");
-       this.setCompleted = false;
-       this.newVendorAssigned = "";
-       document.getElementById("cancelEdit").click();
+      this.loadTasks();
+      this.modalDelete.close()
+      this.modalShowMessage("DeleteTask");
+      this.setCompleted = false;
+      this.vendorSelectedItems = []
+      this.newVendorAssigned = "";
+      document.getElementById("cancelEdit").click();
      })
   }
   public modalShowMessage(messageType) {
