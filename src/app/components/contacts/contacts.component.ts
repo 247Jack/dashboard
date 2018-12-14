@@ -69,7 +69,6 @@ export class ContactsComponent implements OnInit, OnDestroy {
   public getIssuesConn;
 
   // Variables for the Address Validation requiremnt
-  public addressSuggestion = false;
   public invalidAddress = false;
   public addressComparisonHtml = [];
 
@@ -86,7 +85,6 @@ export class ContactsComponent implements OnInit, OnDestroy {
   };
 
   // Variable for delete contact feature
-  public deleteUnconfirmed = true;
   public deleteFinished = false;
 
   // Modal Variables
@@ -94,12 +92,12 @@ export class ContactsComponent implements OnInit, OnDestroy {
   modal: ModalComponent;
   public modalTitle = '';
   public modalBody = '';
+  public modalPurpose = '';
 
   @ViewChild('header')
   modalDelete: ModalComponent;
 
   // 'Edit Contact' feature objects
-  public updateStoreProcessFinished = false;
 
   // public editResidentData: Tenant; // TODO
   public editResidentData = {
@@ -203,7 +201,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
   // get diagnostic() { return JSON.stringify(this.newVendorData); }
 
   ngOnInit() {
-    this.waitForPMData();
+    this.waitForPMData(true);
   }
 
   ngOnDestroy() {
@@ -212,7 +210,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
     }
   }
 
-  waitForPMData() {
+  waitForPMData(openModal) {
     this.spinnerService.show();
     const waitPMData = setInterval(() => {
       this.currentPropertyManager = JSON.parse(sessionStorage.getItem('propertyManagerData'));
@@ -230,19 +228,15 @@ export class ContactsComponent implements OnInit, OnDestroy {
               switch (queryparams['typecontact']) {
                 case 'tenants':
                   this.currentContacts = this.contactsTenants;
-                  // console.log(this.currentContacts);
                   break;
                 case 'providers':
                   this.currentContacts = this.contactsVendors;
-                  // console.log(this.currentContacts);
                   break;
                 case 'managers':
                   this.currentContacts = this.contactsPropertyManagers;
-                  // console.log(this.currentContacts);
                   break;
                 case 'all':
                   this.currentContacts = this.currentContacts.concat(this.contactsTenants, this.contactsVendors, this.contactsPropertyManagers);
-                  // console.log(this.currentContacts);
                   break;
                 default:
                   this.currentContacts = this.currentContacts.concat(this.contactsTenants, this.contactsVendors, this.contactsPropertyManagers);
@@ -252,18 +246,20 @@ export class ContactsComponent implements OnInit, OnDestroy {
             }
           }, 100);
         });
-        this.activatedRoute.params.subscribe(params => {
-          this.currentContactType = '';
-          if (params.contactId) {
-            document.getElementById('openModalButton').click();
-            this.contacts.getSingleContact(this.currentPropertyManager._id, this.currentCompany, params.contactId)
-              .subscribe(contactDataFromDatabase => {
-                this.mapContactData(contactDataFromDatabase);
-                this.currentContactType = contactDataFromDatabase.contactType;
-                this.currentContact = contactDataFromDatabase.contactResult;
-              });
-          }
-        });
+        if (openModal) {
+          this.activatedRoute.params.subscribe(params => {
+            this.currentContactType = '';
+            if (params.contactId) {
+              document.getElementById('openModalButton').click();
+              this.contacts.getSingleContact(this.currentPropertyManager._id, this.currentCompany, params.contactId)
+                .subscribe(contactDataFromDatabase => {
+                  this.mapContactData(contactDataFromDatabase);
+                  this.currentContactType = contactDataFromDatabase.contactType;
+                  this.currentContact = contactDataFromDatabase.contactResult;
+                });
+            }
+          });
+        }
         this.setIssuesDropdown();
       }
     }, 100);
@@ -282,9 +278,6 @@ export class ContactsComponent implements OnInit, OnDestroy {
       }
     }
     return arrayServices;
-    // this.editVendorData.services = arrayServices;
-    // console.log(this.editVendorData.services);
-    // console.log(arrayServices);
   }
 
   /**
@@ -379,8 +372,6 @@ export class ContactsComponent implements OnInit, OnDestroy {
     this.currentContacts = this.currentContacts.concat(this.contactsTenants, this.contactsVendors, this.contactsPropertyManagers);
     this.dataLoaded = true;
     this.spinnerService.hide();
-    // console.log('mapContactsObjectsByTypes: currentContacts');
-    // console.log(this.currentContacts);
   }
 
   /**
@@ -389,7 +380,6 @@ export class ContactsComponent implements OnInit, OnDestroy {
    * @returns void
    */
   mapContactData(contactData) {
-    // console.log(contactData.contactResult);
     switch (contactData.contactType) {
       case 'tenant':
         this.editResidentData.initials = contactData.contactResult.firstName[0] + contactData.contactResult.lastName[0];
@@ -434,8 +424,6 @@ export class ContactsComponent implements OnInit, OnDestroy {
         break;
       default:
     }
-    // console.log('currentContact:');
-    // console.log(this.currentContact);
   }
 
   /**
@@ -443,8 +431,8 @@ export class ContactsComponent implements OnInit, OnDestroy {
    * @param enableFields:bool enable or disable form fields
    * @returns void
    */
-  setupContactForm(enableFields) {
-    this.enableEditFields = enableFields;
+  setupContactForm() {
+    this.enableEditFields = true;
     this.setIssuesDropdown();
   }
 
@@ -485,7 +473,6 @@ export class ContactsComponent implements OnInit, OnDestroy {
       }
       this.contacts.addContact(this.currentPropertyManager._id, this.currentCompany, newContactData, this.newContactType).subscribe(data => {
         this.resetContactData(this.newContactType);
-        this.updateStoreProcessFinished = true;
         this.modalAddContactResult(data.ok);
         this.spinnerService.hide();
       });
@@ -540,10 +527,9 @@ export class ContactsComponent implements OnInit, OnDestroy {
   * @param form Frontend Form object
   * @returns void
   */
-  onSubmitEdit(form) {
+  onSubmitEditcontact(form) {
     if (form.valid) {
       if (this.currentContactType === 'tenant') {
-        this.addressSuggestion = true;
         this.formatAddress('edit');
       } else if (this.currentContactType === 'vendor') {
         this.updateContact();
@@ -558,10 +544,9 @@ export class ContactsComponent implements OnInit, OnDestroy {
    * @param form Frontend Form object
    * @returns void
    */
-  onSubmit(form) {
+  onSubmitNewContact(form) {
     if (form.valid) {
       if (this.newContactType === 'tenant') {
-        this.addressSuggestion = true;
         this.formatAddress('add');
       } else if (this.newContactType === 'vendor') {
         this.saveNewContact();
@@ -578,7 +563,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
     * @param processType:string type of process: add, edit, remove
     * @returns void
     */
-  formatAddress(processType) {
+  async formatAddress(processType) {
     this.spinnerService.show();
     switch (processType) {
       case 'add':
@@ -598,8 +583,9 @@ export class ContactsComponent implements OnInit, OnDestroy {
       default:
         break;
     }
-    this.contacts.getAddressSuggestion(this.addressToValidate).subscribe(data => {
+    await this.contacts.getAddressSuggestion(this.addressToValidate).subscribe(data => {
       this.addressComparisonHtml = [];
+      this.invalidAddress = true;
       if (data.length > 0) {
         this.suggestedAddress = {
           address: data[0].deliveryLine1,
@@ -612,15 +598,11 @@ export class ContactsComponent implements OnInit, OnDestroy {
           '<hr><strong>Suggested:</strong><br>',
           data[0].deliveryLine1, ' ', data[0].components.cityName, ' ', data[0].components.zipCode,
         );
-        // console.log(this.suggestedAddress);
-        // console.log(this.addressComparisonHtml);
         this.invalidAddress = false;
-      } else {
-        this.invalidAddress = true;
       }
-      this.spinnerService.hide();
-      this.modalShowMessage('CorrectAddress');
     });
+    this.spinnerService.hide();
+    this.modalShowMessage('CorrectAddress');
   }
 
   /**
@@ -628,64 +610,25 @@ export class ContactsComponent implements OnInit, OnDestroy {
     * @param boolean false if the suggestion is declined, true if user accepts suggestion
     * @returns void
     */
-  processSuggestion(suggestionAccepted) {
+  processSuggestion() {
     this.spinnerService.show();
-    if (suggestionAccepted) {
-      if (this.enableEditFields) {
-        this.editResidentData.originalAddress =
-          `${this.editResidentData.address} ${this.editResidentData.address2} ${this.editResidentData.city} ${this.editResidentData.zip}`;
-        this.editResidentData.address = this.suggestedAddress.address;
-        this.editResidentData.city = this.suggestedAddress.city;
-        this.editResidentData.zip = this.suggestedAddress.zip;
-      } else {
-        this.newResidentData.originalAddress =
-          `${this.newResidentData.address} ${this.newResidentData.address2} ${this.newResidentData.city} ${this.newResidentData.zip}`;
-        this.newResidentData.address = this.suggestedAddress.address;
-        this.newResidentData.city = this.suggestedAddress.city;
-        this.newResidentData.zip = this.suggestedAddress.zip;
-      }
-    }
-    this.addressComparisonHtml = [];
     this.modal.close();
-    this.addressSuggestion = false;
-    this.updateStoreProcessFinished = false;
-    this.enableEditFields ? this.updateContact() : this.saveNewContact();
-  }
-
-  /**
-    * Show success or error message if contact is added properly
-    * @param serviceResult This is the result of the "Ok" value of the Contacte Service
-    * @returns void
-    */
-  modalAddContactResult(serviceResult) {
-    if (serviceResult === 1) {
-      this.modalShowMessage('ContactAdded');
+    this.addressComparisonHtml = [];
+    if (this.enableEditFields) {
+      this.editResidentData.originalAddress =
+        `${this.editResidentData.address} ${this.editResidentData.address2} ${this.editResidentData.city} ${this.editResidentData.zip}`;
+      this.editResidentData.address = this.suggestedAddress.address;
+      this.editResidentData.city = this.suggestedAddress.city;
+      this.editResidentData.zip = this.suggestedAddress.zip;
+      this.updateContact();
     } else {
-      this.modalShowMessage('SystemError');
+      this.newResidentData.originalAddress =
+        `${this.newResidentData.address} ${this.newResidentData.address2} ${this.newResidentData.city} ${this.newResidentData.zip}`;
+      this.newResidentData.address = this.suggestedAddress.address;
+      this.newResidentData.city = this.suggestedAddress.city;
+      this.newResidentData.zip = this.suggestedAddress.zip;
+      this.saveNewContact();
     }
-    this.contactsTenants = [];
-    this.contactsVendors = [];
-    this.contactsPropertyManagers = [];
-    this.currentContacts = [];
-    this.waitForPMData();
-  }
-
-  /**
-  * Show success or error message if contact is updated properly
-  * @param serviceResult This is the result of the "Ok" value of the Contacte Service
-  * @returns void
-  */
-  modalUpdateContactResult(serviceResult) {
-    if (serviceResult === 1) {
-      this.modalShowMessage('ContactUpdated');
-    } else {
-      this.modalShowMessage('SystemError');
-    }
-    this.contactsTenants = [];
-    this.contactsVendors = [];
-    this.contactsPropertyManagers = [];
-    this.currentContacts = [];
-    this.waitForPMData();
   }
 
   /**
@@ -747,37 +690,42 @@ export class ContactsComponent implements OnInit, OnDestroy {
   * @returns void
   */
   modalShowMessage(messageType) {
+    this.modalPurpose = '';
     switch (messageType) {
-      case 'ContactAdded': {
-        this.modalTitle = 'Contact Added';
-        this.modalBody = 'The contact information has been successfully stored.';
-        break;
-      }
       case 'SystemError': {
         this.modalTitle = 'System Error';
         this.modalBody = "Oops! It looks like something went wrong on our side. Please try again. If the issue remains, send us a note at support@247jack.com";
         break;
       }
+      case 'ContactDeleted': {
+        this.modalTitle = 'Contact Deleted';
+        this.modalBody = 'Contact has been deleted successfully';
+        this.modalPurpose = 'editContact';
+        break;
+      }
+      case 'ContactAdded': {
+        this.modalTitle = 'Contact Added';
+        this.modalBody = 'The contact information has been successfully stored.';
+        this.modalPurpose = 'addContact';
+        break;
+      }
       case 'ContactUpdated': {
         this.modalTitle = 'Contact Updated';
         this.modalBody = 'The contact information has been successfully stored.';
+        this.modalPurpose = 'editContact';
         break;
       }
       case 'CorrectAddress': {
         this.modalTitle = 'Correct Address';
         this.modalBody = '';
-        // this.modalBody = this.addressComparisonHtml.join('');
-        break;
-      }
-      case 'ContactDeleted': {
-        this.modalTitle = 'Contact Deleted';
-        this.modalBody = 'Contact has been deleted successfully';
+        this.modalPurpose = 'addressValidation';
         // this.modalBody = this.addressComparisonHtml.join('');
         break;
       }
       case 'ConfirmDelete': {
         this.modalTitle = 'Confirm Delete';
         this.modalBody = 'Are you sure you want to delete the selected user?';
+        this.modalPurpose = 'deleteContact';
         break;
       }
       case 'MissingFields': {
@@ -800,6 +748,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
   * @returns void
   */
   cancelNewContact() {
+    this.modalPurpose = '';
     switch (this.newContactType) {
       case 'tenant':
         for (var key in this.newResidentData) {
@@ -820,7 +769,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
   }
 
   /**
-  * Cancel ad close the edit contact form
+  * Send new contact information to database
   * @param none
   * @returns void
   */
@@ -864,10 +813,12 @@ export class ContactsComponent implements OnInit, OnDestroy {
         this.currentContactType
       ).subscribe(data => {
         console.log(data);
-        this.updateStoreProcessFinished = true;
         this.modalUpdateContactResult(data.ok);
-        this.spinnerService.hide();
+      }, (err) => {
+        console.log(err);
+        this.modalShowMessage('SystemError');
       });
+      this.spinnerService.hide();
     }
   }
 
@@ -907,7 +858,6 @@ export class ContactsComponent implements OnInit, OnDestroy {
   */
   deleteContact() {
     this.modal.close();
-    this.deleteUnconfirmed = false;
     this.spinnerService.show();
     this.contacts.deleteContact(
       this.currentPropertyManager._id,
@@ -931,7 +881,6 @@ export class ContactsComponent implements OnInit, OnDestroy {
   * @returns void
   */
   confirmDelete() {
-    this.deleteUnconfirmed = true;
     this.modalShowMessage('ConfirmDelete');
   }
 
@@ -950,24 +899,60 @@ export class ContactsComponent implements OnInit, OnDestroy {
     } catch (error) {
       this.modalShowMessage('SystemError');
     }
+    this.refreshContacts();
+  }
+
+   /**
+    * Show success or error message if contact is added properly
+    * @param serviceResult This is the result of the "Ok" value of the Contacte Service
+    * @returns void
+    */
+   modalAddContactResult(serviceResult) {
+    if (serviceResult === 1) {
+      this.modalShowMessage('ContactAdded');
+    } else {
+      this.modalShowMessage('SystemError');
+    }
+    this.refreshContacts();
+  }
+
+  /**
+  * Show success or error message if contact is updated properly
+  * @param serviceResult This is the result of the "Ok" value of the Contacte Service
+  * @returns void
+  */
+  modalUpdateContactResult(serviceResult) {
+    if (serviceResult === 1) {
+      this.modalShowMessage('ContactUpdated');
+    } else {
+      this.modalShowMessage('SystemError');
+    }
+    this.refreshContacts();
+  }
+
+  /**
+  * Drop current contacts data an retrieve again from db
+  * @param none
+  * @returns void
+  */
+  refreshContacts() {
     this.contactsTenants = [];
     this.contactsVendors = [];
     this.contactsPropertyManagers = [];
     this.currentContacts = [];
-    this.waitForPMData();
+    this.waitForPMData(false);
   }
 
+  refreshPage() {
+    window.location.reload();
+  }
   afterHidden(e) { }
 
   onUploadError(e) { }
 
   onUploadSuccess(e) { }
 
-  cleanModal(){
-    this.updateStoreProcessFinished = false;
-    this.addressSuggestion = false;
-    this.invalidAddress = false;
-    this.deleteUnconfirmed = false;
+  cleanModal() {
   }
 
 }

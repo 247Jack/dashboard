@@ -31,3 +31,7 @@ ul.contact-drawer-options li {
 #user-edit {
   margin-right: .5rem !important;
 }
+
+.noBg {
+    background-color: rgba(0, 0, 0, 0) !important;
+}

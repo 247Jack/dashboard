@@ -197,7 +197,8 @@
                 <div class="d-flex flex-column h-100 w-100 white b-r">
                   <div class="scroll-y" id="border">
                     <div class="row drawer-menu">
-                      <button class="float-left btn btn-clean b-close" data-dismiss="modal" id="cancelEdit" (click)="cancelEditContact()">
+                      <button class="float-left btn btn-clean b-close noBg" data-dismiss="modal" id="cancelEdit"
+                        (click)="cancelEditContact()">
                         <i class="fa fa-close"></i>
                       </button>
                       <div class="d-block stack-right">
@@ -211,7 +212,7 @@
                             Delete
                           </li> -->
                           <li>
-                            <button (click)="setupContactForm(true)" class="md-btn blue btn-reduced" [disabled]="enableEditFields"
+                            <button (click)="setupContactForm()" class="md-btn blue btn-reduced" [disabled]="enableEditFields"
                               *ngIf="currentContactType != 'property manager'">
                               <i class="fa fa-edit"></i>
                               Edit
@@ -238,7 +239,7 @@
                       </div>
                     </div>
                     <form #editContactForm="ngForm" [ngSwitch]="currentContactType" id="user-edit" class="ml-4"
-                      validate (ngSubmit)="onSubmitEdit(editContactForm)">
+                      validate (ngSubmit)="onSubmitEditcontact(editContactForm)">
                       <!-- <div class="row">
                         <button (click)="openModalDelete()" class="d-block md-btn md-flat mt-2 text-primary">
                           <i class="fa fa-trash-o"></i>
@@ -472,7 +473,7 @@
               <div class="modal-dialog modal-right white dk b-l">
                 <div class="d-flex flex-column h-100 w-100 white b-r ">
                   <div class="scroll-y" id="border">
-                    <button class="float-left btn btn-clean mt-3 ml-2 b-close" data-dismiss="modal" (click)="cancelNewContact()">
+                    <button class="float-left btn btn-clean mt-3 ml-2 b-close noBg" data-dismiss="modal" (click)="cancelNewContact()">
                       <i class="fa fa-close"></i>
                     </button>
                     <div [ngSwitch]="newContactType" class="px-4 ml-4 text-centered">
@@ -506,7 +507,8 @@
                         </div>
                       </div>
                     </div>
-                    <form #newResidentForm="ngForm" class="col-sm-12" (ngSubmit)="onSubmit(newResidentForm)" validate>
+                    <form #newResidentForm="ngForm" class="col-sm-12" (ngSubmit)="onSubmitNewContact(newResidentForm)"
+                      validate>
                       <div [ngSwitch]="newContactType" class="new-contact-scroll">
                         <!-- {{diagnostic}} -->
                         <div *ngSwitchCase="'tenant'" class="row scroll-y">
@@ -738,22 +740,30 @@
               <div [innerHTML]="addressComparisonHtml.join('')"></div>
               <span *ngIf="invalidAddress">Please provide a valid address</span>
             </modal-body>
-            <modal-footer>
-              <button *ngIf="updateStoreProcessFinished" type="button" class="btn btn-primary" data-dismiss="modal"
-                (click)="cancelEditContact()">Close</button>
-              <button *ngIf="(!addressSuggestion || invalidAddress) && !updateStoreProcessFinished && (!deleteUnconfirmed && deleteFinished)" data-dismiss="modal"
-                type="button" class="btn btn-primary" (click)="modal.close()">Close</button>
-              <button *ngIf="addressSuggestion && !invalidAddress" class="md-btn md-raised mb-2 blue" data-dismiss="modal"
-                (click)="processSuggestion(true)">Use suggested address</button>
-              <button *ngIf="addressSuggestion && !invalidAddress" class="md-btn md-flat mb-2 text-primary"
-                data-dismiss="modal" (click)="modal.close()">Edit Address</button>
-                <!-- DELETE CONTACT BUTTONS -->
-              <button *ngIf="deleteUnconfirmed" class="md-btn md-raised mb-2 blue" data-dismiss="modal"
-                (click)="deleteContact()">Continue</button>
-              <button *ngIf="deleteUnconfirmed" class="md-btn md-flat mb-2 text-primary"
-                data-dismiss="modal" (click)="modal.close()">Cancel</button>
+            <modal-footer [ngSwitch]="modalPurpose">
+              <div *ngSwitchCase="'addressValidation'">
+                <button *ngIf="!invalidAddress" class="md-btn md-raised mb-2 blue" data-dismiss="modal" (click)="processSuggestion()">Use
+                  suggested address</button>
+                <button class="md-btn md-flat mb-2 text-primary" data-dismiss="modal" (click)="modal.close()">Edit
+                  Address</button>
+              </div>
+              <div *ngSwitchCase="'editContact'">
+                <button type="button" class="md-btn md-flat mb-2 text-primary" data-dismiss="modal" (click)="cancelEditContact()">Close</button>
+              </div>
+              <div *ngSwitchCase="'addContact'">
+                <button type="button" class="md-btn md-flat mb-2 text-primary" data-dismiss="modal" (click)="refreshPage()">Close</button>
+              </div>
+              <div *ngSwitchCase="'deleteContact'">
+                <button class="md-btn md-raised mb-2 blue" data-dismiss="modal" (click)="deleteContact()">Continue</button>
+                <button class="md-btn md-flat mb-2 text-primary" data-dismiss="modal" (click)="modal.close()">Cancel</button>
+              </div>
+              <div *ngSwitchDefault>
+                <button class="md-btn md-flat mb-2 text-primary" data-dismiss="modal" (click)="modal.close()">Close</button>
+              </div>
             </modal-footer>
           </modal>
         </div>
       </div>
     </div>
+  </div>
+</div>
