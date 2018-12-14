@@ -124,7 +124,7 @@
                 <div *ngFor="let item of messages">
                   <div class="chat-item" data-class="alt" *ngIf="item.direction === 'out'">
                     <a class="avatar w-40">
-                      <span class="w-40 avatar circle jack-color" [class.pms-color]="item.initials">
+                      <span class="w-40 avatar circle jack-color" [class.pms-color]="item.initials && item.initials !== 'J'">
                         <i class="on b-white avatar-right"></i>
                         {{item.initials || 'J'}}
                       </span>
