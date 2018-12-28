@@ -343,8 +343,8 @@ export class ContactsComponent implements OnInit, OnDestroy {
               data.vendorsResult[i].vendorData.name.split(' ')[1][0]
               }`
               : '',
-          email: data.vendorsResult[i].vendorData.email,
-          mobile: data.vendorsResult[i].vendorData.phone || data.vendorsResult[i].vendorData.mobile,
+          email: data.vendorsResult[i].vendorData.email || '',
+          mobile: data.vendorsResult[i].vendorData.phone || data.vendorsResult[i].vendorData.mobile || '',
           originalData: data.vendorsResult[i]
         };
         this.contactsVendors.push(userData);
