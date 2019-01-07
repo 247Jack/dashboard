@@ -31,7 +31,7 @@
           </ngx-datatable-column>
           <ngx-datatable-column name="Address" [width]="115" [sortable]="false">
             <ng-template ngx-datatable-cell-template let-row="row">
-              <span *ngFor="let resident of row.residents">{{resident.originalAddress}}, {{user.building.city}} {{user.building.zip}}</span>
+              <span *ngFor="let resident of row.residents">{{resident.originalAddress}}, {{resident.building.city}} {{resident.building.zip}}</span>
             </ng-template>
           </ngx-datatable-column>
           <ngx-datatable-column name="Service" [width]="110" [sortable]="false">
