@@ -31,7 +31,7 @@
           </ngx-datatable-column>
           <ngx-datatable-column name="Address" [width]="115" [sortable]="false">
             <ng-template ngx-datatable-cell-template let-row="row">
-              <span *ngFor="let resident of row.residents">{{resident.building.address}} {{resident.building.address2}}</span>
+              <span *ngFor="let resident of row.residents">{{resident.originalAddress}}</span>
             </ng-template>
           </ngx-datatable-column>
           <ngx-datatable-column name="Service" [width]="110" [sortable]="false">
@@ -264,10 +264,13 @@
                         <span>{{editDataRequest.tenantContact}}</span>
                       </p>
                       <p>
+                        <span class="d-bloc">{{editDataRequest.tenantOriginalAddress}}</span>
+                        <!--
                         <span class="d-bloc">{{editDataRequest.tenantAddress.address}},
                           {{editDataRequest.tenantAddress.address2}},</span>
                         <span class="d-bloc">{{editDataRequest.tenantAddress.city}},
                           {{editDataRequest.tenantAddress.zip}}</span>
+                          -->
                       </p>
                       <p class="sub">
                         <strong>Portfolio:</strong>
