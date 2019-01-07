@@ -616,14 +616,14 @@ export class ContactsComponent implements OnInit, OnDestroy {
     this.addressComparisonHtml = [];
     if (this.enableEditFields) {
       this.editResidentData.originalAddress =
-        `${this.editResidentData.address} ${this.editResidentData.address2} ${this.editResidentData.city} ${this.editResidentData.zip}`;
+        `${this.editResidentData.address} ${this.editResidentData.address2}`;
       this.editResidentData.address = this.suggestedAddress.address;
       this.editResidentData.city = this.suggestedAddress.city;
       this.editResidentData.zip = this.suggestedAddress.zip;
       this.updateContact();
     } else {
       this.newResidentData.originalAddress =
-        `${this.newResidentData.address} ${this.newResidentData.address2} ${this.newResidentData.city} ${this.newResidentData.zip}`;
+        `${this.newResidentData.address} ${this.newResidentData.address2}`;
       this.newResidentData.address = this.suggestedAddress.address;
       this.newResidentData.city = this.suggestedAddress.city;
       this.newResidentData.zip = this.suggestedAddress.zip;
