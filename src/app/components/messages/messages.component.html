@@ -238,7 +238,7 @@
               <ul class="nav flex-column">
                 <li class="nav-item">
                   <span class="nav-link d-flex flex-row text-muted">
-                    <span>Addres:</span> {{user.originalAddress}}
+                    <span>Addres:</span> {{[user.building.address, user.building.city, [user.building.st, user.building.zip].join(' ')].join(', ')}}
                   </span>
                 </li>
                 <li class="nav-item">
