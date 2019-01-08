@@ -288,6 +288,7 @@
                           <input [(ngModel)]="editResidentData.address" #address="ngModel" id="address" name="address"
                             type="text" class="form-control" required maxlength="500" [disabled]="!enableEditFields">
                         </div>
+                        <!--
                         <div class="col-sm-12 form-group">
                           <label for="address2">Address 2</label>
                           <input [(ngModel)]="editResidentData.address2" #address2="ngModel" id="address2" name="address2"
@@ -304,6 +305,7 @@
                             class="form-control" required (keypress)="onlyNumberKey($event)" mimlength="3" pattern="^[0-9]*$"
                             [disabled]="!enableEditFields">
                         </div>
+                          -->
                         <!-- <div class="col-sm-6 form-group">
                           <label for="phone">Phone</label>
                           <input type="text" class="form-control" id="phone" name="phone" [(ngModel)]="editResidentData.phone"
@@ -548,6 +550,7 @@
                             <input type="text" class="form-control" id="address" name="address" [(ngModel)]="newResidentData.address"
                               #address="ngModel" required maxlength="500">
                           </div>
+                          <!--
                           <div class="col-sm-12 form-group">
                             <label for="address2">Address 2</label>
                             <input type="text" class="form-control" id="address2" name="address2" [(ngModel)]="newResidentData.address2"
@@ -564,6 +567,7 @@
                               #zip="ngModel" required (keypress)="onlyNumberKey($event)" maxlength="25" mimlength="3"
                               pattern="^[0-9]*$">
                           </div>
+                          -->
                           <!-- <div class="col-sm-6 form-group">
                           <label for="phone">Phone</label>
                           <input type="text" class="form-control" id="phone" name="phone" [(ngModel)]="newResidentData.phone"

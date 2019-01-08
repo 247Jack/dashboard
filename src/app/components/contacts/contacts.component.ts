@@ -529,11 +529,14 @@ export class ContactsComponent implements OnInit, OnDestroy {
   */
   onSubmitEditcontact(form) {
     if (form.valid) {
+      this.updateContact();
+      /*
       if (this.currentContactType === 'tenant') {
         this.formatAddress('edit');
       } else if (this.currentContactType === 'vendor') {
         this.updateContact();
       }
+      */
     } else {
       this.modalShowMessage('MissingFields');
     }
@@ -547,7 +550,8 @@ export class ContactsComponent implements OnInit, OnDestroy {
   onSubmitNewContact(form) {
     if (form.valid) {
       if (this.newContactType === 'tenant') {
-        this.formatAddress('add');
+        //this.formatAddress('add');
+        this.saveNewContact();
       } else if (this.newContactType === 'vendor') {
         this.saveNewContact();
       } else {
@@ -615,15 +619,13 @@ export class ContactsComponent implements OnInit, OnDestroy {
     this.modal.close();
     this.addressComparisonHtml = [];
     if (this.enableEditFields) {
-      this.editResidentData.originalAddress =
-        `${this.editResidentData.address} ${this.editResidentData.address2}`;
+      this.editResidentData.originalAddress = this.editResidentData.address;
       this.editResidentData.address = this.suggestedAddress.address;
       this.editResidentData.city = this.suggestedAddress.city;
       this.editResidentData.zip = this.suggestedAddress.zip;
       this.updateContact();
     } else {
-      this.newResidentData.originalAddress =
-        `${this.newResidentData.address} ${this.newResidentData.address2}`;
+      this.newResidentData.originalAddress = this.newResidentData.address
       this.newResidentData.address = this.suggestedAddress.address;
       this.newResidentData.city = this.suggestedAddress.city;
       this.newResidentData.zip = this.suggestedAddress.zip;
