@@ -121,7 +121,10 @@ app-home #content-main {
 datatable-row-wrapper{
   cursor: pointer !important;
 }
+.h-90vh{
+  height: 92vh;
 
+}
 /* .list-item:hover
 {
   background-color: rgb(71, 221, 109) !important;
@@ -154,7 +157,10 @@ datatable-row-wrapper{
 	background-color: #666666;
 } */
 
-
+.overflow-y-auto{
+  overflow-y: auto;
+  overflow-x: hidden;
+}
 #backdrop, #selec-vendors {
   background-color: #00000057;
 }
@@ -571,9 +577,9 @@ app-contacts {
   width: 100%;
 }
 
-app-contacts .d-flex {
+/* app-contacts .d-flex {
   height: auto;
-}
+} */
 
 .text-contacs {
   width: 70%;
@@ -1059,8 +1065,9 @@ img.preview-image-chat {
     width: 100%;
   }
 
-  #selec-vendors .modal-dialog {
-    width: 60%;
+  #selec-vendors .modal-dialog,
+  #modal-edit .modal-dialog {
+    width: 80%;
   }
 }
 
@@ -1182,7 +1189,11 @@ img.preview-image-chat {
   }
 
   #selec-vendors .modal-dialog {
-    width: 80%;
+    width: 100%;
+    z-index: 2147483647!important;
+  }
+  #selec-vendors {
+    z-index: 2147483647!important;
   }
 }
 
@@ -1191,7 +1202,8 @@ img.preview-image-chat {
     top: 18% !important;
   }
 
-  #selec-vendors .modal-dialog {
+  #selec-vendors .modal-dialog,
+  #modal-edit .modal-dialog {
     width: 90%;
   }
 }

@@ -232,7 +232,8 @@ export class NavbarComponent implements OnInit {
       selectAllText: "Select All",
       unSelectAllText: "UnSelect All",
       enableSearchFilter: true,
-      badgeShowLimit: 2
+      badgeShowLimit: 2,
+      searchAutofocus: false
     };
     this.issuesettings = {
       singleSelection: true,
@@ -240,7 +241,8 @@ export class NavbarComponent implements OnInit {
       selectAllText: "Select All",
       unSelectAllText: "UnSelect All",
       enableSearchFilter: true,
-      badgeShowLimit: 2
+      badgeShowLimit: 2,
+      searchAutofocus: false
     };
     this.residentsettings = {
       singleSelection: true,
@@ -248,7 +250,8 @@ export class NavbarComponent implements OnInit {
       selectAllText: "Select All",
       unSelectAllText: "UnSelect All",
       enableSearchFilter: true,
-      badgeShowLimit: 2
+      badgeShowLimit: 2,
+      searchAutofocus: false
     };
     if (window['Push']) {
       if (!window['Push'].Permission.has()) {
