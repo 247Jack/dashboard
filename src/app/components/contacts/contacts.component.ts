@@ -111,6 +111,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
     address: '',
     address2: '',
     city: '',
+    st: '',
     zip: '',
     endDate: '',
     phone: '',
@@ -157,6 +158,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
     address: '',
     address2: '',
     city: '',
+    st: '',
     zip: '',
     phone: '',
     homePhone: '',
@@ -391,6 +393,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
         this.editResidentData.address = contactData.contactResult.building.address;
         this.editResidentData.address2 = contactData.contactResult.building.address2;
         this.editResidentData.city = contactData.contactResult.building.city;
+        this.editResidentData.st = contactData.contactResult.building.st;
         this.editResidentData.zip = contactData.contactResult.building.zip;
         this.editResidentData.phone = contactData.contactResult.contact.phone;
         this.editResidentData.workPhone = contactData.contactResult.contact.workPhone;
@@ -495,6 +498,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
         address: '',
         address2: '',
         city: '',
+        st: '',
         zip: '',
         phone: '',
         homePhone: '',
@@ -619,13 +623,13 @@ export class ContactsComponent implements OnInit, OnDestroy {
     this.modal.close();
     this.addressComparisonHtml = [];
     if (this.enableEditFields) {
-      this.editResidentData.originalAddress = this.editResidentData.address;
+      //this.editResidentData.originalAddress = this.editResidentData.address;
       this.editResidentData.address = this.suggestedAddress.address;
       this.editResidentData.city = this.suggestedAddress.city;
       this.editResidentData.zip = this.suggestedAddress.zip;
       this.updateContact();
     } else {
-      this.newResidentData.originalAddress = this.newResidentData.address
+      //this.newResidentData.originalAddress = this.newResidentData.address
       this.newResidentData.address = this.suggestedAddress.address;
       this.newResidentData.city = this.suggestedAddress.city;
       this.newResidentData.zip = this.suggestedAddress.zip;
