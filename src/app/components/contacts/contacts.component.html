@@ -294,18 +294,23 @@
                           <input [(ngModel)]="editResidentData.address2" #address2="ngModel" id="address2" name="address2"
                             type="text" class="form-control" maxlength="500" [disabled]="!enableEditFields">
                         </div>
+                        -->
                         <div class="col-sm-6 form-group">
                           <label for="city">City</label>
                           <input [(ngModel)]="editResidentData.city" #city="ngModel" id="city" name="city" type="text"
                             class="form-control" required maxlength="100" [disabled]="!enableEditFields">
                         </div>
-                        <div class="col-sm-6 form-group">
+                        <div class="col-sm-3 form-group">
+                            <label for="zip">State</label>
+                            <input [(ngModel)]="editResidentData.st" #zip="ngModel" id="st" name="st" type="text"
+                              class="form-control" required minlength="2" maxlength="2" [disabled]="!enableEditFields">
+                          </div>
+                        <div class="col-sm-3 form-group">
                           <label for="zip">ZIP</label>
                           <input [(ngModel)]="editResidentData.zip" #zip="ngModel" id="zip" name="zip" type="text"
                             class="form-control" required (keypress)="onlyNumberKey($event)" mimlength="3" pattern="^[0-9]*$"
                             [disabled]="!enableEditFields">
                         </div>
-                          -->
                         <!-- <div class="col-sm-6 form-group">
                           <label for="phone">Phone</label>
                           <input type="text" class="form-control" id="phone" name="phone" [(ngModel)]="editResidentData.phone"
@@ -556,18 +561,23 @@
                             <input type="text" class="form-control" id="address2" name="address2" [(ngModel)]="newResidentData.address2"
                               #address2="ngModel" maxlength="500">
                           </div>
+                          -->
                           <div class="col-sm-6 form-group">
                             <label for="city">City</label>
                             <input type="text" class="form-control" id="city" name="city" [(ngModel)]="newResidentData.city"
                               #city="ngModel" required maxlength="100">
                           </div>
-                          <div class="col-sm-6 form-group">
+                          <div class="col-sm-3 form-group">
+                              <label for="zip">State</label>
+                              <input type="text" class="form-control" id="st" name="st" [(ngModel)]="newResidentData.st"
+                                #zip="ngModel" required maxlength="2" mimlength="2">
+                            </div>
+                          <div class="col-sm-3 form-group">
                             <label for="zip">ZIP</label>
                             <input type="text" class="form-control" id="zip" name="zip" [(ngModel)]="newResidentData.zip"
                               #zip="ngModel" required (keypress)="onlyNumberKey($event)" maxlength="25" mimlength="3"
                               pattern="^[0-9]*$">
                           </div>
-                          -->
                           <!-- <div class="col-sm-6 form-group">
                           <label for="phone">Phone</label>
                           <input type="text" class="form-control" id="phone" name="phone" [(ngModel)]="newResidentData.phone"
