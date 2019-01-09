@@ -1150,6 +1150,7 @@ img.preview-image-chat {
   #user .modal-dialog {
     width: 50%;
   }
+
 }
 
 @media screen and (max-width: 744px) {}
@@ -1198,16 +1199,14 @@ img.preview-image-chat {
   #selec-vendors {
     z-index: 2147483647!important;
   }
+  #modal-edit .modal-dialog {
+    width: 100% !important;
+  }
 }
 
 @media screen and (max-width: 280px) {
   .btn-3 {
     top: 18% !important;
-  }
-
-  #selec-vendors .modal-dialog,
-  #modal-edit .modal-dialog {
-    width: 90%;
   }
 }
 
