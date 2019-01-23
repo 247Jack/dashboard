@@ -236,11 +236,19 @@
             </div>
             <div class="p-2 info-user">
               <ul class="nav flex-column">
+                <li class="nav-item" *ngIf="isUserUnknown">
+                  <span class="nav-link d-flex flex-row text-muted">
+                    <button (click)="addNewContact()" class="btn b-success">Add as new tenant</button>
+                  </span>
+                  <span class="nav-link d-flex flex-row text-muted">
+                    <button (click)="addExisitngContact(user.app.sms)" class="btn b-success">Edit existing tenant</button>
+                  </span>
+                </li> 
                 <li class="nav-item">
                   <span class="nav-link d-flex flex-row text-muted">
                     <span>Addres:</span> {{[user.building.address, user.building.city, [user.building.st, user.building.zip].join(' ')].join(', ')}}
                   </span>
-                </li>
+                </li> 
                 <li class="nav-item">
                   <span class="nav-link d-flex flex-row text-muted">
                     <span>Mobile:</span>{{user.contact.phone}}</span>
@@ -267,6 +275,14 @@
             </div>
             <div class="p-2 info-user">
               <ul class="nav flex-column">
+              <li class="nav-item" *ngIf="isUserUnknown">
+                  <span class="nav-link d-flex flex-row text-muted">
+                    <button (click)="addNewContact()" class="btn b-success">Add as new vendor</button>
+                  </span>
+                  <span class="nav-link d-flex flex-row text-muted">
+                    <button (click)="addExisitngContact(user.phone)" class="btn b-success">Edit existing vendor</button>
+                  </span>
+                </li> 
                 <li class="nav-item">
                   <span class="nav-link d-flex flex-row text-muted">
                     <span>Addres:</span> {{user.address}}
@@ -353,4 +369,23 @@
       </div>
     </div>
   </div>
+  <modal #modalmessage id="backdrop" onClose="cleanModal()">
+    <modal-header [show-close]="true">
+      <h4 class="modal-title">Select a {{this.userType}}</h4>
+    </modal-header>
+    <modal-body>
+      <div *ngIf="userType === 'tenant'">
+        <angular2-multiselect [data]="tenantsList" [(ngModel)]="tenantsListSelectedItems" [settings]="contactListSettings">
+        </angular2-multiselect>
+      </div>
+      <div *ngIf="userType === 'vendor'">
+          <angular2-multiselect [data]="vendorsList" [(ngModel)]="vendorsListSelectedItems" [settings]="contactListSettings">
+          </angular2-multiselect>
+        </div>
+    </modal-body>
+    <modal-footer>
+      <button class="md-btn md-raised mb-2 blue" data-dismiss="modal" (click)="selectExistingContact()">Continue</button>
+      <button class="md-btn md-flat mb-2 text-primary" data-dismiss="modal" (click)="modal.close()">Close</button>
+    </modal-footer>
+  </modal>
 </div>

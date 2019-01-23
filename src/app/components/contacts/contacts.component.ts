@@ -68,6 +68,9 @@ export class ContactsComponent implements OnInit, OnDestroy {
   public issuesettings = {};
   public getIssuesConn;
 
+  //Variable for new Phone for contact
+  public newPhone = ""
+
   // Variables for the Address Validation requiremnt
   public invalidAddress = false;
   public addressComparisonHtml = [];
@@ -247,6 +250,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
               clearInterval(waitForContacts);
             }
           }, 100);
+          if(queryparams.new_phone) this.newPhone = queryparams.new_phone;
         });
         if (openModal) {
           this.activatedRoute.params.subscribe(params => {
@@ -437,6 +441,18 @@ export class ContactsComponent implements OnInit, OnDestroy {
   setupContactForm() {
     this.enableEditFields = true;
     this.setIssuesDropdown();
+    if(this.newPhone){
+      switch(this.currentContactType){
+        case 'tenant':
+          this.editResidentData.phone = this.newPhone;
+        break;
+        case 'vendor':
+          this.editVendorData.phone = this.newPhone;
+        break;
+        default:
+      }
+      this.newPhone = "";
+    }
   }
 
   /**
@@ -837,7 +853,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
     this.enableEditFields = false;
     this.issuesSelectedItems = [];
     this.bindIssuesSettings();
-    this.router.navigate(['/contacts'], { queryParamsHandling: 'merge' });
+    this.router.navigate(['/contacts'], { queryParams: { new_phone: undefined}, queryParamsHandling: 'merge' });
   }
 
   /**
@@ -959,6 +975,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
   onUploadSuccess(e) { }
 
   cleanModal() {
+    this.router.navigate(['/contacts'], {queryParams: {new_phone : undefined}, queryParamsHandling: 'merge'})
   }
 
 }

@@ -11,7 +11,9 @@ import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { ChatService } from "../../services/chat.service";
 import { ContactsService } from "../../services/contacts.service";
 import { AutopopulateService } from "../../services/autopopulate.service";
+import { ModalComponent } from 'dsg-ng2-bs4-modal/ng2-bs4-modal';
 import * as _ from "lodash";
+import { defaultKeyValueDiffers } from "@angular/core/src/change_detection/change_detection";
 
 @Component({
   selector: "app-messages",
@@ -41,11 +43,25 @@ export class MessagesComponent
   public currentCompany: String = ""
   public humanTakeover: Boolean = false;
   public userListLoaded:Boolean = false;
+  public isUserUnknown = false;
   public newAddress;
   public serviceDataId;
   @ViewChild("chatScroll")
   private myScrollContainer: ElementRef;
   updateMessages: any;
+  @ViewChild('modalmessage')
+  modal: ModalComponent;
+  public targetContactId = "";
+  public targetPhone = "";
+  public tenantsList = [];
+  public vendorsList = [];
+  public tenantsListSelectedItems = [];
+  public vendorsListSelectedItems = [];
+  public contactListSettings = {
+    singleSelection: true,
+    text: 'Select',
+    enableSearchFilter: true
+  }
 
   constructor(
     private router: Router,
@@ -66,17 +82,29 @@ export class MessagesComponent
       if (this.currentPropertyManager && this.currentCompany) {
         clearInterval(waitForPMData);
         this.contactConn = this.contacts
-        .getContacts(this.currentPropertyManager["_id"], "pms")
-        .subscribe(listPMs => {
+        .getContacts(this.currentPropertyManager["_id"], this.currentCompany, "")
+        .subscribe(listUsers => {
           var PMlist = [];
-          for (var pm in listPMs["pManagersResult"])
+          for (var pm in listUsers["pManagersResult"])
             PMlist.push({
-              id: listPMs["pManagersResult"][pm]._id,
-              itemName: `${listPMs["pManagersResult"][pm]["name"]} ${
-                listPMs["pManagersResult"][pm]["surname"]
+              id: listUsers["pManagersResult"][pm]._id,
+              itemName: `${listUsers["pManagersResult"][pm]["name"]} ${
+                listUsers["pManagersResult"][pm]["surname"]
               }`
             });
           this.teammatelist = PMlist;
+          for (var t in listUsers["usersResult"])
+            this.tenantsList.push({
+              id: listUsers["usersResult"][t]._id,
+              itemName: `${listUsers["usersResult"][t]["firstName"]} ${
+                listUsers["usersResult"][t]["lastName"]
+              }`
+            });
+          for (var v in listUsers["vendorsResult"])
+          this.vendorsList.push({
+            id: listUsers["vendorsResult"][v]._id,
+            itemName: listUsers["vendorsResult"][v]["vendorData"]["name"]
+          });
         });
         this.chat.clearNewMessagesCount();
         this.chatConn = this.chat
@@ -145,6 +173,7 @@ export class MessagesComponent
                       data => {
                         this.userType = data.userType
                         this.messages = data.messages;
+                        this.isUserUnknown = (!data.userStatus.enabled && data.userStatus.tempId !== null)
                         for(var i in this.messages){
                           if (this.messages[i].address) {
                             if (this.messages[i].address.address) {
@@ -303,4 +332,48 @@ export class MessagesComponent
     }
     document.getElementById("setNewOrder").click();
   }
+
+  userFromMessage(target, userId, userPhone){
+    switch(target){
+      case 'new':
+        
+        break;
+      case 'existing':
+        if(!userId){
+          this.modal.open()
+        } else {
+          this.router.navigate(['/contacts', userId], {queryParamsHandling: 'merge'})
+        }
+        break;
+      default:
+    }
+  }
+
+  addNewContact(){
+    this.router.navigate(['/contacts', this.userId])
+  }
+
+  addExisitngContact(userPhone){
+    this.targetPhone = userPhone;
+    this.modal.open();
+  }
+
+  selectExistingContact(){
+    switch(this.userType){
+      case 'tenant':
+        if(this.tenantsListSelectedItems.length){
+          var tenant = this.tenantsListSelectedItems[0]
+          this.router.navigate(['/contacts', tenant.id], {queryParams: {new_phone : this.targetPhone}, queryParamsHandling: 'merge'})
+        }
+      break;
+      case 'vendor':
+        if(this.vendorsListSelectedItems.length){
+          var vendor = this.vendorsListSelectedItems[0]
+          this.router.navigate(['/contacts', vendor.id], {queryParams: {new_phone : this.targetPhone}, queryParamsHandling: 'merge'})
+        }
+      break;
+      default:
+    }
+  }
+
 }
