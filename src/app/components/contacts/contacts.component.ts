@@ -6,6 +6,7 @@ import { ContactsService } from '../../services/contacts.service';
 import { ModalComponent } from 'dsg-ng2-bs4-modal/ng2-bs4-modal';
 import { Tenant, Vendor, PropertyManager } from './contact-interfaces';
 import { IssuesService } from '../../services/issues.service';
+import { CompanyService } from '../../services/companies.service';
 // import { AsyncPhoneValidator } from './phoneValidation';
 import * as _ from 'lodash';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
@@ -89,6 +90,18 @@ export class ContactsComponent implements OnInit, OnDestroy {
 
   // Variable for delete contact feature
   public deleteFinished = false;
+
+  // Variable for company options
+  public currentCompanyOptions = {
+    notificationsConfig: {
+      VENDOR_ACCEPTED_TASK: {
+        tenant: ""
+      }
+    }
+  };
+  public companiesConn;
+  public options_contactVendor = false;
+  public disabledSetContact = false;
 
   // Modal Variables
   @ViewChild('modalmessage')
@@ -200,6 +213,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
     private spinnerService: Ng4LoadingSpinnerService,
     private contacts: ContactsService,
     private issues: IssuesService,
+    private companies: CompanyService,
     private router: Router
   ) { }
 
@@ -213,6 +227,9 @@ export class ContactsComponent implements OnInit, OnDestroy {
     if (this.getContactsConnection) {
       this.getContactsConnection.unsubscribe();
     }
+    if(this.companiesConn){
+      this.companiesConn.unsubscribe();
+    }
   }
 
   waitForPMData(openModal) {
@@ -225,6 +242,10 @@ export class ContactsComponent implements OnInit, OnDestroy {
         this.currentPropertyManager = JSON.parse(sessionStorage.getItem('propertyManagerData'));
         this.getContactsConnection = this.contacts.getContacts(this.currentPropertyManager['_id'], this.currentCompany).subscribe(data => {
           this.mapContactsObjectsByTypes(data);
+        });
+        this.companiesConn = this.companies.getCompanyOptions(this.currentPropertyManager._id, this.currentCompany).subscribe(data => {
+          this.currentCompanyOptions = data.options;
+          this.options_contactVendor = (data.options.notificationsConfig.VENDOR_ACCEPTED_TASK.tenant === 'VENDOR_ACCEPTED_TASK_CONTACT')
         });
         this.activatedRoute.queryParams.subscribe(queryparams => {
           const waitForContacts = setInterval(() => {
@@ -293,7 +314,6 @@ export class ContactsComponent implements OnInit, OnDestroy {
    */
   setIssuesDropdown() {
     this.issuesSelectedItems = this.editVendorData.services;
-    console.log(this.issuesSelectedItems);
     this.bindIssuesSettings();
     this.getIssuesConn = this.issues
       .getIssues(this.currentPropertyManager['_id'])
@@ -825,8 +845,6 @@ export class ContactsComponent implements OnInit, OnDestroy {
           editContactData = {};
           break;
       }
-      console.log('editContactData.services');
-      console.log(editContactData.services);
       this.contacts.editContact(
         editContactData,
         this.currentPropertyManager._id,
@@ -834,10 +852,9 @@ export class ContactsComponent implements OnInit, OnDestroy {
         this.currentContact._id,
         this.currentContactType
       ).subscribe(data => {
-        console.log(data);
         this.modalUpdateContactResult(data.ok);
       }, (err) => {
-        console.log(err);
+        console.error(err);
         this.modalShowMessage('SystemError');
       });
       this.spinnerService.hide();
@@ -891,7 +908,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
       this.modalDeleteContactResult(data.ok, data.nModified);
       this.spinnerService.hide();
     }, (err) => {
-      console.log(err);
+      console.error(err);
       this.spinnerService.hide();
       this.modalShowMessage('SystemError');
     });
@@ -976,6 +993,20 @@ export class ContactsComponent implements OnInit, OnDestroy {
 
   cleanModal() {
     this.router.navigate(['/contacts'], {queryParams: {new_phone : undefined}, queryParamsHandling: 'merge'})
+  }
+
+  setVendorDataState(event){
+    this.disabledSetContact = true;
+    let newState = (event.target.checked) ? 'VENDOR_ACCEPTED_TASK_CONTACT' : 'VENDOR_ACCEPTED_TASK';
+    let newOptions = this.currentCompanyOptions;
+    newOptions.notificationsConfig.VENDOR_ACCEPTED_TASK.tenant = newState
+    this.companies.setCompanyOptions(
+      this.currentPropertyManager._id,
+      this.currentCompany,
+      newOptions
+    ).subscribe( data => {
+      this.disabledSetContact = false;
+    })
   }
 
 }

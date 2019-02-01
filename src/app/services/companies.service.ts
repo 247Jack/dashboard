@@ -44,4 +44,40 @@ export class CompanyService {
       });
   }
 
+  public getCompanyOptions(pm_id,company){
+    const headers = new Headers();
+    headers.append('property_manager_id', pm_id);
+    headers.append('property_manager_company', company);
+    const options = new RequestOptions({ 'headers': headers });
+    return this.http
+      .get(
+        `${environment.api_domain}/dashboard/companies/options`,options
+      )
+      .map(res => {
+        return res.json();
+      })
+      .catch(error => {
+        window.location.reload();
+        return error;
+      });
+  }
+
+  public setCompanyOptions(pm_id,company,newOptions){
+    const headers = new Headers();
+    headers.append('property_manager_id', pm_id);
+    headers.append('property_manager_company', company);
+    const options = new RequestOptions({ 'headers': headers });
+    return this.http
+      .post(
+        `${environment.api_domain}/dashboard/companies/options`,newOptions,options
+      )
+      .map(res => {
+        return res.json();
+      })
+      .catch(error => {
+        window.location.reload();
+        return error;
+      });
+  }
+
 }

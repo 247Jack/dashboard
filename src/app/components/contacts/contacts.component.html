@@ -77,6 +77,24 @@
                       <span class="nav-text">Providers</span>
                     </a>
                   </li>
+                  <!--li>
+                    <div class="item-class-config">
+                      <span class="nav-text">
+                        Configurations:
+                      </span>
+                      <span class="nav-text">
+                        <label class="container-cb">Send vendor contact data in the notification
+                          <input type="checkbox" />
+                          <span class="checkmark"></span>
+                        </label>
+                      </span>
+                      <span class="nav-text">
+                        <button class="btn" (click)="updateConfig()">
+                          Update
+                        </button>
+                        </span>
+                    </div>
+                  </li-->
                 </ul>
               </nav>
             </div>
@@ -416,6 +434,17 @@
                           <label for="comments">Comments</label>
                           <input type="text" class="form-control" id="comments" name="comments" [(ngModel)]="editVendorData.comments"
                             #comments="ngModel" maxlength="500" [disabled]="!enableEditFields">
+                        </div>
+                        <div class="col-sm-12 form-group">
+                          <div class="item-class-config">
+                            <span class="nav-text">
+                              <label class="container-cb">Send vendor contact data in the notification
+                                <input type="checkbox" (click)="setVendorDataState($event)"  
+                                [(ngModel)]="options_contactVendor" name="cb-vendor-state" [disabled]="disabledSetContact" />
+                                <span class="checkmark"></span>
+                              </label>
+                            </span>
+                          </div>
                         </div>
                       </div>
                       <div *ngSwitchCase="'property manager'" class="row">
