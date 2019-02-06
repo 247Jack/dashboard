@@ -173,7 +173,7 @@ export class MessagesComponent
                       data => {
                         this.userType = data.userType
                         this.messages = data.messages;
-                        this.isUserUnknown = (!data.userStatus.enabled && data.userStatus.tempId !== null)
+                        this.isUserUnknown = data.userStatus.tempId ? true : false;
                         for(var i in this.messages){
                           if (this.messages[i].address) {
                             if (this.messages[i].address.address) {
