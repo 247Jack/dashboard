@@ -26,7 +26,7 @@ export class MessagesComponent
   private contactConn;
   private chatListConn;
   private chatPastConn;
-
+  private mergeConn;
   public userId: String;
   public userType: String;
   public userInitials: String;
@@ -251,7 +251,8 @@ export class MessagesComponent
     if (this.contactConn) this.contactConn.unsubscribe();
     if (this.chatListConn) this.chatListConn.unsubscribe();
     if (this.chatPastConn) this.chatPastConn.unsubscribe();
-    if (this.updateMessages)this.updateMessages.unsubscribe();
+    if (this.updateMessages) this.updateMessages.unsubscribe();
+    if(this.mergeConn) this.mergeConn.unsubscribe();
   }
 
   sendMessage(e) {
@@ -363,13 +364,21 @@ export class MessagesComponent
       case 'tenant':
         if(this.tenantsListSelectedItems.length){
           var tenant = this.tenantsListSelectedItems[0]
-          this.router.navigate(['/contacts', tenant.id], {queryParams: {new_phone : this.targetPhone}, queryParamsHandling: 'merge'})
+          this.mergeConn = this.chat
+          .mergeMessages(this.currentPropertyManager["_id"], this.userType, this.userId, tenant.id)
+          .subscribe(resultMerge => {
+            this.router.navigate(['/contacts', tenant.id], {queryParams: {new_phone : this.targetPhone}, queryParamsHandling: 'merge'})
+          })
         }
       break;
       case 'vendor':
         if(this.vendorsListSelectedItems.length){
           var vendor = this.vendorsListSelectedItems[0]
-          this.router.navigate(['/contacts', vendor.id], {queryParams: {new_phone : this.targetPhone}, queryParamsHandling: 'merge'})
+          this.mergeConn = this.chat
+          .mergeMessages(this.currentPropertyManager["_id"], this.userType, this.userId, vendor.id)
+          .subscribe(resultMerge => {
+            this.router.navigate(['/contacts', vendor.id], {queryParams: {new_phone : this.targetPhone}, queryParamsHandling: 'merge'})
+          })
         }
       break;
       default:

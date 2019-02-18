@@ -169,4 +169,23 @@ export class ChatService {
       return Observable.throw(error.message || error);
     });
   }
+
+  public mergeMessages(pm_id, userType, userIdSource, userIdDestination){
+    const headers = new Headers();
+    headers.append('property_manager_id', pm_id);
+    const options = new RequestOptions({ 'headers': headers });
+    return this.http.post(
+      `${environment.api_domain}/dashboard/messages/merge`,
+      {
+        userType,
+        userIdSource,
+        userIdDestination
+      },options
+    )
+    .catch(error => {
+      window.location.reload();
+      return Observable.throw(error.message || error);
+    });
+  }
+
 }
