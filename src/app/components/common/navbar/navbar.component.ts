@@ -266,7 +266,7 @@ export class NavbarComponent implements OnInit {
       this.issueselectedItems = [];
       this.service = serviceData.service
       this.idService = serviceData.id
-      this.date = new Date(serviceData.dateIssue.replace(/-/g, '\/'))
+      this.date = new Date(serviceData.dateIssue)
       console.log(serviceData)
       var flagNoTenant = true;
       for (var t in this.residentlist) {
