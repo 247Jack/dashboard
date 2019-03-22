@@ -175,6 +175,7 @@ export class NavbarComponent implements OnInit {
                 .listenMessages(this.currentPropertyManager, this.currentCompany)
                 .subscribe(incoming_message => {
                   console.log(incoming_message)
+                  /*
                   if (
                     incoming_message && incoming_message['direction'] === 'in'
                   ) {
@@ -210,6 +211,7 @@ export class NavbarComponent implements OnInit {
                       }, 25)
                     }
                   }
+                  */
                 });
             }
           });
