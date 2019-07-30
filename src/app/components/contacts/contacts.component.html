@@ -74,7 +74,7 @@
                       <span class="nav-badge">
                         <b class="badge badge-sm badge-pill primary">{{contactsVendors.length}}</b>
                       </span>
-                      <span class="nav-text">Providers</span>
+                      <span class="nav-text">Contacts</span>
                     </a>
                   </li>
                   <!--li>
@@ -537,7 +537,7 @@
                           <select class="custom-select" [(ngModel)]="newContactType" (change)="onChange($event.target.value)">
                             <option value="" disabled selected hidden>Add to group</option>
                             <option value="tenant">Tenant</option>
-                            <option value="vendor">Service provider</option>
+                            <option value="vendor">Vendor/Owner</option>
                             <!-- <option value="property_manager">Teammate</option> -->
                           </select>
                         </div>
