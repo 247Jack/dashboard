@@ -1051,6 +1051,10 @@ img.preview-image-chat {
   font-weight: 700;
 }
 
+#chat-list{
+  height: 90vh;
+}
+
 @media screen and (max-width: 992px) {
   .w-ssd {
     width: 320px !important;
