@@ -1055,6 +1055,10 @@ img.preview-image-chat {
   height: 90vh;
 }
 
+#chat-nav .scrollable{
+  height: 90vh;
+}
+
 @media screen and (max-width: 992px) {
   .w-ssd {
     width: 320px !important;
