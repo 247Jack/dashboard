@@ -30,7 +30,7 @@
     "angular2-multiselect-dropdown": "^2.9.0",
     "angular2-notifications": "^1.0.2",
     "core-js": "^2.4.1",
-    "lodash": "^4.17.10",
+    "lodash": "^4.17.17",
     "ng-push": "^0.2.2",
     "ng-socket-io": "^0.2.4",
     "ng2-simple-mq": "^1.2.9",
